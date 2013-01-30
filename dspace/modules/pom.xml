@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.dspace</groupId>
 		<artifactId>dspace-parent</artifactId>
-		<version>4.0-SNAPSHOT</version>
+		<version>3.1</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
@@ -97,6 +97,15 @@
             </activation>
             <modules>
                 <module>oai</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>cover</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>cover</module>
             </modules>
         </profile>
     </profiles>
