@@ -474,13 +474,13 @@ public class CoverPage {
                 doc.add(new Paragraph(""));
             }
 
-            Phrase ph_head = new Phrase("SEAFDEC/AQD Institutional Repository (SAIR)", FONT_HEADER);
+            /* Phrase ph_head = new Phrase("SEAFDEC/AQD Institutional Repository (SAIR)", FONT_HEADER);
             Paragraph para_head = new Paragraph();
             para_head.setAlignment(Element.ALIGN_CENTER);
             para_head.add(ph_head);
             doc.add(new Paragraph(""));
             doc.add(para_head);
-            doc.add(new Paragraph(""));
+            doc.add(new Paragraph("")); */
 
             PdfPTable table = new PdfPTable(2);
             table.setWidthPercentage(90f);
@@ -514,13 +514,13 @@ public class CoverPage {
             Paragraph p = new Paragraph();
             p.setAlignment(Element.ALIGN_RIGHT);
             //String downTime = "This document is downloaded at: " + DCDate.getCurrent().toString();
-            String downTime = "This document is downloaded at: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").format(new Date());
+            String downTime = "This document was downloaded from http://repository.seafdec.org.ph at: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").format(new Date());
             Phrase phrase = new Phrase(downTime, FONT_DATE);
             p.add(phrase);
             doc.add(p);
 
             java.net.URL url = new
-                    java.net.URL("https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl="
+                    java.net.URL("https://chart.googleapis.com/chart?cht=qr&chs=150x150&chld=H|0&chl="
                     + org.dspace.handle.HandleManager.getCanonicalForm(item.getHandle()));
             Image qrcode = Image.getInstance(url);
             qrcode.scalePercent(72.0f / 96.0f * 100f);
