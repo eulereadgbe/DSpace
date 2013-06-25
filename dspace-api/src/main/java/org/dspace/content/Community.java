@@ -661,6 +661,34 @@ public class Community extends DSpaceObject
         return collectionArray;
     }
 
+    /*
+    Fetch all Collections recursively, including within subcommunities.
+     */
+    public Collection[] getAllCollections()
+    {
+        ArrayList<Collection> containedCollections = new ArrayList<Collection>();
+
+        try {
+            Collection[] collections = this.getCollections();
+            for(Collection collection : collections) {
+                containedCollections.add(collection);
+            }
+
+            Community[] subCommmunities = this.getSubcommunities();
+            for(Community subCommunity : subCommmunities) {
+                Collection[] subCollections = subCommunity.getAllCollections();
+
+                for(Collection collection : subCollections) {
+                    containedCollections.add(collection);
+                }
+            }
+
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+
+        return containedCollections.toArray(new Collection[containedCollections.size()]);
+    }
     /**
      * Get the immediate sub-communities of this community. Throws an
      * SQLException because creating a community object won't load in all
