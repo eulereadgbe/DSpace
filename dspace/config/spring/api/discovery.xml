@@ -94,6 +94,7 @@
         <!--Which sidebar facets are to be displayed-->
         <property name="sidebarFacets">
             <list>
+                <ref bean="searchFilterType" />
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
@@ -102,6 +103,7 @@
         <!--The search filters which can be used on the discovery search page-->
         <property name="searchFilters">
             <list>
+                <ref bean="searchFilterType" />
                 <ref bean="searchFilterTitle" />
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
@@ -117,6 +119,7 @@
                 <property name="sortFields">
                     <list>
                         <ref bean="sortTitle" />
+                        <ref bean="sortAuthor" />
                         <ref bean="sortDateIssued" />
                     </list>
                 </property>
@@ -124,11 +127,17 @@
         </property>
         <!--Any default filter queries, these filter queries will be used for all queries done by discovery for this configuration-->
         <!--<property name="defaultFilterQueries">-->
-            <!--<list>-->
-                <!--Only find items-->
-                <!--<value>search.resourcetype:2</value>-->
-            <!--</list>-->
+        <!--<list>-->
+        <!--Only find items-->
+        <!--<value>search.resourcetype:2</value>-->
+        <!--</list>-->
         <!--</property>-->
+        <property name="defaultFilterQueries">
+        <list>
+        <!--Only find items-->
+        <value>search.resourcetype:2</value>
+        </list>
+        </property>
         <!--The configuration for the recent submissions-->
         <property name="recentSubmissionConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoveryRecentSubmissionsConfiguration">
@@ -178,11 +187,11 @@
             </list>
         </property>
                 <!--The minimum number of matching terms across the metadata fields above before an item is found as related -->
-                <property name="minTermFrequency" value="5"/>
+                <property name="minTermFrequency" value="3"/>
                 <!--The maximum number of related items displayed-->
                 <property name="max" value="3"/>
                 <!--The minimum word length below which words will be ignored-->
-                <property name="minWordLength" value="5"/>
+                <property name="minWordLength" value="3"/>
     </bean>
         </property>
     </bean>
@@ -190,6 +199,17 @@
 
 
     <!--Search filter configuration beans-->
+    <bean id="searchFilterType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="type"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.type</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrder" value="VALUE"/>
+    </bean>
+
     <bean id="searchFilterTitle" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
         <property name="indexFieldName" value="title"/>
         <property name="metadataFields">
@@ -207,7 +227,7 @@
                 <value>dc.creator</value>
             </list>
         </property>
-        <property name="facetLimit" value="10"/>
+        <property name="facetLimit" value="5"/>
         <property name="sortOrder" value="COUNT"/>
     </bean>
 
@@ -218,7 +238,7 @@
                 <value>dc.subject.*</value>
             </list>
         </property>
-        <property name="facetLimit" value="10"/>
+        <property name="facetLimit" value="5"/>
         <property name="sortOrder" value="COUNT"/>
         <property name="splitter" value="::"/>
     </bean>
@@ -237,6 +257,10 @@
     <!--Sort properties-->
     <bean id="sortTitle" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
         <property name="metadataField" value="dc.title"/>
+    </bean>
+
+    <bean id="sortAuthor" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="dc.contributor.author"/>
     </bean>
 
     <bean id="sortDateIssued" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
