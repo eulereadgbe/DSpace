@@ -462,6 +462,22 @@ public class CitationDocument {
         cDoc.add(identifier);
 
 
+       try {
+
+        //add QR code
+
+        java.net.URL url = new java.net.URL("https://chart.googleapis.com/chart?cht=qr&chs=150x150&chld=H|0&chl="
+                + org.dspace.handle.HandleManager.getCanonicalForm(item.getHandle()));
+        Image qrcode = Image.getInstance(url);
+        qrcode.setAlignment(Element.ALIGN_CENTER);
+        cDoc.add(qrcode);
+
+       } catch (Exception e) {
+           log.error("Could not add logo QRcode to cited document: "
+                   + e.getMessage());
+       }
+
+
 
         // 5 - License
         // Downloaded from the Knowledge Bank, The Ohio State University's institutional repository
