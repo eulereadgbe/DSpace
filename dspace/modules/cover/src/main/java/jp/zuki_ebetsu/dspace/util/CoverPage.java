@@ -112,7 +112,7 @@ public class CoverPage {
     private static final BaseFont FONT_SERIF = setBaseFont("coverpage.font.serif", pdfa);
 
     /** Header Font */
-    protected static final Font FONT_HEADER = setFont(FONT_SANS, Font.FontFamily.HELVETICA, 18, Font.NORMAL);
+    protected static final Font FONT_HEADER = setFont(FONT_SANS, Font.FontFamily.HELVETICA, 24, Font.NORMAL);
 
     /** Footer Font */
     protected static final Font FONT_FOOTER = setFont(FONT_SANS, Font.FontFamily.HELVETICA, 10, Font.NORMAL);
@@ -147,7 +147,7 @@ public class CoverPage {
     /** bitstream to be added cover page  */
     private Bitstream bitstream;
 
-    static 
+    static
     {
         // Set display metadata fields
         ArrayList<String> clist = new ArrayList<String>();
@@ -287,10 +287,12 @@ public class CoverPage {
 
                     // Set metadata from the original pdf 
                     // the position of these lines is important
+                    /* Removing this portion made the resulting pdf PDF/A-1b compliant
                     document.addTitle(title);
                     document.addAuthor(author);
                     document.addSubject(subject);
                     document.addKeywords(keywords);
+                    */
 
                     if (pdfa)
                     {
@@ -459,7 +461,7 @@ public class CoverPage {
         try 
         {
             byteout = new ByteArrayOutputStream();   
-            doc = new Document(PageSize.A4, 20, 20, 50, 50); 
+            doc = new Document(PageSize.A4, 36, 36, 50, 50);
             PdfWriter pdfwriter = PdfWriter.getInstance(doc, byteout);
 
             pdfwriter.setPageEvent(new HeaderFooter());
@@ -468,19 +470,20 @@ public class CoverPage {
             if (logo_path != null && !logo_path.equals("")) 
             {
                 Image img = Image.getInstance(logo_path);
-                img.scalePercent(72.0f / 96.0f * 150f);
+                img.scalePercent(72.0f / 96.0f * 133f);
                 img.setAlignment(Element.ALIGN_CENTER);
                 doc.add(img);
                 doc.add(new Paragraph(""));
             }
 
-            /* Phrase ph_head = new Phrase("SEAFDEC/AQD Institutional Repository (SAIR)", FONT_HEADER);
-            Paragraph para_head = new Paragraph();
-            para_head.setAlignment(Element.ALIGN_CENTER);
-            para_head.add(ph_head);
+            Paragraph title = new Paragraph(item.getName(), FONT_HEADER);
+            Paragraph para_head = new Paragraph(26f);
+            para_head.setAlignment(Element.ALIGN_LEFT);
+            para_head.setIndentationLeft(30f);
+            para_head.add(title);
             doc.add(new Paragraph(""));
             doc.add(para_head);
-            doc.add(new Paragraph("")); */
+            doc.add(new Paragraph(""));
 
             PdfPTable table = new PdfPTable(2);
             table.setWidthPercentage(90f);
@@ -496,13 +499,13 @@ public class CoverPage {
                 PdfPCell tag = new PdfPCell(new Phrase(flds[0], FONT_TAG));
                 tag.setGrayFill(0.8f);
                 tag.setHorizontalAlignment(Element.ALIGN_LEFT);
-                tag.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                tag.setVerticalAlignment(Element.ALIGN_TOP);
                 tag.setPaddingLeft(5f);
 
                 PdfPCell value = new PdfPCell(new Phrase(getFieldValue(flds[1]), FONT_VALUE));
                 value.setHorizontalAlignment(Element.ALIGN_LEFT);
-                value.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                value.setMinimumHeight(40f);
+                value.setVerticalAlignment(Element.ALIGN_TOP);
+                value.setMinimumHeight(20f);
                 value.setPadding(5f);
 
                 table.addCell(tag);
@@ -512,11 +515,12 @@ public class CoverPage {
             doc.add(table);
 
             Paragraph p = new Paragraph();
-            p.setAlignment(Element.ALIGN_RIGHT);
+            p.setAlignment(Element.ALIGN_CENTER);
             //String downTime = "This document is downloaded at: " + DCDate.getCurrent().toString();
-            String downTime = "This document was downloaded from http://repository.seafdec.org.ph at: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").format(new Date());
-            Phrase phrase = new Phrase(downTime, FONT_DATE);
-            p.add(phrase);
+            String downDate = "Downloaded from http://repository.seafdec.org.ph on " + new SimpleDateFormat("MMMM d, YYYY").format(new Date());
+            String downTime = new SimpleDateFormat("h:mm a z").format(new Date());
+            Phrase accessed = new Phrase(downDate + " at " + downTime, FONT_DATE);
+            p.add(accessed);
             doc.add(p);
 
             java.net.URL url = new
@@ -550,6 +554,14 @@ public class CoverPage {
         }
     }
 
+    public String getFirstMetadata(Item item, String metadataKey) {
+        DCValue[] dcValues = item.getMetadata(metadataKey);
+        if(dcValues != null && dcValues.length > 0) {
+            return dcValues[0].value;
+        } else {
+            return "No Data";
+        }
+    }
 
     private Item getItem()
     {
