@@ -15,6 +15,10 @@
  */
 package jp.zuki_ebetsu.dspace.util;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
 import org.apache.log4j.Logger;
 import org.dspace.content.Bundle;
 import org.dspace.content.Collection;
@@ -33,6 +37,7 @@ import org.dspace.content.Bundle;
 import org.dspace.content.Bitstream;
 import org.dspace.handle.HandleManager;
 
+import java.awt.*;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -43,15 +48,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfArray;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.ColumnText;
@@ -130,7 +126,10 @@ public class CoverPage {
     private static final Font FONT_MESS    = setFont(FONT_SERIF, Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
 
     /** Overlay Font */
-    private static final Font FONT_OVERLAY    = setFont(FONT_SERIF, Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
+    private static final Font FONT_OVERLAY    = setFont(FONT_SANS, Font.FontFamily.HELVETICA, 8, Font.NORMAL);
+
+    /** Hyperlink Font */
+    private static final Font FONT_HYPERLINK    = setFont(FONT_SANS, Font.FontFamily.HELVETICA, 8, Font.BOLD);
 
     /** Communities not to set cover page */
     private static final Community[] OMIT_COMMS = setOmitCommunities();
@@ -349,10 +348,6 @@ public class CoverPage {
                         continue;
                     }
                 }
-
-                document = new Document(reader.getPageSizeWithRotation(1));
-                writer = new PdfCopy(document, byteout);
-                document.open();
                 int n = reader.getNumberOfPages();
                 // step 4: we add content
                 PdfImportedPage page;
@@ -362,10 +357,11 @@ public class CoverPage {
                     ++j;
                     page = writer.getImportedPage(reader, j);
                     stamp = writer.createPageStamp(page);
+                    Rectangle mediabox = reader.getPageSize(1);
                     // add overlay text
                     Phrase phrase = new Phrase("Downloaded from http://repository.seafdec.org.ph on " + new SimpleDateFormat("MMMM d, yyyy").format(new Date()), FONT_OVERLAY);
-                    ColumnText.showTextAligned(stamp.getOverContent(), Element.ALIGN_LEFT, phrase,
-                            (document.left() + document.leftMargin()), (document.top() - document.bottom()) / 2, 90);
+                    ColumnText.showTextAligned(stamp.getOverContent(), Element.ALIGN_CENTER, phrase,
+                            mediabox.getLeft(8), mediabox.getTop() / 2 - document.topMargin(), 90);
                     stamp.alterContents();
                     writer.addPage(page);
                 }
@@ -434,7 +430,7 @@ public class CoverPage {
         } 
         catch (Exception e) 
         {
-            log.info(LogManager.getHeader(context, "cover_page: getConcatenatePDF", "bitstream_id="+bitstream.getID()+", error="+e.getMessage())); 
+            log.info(LogManager.getHeader(context, "cover_page: getConcatenatePDF", "bitstream_id="+bitstream.getID()+", error="+e.getMessage()));
             // e.printStackTrace();
             return null;
         }
