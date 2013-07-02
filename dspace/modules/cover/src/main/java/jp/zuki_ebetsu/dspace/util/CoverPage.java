@@ -129,6 +129,9 @@ public class CoverPage {
     /** Message Font */
     private static final Font FONT_MESS    = setFont(FONT_SERIF, Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
 
+    /** Overlay Font */
+    private static final Font FONT_OVERLAY    = setFont(FONT_SERIF, Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
+
     /** Communities not to set cover page */
     private static final Community[] OMIT_COMMS = setOmitCommunities();
 
@@ -346,13 +349,24 @@ public class CoverPage {
                         continue;
                     }
                 }
+
+                document = new Document(reader.getPageSizeWithRotation(1));
+                writer = new PdfCopy(document, byteout);
+                document.open();
                 int n = reader.getNumberOfPages();
                 // step 4: we add content
                 PdfImportedPage page;
-                for (int j = 0; j < n; ) 
+                PdfCopy.PageStamp stamp;
+                for (int j = 0; j < n; )
                 {
                     ++j;
                     page = writer.getImportedPage(reader, j);
+                    stamp = writer.createPageStamp(page);
+                    // add overlay text
+                    Phrase phrase = new Phrase("Downloaded from http://repository.seafdec.org.ph on " + new SimpleDateFormat("MMMM d, yyyy").format(new Date()), FONT_OVERLAY);
+                    ColumnText.showTextAligned(stamp.getOverContent(), Element.ALIGN_LEFT, phrase,
+                            (document.left() + document.leftMargin()), (document.top() - document.bottom()) / 2, 90);
+                    stamp.alterContents();
                     writer.addPage(page);
                 }
 
@@ -477,7 +491,7 @@ public class CoverPage {
             }
 
             Paragraph title = new Paragraph(item.getName(), FONT_HEADER);
-            Paragraph para_head = new Paragraph(26f);
+            Paragraph para_head = new Paragraph(24f);
             para_head.setAlignment(Element.ALIGN_LEFT);
             para_head.setIndentationLeft(30f);
             para_head.add(title);
@@ -501,11 +515,12 @@ public class CoverPage {
                 tag.setHorizontalAlignment(Element.ALIGN_LEFT);
                 tag.setVerticalAlignment(Element.ALIGN_TOP);
                 tag.setPaddingLeft(5f);
+                tag.setPaddingTop(5f);
 
                 PdfPCell value = new PdfPCell(new Phrase(getFieldValue(flds[1]), FONT_VALUE));
                 value.setHorizontalAlignment(Element.ALIGN_LEFT);
                 value.setVerticalAlignment(Element.ALIGN_TOP);
-                value.setMinimumHeight(20f);
+                value.setMinimumHeight(26f);
                 value.setPadding(5f);
 
                 table.addCell(tag);
@@ -517,7 +532,7 @@ public class CoverPage {
             Paragraph p = new Paragraph();
             p.setAlignment(Element.ALIGN_CENTER);
             //String downTime = "This document is downloaded at: " + DCDate.getCurrent().toString();
-            String downDate = "Downloaded from http://repository.seafdec.org.ph on " + new SimpleDateFormat("MMMM d, YYYY").format(new Date());
+            String downDate = "Downloaded from http://repository.seafdec.org.ph on " + new SimpleDateFormat("MMMM d, yyyy").format(new Date());
             String downTime = new SimpleDateFormat("h:mm a z").format(new Date());
             Phrase accessed = new Phrase(downDate + " at " + downTime, FONT_DATE);
             p.add(accessed);
@@ -551,15 +566,6 @@ public class CoverPage {
         {
             log.info(LogManager.getHeader(context, "cover_page", "bitstream_id="+bitstream.getID()+", error="+e.getMessage()));
             return null;
-        }
-    }
-
-    public String getFirstMetadata(Item item, String metadataKey) {
-        DCValue[] dcValues = item.getMetadata(metadataKey);
-        if(dcValues != null && dcValues.length > 0) {
-            return dcValues[0].value;
-        } else {
-            return "No Data";
         }
     }
 
