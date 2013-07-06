@@ -351,21 +351,23 @@ public class CoverPage {
                 {
                     ++j;
                     page = writer.getImportedPage(reader, j);
-                    stamp = writer.createPageStamp(page);
-                    Rectangle mediabox = reader.getPageSize(j);
-                    Rectangle crop = new Rectangle(mediabox);
-                    writer.setCropBoxSize(crop);
-                    // add overlay text
-                    Font sair = new Font(FONT_SANS, 7, Font.BOLD);
-                    sair.setColor(0, 0, 255);
-                    Phrase downloaded = new Phrase();
-                    downloaded.add(new Chunk("Downloaded from ", FONT_OVERLAY));
-                    downloaded.add(new Chunk("http://repository.seafdec.org.ph", sair));
-                    downloaded.add(new Chunk(" on ", FONT_OVERLAY));
-                    downloaded.add(new Chunk(new SimpleDateFormat("MMMM d, yyyy").format(new Date()), FONT_OVERLAY));
-                    ColumnText.showTextAligned(stamp.getOverContent(), Element.ALIGN_CENTER, downloaded,
-                            crop.getLeft(10), crop.getHeight() / 2 + crop.getBottom(), 90);
-                    stamp.alterContents();
+                    if (i == 1) {
+                        stamp = writer.createPageStamp(page);
+                        Rectangle mediabox = reader.getPageSize(j);
+                        Rectangle crop = new Rectangle(mediabox);
+                        writer.setCropBoxSize(crop);
+                        // add overlay text
+                        Font sair = new Font(FONT_SANS, 7, Font.BOLD);
+                        sair.setColor(0, 191, 255);
+                        Phrase downloaded = new Phrase();
+                        downloaded.add(new Chunk("Downloaded from ", FONT_OVERLAY));
+                        downloaded.add(new Chunk("http://repository.seafdec.org.ph", sair));
+                        downloaded.add(new Chunk(" on ", FONT_OVERLAY));
+                        downloaded.add(new Chunk(new SimpleDateFormat("MMMM d, yyyy").format(new Date()), FONT_OVERLAY));
+                        ColumnText.showTextAligned(stamp.getOverContent(), Element.ALIGN_CENTER, downloaded,
+                                crop.getLeft(10), crop.getHeight() / 2 + crop.getBottom(), 90);
+                        stamp.alterContents();
+                    }
                     writer.addPage(page);
                 }
 
@@ -491,7 +493,7 @@ public class CoverPage {
 
             Paragraph title = new Paragraph(item.getName(), FONT_HEADER);
             Paragraph para_head = new Paragraph(24f);
-            para_head.setAlignment(Element.ALIGN_LEFT);
+            para_head.setAlignment(Element.ALIGN_CENTER);
             para_head.setIndentationLeft(20f);
             para_head.add(title);
             doc.add(new Paragraph(""));
@@ -532,12 +534,12 @@ public class CoverPage {
             p.setAlignment(Element.ALIGN_CENTER);
             //String downTime = "This document is downloaded at: " + DCDate.getCurrent().toString();
             Font sair = new Font(FONT_SANS, 9, Font.BOLD);
-            sair.setColor(0, 0, 255);
+            sair.setColor(0, 191, 255);
             Phrase downloaded = new Phrase();
-            downloaded.add(new Chunk("Downloaded from ", FONT_DATE));
-            downloaded.add(new Chunk("http://repository.seafdec.org.ph", sair));
-            downloaded.add(new Chunk(" on ", FONT_DATE));
+            downloaded.add(new Chunk("Downloaded on ", FONT_DATE));
             downloaded.add(new Chunk(new SimpleDateFormat("MMMM d, yyyy").format(new Date()), FONT_DATE));
+            downloaded.add(new Chunk(" from ", FONT_DATE));
+            downloaded.add(new Chunk("http://repository.seafdec.org.ph", sair));
             downloaded.add(new Chunk(" at ", FONT_DATE));
             downloaded.add(new Chunk(new SimpleDateFormat("h:mm a z").format(new Date()), FONT_DATE));
             p.add(downloaded);
@@ -687,7 +689,7 @@ public class CoverPage {
                     Element.ALIGN_CENTER,
                     new Phrase(CoverPage.footer_text, CoverPage.FONT_FOOTER),
                     (doc.right() - doc.left()) / 2 + doc.leftMargin(), 
-                    doc.bottom() - 15, 
+                    doc.bottom(15),
                     0);
             }
         }
