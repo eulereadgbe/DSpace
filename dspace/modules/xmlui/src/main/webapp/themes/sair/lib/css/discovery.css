@@ -1,0 +1,8 @@
+#aspect_discovery_Navigation_list_discovery ul li ul {
+    display: none;
+}
+
+#aspect_discovery_Navigation_list_discovery ul li h2 {
+    cursor: pointer;
+    cursor: hand;
+}
