@@ -45,8 +45,8 @@
     <xsl:template match="dri:referenceSet[@type = 'summaryList' and @n='community-browser']" priority="3">
         <div id="sidetree">
             <div class="treeheader">&#160;</div>
-            <div id="sidetreecontrol"><a href="?#">Collapse All</a>&#160;
-                <a href="?#">Expand All</a>
+            <div id="sidetreecontrol"><a href="?#" class="button white small">Collapse All</a>&#160;
+                <a href="?#" class="button white small">Expand All</a>
             </div>
             <ul id="tree">
                 <xsl:apply-templates select="*[not(name()='head')]" mode="summaryList"/>
