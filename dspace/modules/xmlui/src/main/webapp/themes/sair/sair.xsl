@@ -54,6 +54,38 @@
         </div>
     </xsl:template>
 
+    <xsl:template name="buildHeader">
+        <div id="ds-header-wrapper">
+            <div id="ds-header" class="clearfix">
+                <a id="ds-header-logo-link">
+                    <xsl:attribute name="href">
+                        <xsl:value-of
+                                select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                        <xsl:text>/</xsl:text>
+                    </xsl:attribute>
+                    <span id="ds-header-logo">&#160;</span>
+                    <span id="ds-header-logo-text">mirage</span>
+                </a>
+                <h1 class="pagetitle visuallyhidden">
+                    <xsl:choose>
+                        <!-- protection against an empty page title -->
+                        <xsl:when test="not(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title'])">
+                            <xsl:text> </xsl:text>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:copy-of
+                                    select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']/node()"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+
+                </h1>
+                <h2 class="static-pagetitle visuallyhidden">
+                    <i18n:text>xmlui.dri2xhtml.structural.head-subtitle</i18n:text>
+                </h2>
+            </div>
+        </div>
+    </xsl:template>
+
     <xsl:template name="buildHead">
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
