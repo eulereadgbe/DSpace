@@ -13,7 +13,7 @@
 
 
 /* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */
-body, select, input, textarea { color:#444; font-family: "Lucida Grande", Verdana, Tahoma, Arial, SANS-SERIF; }
+body, select, input, textarea { color:#444; font-family: "Anivers-Regular", Verdana, Tahoma, Arial, SANS-SERIF; }
 
 /* www.aestheticallyloyal.com/public/optimize-legibility/ */
 h1,h2,h3,h4,h5,h6 { font-weight: bold; text-rendering: optimizeLegibility; }

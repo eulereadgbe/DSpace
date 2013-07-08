@@ -46,7 +46,9 @@ select.multiple {
 }
 
 #ds-header-wrapper {
-    background-color: #1F3F5E;
+    background: none repeat scroll 0 0 #02487B;
+    border-bottom: 1px solid #509CCD;
+    /*background-color: #1F3F5E;*/
     color: white;
     min-width: 950px;
 }
