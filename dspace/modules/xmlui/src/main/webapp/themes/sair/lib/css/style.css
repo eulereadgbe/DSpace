@@ -1432,3 +1432,7 @@ table.discovery-filters th.new-filter-header
     background: -moz-linear-gradient(top,  #ededed,  #fff);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
 }
+
+p.ds-paragraph {
+    text-align: justify;
+}
