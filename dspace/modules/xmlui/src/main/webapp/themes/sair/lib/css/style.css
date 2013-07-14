@@ -13,13 +13,13 @@
 
 /*Font size percentages based on the tables at developer.yahoo.com/yui/fonts/ */
 h1 {
-    font-size: 150%;
+    font-size: 120%;
     color: #1F3F5E;
     text-align: left;
 }
 
 h2{
-    font-size: 123.1%;
+    font-size: 110%;
 }
 
 h3 {
@@ -60,22 +60,21 @@ select.multiple {
 
 #ds-header-logo {
     float:left;
-    width: 48px;
-    height: 50px;
-    margin-top: 10px;
-    background: url('../../images/dspace-logo-only.png');
+    width: 93px;
+    height: 70px;
+    margin: 10px 10px 10px 0;
+    background: url('../../images/seafdec-logo.png');
     background-repeat: no-repeat;
     background-color: transparent;
-    margin-right: 15px;
 }
 
 #ds-header-logo-text {
-    font-size: 400%;
+    font-size: 500%;
     color: white;
-    line-height: 70px;
+    line-height: 90px;
+    font-family: league_gothicregular;
     font-weight: normal;
     vertical-align: middle;
-    float: left;
 }
 
 #ds-user-box {
@@ -218,6 +217,8 @@ h1.ds-option-set-head {
     border: 1px solid #d8e8eb;
     border-bottom: none;
     font-size: 108%;
+    border-top-left-radius: 15px 10px;
+    border-top-right-radius: 15px 10px;
 }
 
 #ds-search-option-head{
@@ -227,6 +228,8 @@ h1.ds-option-set-head {
 div.ds-option-set {
     border: 1px solid #d8e8eb;
     border-top: none;
+    border-bottom-left-radius: 15px 10px;
+    border-bottom-right-radius: 15px 10px;
 }
 
 div.ds-option-set ul {
@@ -538,7 +541,7 @@ li.ds-form-item.last {
 
 li.ds-form-item .ds-form-label{
     font-weight: bold;
-    font-size: 123.1%;
+    font-size: 110%;
 }
 
 li.ds-form-item label.ds-composite-component{
@@ -703,6 +706,7 @@ span.field-help {
     border: 1px solid #ebebeb;
     line-height: 1em;
     vertical-align:middle;
+    border-radius: 5px;
 }
 
 .pagination-links {
@@ -775,7 +779,7 @@ span.field-help {
 }
 
 .artifact-title {
-    font-size: 123.1%;
+    font-size: 110%;
 }
 
 .result-query,
@@ -826,6 +830,7 @@ div.discoverySearchBox
     border: 1px solid #ebebeb;
     padding: 10px;
     margin-bottom: 15px;
+    border-radius: 15px;
 }
 
 form.search label,
@@ -977,12 +982,12 @@ div.item-summary-view-metadata {
 }
 
 div.simple-item-view-authors {
-    font-size: 123.1%;
+    font-size: 100%;
     font-weight: bold;
     border-bottom:1px solid #D8E8EB;
     padding-bottom: 2px;
     margin-bottom: 20px;
-    text-align: justify;
+    text-align: left;
 }
 
 div.simple-item-view-authors span{
