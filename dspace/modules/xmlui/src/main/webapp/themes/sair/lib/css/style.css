@@ -50,7 +50,7 @@ select.multiple {
     border-bottom: 1px solid #509CCD;
     /*background-color: #1F3F5E;*/
     color: white;
-    min-width: 950px;
+    max-width: 100%;
 }
 
 #ds-header-logo-link {
@@ -60,7 +60,7 @@ select.multiple {
 
 #ds-header-logo {
     float:left;
-    width: 93px;
+    width: 10.842105263157894736842105263158%; /* 93px + 10px / 950px */
     height: 70px;
     margin: 10px 10px 10px 0;
     background: url('../../images/seafdec-logo.png');
@@ -94,7 +94,7 @@ select.multiple {
     padding: 0;
     border-top: 1px solid #9cacba;
     border-bottom: 1px solid #9cacba;
-    min-width: 950px;
+    max-width: 100%;
 }
 
 #ds-trail {
@@ -119,7 +119,7 @@ select.multiple {
 #ds-header,
 #ds-footer,
 #ds-content {
-    width: 950px;
+    max-width: 950px;
     margin: auto;
     position: relative;
 }
@@ -196,13 +196,13 @@ select.multiple {
 
 #ds-body {
     float: right;
-    width: 675px;
+    width: 71.052631578947368421052631578947%; /* 675px / 950px */
     padding-top: 10px;
 }
 
 #ds-options-wrapper {
     float: left;
-    width: 249px;
+    width: 26.210526315789473684210526315789%; /* 249px / 950px */
     padding-top:10px;
 }
 
@@ -1273,7 +1273,7 @@ ul.gear-selection li.gear-option-selected{
 }
 
 input#aspect_discovery_SimpleSearch_field_query{
-    width: 565px;
+    width: 84.888888888888888888888888888889%; /* 573px / 675px */
 }
 
 input.search-icon{
@@ -1440,4 +1440,8 @@ table.discovery-filters th.new-filter-header
 
 p.ds-paragraph {
     text-align: justify;
+}
+
+img, embed, object, video {
+    max-width: 100%;
 }

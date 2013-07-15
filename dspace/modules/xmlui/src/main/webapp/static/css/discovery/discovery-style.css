@@ -126,7 +126,7 @@ input.search-icon{
     float: left;
     margin-left: 5px;
     display: block;
-    width: 75px;
+    width: 11.111111111111111111111111111111%; /* 75px / 675px */
 }
 
 div#aspect_discovery_SimpleSearch_div_search-results ul{
