@@ -145,8 +145,6 @@
                     <map:parameter name="javascript#2" value="lib/jquery/jquery.cookie.js"/>
                     <map:parameter name="javascript#3" value="lib/treeview/jquery.treeview.js"/>
                     <map:parameter name="javascript#4" value="lib/treeview/treeview.js"/>
-                    <map:parameter name="javascript#5" value="lib/jquery/jquery-1.9.1.js"/>
-                    <map:parameter name="javascript#6" value="lib/jquery/jquery-ui.js"/>
                     <map:parameter name="stylesheet.all" value="lib/css/media.css"/>
                     <map:parameter name="theme.path" value="{global:theme-path}"/>
                     <map:parameter name="theme.name" value="{global:theme-name}"/>

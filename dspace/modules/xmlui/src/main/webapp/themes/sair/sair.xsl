@@ -242,6 +242,14 @@
                 </xsl:attribute>&#160;</script>
 
             <script type="text/javascript">
+                <xsl:attribute name="src">
+                    <xsl:text>http://code.jquery.com/jquery-1.9.1.js</xsl:text>
+                </xsl:attribute>&#160;</script>
+            <script type="text/javascript">
+                <xsl:attribute name="src">
+                    <xsl:text>http://code.jquery.com/ui/1.10.3/jquery-ui.js</xsl:text>
+                </xsl:attribute>&#160;</script>
+            <script type="text/javascript">
                 $(function () {
                     $('#aspect_discovery_Navigation_list_discovery ul li h2').click
                     (function (event) {

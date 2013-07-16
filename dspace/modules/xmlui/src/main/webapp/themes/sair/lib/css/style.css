@@ -270,7 +270,7 @@ div#ds-feed-option a
 }
 
 #ds-search-form input.ds-text-field{
-    width: 169px;
+    width: 71.88755020080321%; /*179px / 249px */
 }
 
 #ds-search-form input.ds-button-field {
