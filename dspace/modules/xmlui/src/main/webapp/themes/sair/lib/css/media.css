@@ -27,28 +27,3 @@
   /* Prevent iOS, WinMobile from adjusting font size */
   html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; }
 }
-
-@media screen and (max-width: 768px) {
-    #ds-trail,
-    #ds-header,
-    #ds-footer,
-    #ds-content {
-        width: auto;
-        margin: auto;
-        position: relative;
-        padding: 0 10px;
-    }
-    #ds-footer {
-        padding-top: 10px;
-    }
-    #ds-header-logo {
-        float:left;
-        width: 13.411458333333333333333333333333%; /* 93px + 10px / 768px */
-    }
-    #ds-header-logo-text {
-        font-size: 4em;
-    }
-    #ds-search-form input.ds-text-field{
-        width: 67.8714859437751%;
-    }
-}

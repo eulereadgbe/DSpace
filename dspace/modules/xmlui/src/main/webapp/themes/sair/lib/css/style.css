@@ -10,7 +10,18 @@
  *
  * Primary Styles
  */
+body {
+    background: url("../../images/body-bg.jpg") repeat scroll 0 0 transparent;
+}
 
+#ds-main {
+    background-color: white;
+    border: 6px solid #FFFFFF;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 0 15px rgba(122, 122, 122, 0.4);
+    margin: 5px auto;
+    width: 960px;
+}
 /*Font size percentages based on the tables at developer.yahoo.com/yui/fonts/ */
 h1 {
     font-size: 120%;
@@ -46,13 +57,12 @@ select.multiple {
 }
 
 #ds-header-wrapper {
-    background: none repeat scroll 0 0 #02487B;
-    border-bottom: 1px solid #509CCD;
-    /*background-color: #1F3F5E;*/
+    background: url("../../images/SAIR-banner.jpg") no-repeat scroll 0 0 transparent;
     color: white;
+    height: 140px;
+    margin-bottom: 5px;
     max-width: 100%;
 }
-
 #ds-header-logo-link {
     text-decoration: none;
     cursor: pointer;
@@ -60,7 +70,7 @@ select.multiple {
 
 #ds-header-logo {
     float:left;
-    width: 10.842105263157894736842105263158%; /* 93px + 10px / 950px */
+    width: 93px;
     height: 70px;
     margin: 10px 10px 10px 0;
     background: url('../../images/seafdec-logo.png');
@@ -69,12 +79,13 @@ select.multiple {
 }
 
 #ds-header-logo-text {
-    font-size: 500%;
+    display: table-cell;
+    font-size: 350%;
     color: white;
-    line-height: 90px;
     font-family: league_gothicregular;
     font-weight: normal;
-    vertical-align: middle;
+    vertical-align: top;
+    padding-top: 15px;
 }
 
 #ds-user-box {
@@ -89,7 +100,8 @@ select.multiple {
 }
 
 #ds-trail-wrapper {
-    background-color: #b6c8d9;
+    /*background-color: #b6c8d9;*/
+    background-color: #ffffff;
     margin: 0;
     padding: 0;
     border-top: 1px solid #9cacba;
@@ -119,7 +131,7 @@ select.multiple {
 #ds-header,
 #ds-footer,
 #ds-content {
-    max-width: 950px;
+    max-width: 940px;
     margin: auto;
     position: relative;
 }
@@ -143,6 +155,7 @@ select.multiple {
 
 #ds-footer-wrapper {
     margin-top: 40px;
+    padding-bottom: 5px;
 }
 
 #ds-footer {
