@@ -101,5 +101,36 @@
         text-align: justify;
     }
 
+    /* Force table to not be like tables anymore */
+    table.detailtable,
+    table.detailtable tbody,
+    table.detailtable td,
+    table.detailtable tr {
+        display: block;
+    }
+
+
+    /* table.detailtable tr { border: 1px solid #ccc; } */
+
+    table.detailtable td {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        white-space: normal;
+    }
+
+    table.detailtable td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
 
 }
