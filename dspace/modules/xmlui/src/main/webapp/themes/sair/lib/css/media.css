@@ -27,3 +27,79 @@
   /* Prevent iOS, WinMobile from adjusting font size */
   html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; }
 }
+
+@media screen and (max-width: 320px) {
+    #ds-header-wrapper {
+        background: url("../../images/SAIR-banner-320.jpg") no-repeat scroll 0 0 transparent;
+        height: 47px;
+        margin: auto;
+        max-width: 100%;
+    }
+    #ds-main {
+        margin: 5px auto;
+        max-width: 308px; /* 320px - [6px +6px (borders)]*/
+    }
+    #no-js-warning,
+    #ds-trail,
+    #ds-header,
+    #ds-footer,
+    #ds-content {
+        max-width: 100%;
+        margin: auto;
+        position: relative;
+    }
+    #ds-header-logo {
+        width: 47px;
+        height: 35px;
+        margin: 5px 5px auto;
+        background: url('../../images/seafdec-logo-320.png');
+    }
+
+    #ds-header-logo-text {
+        font-size: 1.8em;
+        padding-top: 3px;
+    }
+
+    #ds-options-wrapper {
+        float: none;
+        width: 100%;
+        padding-top:10px;
+    }
+    #ds-body {
+        float: none;
+        width: 100%;
+        padding-top: 10px;
+    }
+
+    p.ds-paragraph {
+        text-align: left;
+    }
+    #aspect_eperson_EditProfile_list_form,
+    .submission fieldset.ds-form-list,
+    .administrative fieldset.ds-form-list {
+        width: 100%;
+    }
+
+    .submission .ds-form-list input.ds-text-field,
+    .administrative .ds-form-list input.ds-text-field,
+    textarea.ds-textarea-field {
+        width: 97%;
+    }
+
+    .submission .ds-form-list input.ds-text-field,
+    .administrative .ds-form-list input.ds-text-field,
+    textarea.ds-textarea-field {
+        width: 95%;
+    }
+
+    span.composite-help,
+    span.field-help {
+        display: block;
+        font-size: 93%;
+        margin-top: 3px;
+        width: 100%;
+        text-align: justify;
+    }
+
+
+}

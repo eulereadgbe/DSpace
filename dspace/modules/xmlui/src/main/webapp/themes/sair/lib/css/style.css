@@ -131,7 +131,7 @@ select.multiple {
 #ds-header,
 #ds-footer,
 #ds-content {
-    max-width: 940px;
+    max-width: 950px;
     margin: auto;
     position: relative;
 }
@@ -209,13 +209,13 @@ select.multiple {
 
 #ds-body {
     float: right;
-    width: 71.052631578947368421052631578947%; /* 675px / 950px */
+    width: 71.368421052631578947368421052632%; /* 678px / 950px */
     padding-top: 10px;
 }
 
 #ds-options-wrapper {
     float: left;
-    width: 26.210526315789473684210526315789%; /* 249px / 950px */
+    width: 27.052631578947368421052631578947%; /* 257px / 950px */
     padding-top:10px;
 }
 
@@ -455,15 +455,15 @@ input.ds-password-field {
 .submission .ds-form-list input.ds-text-field,
 .administrative .ds-form-list input.ds-text-field,
 textarea.ds-textarea-field {
-    width: 500px;
+    width: 74.631268436578171091445427728614% ; /* 500px / 678px */
 }
 
 table textarea.ds-textarea-field {
-    width: 400px;
+    width: 58.997050147492625368731563421829%; /* 400px / 678px */
 }
 
 #aspect_administrative_item_EditItemMetadataForm_field_value {
-    width: 570px;
+    width: 84.070796460176991150442477876106%; /* 570px / 678px */
 }
 
 #aspect_administrative_registries_EditMetadataSchema_list_edit-schema-new-field-form .ds-text-field,
@@ -566,7 +566,7 @@ li.ds-form-item label.ds-composite-component{
 
 li.ds-form-item label.ds-composite-component input.ds-text-field{
     font-size: 100%;
-    width: 242px;
+    width: 97%;
 }
 
 li.ds-form-item .ds-select-field {
@@ -612,7 +612,7 @@ span.field-help {
     display: block;
     font-size: 93%;
     margin-top: 3px;
-    width: 506px;
+    width: 74.631268436578171091445427728614%; /* 506px / 678px */
     text-align: justify;
 }
 
