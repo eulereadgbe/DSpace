@@ -161,43 +161,13 @@ select.multiple {
 #ds-footer {
     border-top: 1px solid #9CACBA;
     padding-top: 10px;
-    font-size: 93%;
-    line-height: 1.6em;
 }
 
-#ds-footer-left {
-    float: left;
-}
-
-#ds-footer-right {
-    float:right;
-}
-
-#ds-footer-right span.theme-by{
-    display: inline-block;
-    vertical-align: top;
-}
-
-#ds-footer-logo-link {
-    text-decoration:none;
-    line-height: 40px;
-    cursor: pointer;
-}
-
-#ds-footer-logo {
-    display: inline-block;
-    background: url('../../images/@mirelogo-small.png');
-    background-repeat: no-repeat;
-    width: 79px;
-    height: 40px;
-}
-
-#ds-footer-links {
-    clear: left;
-}
-
-.ie6 #ds-footer-links {
-    display: inline;
+#ds-footer-signature {
+    margin: 0;
+    text-align: center;
+    font-size: 88%;
+    line-height: 1.5em;
 }
 
 /*make transparent PNGs invisible in IE6 until PNG-fix is applied*/
@@ -1426,7 +1396,7 @@ table.discovery-filters th.new-filter-header
 
 .small {
     font-size: 11px;
-    padding: .2em 1em .275em;
+    padding: .2em .2em .275em;
 }
 
 /* white */
