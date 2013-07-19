@@ -241,28 +241,6 @@
                     <xsl:text>/lib/js/modernizr-1.7.min.js</xsl:text>
                 </xsl:attribute>&#160;</script>
 
-            <script type="text/javascript">
-                <xsl:attribute name="src">
-                    <xsl:text>http://code.jquery.com/jquery-1.9.1.js</xsl:text>
-                </xsl:attribute>&#160;</script>
-            <script type="text/javascript">
-                <xsl:attribute name="src">
-                    <xsl:text>http://code.jquery.com/ui/1.10.3/jquery-ui.js</xsl:text>
-                </xsl:attribute>&#160;</script>
-            <script type="text/javascript">
-                $(function () {
-                    $('#aspect_discovery_Navigation_list_discovery ul li h2').click
-                    (function (event) {
-                        var elem = $(this).next();
-                        if (elem.is('ul')) {
-                            event.preventDefault();
-                            $('#menu ul:visible').not(elem).slideUp();
-                            elem.slideToggle();
-                        }
-                    });
-                });
-            </script>
-
             <!-- Add the title in -->
             <xsl:variable name="page_title" select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title']" />
             <title>
@@ -291,6 +269,91 @@
             </xsl:for-each>
 
         </head>
+    </xsl:template>
+
+    <!-- Like the header, the footer contains various miscellaneous text, links, and image placeholders -->
+    <xsl:template name="buildFooter">
+        <div id="ds-footer-wrapper">
+            <div id="ds-footer">
+                <div id="ds-footer-signature">
+                    <xsl:text>Library &amp; Data Banking Services Section | Training &amp; Information Division</xsl:text>
+                    <br/>
+                    <xsl:text>Aquaculture Department | Southeast Asian Fisheries Development Center (SEAFDEC)</xsl:text>
+                    <br/>
+                    <xsl:text>Tigbauan, Iloilo 5021 Philippines | Tel. 63 33 5119170, 5119171 | Fax. 63 33 5119174, 5118709</xsl:text>
+                    <br/>
+                    <xsl:text>Website: </xsl:text>
+                    <a href="http://www.seafdec.org.ph" target="_blank">http://www.seafdec.org.ph</a>
+                    | Email:
+                    <a href="mailto:library@seafdec.org.ph" target="_blank">library@seafdec.org.ph</a>
+                    <br/>
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:value-of
+                                    select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                            <xsl:text>/contact</xsl:text>
+                        </xsl:attribute>
+                        <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
+                    </a>
+                    <xsl:text> | </xsl:text>
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:value-of
+                                    select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                            <xsl:text>/feedback</xsl:text>
+                        </xsl:attribute>
+                        <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
+                    </a>
+                </div>
+                <!--Invisible link to HTML sitemap (for search engines) -->
+                <a class="hidden">
+                    <xsl:attribute name="href">
+                        <xsl:value-of
+                                select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                        <xsl:text>/htmlmap</xsl:text>
+                    </xsl:attribute>
+                    <xsl:text>&#160;</xsl:text>
+                </a>
+            </div>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="dim:field" mode="itemDetailView-DIM">
+        <tr>
+            <xsl:attribute name="class">
+                <xsl:text>ds-table-row </xsl:text>
+                <xsl:if test="(position() div 2 mod 2 = 0)">even </xsl:if>
+                <xsl:if test="(position() div 2 mod 2 = 1)">odd </xsl:if>
+            </xsl:attribute>
+            <td class="label-cell">
+                <xsl:value-of select="./@mdschema"/>
+                <xsl:text>.</xsl:text>
+                <xsl:value-of select="./@element"/>
+                <xsl:if test="./@qualifier">
+                    <xsl:text>.</xsl:text>
+                    <xsl:value-of select="./@qualifier"/>
+                </xsl:if>
+            </td>
+            <td>
+                <xsl:copy-of select="./node()"/>
+                <xsl:if test="./@authority and ./@confidence">
+                    <xsl:call-template name="authorityConfidenceIcon">
+                        <xsl:with-param name="confidence" select="./@confidence"/>
+                    </xsl:call-template>
+                </xsl:if>
+            </td>
+            <td class="lang"><xsl:value-of select="./@language"/></td>
+        </tr>
+    </xsl:template>
+
+    <!--give nested navigation list the class sublist-->
+    <xsl:template match="dri:options/dri:list/dri:list" priority="3" mode="nested">
+        <li>
+            <xsl:apply-templates select="dri:head" mode="nested"/>
+            <ul class="ds-simple-list sublist">
+                <xsl:apply-templates select="dri:item" mode="nested"/>
+            </ul>
+        </li>
     </xsl:template>
 
 </xsl:stylesheet>
