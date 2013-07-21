@@ -24,13 +24,13 @@ body {
 }
 /*Font size percentages based on the tables at developer.yahoo.com/yui/fonts/ */
 h1 {
-    font-size: 120%;
+    font-size: 182%;
     color: #1F3F5E;
     text-align: left;
 }
 
 h2{
-    font-size: 110%;
+    font-size: 123.1%;
 }
 
 h3 {
@@ -166,7 +166,7 @@ select.multiple {
 #ds-footer-signature {
     margin: 0;
     text-align: center;
-    font-size: 88%;
+    font-size: 93%;
     line-height: 1.5em;
 }
 
@@ -178,15 +178,19 @@ select.multiple {
 
 
 #ds-body {
-    float: right;
-    width: 71.368421052631578947368421052632%; /* 678px / 950px */
+    float: left;
+    width: 69.26315789473684%; /* 678px - (10px + 10px) / 950px */
     padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+
 }
 
 #ds-options-wrapper {
-    float: left;
+    float: right;
     width: 27.052631578947368421052631578947%; /* 257px / 950px */
     padding-top:10px;
+    padding-right: 10px;
 }
 
 #ds-options {
@@ -495,7 +499,7 @@ input.ds-password-field.error {
 
 .submission h2,
 .ds-form-list legend{
-    font-size: 150%;
+    font-size: 182%;
     margin-bottom: 15px;
     color: #1F3F5E;
 }
@@ -524,7 +528,7 @@ li.ds-form-item.last {
 
 li.ds-form-item .ds-form-label{
     font-weight: bold;
-    font-size: 110%;
+    font-size: 123.1%;
 }
 
 li.ds-form-item label.ds-composite-component{
@@ -762,7 +766,7 @@ span.field-help {
 }
 
 .artifact-title {
-    font-size: 110%;
+    font-size: 123.1%;
 }
 
 .result-query,
@@ -965,7 +969,7 @@ div.item-summary-view-metadata {
 }
 
 div.simple-item-view-authors {
-    font-size: 100%;
+    font-size: 123.1%;
     font-weight: bold;
     border-bottom:1px solid #D8E8EB;
     padding-bottom: 2px;
@@ -1009,7 +1013,7 @@ div.spacer{
 }
 
 .file-metadata {
-    width: 300px;
+    width: 45.59270516717325%; /* 300px / 658px */
 }
 
 .file-metadata span,

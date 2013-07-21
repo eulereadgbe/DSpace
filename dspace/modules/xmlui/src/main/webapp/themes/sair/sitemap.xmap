@@ -132,6 +132,7 @@
                     <map:parameter name="stylesheet.screen#6" value="lib/css/authority-control.css"/>
                     <map:parameter name="stylesheet.screen#7" value="lib/css/discovery.css"/>
                     <map:parameter name="stylesheet.screen#8" value="lib/webfonts/webfonts.css"/>
+                    <map:parameter name="stylesheet.screen#9" value="lib/css/BreadCrumb.css"/>
                 </map:transform>
 
                 <map:transform type="IncludePageMeta">
@@ -146,6 +147,8 @@
                     <map:parameter name="javascript#3" value="lib/treeview/jquery.treeview.js"/>
                     <map:parameter name="javascript#4" value="lib/treeview/treeview.js"/>
                     <map:parameter name="javascript#5" value="lib/jquery/accordion.js"/>
+                    <map:parameter name="javascript#6" value="lib/jquery/jquery.jBreadCrumb.1.1.js"/>
+                    <map:parameter name="javascript#7" value="lib/jquery/jquery.easing.1.3.js"/>
                     <map:parameter name="stylesheet.all" value="lib/css/media.css"/>
                     <map:parameter name="theme.path" value="{global:theme-path}"/>
                     <map:parameter name="theme.name" value="{global:theme-name}"/>

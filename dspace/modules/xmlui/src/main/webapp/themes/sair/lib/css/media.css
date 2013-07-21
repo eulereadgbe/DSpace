@@ -53,6 +53,14 @@
         margin: auto;
         position: relative;
     }
+
+    #ds-content {
+        font-size: 1em;
+    }
+
+    div.simple-item-view-description {
+        text-align: left;
+    }
     #ds-header-logo {
         width: 47px;
         height: 35px;
@@ -68,12 +76,16 @@
     #ds-options-wrapper {
         float: none;
         width: 100%;
-        padding-top:10px;
+        padding:10px 0 0 0;
     }
     #ds-body {
         float: none;
         width: 100%;
-        padding-top: 10px;
+        padding: 10px 0 0 0;
+    }
+
+    #ds-footer {
+        font-size: 100%;
     }
 
     p.ds-paragraph {
@@ -138,6 +150,42 @@
         font-weight: bold;
     }
 
+    #aspect_discovery_Navigation_list_discovery ul li ul,
+    #aspect_viewArtifacts_Navigation_list_browse ul li ul {
+        display: none;
+}
+
+    #aspect_discovery_Navigation_list_discovery ul li h2,
+    #aspect_viewArtifacts_Navigation_list_browse ul li h2 {
+        cursor: pointer;
+        cursor: hand;
+    }
+
+    .item-metadata {
+        float: none;
+    }
+
+    .file-metadata {
+        padding-right: 15px;
+    }
+
+    .thumbnail-wrapper {
+        float: left;
+        margin-right: 15px;
+    }
+
+    .file-metadata span, .item-metadata span {
+        float: none;
+    }
+    .item-metadata span.content span {
+        float: none;
+    }
+
+    .thumbnail-wrapper {
+        float: left;
+        margin-right: 15px;
+    }
+
 }
 
 @media screen and (max-width: 480px) and (min-width: 321px) {
@@ -161,9 +209,20 @@
         padding-top: 0;
     }
 
+    #ds-options-wrapper {
+        float: none;
+        width: 100%;
+        padding-top:10px;
+    }
+    #ds-body {
+        float: none;
+        width: 100%;
+        padding: 10px 10px 0 0;
+    }
+
     #ds-main {
         margin: 5px auto;
-        max-width: 468px; /* 480px - [6px +6px (borders)]*/
+        max-width: 458px; /* 480px - [6px + 6px (borders) + 10px (right-padding)]*/
     }
     #no-js-warning,
     #ds-trail,
@@ -173,10 +232,6 @@
         max-width: 100%;
         margin: auto;
         position: relative;
-    }
-
-    div.ds-option-set ul.sublist {
-    margin-left: 5px
     }
 
     p.ds-paragraph {
@@ -196,54 +251,4 @@
         width: 1%;
         white-space: nowrap;
     }
-
-    /* CSS Dropdown Menu */
-    #aspect_viewArtifacts_Navigation_list_browse.ds-option-set ul {
-        padding: 0;
-        list-style: none;
-    }
-
-    #aspect_viewArtifacts_Navigation_list_browse.ds-option-set ul li {
-        display: inline-block;
-        position: relative;
-    }
-
-    #aspect_viewArtifacts_Navigation_list_browse.ds-option-set ul.ds-options-list li ul.ds-simple-list.sublist {
-        display: none;
-    }
-
-    #aspect_viewArtifacts_Navigation_list_browse.ds-option-set ul.ds-options-list li ul.ds-simple-list.sublist li a {
-        display: block;
-        text-decoration: none;
-        color: #ffffff;
-        border-top: 1px solid #ffffff;
-        padding: 5px 15px 5px 15px;
-        background: #2C5463;
-        margin-left: 1px;
-        white-space: nowrap;
-    }
-    #aspect_viewArtifacts_Navigation_list_browse.ds-option-set ul.ds-options-list li ul.ds-simple-list.sublist li a:hover {
-        background: #617F8A;
-    }
-    #aspect_viewArtifacts_Navigation_list_browse.ds-option-set ul.ds-options-list li:hover ul.ds-simple-list.sublist {
-        display: block;
-        position: absolute;
-    }
-    #aspect_viewArtifacts_Navigation_list_browse.ds-option-set ul.ds-options-list li:hover li {
-        float: none;
-        font-size: 1em;
-    }
-    #aspect_viewArtifacts_Navigation_list_browse li:hover a {
-        background: #617F8A;
-    }
-    #aspect_viewArtifacts_Navigation_list_browse li:hover li a:hover {
-        background: #95A9B1;
-    }
-
-    #aspect_viewArtifacts_Navigation_list_browse.ds-option-set ul li h2 {
-        padding-bottom: 5px;
-        cursor: pointer;
-        cursor: hand;
-    }
-
 }

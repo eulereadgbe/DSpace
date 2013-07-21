@@ -356,4 +356,52 @@
         </li>
     </xsl:template>
 
+    <xsl:template name="buildTrail">
+        <div class="clearfix" id="ds-trail-wrapper">
+            <div id="breadCrumb" class="breadCrumb">
+                <ul id="ds-trail">
+                    <xsl:choose>
+                        <xsl:when test="starts-with($request-uri, 'page/about')">
+                            <xsl:text>About This Repository</xsl:text>
+                        </xsl:when>
+                        <xsl:when test="count(/dri:document/dri:meta/dri:pageMeta/dri:trail) = 0">
+                            <li class="ds-trail-link first-link">-</li>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:apply-templates select="/dri:document/dri:meta/dri:pageMeta/dri:trail"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ul>
+            </div>
+        </div>
+    </xsl:template>
+
+    <xsl:template match="dri:trail">
+        <li>
+            <xsl:attribute name="class">
+                <xsl:text>ds-trail-link </xsl:text>
+                <xsl:if test="position()=1">
+                    <xsl:text>first-link </xsl:text>
+                </xsl:if>
+                <xsl:if test="position()=last()">
+                    <xsl:text>last-link</xsl:text>
+                </xsl:if>
+            </xsl:attribute>
+            <!-- Determine whether we are dealing with a link or plain text trail link -->
+            <xsl:choose>
+                <xsl:when test="./@target">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:value-of select="./@target"/>
+                        </xsl:attribute>
+                        <xsl:apply-templates />
+                    </a>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates />
+                </xsl:otherwise>
+            </xsl:choose>
+        </li>
+    </xsl:template>
+
 </xsl:stylesheet>
