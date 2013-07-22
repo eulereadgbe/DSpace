@@ -23,8 +23,9 @@
                 xmlns:xhtml="http://www.w3.org/1999/xhtml"
                 xmlns:mods="http://www.loc.gov/mods/v3"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:confman="org.dspace.core.ConfigurationManager"
                 xmlns="http://www.w3.org/1999/xhtml"
-                exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc">
+                exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc confman">
 
     <xsl:import href="../dri2xhtml-alt/dri2xhtml.xsl"/>
     <xsl:import href="lib/xsl/core/global-variables.xsl"/>
@@ -404,4 +405,161 @@
         </li>
     </xsl:template>
 
+    <xsl:template match="dim:dim" mode="itemDetailView-DIM">
+        <div class="responsive">
+            <table class="ds-includeSet-table detailtable">
+                <xsl:apply-templates mode="itemDetailView-DIM"/>
+            </table>
+        </div>
+        <span class="Z3988">
+            <xsl:attribute name="title">
+                <xsl:call-template name="renderCOinS"/>
+            </xsl:attribute>
+            &#xFEFF; <!-- non-breaking space to force separating the end tag -->
+        </span>
+        <xsl:copy-of select="$SFXLink" />
+    </xsl:template>
+
+    <xsl:template match="dim:field" mode="itemDetailView-DIM">
+        <tr>
+            <xsl:attribute name="class">
+                <xsl:text>ds-table-row </xsl:text>
+                <xsl:if test="(position() div 2 mod 2 = 0)">even </xsl:if>
+                <xsl:if test="(position() div 2 mod 2 = 1)">odd </xsl:if>
+            </xsl:attribute>
+            <td class="label-cell">
+                <xsl:value-of select="./@element"/>
+                <xsl:if test="./@qualifier">
+                    <xsl:text>.</xsl:text>
+                    <xsl:value-of select="./@qualifier"/>
+                </xsl:if>
+            </td>
+            <td>
+                <xsl:copy-of select="./node()"/>
+                <xsl:if test="./@authority and ./@confidence">
+                    <xsl:call-template name="authorityConfidenceIcon">
+                        <xsl:with-param name="confidence" select="./@confidence"/>
+                    </xsl:call-template>
+                </xsl:if>
+            </td>
+            <td><xsl:value-of select="./@language"/></td>
+        </tr>
+    </xsl:template>
+
+    <xsl:template name="addJavascript">
+        <xsl:variable name="jqueryVersion">
+            <xsl:text>1.7</xsl:text>
+        </xsl:variable>
+
+        <xsl:variable name="protocol">
+            <xsl:choose>
+                <xsl:when test="starts-with(confman:getProperty('dspace.baseUrl'), 'https://')">
+                    <xsl:text>https://</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:text>http://</xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <script type="text/javascript" src="{concat($protocol, 'ajax.googleapis.com/ajax/libs/jquery/', $jqueryVersion ,'/jquery.min.js')}">&#160;</script>
+
+        <xsl:variable name="localJQuerySrc">
+            <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+            <xsl:text>/static/js/jquery-</xsl:text>
+            <xsl:value-of select="$jqueryVersion"/>
+            <xsl:text>.min.js</xsl:text>
+        </xsl:variable>
+
+        <script type="text/javascript">
+            <xsl:text disable-output-escaping="yes">!window.jQuery &amp;&amp; document.write('&lt;script type="text/javascript" src="</xsl:text><xsl:value-of
+                select="$localJQuerySrc"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')</xsl:text>
+        </script>
+
+
+
+        <!-- Add theme javascipt  -->
+        <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript'][@qualifier='url']">
+            <script type="text/javascript">
+                <xsl:attribute name="src">
+                    <xsl:value-of select="."/>
+                </xsl:attribute>&#160;</script>
+        </xsl:for-each>
+
+        <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript'][not(@qualifier)]">
+            <script type="text/javascript">
+                <xsl:attribute name="src">
+                    <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                    <xsl:text>/themes/</xsl:text>
+                    <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
+                    <xsl:text>/</xsl:text>
+                    <xsl:value-of select="."/>
+                </xsl:attribute>&#160;</script>
+        </xsl:for-each>
+
+        <!-- add "shared" javascript from static, path is relative to webapp root -->
+        <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='javascript'][@qualifier='static']">
+            <!--This is a dirty way of keeping the scriptaculous stuff from choice-support
+            out of our theme without modifying the administrative and submission sitemaps.
+            This is obviously not ideal, but adding those scripts in those sitemaps is far
+            from ideal as well-->
+            <xsl:choose>
+                <xsl:when test="text() = 'static/js/choice-support.js'">
+                    <script type="text/javascript">
+                        <xsl:attribute name="src">
+                            <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                            <xsl:text>/themes/</xsl:text>
+                            <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
+                            <xsl:text>/lib/js/choice-support.js</xsl:text>
+                        </xsl:attribute>&#160;</script>
+                </xsl:when>
+                <xsl:when test="not(starts-with(text(), 'static/js/scriptaculous'))">
+                    <script type="text/javascript">
+                        <xsl:attribute name="src">
+                            <xsl:value-of
+                                    select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                            <xsl:text>/</xsl:text>
+                            <xsl:value-of select="."/>
+                        </xsl:attribute>&#160;</script>
+                </xsl:when>
+            </xsl:choose>
+        </xsl:for-each>
+
+        <!-- add setup JS code if this is a choices lookup page -->
+        <xsl:if test="dri:body/dri:div[@n='lookup']">
+            <xsl:call-template name="choiceLookupPopUpSetup"/>
+        </xsl:if>
+
+        <!--PNG Fix for IE6-->
+        <xsl:text disable-output-escaping="yes">&lt;!--[if lt IE 7 ]&gt;</xsl:text>
+        <script type="text/javascript">
+            <xsl:attribute name="src">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:text>/themes/</xsl:text>
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
+                <xsl:text>/lib/js/DD_belatedPNG_0.0.8a.js?v=1</xsl:text>
+            </xsl:attribute>&#160;</script>
+        <script type="text/javascript">
+            <xsl:text>DD_belatedPNG.fix('#ds-header-logo');DD_belatedPNG.fix('#ds-footer-logo');$.each($('img[src$=png]'), function() {DD_belatedPNG.fixPng(this);});</xsl:text>
+        </script>
+        <xsl:text disable-output-escaping="yes" >&lt;![endif]--&gt;</xsl:text>
+
+        <script type="text/javascript">
+            runAfterJSImports.execute();
+        </script>
+
+        <!-- Add a google analytics script if the key is present -->
+        <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']">
+            <script type="text/javascript"><xsl:text>
+                   var _gaq = _gaq || [];
+                   _gaq.push(['_setAccount', '</xsl:text><xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']"/><xsl:text>']);
+                   _gaq.push(['_trackPageview']);
+
+                   (function() {
+                       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                   })();
+           </xsl:text></script>
+        </xsl:if>
+    </xsl:template>
 </xsl:stylesheet>

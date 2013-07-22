@@ -29,21 +29,21 @@
 }
 
 @media screen and (max-width: 320px) {
-
     body {
         background: none repeat scroll 0 0 #989898;
     }
 
-    #ds-header-wrapper {
-        background: url("../../images/SAIR-banner-320.jpg") no-repeat scroll 0 0 transparent;
-        height: 47px;
-        margin: auto auto 3px;
-        max-width: 100%;
-    }
     #ds-main {
-        margin: 5px auto;
-        max-width: 308px; /* 320px - [6px +6px (borders)]*/
+        max-width: 308px; /* 320px - 12px */
     }
+
+    #ds-header-wrapper {
+        color: white;
+        width: 308px;
+        height: 44.916666666666666666666666666667px;
+        margin: 0 0 3px auto;
+    }
+
     #no-js-warning,
     #ds-trail,
     #ds-header,
@@ -53,39 +53,11 @@
         margin: auto;
         position: relative;
     }
-
-    #ds-content {
-        font-size: 1em;
-    }
-
-    div.simple-item-view-description {
-        text-align: left;
-    }
-    #ds-header-logo {
-        width: 47px;
-        height: 35px;
-        margin: 5px 5px auto;
-        background: url('../../images/seafdec-logo-small.png');
-    }
-
-    #ds-header-logo-text {
-        font-size: 1.8em;
-        padding-top: 3px;
-    }
-
-    #ds-options-wrapper {
-        float: none;
-        width: 100%;
-        padding:10px 0 0 0;
-    }
     #ds-body {
         float: none;
         width: 100%;
-        padding: 10px 0 0 0;
-    }
+        padding: 0;
 
-    #ds-footer {
-        font-size: 100%;
     }
 
     p.ds-paragraph {
@@ -118,38 +90,6 @@
         text-align: justify;
     }
 
-    /* Force table to not be like tables anymore */
-    table.detailtable,
-    table.detailtable tbody,
-    table.detailtable td,
-    table.detailtable tr {
-        display: block;
-    }
-
-
-    /* table.detailtable tr { border: 1px solid #ccc; } */
-
-    table.detailtable td {
-        /* Behave like a "row" */
-        border: none;
-        border-bottom: 1px solid #eee;
-        position: relative;
-        white-space: normal;
-    }
-
-    table.detailtable td:before {
-        /* Now like a table header */
-        position: absolute;
-        /* Top/left values mimic padding */
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align:left;
-        font-weight: bold;
-    }
-
     #aspect_discovery_Navigation_list_discovery ul li ul,
     #aspect_viewArtifacts_Navigation_list_browse ul li ul {
         display: none;
@@ -161,81 +101,21 @@
         cursor: hand;
     }
 
-    .item-metadata {
+    #ds-options-wrapper {
         float: none;
+        width: 100%; /* 257px / 950px */
+        padding: 0;
     }
 
-    .file-metadata {
-        padding-right: 15px;
-    }
-
-    .thumbnail-wrapper {
-        float: left;
-        margin-right: 15px;
-    }
-
-    .file-metadata span, .item-metadata span {
-        float: none;
-    }
-    .item-metadata span.content span {
-        float: none;
-    }
-
-    .thumbnail-wrapper {
-        float: left;
-        margin-right: 15px;
-    }
-
-}
-
-@media screen and (max-width: 480px) and (min-width: 321px) {
-
-    #ds-header-wrapper {
-        background: url("../../images/SAIR-banner-480.jpg") no-repeat scroll 0 0 transparent;
-        height: 68px;
-        margin: auto;
-        max-width: 100%;
-        margin: auto auto 5px;
-    }
     #ds-header-logo {
-        width: 47px;
-        height: 35px;
-        margin: 5px 5px auto;
-        background: url('../../images/seafdec-logo-small.png');
+        width: 9.7894736842105263157894736842105%;
+        height: 22.694736842105263157894736842105px;
+        margin: 3px;
     }
 
     #ds-header-logo-text {
-        font-size: 2.8em;
-        padding-top: 0;
-    }
-
-    #ds-options-wrapper {
-        float: none;
-        width: 100%;
-        padding-top:10px;
-    }
-    #ds-body {
-        float: none;
-        width: 100%;
-        padding: 10px 10px 0 0;
-    }
-
-    #ds-main {
-        margin: 5px auto;
-        max-width: 458px; /* 480px - [6px + 6px (borders) + 10px (right-padding)]*/
-    }
-    #no-js-warning,
-    #ds-trail,
-    #ds-header,
-    #ds-footer,
-    #ds-content {
-        max-width: 100%;
-        margin: auto;
-        position: relative;
-    }
-
-    p.ds-paragraph {
-        text-align: left;
+        font-size: 175%;
+        padding: 3px;
     }
 
     table.detailtable {

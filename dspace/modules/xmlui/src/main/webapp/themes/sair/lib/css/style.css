@@ -57,7 +57,7 @@ select.multiple {
 }
 
 #ds-header-wrapper {
-    background: url("../../images/SAIR-banner.jpg") no-repeat scroll 0 0 transparent;
+    /* background: url("../../images/SAIR-banner.jpg") no-repeat scroll 0 0 transparent; */
     color: white;
     height: 140px;
     margin-bottom: 5px;
@@ -73,9 +73,9 @@ select.multiple {
     width: 93px;
     height: 70px;
     margin: 10px 10px 10px 0;
-    background: url('../../images/seafdec-logo.png');
+    /*background: url('../../images/seafdec-logo.png');
     background-repeat: no-repeat;
-    background-color: transparent;
+    background-color: transparent; */
 }
 
 #ds-header-logo-text {
@@ -1431,4 +1431,12 @@ p.ds-paragraph {
 
 img, embed, object, video {
     max-width: 100%;
+}
+
+.responsive
+{
+    width: 100%;
+    overflow-y: auto;
+    _overflow: auto;
+    margin: 0 0 1em;
 }
