@@ -130,9 +130,8 @@
                     <map:parameter name="stylesheet.screen#4" value="lib/css/jquery-ui-1.8.15.custom.css"/>
                     <map:parameter name="stylesheet.screen#5" value="lib/css/style.css"/>
                     <map:parameter name="stylesheet.screen#6" value="lib/css/authority-control.css"/>
-                    <map:parameter name="stylesheet.screen#7" value="lib/css/discovery.css"/>
-                    <map:parameter name="stylesheet.screen#8" value="lib/webfonts/webfonts.css"/>
-                    <map:parameter name="stylesheet.screen#9" value="lib/css/BreadCrumb.css"/>
+                    <map:parameter name="stylesheet.screen#7" value="lib/webfonts/webfonts.css"/>
+                    <map:parameter name="stylesheet.screen#8" value="lib/css/BreadCrumb.css"/>
                 </map:transform>
 
                 <map:transform type="IncludePageMeta">

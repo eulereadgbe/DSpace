@@ -30,29 +30,42 @@
 
 @media screen and (max-width: 320px) {
     body {
-        background: none repeat scroll 0 0 #989898;
+        background: none repeat scroll 0 0;
+    }
+
+    h1 {
+        font-size: 150%;
+    }
+
+    div.simple-item-view-authors {
+        font-size: 105%;
     }
 
     #ds-main {
-        max-width: 308px; /* 320px - 12px */
+        max-width: 320px;
+        width: 96.25%; /* [(320px - 12px(L&R border padding))] / 320px */
+        margin: auto;
     }
 
     #ds-header-wrapper {
         color: white;
-        width: 308px;
-        height: 44.916666666666666666666666666667px;
+        height: 46.666666666666666666666666666667px; /* (320px / 960px) x 140px[original height] */
         margin: 0 0 3px auto;
     }
 
     #no-js-warning,
     #ds-trail,
     #ds-header,
-    #ds-footer,
-    #ds-content {
+    #ds-footer {
         max-width: 100%;
         margin: auto;
         position: relative;
     }
+
+    #ds-content {
+    max-width: 96.25%;
+    }
+
     #ds-body {
         float: none;
         width: 100%;
@@ -90,17 +103,6 @@
         text-align: justify;
     }
 
-    #aspect_discovery_Navigation_list_discovery ul li ul,
-    #aspect_viewArtifacts_Navigation_list_browse ul li ul {
-        display: none;
-}
-
-    #aspect_discovery_Navigation_list_discovery ul li h2,
-    #aspect_viewArtifacts_Navigation_list_browse ul li h2 {
-        cursor: pointer;
-        cursor: hand;
-    }
-
     #ds-options-wrapper {
         float: none;
         width: 100%; /* 257px / 950px */
@@ -118,17 +120,59 @@
         padding: 3px;
     }
 
+    .simple-item-view-description {
+        text-align: left;
+    }
+
     table.detailtable {
         table-layout: fixed; width: 100%;
     }
 
     table.detailtable td.label-cell {
-        /*word-wrap: break-word;*/
-        font-size: 0.8em;
+        font-size: 0.7em;
+        white-space: pre-line;
+        width: 22%;
+        word-wrap: break-word;
+    }
+
+    table.detailtable td.value-cell {
+        word-wrap: break-word;
+        white-space: pre-line;
+        width: 62%;
     }
 
     table.detailtable td.lang {
-        width: 1%;
+        width: 2%;
         white-space: nowrap;
     }
+    .thumbnail-wrapper {
+        margin-right: 3px;
+    }
+
+    .file-metadata {
+        float: left;
+        margin-right: 0;
+    }
+
+    .file-link {
+        float: right;
+        margin-right: 0;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    /* accordion style collapsed in side bar facets and browse by list */
+    #aspect_discovery_Navigation_list_discovery ul li ul,
+    #aspect_viewArtifacts_Navigation_list_browse ul li ul,
+    #aspect_viewArtifacts_Navigation_list_administrative ul li ul {
+        display: none;
+    }
+
+    #aspect_discovery_Navigation_list_discovery ul li h2,
+    #aspect_viewArtifacts_Navigation_list_browse ul li h2,
+    #aspect_viewArtifacts_Navigation_list_administrative ul li h2 {
+        cursor: pointer;
+        cursor: hand;
+    }
+
 }

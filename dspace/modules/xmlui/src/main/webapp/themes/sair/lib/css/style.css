@@ -955,6 +955,7 @@ table.detailtable td.label-cell {
     font-weight: bold;
     text-align: left;
     width: 100px;
+    white-space: nowrap;
 }
 
 div.item-summary-view-metadata h1,
@@ -1013,7 +1014,7 @@ div.spacer{
 }
 
 .file-metadata {
-    width: 45.59270516717325%; /* 300px / 658px */
+    width: 50%;
 }
 
 .file-metadata span,
