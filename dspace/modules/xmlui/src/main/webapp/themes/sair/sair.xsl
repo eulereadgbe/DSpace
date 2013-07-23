@@ -319,34 +319,6 @@
         </div>
     </xsl:template>
 
-    <xsl:template match="dim:field" mode="itemDetailView-DIM">
-        <tr>
-            <xsl:attribute name="class">
-                <xsl:text>ds-table-row </xsl:text>
-                <xsl:if test="(position() div 2 mod 2 = 0)">even </xsl:if>
-                <xsl:if test="(position() div 2 mod 2 = 1)">odd </xsl:if>
-            </xsl:attribute>
-            <td class="label-cell">
-                <xsl:value-of select="./@mdschema"/>
-                <xsl:text>.</xsl:text>
-                <xsl:value-of select="./@element"/>
-                <xsl:if test="./@qualifier">
-                    <xsl:text>.</xsl:text>
-                    <xsl:value-of select="./@qualifier"/>
-                </xsl:if>
-            </td>
-            <td>
-                <xsl:copy-of select="./node()"/>
-                <xsl:if test="./@authority and ./@confidence">
-                    <xsl:call-template name="authorityConfidenceIcon">
-                        <xsl:with-param name="confidence" select="./@confidence"/>
-                    </xsl:call-template>
-                </xsl:if>
-            </td>
-            <td class="lang"><xsl:value-of select="./@language"/></td>
-        </tr>
-    </xsl:template>
-
     <!--give nested navigation list the class sublist-->
     <xsl:template match="dri:options/dri:list/dri:list" priority="3" mode="nested">
         <li>
@@ -545,6 +517,27 @@
 
         <script type="text/javascript">
             runAfterJSImports.execute();
+        </script>
+
+        <script type="text/javascript">
+            <xsl:variable name="image-banner-path">
+                <xsl:value-of select="$context-path"/>
+                <xsl:text>/themes/</xsl:text>
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
+                <xsl:text>/images/SAIR-banner.jpg</xsl:text>
+            </xsl:variable>
+            <xsl:variable name="image-logo-path">
+                <xsl:value-of select="$context-path"/>
+                <xsl:text>/themes/</xsl:text>
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
+                <xsl:text>/images/seafdec-logo.png</xsl:text>
+            </xsl:variable>
+            $(function($) {
+                $(document).ready(function () {
+                    $("#ds-header-wrapper").backstretch("<xsl:value-of select="$image-banner-path"/>");
+                    $("#ds-header-logo").backstretch("<xsl:value-of select="$image-logo-path"/>");
+                });
+            });
         </script>
 
         <!-- Add a google analytics script if the key is present -->
