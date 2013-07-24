@@ -954,7 +954,7 @@ table.detailtable td {
 table.detailtable td.label-cell {
     font-weight: bold;
     text-align: left;
-    width: 100px;
+    width: 14.749262536873156342182890855457%; /* 100px / 678px(ds-body) */
     white-space: nowrap;
 }
 
@@ -1440,4 +1440,21 @@ img, embed, object, video {
     overflow-y: auto;
     _overflow: auto;
     margin: 0 0 1em;
+}
+
+
+#aspect_discovery_Navigation_list_discovery ul li h2,
+#aspect_viewArtifacts_Navigation_list_browse ul li h2,
+#aspect_viewArtifacts_Navigation_list_administrative ul li h2 {
+    cursor: pointer;
+    cursor: hand;
+}
+
+
+#aspect_discovery_Navigation_list_discovery ul li h2:hover,
+#aspect_viewArtifacts_Navigation_list_browse ul li h2:hover,
+#aspect_viewArtifacts_Navigation_list_administrative ul li h2:hover {
+    color:#036;
+    text-decoration: underline;
+    font-weight: bold;
 }

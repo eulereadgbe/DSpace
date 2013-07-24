@@ -124,27 +124,6 @@
         text-align: left;
     }
 
-    table.detailtable {
-        table-layout: fixed; width: 100%;
-    }
-
-    table.detailtable td.label-cell {
-        font-size: 0.7em;
-        white-space: pre-line;
-        width: 22%;
-        word-wrap: break-word;
-    }
-
-    table.detailtable td.value-cell {
-        word-wrap: break-word;
-        white-space: pre-line;
-        width: 62%;
-    }
-
-    table.detailtable td.lang {
-        width: 2%;
-        white-space: nowrap;
-    }
     .thumbnail-wrapper {
         margin-right: 3px;
     }
@@ -158,6 +137,10 @@
         float: right;
         margin-right: 0;
     }
+
+    #ds-search-form input.ds-text-field {
+        width: 81%;
+    }
 }
 
 @media screen and (max-width: 600px) {
@@ -168,11 +151,57 @@
         display: none;
     }
 
-    #aspect_discovery_Navigation_list_discovery ul li h2,
-    #aspect_viewArtifacts_Navigation_list_browse ul li h2,
-    #aspect_viewArtifacts_Navigation_list_administrative ul li h2 {
-        cursor: pointer;
-        cursor: hand;
+    /* Force table to not be like tables anymore */
+    .responsive table,
+    .responsive thead,
+    .responsive tbody,
+    .responsive th,
+    .responsive td,
+    .responsive tr {
+        display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .responsive thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .responsive tr { border: 1px solid #ccc; }
+
+    .responsive td {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align:left;
+    }
+
+    .responsive td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
+
+    .responsive table td:nth-child(3) {display: none;}
+
+    /*
+    Label the data
+
+    */.responsive td:before { content: attr(data-title); }
+
+    table.detailtable td {
+        text-align: left;
     }
 
 }
