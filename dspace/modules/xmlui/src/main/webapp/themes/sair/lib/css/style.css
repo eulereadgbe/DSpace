@@ -80,7 +80,7 @@ select.multiple {
 
 #ds-header-logo-text {
     display: table-cell;
-    font-size: 350%;
+    font-size: 500%;
     color: white;
     font-family: league_gothicregular;
     font-weight: normal;
@@ -1284,7 +1284,7 @@ div#aspect_discovery_SimpleSearch_div_search .pagination-links{
 }
 
 table.discovery-filters{
-    width: 100%;
+    width: 96.65653495440729%; /* 636px / 658px */
     background-color: #FFFFFF;
 }
 

@@ -60,6 +60,12 @@
         max-width: 100%;
         margin: auto;
         position: relative;
+        font-size: 115%
+    }
+
+    #ds-trail, #ds-body, #ds-options,
+    #ds-footer {
+        font-size: 120%
     }
 
     #ds-content {
@@ -70,7 +76,6 @@
         float: none;
         width: 100%;
         padding: 0;
-
     }
 
     p.ds-paragraph {
@@ -116,7 +121,7 @@
     }
 
     #ds-header-logo-text {
-        font-size: 175%;
+        font-size: 150%;
         padding: 3px;
     }
 
@@ -141,6 +146,33 @@
     #ds-search-form input.ds-text-field {
         width: 81%;
     }
+
+    #aspect_discovery_SimpleSearch_cell_:before
+    {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+}
+    #aspect_discovery_SimpleSearch_cell_ {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align:left;
+    }
+    #aspect_discovery_SimpleSearch_cell_ {
+        display: block;
+    }
+    .artifact-abstract {text-align: left}
 }
 
 @media screen and (max-width: 600px) {
