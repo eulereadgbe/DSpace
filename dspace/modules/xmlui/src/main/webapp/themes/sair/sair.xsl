@@ -628,12 +628,10 @@
                 <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
                 <xsl:text>/images/seafdec-logo.png</xsl:text>
             </xsl:variable>
-            $(function($) {
-                $(document).ready(function () {
-                    $("#ds-header-wrapper").backstretch("<xsl:value-of select="$image-banner-path"/>");
-                    $("#ds-header-logo").backstretch("<xsl:value-of select="$image-logo-path"/>");
-                });
-            });
+            (function ($) {
+            $("#ds-header-wrapper").backstretch("<xsl:value-of select="$image-banner-path"/>");
+            $("#ds-header-logo").backstretch("<xsl:value-of select="$image-logo-path"/>");
+                })(jQuery);
         </script>
 
         <!-- Add a google analytics script if the key is present -->
