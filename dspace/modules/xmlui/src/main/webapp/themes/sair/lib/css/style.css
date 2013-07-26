@@ -19,8 +19,8 @@ body {
     border: 6px solid #FFFFFF;
     border-radius: 6px 6px 6px 6px;
     box-shadow: 0 0 15px rgba(122, 122, 122, 0.4);
-    margin: 5px auto;
-    width: 960px;
+    margin: 20px auto;
+    max-width: 960px;
 }
 /*Font size percentages based on the tables at developer.yahoo.com/yui/fonts/ */
 h1 {
@@ -57,12 +57,12 @@ select.multiple {
 }
 
 #ds-header-wrapper {
-    /* background: url("../../images/SAIR-banner.jpg") no-repeat scroll 0 0 transparent; */
     color: white;
-    height: 140px;
+    height: 0;
+    padding-bottom: 14.583333333333333333333333333333%;
     margin-bottom: 5px;
-    max-width: 100%;
 }
+
 #ds-header-logo-link {
     text-decoration: none;
     cursor: pointer;
@@ -70,22 +70,21 @@ select.multiple {
 
 #ds-header-logo {
     float:left;
-    width: 93px;
-    height: 70px;
+    width: 9.7894736842105263157894736842105%; /* 93px / 950px */
+    height: 0;
+    padding-bottom: 7.3684210526315789473684210526316%; /* 70px(height) / 950px */
     margin: 10px 10px 10px 0;
-    /*background: url('../../images/seafdec-logo.png');
-    background-repeat: no-repeat;
-    background-color: transparent; */
 }
 
 #ds-header-logo-text {
     display: table-cell;
-    font-size: 500%;
+    width: 100%;
     color: white;
+    font-size: 500%;
     font-family: league_gothicregular;
     font-weight: normal;
     vertical-align: top;
-    padding-top: 15px;
+    padding-top: 1.0526315789473684210526315789474%;
 }
 
 #ds-user-box {
@@ -106,7 +105,6 @@ select.multiple {
     padding: 0;
     border-top: 1px solid #9cacba;
     border-bottom: 1px solid #9cacba;
-    max-width: 100%;
 }
 
 #ds-trail {
@@ -131,9 +129,10 @@ select.multiple {
 #ds-header,
 #ds-footer,
 #ds-content {
-    max-width: 950px;
+    width: 98.958333333333333333333333333333%; /* 950px / 960px */
     margin: auto;
     position: relative;
+    max-width: 100%; /* this is to force text in breadcrumbs to wrap */
 }
 
 /*ie6 uses quirks mode for strict xhtml pages, and in quirks mode margin: auto; doesn't center things*/
