@@ -1,0 +1,239 @@
+/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
+ *
+ * http://www.dspace.org/license/
+ */
+/*
+ * Media queries for responsive design
+ */
+
+@media all and (orientation:portrait) {
+  /* Style adjustments for portrait mode goes here */
+
+}
+
+@media all and (orientation:landscape) {
+  /* Style adjustments for landscape mode goes here */
+
+}
+
+/* Grade-A Mobile Browsers (Opera Mobile, iPhone Safari, Android Chrome)
+   Consider this: www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/ */
+@media screen and (max-device-width: 480px) {
+
+
+  /* Prevent iOS, WinMobile from adjusting font size */
+  html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; }
+}
+
+@media screen and (max-width: 320px) {
+    body {
+        background: none repeat scroll 0 0;
+    }
+
+    h1 {
+        font-size: 150%;
+    }
+
+    div.simple-item-view-authors {
+        font-size: 105%;
+    }
+
+    #ds-main {
+        max-width: 320px;
+        width: 96.25%; /* [(320px - 12px(L&R border padding))] / 320px */
+        margin: auto;
+    }
+
+    #ds-header-wrapper {
+        color: white;
+        height: 46.666666666666666666666666666667px; /* (320px / 960px) x 140px[original height] */
+        margin: 0 0 3px auto;
+    }
+
+    #no-js-warning,
+    #ds-trail,
+    #ds-header,
+    #ds-footer {
+        max-width: 100%;
+        margin: auto;
+        position: relative;
+        font-size: 115%
+    }
+
+    #ds-trail, #ds-body, #ds-options,
+    #ds-footer {
+        font-size: 120%
+    }
+
+    #ds-content {
+    max-width: 96.25%;
+    }
+
+    #ds-body {
+        float: none;
+        width: 100%;
+        padding: 0;
+    }
+
+    p.ds-paragraph {
+        text-align: left;
+    }
+    #aspect_eperson_EditProfile_list_form,
+    .submission fieldset.ds-form-list,
+    .administrative fieldset.ds-form-list {
+        width: 100%;
+    }
+
+    .submission .ds-form-list input.ds-text-field,
+    .administrative .ds-form-list input.ds-text-field,
+    textarea.ds-textarea-field {
+        width: 97%;
+    }
+
+    .submission .ds-form-list input.ds-text-field,
+    .administrative .ds-form-list input.ds-text-field,
+    textarea.ds-textarea-field {
+        width: 95%;
+    }
+
+    span.composite-help,
+    span.field-help {
+        display: block;
+        font-size: 93%;
+        margin-top: 3px;
+        width: 100%;
+        text-align: justify;
+    }
+
+    #ds-options-wrapper {
+        float: none;
+        width: 100%; /* 257px / 950px */
+        padding: 0;
+    }
+
+    #ds-header-logo {
+        width: 9.7894736842105263157894736842105%;
+        height: 22.694736842105263157894736842105px;
+        margin: 3px;
+    }
+
+    #ds-header-logo-text {
+        font-size: 150%;
+        padding: 3px;
+    }
+
+    .simple-item-view-description {
+        text-align: left;
+    }
+
+    .thumbnail-wrapper {
+        margin-right: 3px;
+    }
+
+    .file-metadata {
+        float: left;
+        margin-right: 0;
+    }
+
+    .file-link {
+        float: right;
+        margin-right: 0;
+    }
+
+    #ds-search-form input.ds-text-field {
+        width: 81%;
+    }
+
+    #aspect_discovery_SimpleSearch_cell_:before
+    {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+}
+    #aspect_discovery_SimpleSearch_cell_ {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align:left;
+    }
+    #aspect_discovery_SimpleSearch_cell_ {
+        display: block;
+    }
+    .artifact-abstract {text-align: left}
+}
+
+@media screen and (max-width: 600px) {
+    /* accordion style collapsed in side bar facets and browse by list */
+    #aspect_discovery_Navigation_list_discovery ul li ul,
+    #aspect_viewArtifacts_Navigation_list_browse ul li ul,
+    #aspect_viewArtifacts_Navigation_list_administrative ul li ul {
+        display: none;
+    }
+
+    /* Force table to not be like tables anymore */
+    .responsive table,
+    .responsive thead,
+    .responsive tbody,
+    .responsive th,
+    .responsive td,
+    .responsive tr {
+        display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .responsive thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .responsive tr { border: 1px solid #ccc; }
+
+    .responsive td {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align:left;
+    }
+
+    .responsive td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
+
+    .responsive table td:nth-child(3) {display: none;}
+
+    /*
+    Label the data
+
+    */.responsive td:before { content: attr(data-title); }
+
+    table.detailtable td {
+        text-align: left;
+    }
+
+}
