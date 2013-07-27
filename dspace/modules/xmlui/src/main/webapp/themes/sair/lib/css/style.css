@@ -60,7 +60,7 @@ select.multiple {
     color: white;
     height: 0;
     padding-bottom: 14.583333333333333333333333333333%;
-    margin-bottom: 5px;
+    margin-bottom: 0.52083333333333333333333333333333%;
 }
 
 #ds-header-logo-link {
@@ -73,19 +73,19 @@ select.multiple {
     width: 9.7894736842105263157894736842105%; /* 93px / 950px */
     height: 0;
     padding-bottom: 7.3684210526315789473684210526316%; /* 70px(height) / 950px */
-    margin: 10px 10px 10px 0;
+    margin: 1.0526315789473684210526315789474%; /* 10px / 950px */
 }
 
 #ds-header-logo-text {
-    display: table-cell;
+    display: block;
     width: 100%;
     color: white;
-    font-size: 500%;
     font-family: league_gothicregular;
     font-weight: normal;
     vertical-align: top;
     padding-top: 1.0526315789473684210526315789474%;
-}
+    text-shadow: -3px 3px 3px rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;}
 
 #ds-user-box {
     right: 0;
