@@ -633,7 +633,9 @@
             $("#ds-header-logo").backstretch("<xsl:value-of select="$image-logo-path"/>");
                 })(jQuery);
         </script>
-
+        <script>
+            jQuery("#ds-header-logo-text").fitText(1.5, { minFontSize: '16px', maxFontSize: '48px' });
+        </script>
         <!-- Add a google analytics script if the key is present -->
         <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']">
             <script type="text/javascript"><xsl:text>
