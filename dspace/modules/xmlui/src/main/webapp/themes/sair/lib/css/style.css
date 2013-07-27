@@ -1458,7 +1458,7 @@ img, embed, object, video {
     font-weight: bold;
 }
 
-#file_news_div_news p{
+.short-description, .artifact-abstract, p {
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
     -ms-hyphens: auto;
