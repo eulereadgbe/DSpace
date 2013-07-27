@@ -1457,3 +1457,10 @@ img, embed, object, video {
     text-decoration: underline;
     font-weight: bold;
 }
+
+#file_news_div_news p{
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}
