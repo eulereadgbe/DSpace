@@ -21,6 +21,7 @@ body {
     box-shadow: 0 0 15px rgba(122, 122, 122, 0.4);
     margin: 20px auto;
     max-width: 960px;
+    width: 100%;
 }
 /*Font size percentages based on the tables at developer.yahoo.com/yui/fonts/ */
 h1 {
@@ -256,7 +257,7 @@ div#ds-feed-option a
 }
 
 #ds-search-form input.ds-text-field{
-    width: 71.88755020080321%; /*179px / 249px */
+    width: 62%;
 }
 
 #ds-search-form input.ds-button-field {
@@ -1458,6 +1459,7 @@ img, embed, object, video {
     font-weight: bold;
 }
 
+.simple-item-view-description div,
 .short-description, .artifact-abstract, p {
     -webkit-hyphens: auto;
     -moz-hyphens: auto;

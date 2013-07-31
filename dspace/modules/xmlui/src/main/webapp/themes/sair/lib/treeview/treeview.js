@@ -1,4 +1,4 @@
-(function () {
+(function ($) {
     $("#tree").treeview({
         collapsed:true,
         animated:"medium",

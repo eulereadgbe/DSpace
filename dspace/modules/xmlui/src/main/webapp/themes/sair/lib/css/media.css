@@ -28,6 +28,55 @@
   html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; }
 }
 
+@media screen and (max-width: 320px)  {
+    #ds-main {
+        max-width: 320px;
+        width: 96.25%;
+    }
+}
+
+@media screen and (max-width: 360px) and (min-width: 321px)  {
+    #ds-main {
+        max-width: 360px;
+        width: 96.66666666666667%;
+    }
+}
+
+@media screen and (max-width: 480px) and (min-width: 361px)  {
+    #ds-main {
+        max-width: 480px;
+        width: 97.5%;
+    }
+}
+
+@media screen and (max-width: 600px) and (min-width: 481px)  {
+    #ds-main {
+        max-width: 600px;
+        width: 98%;
+    }
+}
+
+@media screen and (max-width: 601px) {
+    #ds-body, #ds-options-wrapper {
+        float: none;
+        width: 100%;
+        padding: 0;
+    }
+
+    p.ds-paragraph {
+        text-align: left;
+    }
+
+    div.ds-option-set ul {
+        margin-left: 1.5%
+    }
+
+    div.ds-option-set ul.sublist {
+        margin-left: 3%
+    }
+
+
+}
 @media screen and (max-width: 972px) {
     body {
         background: none;
@@ -36,13 +85,4 @@
     #ds-main {
         margin: auto;
     }
-}
-
-@media screen and (max-width: 320px)  {
-    #ds-main {
-        width: 100%;
-        margin: 0;
-    }
-
-
 }

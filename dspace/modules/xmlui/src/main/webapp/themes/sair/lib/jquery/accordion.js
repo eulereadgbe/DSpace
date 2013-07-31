@@ -10,9 +10,4 @@ $(function($) {
             elem.slideToggle();
         }
     });
-
-    $(document).ready(function () {
-        $("#breadCrumb").jBreadCrumb();
-    });
-
-});
+})(jQuery);

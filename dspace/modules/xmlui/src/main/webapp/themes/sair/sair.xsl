@@ -331,7 +331,6 @@
 
     <xsl:template name="buildTrail">
         <div class="clearfix" id="ds-trail-wrapper">
-            <div id="breadCrumb" class="breadCrumb">
                 <ul id="ds-trail">
                     <xsl:choose>
                         <xsl:when test="starts-with($request-uri, 'page/about')">
@@ -345,11 +344,16 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </ul>
-            </div>
         </div>
     </xsl:template>
 
     <xsl:template match="dri:trail">
+        <!--put an arrow between the parts of the trail-->
+        <xsl:if test="position()>1">
+            <li class="ds-trail-arrow">
+                <xsl:text>&#8594;</xsl:text>
+            </li>
+        </xsl:if>
         <li>
             <xsl:attribute name="class">
                 <xsl:text>ds-trail-link </xsl:text>
@@ -615,27 +619,6 @@
             runAfterJSImports.execute();
         </script>
 
-        <script type="text/javascript">
-            <xsl:variable name="image-banner-path">
-                <xsl:value-of select="$context-path"/>
-                <xsl:text>/themes/</xsl:text>
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
-                <xsl:text>/images/SAIR-banner.jpg</xsl:text>
-            </xsl:variable>
-            <xsl:variable name="image-logo-path">
-                <xsl:value-of select="$context-path"/>
-                <xsl:text>/themes/</xsl:text>
-                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
-                <xsl:text>/images/seafdec-logo.png</xsl:text>
-            </xsl:variable>
-            (function ($) {
-            $("#ds-header-wrapper").backstretch("<xsl:value-of select="$image-banner-path"/>");
-            $("#ds-header-logo").backstretch("<xsl:value-of select="$image-logo-path"/>");
-                })(jQuery);
-        </script>
-        <script>
-            jQuery("#ds-header-logo-text").fitText(1.5, { minFontSize: '16px', maxFontSize: '48px' });
-        </script>
         <!-- Add a google analytics script if the key is present -->
         <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']">
             <script type="text/javascript"><xsl:text>
