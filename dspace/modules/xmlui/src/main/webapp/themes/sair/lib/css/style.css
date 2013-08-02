@@ -86,7 +86,8 @@ select.multiple {
     vertical-align: top;
     padding-top: 1.0526315789473684210526315789474%;
     text-shadow: -3px 3px 3px rgba(0, 0, 0, 0.4);
-    text-transform: uppercase;}
+    text-transform: uppercase;
+}
 
 #ds-user-box {
     right: 0;
@@ -181,8 +182,8 @@ select.multiple {
     float: left;
     width: 69.26315789473684%; /* 678px - (10px + 10px) / 950px */
     padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 1.052631578947368%; /* 10px / 950px */
+    padding-right: 1.052631578947368%;
 
 }
 
@@ -190,7 +191,7 @@ select.multiple {
     float: right;
     width: 27.052631578947368421052631578947%; /* 257px / 950px */
     padding-top:10px;
-    padding-right: 10px;
+    padding-right: 1.052631578947368%;
 }
 
 #ds-options {
@@ -1449,7 +1450,6 @@ img, embed, object, video {
     cursor: pointer;
     cursor: hand;
 }
-
 
 #aspect_discovery_Navigation_list_discovery ul li h2:hover,
 #aspect_viewArtifacts_Navigation_list_browse ul li h2:hover,

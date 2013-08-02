@@ -33,12 +33,18 @@
         max-width: 320px;
         width: 96.25%;
     }
+    #ds-search-form input.ds-text-field {
+        width: 74%;
+    }
 }
 
 @media screen and (max-width: 360px) and (min-width: 321px)  {
     #ds-main {
         max-width: 360px;
         width: 96.66666666666667%;
+    }
+    #ds-search-form input.ds-text-field {
+        width: 77%;
     }
 }
 
@@ -49,6 +55,45 @@
     }
 }
 
+@media screen and (max-width: 500px) and (min-width: 200px) {
+    #ds-header-logo-text {
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #ds-header-wrapper {
+        background: url('../../images/SAIR-banner-small.jpg'); /* no-js fallback */
+        background-repeat: no-repeat;
+        background-color: transparent;
+    }
+    #ds-header-logo-text {
+        text-transform: capitalize;
+    }
+}
+
+@media screen and (min-width: 501px) {
+    #ds-header-wrapper {
+        background: url('../../images/SAIR-banner.jpg');
+        background-repeat: no-repeat;
+        background-color: transparent;
+    }
+    #ds-header-logo {
+        background: url('../../images/seafdec-logo-small.png');
+        background-repeat: no-repeat;
+        background-color: transparent;
+    }
+    #ds-header-logo-text {
+        font-size: 36px; /* no-js fallback */
+    }
+}
+
+@media screen and (min-width: 647px) {
+    #ds-header-logo-text {
+        font-size: 48px;
+    }
+}
+
 @media screen and (max-width: 600px) and (min-width: 481px)  {
     #ds-main {
         max-width: 600px;
@@ -56,7 +101,7 @@
     }
 }
 
-@media screen and (max-width: 601px) {
+@media screen and (max-width: 600px) {
     #ds-body, #ds-options-wrapper {
         float: none;
         width: 100%;
