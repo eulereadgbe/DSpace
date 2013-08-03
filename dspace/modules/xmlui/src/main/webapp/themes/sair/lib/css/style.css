@@ -1443,22 +1443,6 @@ img, embed, object, video {
     margin: 0 0 1em;
 }
 
-
-#aspect_discovery_Navigation_list_discovery ul li h2,
-#aspect_viewArtifacts_Navigation_list_browse ul li h2,
-#aspect_viewArtifacts_Navigation_list_administrative ul li h2 {
-    cursor: pointer;
-    cursor: hand;
-}
-
-#aspect_discovery_Navigation_list_discovery ul li h2:hover,
-#aspect_viewArtifacts_Navigation_list_browse ul li h2:hover,
-#aspect_viewArtifacts_Navigation_list_administrative ul li h2:hover {
-    color:#036;
-    text-decoration: underline;
-    font-weight: bold;
-}
-
 .simple-item-view-description div,
 .short-description, .artifact-abstract, p {
     -webkit-hyphens: auto;
