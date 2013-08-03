@@ -698,4 +698,9 @@
         </html>
     </xsl:template>
 
+    <!-- Remove search box from the front page & community/collection pages -->
+    <xsl:template match="dri:div[@id='aspect.discovery.CollectionSearch.div.collection-search'] | dri:div[@id='aspect.discovery.CommunitySearch.div.community-search']
+     | dri:div[@id='aspect.discovery.SiteViewer.div.front-page-search']">
+    </xsl:template>
+
 </xsl:stylesheet>
