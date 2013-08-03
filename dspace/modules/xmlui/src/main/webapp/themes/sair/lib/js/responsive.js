@@ -18,13 +18,22 @@
             document.getElementById("ds-main").style.width = (($(window).width() - 12) / $(window).width()) * 100 + '%';
         }
         //Collapse if screen width is <=600
+        var sublist = $('div.ds-option-set ul.sublist');
         if ($(window).width() <= 600) {
-            $('div.ds-option-set ul.sublist').css('display', 'none');
+            sublist.css('display', 'none');
         }
 
         //Accordion menu
-        $('#aspect_discovery_Navigation_list_discovery ul li h2, #aspect_viewArtifacts_Navigation_list_browse ul li h2,' +
-            '#aspect_viewArtifacts_Navigation_list_administrative ul li h2').click
+        var selector = $('#aspect_discovery_Navigation_list_discovery ul li h2, #aspect_viewArtifacts_Navigation_list_browse ul li h2,' +
+            '#aspect_viewArtifacts_Navigation_list_administrative ul li h2');
+        $(selector).hover(function(){
+            $(this).css({'color': '#036', 'text-decoration': 'underline', 'font-weight': 'bold', 'cursor': 'hand'});
+        }, function(){
+            $(this).css({'color': '#444444', 'text-decoration': 'none', 'font-weight': 'normal', 'cursor': 'pointer'});
+        });
+
+
+            selector.click
         (function (event) {
             var elem = $(this).next();
             if (elem.is('ul')) {
