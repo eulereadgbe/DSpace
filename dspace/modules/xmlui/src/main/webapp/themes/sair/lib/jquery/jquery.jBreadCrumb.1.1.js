@@ -234,7 +234,7 @@
         timeInitialCollapse: 600,
         easing: _easingEquation,
         overlayClass: 'chevronOverlay',
-        previewWidth: 34
+        previewWidth: 61
     };
     
 })(jQuery);
