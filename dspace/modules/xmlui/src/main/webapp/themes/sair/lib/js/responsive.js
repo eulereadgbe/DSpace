@@ -60,6 +60,11 @@
             persist: "cookie"
         });
 
+        //Insert 'http://dx.doi.org/' to resolve to DOI
+        $('.label-cell:contains(DOI)').next('td').text(function (_, txt) {
+            return 'http://dx.doi.org/' + txt;
+        });
+
         /* Linkify All Items Metadata content (Item Detail View) */
         $('#aspect_artifactbrowser_ItemViewer_div_item-view table.ds-includeSet-table tr.ds-table-row td.value-cell').each(function () {
             var that = $(this),
@@ -72,6 +77,10 @@
             return this.hostname && this.hostname !== location.hostname;
         }).addClass("external");
         $("#ds-body a[href^='http://']").attr("target", "_blank");
+
+        // Remove the 'http://dx.doi.org/' to display the DOI only
+        $('.external').replaceText(/\bhttp:\/\/dx.doi.org\/\b/gi, '');//http://www.benalman.com/projects/jquery-replacetext-plugin/
+
     });
 
 })(jQuery);
