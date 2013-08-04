@@ -1,12 +1,17 @@
 (function ($) {
     $(document).ready(function () { // On load
-        if ($(window).width() > 501) {
+        if ($(window).width() > 501) { //Adaptive background image for header
             $("#ds-header-wrapper").backstretch("/themes/sair/images/SAIR-banner.jpg");
         }
         if ($(window).width() <= 500) {
             $("#ds-header-wrapper").backstretch("/themes/sair/images/SAIR-banner-small.jpg");
         }
-        $("#ds-header-logo").backstretch("/themes/sair/images/seafdec-logo.png");
+        var headerLogo = $("#ds-header-logo");
+
+        headerLogo.css({'width': '9.7894736842105263157894736842105%',
+            'height': '0', 'padding-bottom': '7.3684210526315789473684210526316%',
+            'margin': '1.0526315789473684210526315789474%'});
+        headerLogo.backstretch("/themes/sair/images/seafdec-logo.png");
         $("#ds-header-logo-text").fitText(1.5, { minFontSize: '16px', maxFontSize: '48px' });
         $('#ds-trail').wrap('<div class="breadCrumb" id="breadCrumb"></div>');// Will insert class and id for breadcrumbs
         $("#breadCrumb").jBreadCrumb();
@@ -27,7 +32,7 @@
         var selector = $('#aspect_discovery_Navigation_list_discovery ul li h2, #aspect_viewArtifacts_Navigation_list_browse ul li h2,' +
             '#aspect_viewArtifacts_Navigation_list_administrative ul li h2');
         $(selector).hover(function () {
-            $(this).css({'color': '#036', 'text-decoration': 'underline', 'font-weight': 'bold', 'cursor': 'hand'});
+            $(this).css({'color': '#036', 'text-decoration': 'underline', 'font-weight': 'bold', 'cursor': 'hand', 'cursor': 'pointer'});
         }, function () {
             $(this).css({'color': '#444444', 'text-decoration': 'none', 'font-weight': 'normal', 'cursor': 'pointer'});
         });
@@ -96,7 +101,7 @@
                     }
                 }
             }
-            if ($(window).width() <= 600) {
+            if ($(window).width() <= 600) { // Accordion menu collapsed
                 $('div.ds-option-set ul.sublist').css('display', 'none');
             }
             else {
