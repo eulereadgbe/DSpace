@@ -1424,6 +1424,7 @@ img, embed, object, video {
 }
 
 .simple-item-view-description div,
+.simple-item-view-subject,
 .short-description, .artifact-abstract, p {
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
