@@ -513,7 +513,16 @@
                 </xsl:choose>
             </td>
             <td class="value-cell">
-                <xsl:copy-of select="./node()"/>
+                <xsl:choose>
+                    <xsl:when test="./@element='description'">
+                        <xsl:value-of select="./node()" disable-output-escaping="yes"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="./node()"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:if test="./@qualifier='abstract'">
+                </xsl:if>
                 <xsl:if test="./@authority and ./@confidence">
                     <xsl:call-template name="authorityConfidenceIcon">
                         <xsl:with-param name="confidence" select="./@confidence"/>
