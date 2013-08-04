@@ -291,9 +291,37 @@
                 </xsl:call-template>
             </xsl:when>
 
+            <!-- Citation row -->
+            <xsl:when
+                    test="$clause = 7 and (dim:field[@element='identifier' and @qualifier='citation' and descendant::text()])">
+                <div class="simple-item-view-description">
+                    <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.item-citation</i18n:text>:
+                    </h3>
+                    <div>
+                        <xsl:for-each select="dim:field[@element='identifier' and @qualifier='citation']">
+                            <xsl:choose>
+                                <xsl:when test="node()">
+                                    <xsl:value-of select="node()"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:text>&#160;</xsl:text>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:if test="count(following-sibling::dim:field[@element='identifier' and @qualifier='citation']) != 0">
+                                <div class="spacer">&#160;</div>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </div>
+                </div>
+                <xsl:call-template name="itemSummaryView-DIM-fields">
+                    <xsl:with-param name="clause" select="($clause + 1)"/>
+                    <xsl:with-param name="phase" select="$otherPhase"/>
+                </xsl:call-template>
+            </xsl:when>
+
             <!-- Abstract row -->
             <xsl:when
-                    test="$clause = 7 and (dim:field[@element='description' and @qualifier='abstract' and descendant::text()])">
+                    test="$clause = 8 and (dim:field[@element='description' and @qualifier='abstract' and descendant::text()])">
                 <div class="simple-item-view-description">
                     <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text>:
                     </h3>
@@ -329,7 +357,7 @@
             </xsl:when>
 
             <!-- Description row -->
-            <xsl:when test="$clause = 8 and (dim:field[@element='description' and not(@qualifier)])">
+            <xsl:when test="$clause = 9 and (dim:field[@element='description' and not(@qualifier)])">
                 <div class="simple-item-view-description">
                     <h3 class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-description</i18n:text>:
                     </h3>
@@ -355,7 +383,7 @@
             </xsl:when>
 
             <!-- Keywords row -->
-            <xsl:when test="$clause = 9 and (dim:field[@element='subject' and not(@qualifier)])">
+            <xsl:when test="$clause = 10 and (dim:field[@element='subject' and not(@qualifier)])">
                 <div class="simple-item-view-subject">
                     <h3 class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-keyword</i18n:text>(s):
                     </h3>
@@ -383,9 +411,9 @@
                 </xsl:call-template>
             </xsl:when>
 
-            <xsl:when test="$clause = 10 and $ds_item_view_toggle_url != ''">
+            <xsl:when test="$clause = 11 and $ds_item_view_toggle_url != ''">
                 <p class="ds-paragraph item-view-toggle item-view-toggle-bottom">
-                    <a>
+                    <a class="ds-button-field">
                         <xsl:attribute name="href">
                             <xsl:value-of select="$ds_item_view_toggle_url"/>
                         </xsl:attribute>
@@ -397,7 +425,7 @@
             <!-- recurse without changing phase if we didn't output anything -->
             <xsl:otherwise>
                 <!-- IMPORTANT: This test should be updated if clauses are added! -->
-                <xsl:if test="$clause &lt; 11">
+                <xsl:if test="$clause &lt; 12">
                     <xsl:call-template name="itemSummaryView-DIM-fields">
                         <xsl:with-param name="clause" select="($clause + 1)"/>
                         <xsl:with-param name="phase" select="$phase"/>
