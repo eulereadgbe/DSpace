@@ -330,12 +330,11 @@
                             <div class="spacer">&#160;</div>
                         </xsl:if>
                         <xsl:for-each select="dim:field[@element='description' and @qualifier='abstract']">
+                            <xsl:choose>
+                                <xsl:when test="node()">
                             <xsl:call-template name="break">
                                 <xsl:with-param name="text" select="./node()"/>
                             </xsl:call-template>
-                            <xsl:choose>
-                                <xsl:when test="node()">
-                                    <xsl:value-of select="node()" disable-output-escaping="yes"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:text>&#160;</xsl:text>
@@ -366,7 +365,9 @@
                             <div class="spacer">&#160;</div>
                         </xsl:if>
                         <xsl:for-each select="dim:field[@element='description' and not(@qualifier)]">
-                            <xsl:value-of select="./node()" disable-output-escaping="yes"/>
+                            <xsl:call-template name="break">
+                                <xsl:with-param name="text" select="./node()"/>
+                            </xsl:call-template>
                             <xsl:if test="count(following-sibling::dim:field[@element='description' and not(@qualifier)]) != 0">
                                 <div class="spacer">&#160;</div>
                             </xsl:if>
