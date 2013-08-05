@@ -29,7 +29,8 @@
                 exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc util confman">
 
     <xsl:import href="../Mirage/Mirage.xsl"/>
-    <xsl:import href="../dri2xhtml-alt/aspect/artifactbrowser/itemSummaryView.xsl"/>
+    <xsl:import href="itemSummaryView.xsl"/>
+    <xsl:import href="discovery.xsl"/>
     <xsl:output indent="yes"/>
 
     <xsl:template match="dri:referenceSet[@type = 'summaryList' and @n='community-browser']" priority="3">
@@ -190,8 +191,7 @@
                 if (defaultedElements[i].value == '<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>'){
                 defaultedElements[i].value='';}}
                 }
-                //Disable pressing 'enter' key to submit a form (otherwise pressing 'enter' causes a submission to start
-                over)
+                //Disable pressing 'enter' key to submit a form (otherwise pressing 'enter' causes a submission to start over)
                 function disableEnterKey(e)
                 {
                 var key;
