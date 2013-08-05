@@ -1431,3 +1431,17 @@ img, embed, object, video {
     -ms-hyphens: auto;
     hyphens: auto;
 }
+
+/* Fix sub and sup tags to adjust line height */
+sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+sup {
+    top: -0.5em;
+}
+sub {
+    bottom: -0.25em;
+}
