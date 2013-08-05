@@ -18,8 +18,8 @@ body {
     background-color: white;
     border: 6px solid #FFFFFF;
     border-radius: 6px 6px 6px 6px;
-    box-shadow: 0 0 15px rgba(122, 122, 122, 0.4);
-    margin: 20px auto;
+    box-shadow: -6px 6px 6px rgba(66, 66, 66, 0.4);
+    margin: 6px auto;
     max-width: 960px;
     width: 100%;
 }
@@ -47,6 +47,9 @@ h5, h6 {
     font-size: 100%;
 }
 
+h1.ds-div-head {
+    text-shadow: -1px 1px 1px rgba(68, 68, 68, 0.4);
+}
 /*fix for firefox in os x, where selects get the incorrect
 height if it's not explicitly set this shouldn't be noticeable in
 other browsers*/
