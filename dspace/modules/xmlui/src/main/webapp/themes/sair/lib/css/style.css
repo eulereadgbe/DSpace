@@ -222,7 +222,7 @@ div.ds-option-set {
 
 div.ds-option-set ul {
     list-style: none;
-    margin-left: 10px;
+    margin-left: 4.081632653061224%; /* 10px / 245px */
     padding-top: 5px;
     padding-bottom: 5px;
 }
@@ -243,7 +243,7 @@ div#ds-feed-option li {
 }
 
 div#ds-feed-option a {
-    padding: 0px 0px 2px 20px;
+    padding: 0 5px 2px 15px;
     text-decoration: none;
 }
 
@@ -1444,4 +1444,21 @@ sup {
 }
 sub {
     bottom: -0.25em;
+}
+
+a[href*="rss_1.0"] {
+    background: url("../../images/rss01.png") no-repeat left;
+}
+
+a[href*="rss_2.0"] {
+    background: url("../../images/rss02.png") no-repeat left;
+}
+
+a[href*="atom_1.0"] {
+    background: url("../../images/atom.png") no-repeat left;
+}
+
+div#ds-feed-option li {
+    padding-top: 4px;
+    display: inline;
 }
