@@ -159,8 +159,11 @@ select.multiple {
 }
 
 #ds-footer-wrapper {
-    margin-top: 40px;
+    max-width: 960px;
+    width: 100%;
+    /* padding-top: 40px; */
     padding-bottom: 5px;
+    margin: auto;
 }
 
 #ds-footer {
@@ -1426,6 +1429,7 @@ img, embed, object, video {
     margin: 0 0 1em;
 }
 
+#ds-footer-signature,
 .simple-item-view-description div,
 .simple-item-view-subject,
 .short-description, .artifact-abstract, p {
@@ -1464,4 +1468,34 @@ a[href*="atom_1.0"] {
 div#ds-feed-option li {
     padding-top: 4px;
     display: inline;
+}
+
+/* Sticky Footer http://www.cssstickyfooter.com/using-sticky-footer-code.html */
+html, body {height: 98.5%;}
+
+#ds-main {min-height: 98.5%;}
+
+#ds-content-wrapper {
+    overflow:auto;
+    padding-bottom: 116px;/* must be same height as the footer */
+}
+
+#ds-content {
+    padding-bottom: 5px;
+}
+
+#ds-footer-wrapper {
+    position: relative;
+    margin-top: -116px; /* negative value of footer height */
+    height: 116px;
+    clear:both;
+}
+
+/*Opera Fix*/
+body:before {/* thanks to Maleika (Kohoutec)*/
+    content:"";
+    height:100%;
+    float:left;
+    width:0;
+    margin-top:-32767px;/* thank you Erik J - negate effect of float*/
 }

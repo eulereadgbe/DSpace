@@ -48,6 +48,20 @@
     }
 }
 
+@media screen and (max-width: 480px) {/* For Sticky Footer */
+    #ds-content-wrapper {
+        overflow:auto;
+        padding-bottom: 180px;/* must be same height as the footer */
+    }
+
+    #ds-footer-wrapper {
+        position: relative;
+        margin-top: -180px; /* negative value of footer height */
+        height: 180px;
+        clear:both;
+    }
+}
+
 @media screen and (max-width: 480px) and (min-width: 361px)  {
     #ds-main {
         max-width: 480px;
@@ -129,5 +143,19 @@
 
     #ds-main {
         margin: auto;
+    }
+}
+
+@media screen and (max-width: 522px) and (min-width: 481px) {/* For Sticky Footer, when text of footer wrapped */
+    #ds-content-wrapper {
+        overflow:auto;
+        padding-bottom: 141px;/* must be same height as the footer */
+    }
+
+    #ds-footer-wrapper {
+        position: relative;
+        margin-top: -141px; /* negative value of footer height */
+        height: 141px;
+        clear:both;
     }
 }

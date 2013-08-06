@@ -727,13 +727,13 @@
                         </div>
 
 
+
+
+                    </div>
                         <!--
                             The footer div, dropping whatever extra information is needed on the page. It will
                             most likely be something similar in structure to the currently given example. -->
                         <xsl:call-template name="buildFooter"/>
-
-                    </div>
-
                 </xsl:otherwise>
             </xsl:choose>
             <!-- Javascript at the bottom for fast page loading -->
