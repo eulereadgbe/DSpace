@@ -81,6 +81,9 @@
         // Remove the 'http://dx.doi.org/' to display the DOI only
         $('.external').replaceText(/\bhttp:\/\/dx.doi.org\/\b/gi, '');//http://www.benalman.com/projects/jquery-replacetext-plugin/
 
+        $("p.ds-paragraph.item-view-toggle a").addClass("button small white");
+        $("#aspect_artifactbrowser_ItemViewer_div_item-view p.ds-paragraph.item-view-toggle-bottom").css('margin-top', '20px');
+
     });
 
 })(jQuery);
