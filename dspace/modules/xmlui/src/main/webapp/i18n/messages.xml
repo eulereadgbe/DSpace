@@ -332,7 +332,7 @@
 	<!-- org.dspace.app.xmlui.eperson.CannotRegister.java -->
 	<message key="xmlui.EPerson.CannotRegister.title">Registration unavailable</message>
 	<message key="xmlui.EPerson.CannotRegister.head">Registration unavailable</message>
-	<message key="xmlui.EPerson.CannotRegister.para1">The configuration of this DSpace repository does not allow registration in this context. Please contact the <a href="../contact">site administrator</a> with questions or comments.</message>
+	<message key="xmlui.EPerson.CannotRegister.para1">Currently, only emails ending in <b>@seafdec.org.ph</b> are allowed to self-register. Please contact the <a href="../contact">site administrator</a> with questions or comments.</message>
 
 	<!-- org.dspace.app.xmlui.eperson.EditProfile.java -->
 	<message key="xmlui.EPerson.EditProfile.title_update">Update Profile</message>
@@ -400,7 +400,7 @@
 	<message key="xmlui.EPerson.PasswordLogin.forgot_link"> Forgot your password?</message>
 	<message key="xmlui.EPerson.PasswordLogin.submit">Sign in</message>
 	<message key="xmlui.EPerson.PasswordLogin.head2">Register new user</message>
-	<message key="xmlui.EPerson.PasswordLogin.para1">Register an account to subscribe to collections for email updates, and submit new items to SAIR.</message>
+	<message key="xmlui.EPerson.PasswordLogin.para1">Register an account to subscribe to collections for email updates, and submit new items to SAIR.<br/>Currently, only SEAFDEC/AQD employees are allowed to self-register.</message>
 	<message key="xmlui.EPerson.PasswordLogin.register_link">Click here to register.</message>
 
 	<!-- org.dspace.app.xmlui.eperson.LDAPLogin.java -->
