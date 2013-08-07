@@ -551,9 +551,7 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <script type="text/javascript"
-                src="{concat($protocol, 'ajax.googleapis.com/ajax/libs/jquery/', $jqueryVersion ,'/jquery.min.js')}">
-            &#160;</script>
+        <script type="text/javascript" src="{concat($protocol, 'ajax.googleapis.com/ajax/libs/jquery/', $jqueryVersion ,'/jquery.min.js')}">&#160;</script>
 
         <xsl:variable name="localJQuerySrc">
             <xsl:value-of
@@ -569,6 +567,54 @@
                 disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')</xsl:text>
         </script>
 
+        <!-- CDN for other Javascript Libraries + Fallback -->
+
+        <xsl:variable name="localJS">
+            <xsl:value-of
+                    select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+            <xsl:text>/static/js/</xsl:text>
+        </xsl:variable>
+
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js">//empty comment</script>
+
+        <script type="text/javascript">
+            <xsl:text disable-output-escaping="yes">
+                if (typeof $.backstretch === 'undefined') {
+                document.write('&lt;script type="text/javascript" src="</xsl:text>
+            <xsl:value-of select="$localJS"/><xsl:text>jquery.backstretch.js</xsl:text>
+            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
+        </script>
+
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js">//empty comment</script>
+
+        <script type="text/javascript">
+            <xsl:text disable-output-escaping="yes">
+            if (typeof $.easing === 'undefined') {
+                document.write('&lt;script type="text/javascript" src="</xsl:text>
+            <xsl:value-of select="$localJS"/><xsl:text>jquery.easing.1.3.js</xsl:text>
+            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
+        </script>
+
+        <script type="text/javascript" src="//rawgithub.com/davatron5000/FitText.js/master/jquery.fittext.js">//empty comment</script>
+
+        <script type="text/javascript">
+            <xsl:text disable-output-escaping="yes">
+            if (typeof $.fitText === 'undefined') {
+                document.write('&lt;script type="text/javascript" src="</xsl:text>
+            <xsl:value-of select="$localJS"/><xsl:text>jquery.fittext.js</xsl:text>
+            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
+        </script>
+
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js">//empty comment</script>
+
+        <script type="text/javascript">
+            <xsl:text disable-output-escaping="yes">
+            if (typeof $.cookie === 'undefined') {
+                document.write('&lt;script type="text/javascript" src="</xsl:text>
+            <xsl:value-of select="$localJS"/><xsl:text>jquery.cookie.js</xsl:text>
+            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
+        </script>
+        <!-- End of CDN libraries and fallback -->
 
         <!-- Add theme javascipt  -->
         <xsl:for-each
