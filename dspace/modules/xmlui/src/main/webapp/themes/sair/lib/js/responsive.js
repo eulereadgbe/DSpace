@@ -55,10 +55,12 @@ var toggleBottom = $("p.ds-paragraph.item-view-toggle-bottom");
 
         //Add Expand / Collapse for the Front page and Community-List
         $('ul#tree').before('<div id="sidetreecontrol">' + //Will not display if javascript disabled
-            '<a class="button white small" href="?#">Collapse All</a>&#160;' +
-            '<a class="button white small" href="?#">Expand All</a></div>');
+            '<a href="?#">Collapse All</a>&#160;' +
+            '<a href="?#">Expand All</a></div>');
+        $('div#sidetreecontrol a').addClass("button small white");
+
         $("#tree").treeview({
-            collapsed: true,
+            collapsed: !($(window).width() > 600),
             animated: "medium",
             control: "#sidetreecontrol",
             persist: "cookie"
