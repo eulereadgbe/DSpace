@@ -1,12 +1,19 @@
+var headerWrapper = $("#ds-header-wrapper");
+var headerLogo = $("#ds-header-logo");
+var sublist = $('div.ds-option-set ul.sublist');
+var NavList = $('#aspect_discovery_Navigation_list_discovery ul li h2, #aspect_viewArtifacts_Navigation_list_browse ul li h2,' +
+    '#aspect_viewArtifacts_Navigation_list_administrative ul li h2');
+var toggleBottom = $("p.ds-paragraph.item-view-toggle-bottom");
 (function ($) {
     $(document).ready(function () { // On load
         if ($(window).width() > 501) { //Adaptive background image for header
-            $("#ds-header-wrapper").backstretch("/themes/sair/images/SAIR-banner.jpg");
+            headerWrapper.backstretch("/themes/sair/images/SAIR-banner.jpg");
+            headerWrapper.backstretch("resize");
         }
         if ($(window).width() <= 500) {
-            $("#ds-header-wrapper").backstretch("/themes/sair/images/SAIR-banner-small.jpg");
+            headerWrapper.backstretch("/themes/sair/images/SAIR-banner-small.jpg");
+            headerWrapper.backstretch("resize");
         }
-        var headerLogo = $("#ds-header-logo");
 
         headerLogo.css({'width': '9.7894736842105263157894736842105%',
             'height': '0', 'padding-bottom': '7.3684210526315789473684210526316%',
@@ -23,25 +30,22 @@
             document.getElementById("ds-main").style.width = (($(window).width() - 12) / $(window).width()) * 100 + '%';
         }
         //Collapse if screen width is <=600
-        var sublist = $('div.ds-option-set ul.sublist');
         if ($(window).width() <= 600) {
             sublist.css('display', 'none');
         }
 
         //Accordion menu
-        var selector = $('#aspect_discovery_Navigation_list_discovery ul li h2, #aspect_viewArtifacts_Navigation_list_browse ul li h2,' +
-            '#aspect_viewArtifacts_Navigation_list_administrative ul li h2');
-        $(selector).hover(function () {
+        NavList.hover(function () {
             $(this).css({'color': '#036', 'text-decoration': 'underline', 'font-weight': 'bold', 'cursor': 'hand', 'cursor': 'pointer'});
         }, function () {
             $(this).css({'color': '#444444', 'text-decoration': 'none', 'font-weight': 'normal', 'cursor': 'pointer'});
         });
 
 
-        selector.click
+        NavList.click
         (function (event) {
             var elem = $(this).next();
-            var menu = $('#menu ul:visible');
+            var menu = $('#menu').find('ul:visible');
             if (elem.is('ul')) {
                 event.preventDefault();
                 menu.not(elem).slideUp();
@@ -66,7 +70,7 @@
         });
 
         /* Linkify All Items Metadata content (Item Detail View) */
-        $('#aspect_artifactbrowser_ItemViewer_div_item-view table.ds-includeSet-table tr.ds-table-row td.value-cell').each(function () {
+        $('table.ds-includeSet-table tr.ds-table-row td.value-cell').each(function () {
             var that = $(this),
                 text = that.html();
             that.html(linkify_html(text));
@@ -76,7 +80,8 @@
         $('a').filter(function () {
             return this.hostname && this.hostname !== location.hostname;
         }).addClass("external");
-        $("#ds-body a[href^='http://']").attr("target", "_blank");
+        var relatedLink = $("#ds-body").find("a[href^='http://']");
+        relatedLink.attr("target", "_blank");
 
         // Remove the 'http://dx.doi.org/' to display the DOI only
         $('.external').replaceText(/\bhttp:\/\/dx.doi.org\/\b/gi, '');//http://www.benalman.com/projects/jquery-replacetext-plugin/
@@ -87,7 +92,7 @@
 
         // Create buttons from link //
         $("p.ds-paragraph.item-view-toggle a").addClass("button small white");
-        $("#aspect_artifactbrowser_ItemViewer_div_item-view p.ds-paragraph.item-view-toggle-bottom").css('margin-top', '20px');
+        toggleBottom.css('margin-top', '20px');
     });
 
 })(jQuery);
@@ -95,11 +100,13 @@
 (function ($) {
     $(document).ready(function () { // On load
         $(window).resize(function () {
-            if ($(window).width() > 501) {
-                $("#ds-header-wrapper").backstretch("/themes/sair/images/SAIR-banner.jpg");
+            if ($(window).width() > 501) { //Adaptive background image for header
+                headerWrapper.backstretch("/themes/sair/images/SAIR-banner.jpg");
+                headerWrapper.backstretch("resize");
             }
             if ($(window).width() <= 500) {
-                $("#ds-header-wrapper").backstretch("/themes/sair/images/SAIR-banner-small.jpg");
+                headerWrapper.backstretch("/themes/sair/images/SAIR-banner-small.jpg");
+                headerWrapper.backstretch("resize");
             }
 
             // Will not fire if screen widths is equal to values specified in media queries (media.css)
