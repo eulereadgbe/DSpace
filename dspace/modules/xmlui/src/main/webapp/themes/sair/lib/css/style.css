@@ -972,6 +972,10 @@ div.simple-item-view-authors span {
     text-align: justify;
 }
 
+div.simple-item-view-other {
+    text-align: left;
+}
+
 #aspect_artifactbrowser_ItemViewer_div_item-view h2,
 div.item-summary-view-metadata p.item-view-toggle-bottom,
 div.simple-item-view-description,
@@ -1432,6 +1436,7 @@ img, embed, object, video {
 #ds-footer-signature,
 .simple-item-view-description div,
 .simple-item-view-subject,
+.simple-item-view-other,
 .short-description, .artifact-abstract, p {
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
