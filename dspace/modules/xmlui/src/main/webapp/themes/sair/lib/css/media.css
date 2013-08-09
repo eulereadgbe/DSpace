@@ -1,0 +1,161 @@
+/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
+ *
+ * http://www.dspace.org/license/
+ */
+/*
+ * Media queries for responsive design
+ */
+
+@media all and (orientation:portrait) {
+  /* Style adjustments for portrait mode goes here */
+
+}
+
+@media all and (orientation:landscape) {
+  /* Style adjustments for landscape mode goes here */
+
+}
+
+/* Grade-A Mobile Browsers (Opera Mobile, iPhone Safari, Android Chrome)
+   Consider this: www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/ */
+@media screen and (max-device-width: 480px) {
+
+
+  /* Prevent iOS, WinMobile from adjusting font size */
+  html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; }
+}
+
+@media screen and (max-width: 320px)  {
+    #ds-main {
+        max-width: 320px;
+        width: 96.25%;
+    }
+    #ds-search-form input.ds-text-field {
+        width: 74%;
+    }
+}
+
+@media screen and (max-width: 360px) and (min-width: 321px)  {
+    #ds-main {
+        max-width: 360px;
+        width: 96.66666666666667%;
+    }
+    #ds-search-form input.ds-text-field {
+        width: 77%;
+    }
+}
+
+@media screen and (max-width: 480px) {/* For Sticky Footer */
+    #ds-content-wrapper {
+        overflow:auto;
+        padding-bottom: 180px;/* must be same height as the footer */
+    }
+
+    #ds-footer-wrapper {
+        position: relative;
+        margin-top: -180px; /* negative value of footer height */
+        height: 180px;
+        clear:both;
+    }
+}
+
+@media screen and (max-width: 480px) and (min-width: 361px)  {
+    #ds-main {
+        max-width: 480px;
+        width: 97.5%;
+    }
+}
+
+@media screen and (max-width: 500px) and (min-width: 200px) {
+    #ds-header-logo-text {
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #ds-header-wrapper {
+        background: url('../../images/SAIR-banner-small.jpg'); /* no-js fallback */
+        background-repeat: no-repeat;
+        background-color: transparent;
+    }
+    #ds-header-logo-text {
+        text-transform: capitalize;
+    }
+}
+
+@media screen and (min-width: 501px) {
+    #ds-header-wrapper {
+        background: url('../../images/SAIR-banner.jpg');
+        background-repeat: no-repeat;
+        background-color: transparent;
+    }
+    #ds-header-logo {
+        background: url('../../images/seafdec-logo-small.png');
+        background-repeat: no-repeat;
+        background-color: transparent;
+    }
+    #ds-header-logo-text {
+        font-size: 36px; /* no-js fallback */
+    }
+}
+
+@media screen and (min-width: 647px) {
+    #ds-header-logo-text {
+        font-size: 48px;
+    }
+}
+
+@media screen and (max-width: 600px) and (min-width: 481px)  {
+    #ds-main {
+        max-width: 600px;
+        width: 98%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #ds-body, #ds-options-wrapper {
+        float: none;
+        width: 100%;
+        padding: 0;
+    }
+
+    p.ds-paragraph {
+        text-align: left;
+    }
+
+    div.ds-option-set ul {
+        margin-left: 1.5%
+    }
+
+    div.ds-option-set ul.sublist {
+        margin-left: 3%
+    }
+
+
+}
+@media screen and (max-width: 972px) {
+    body {
+        background: none;
+    }
+
+    #ds-main {
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 522px) and (min-width: 481px) {/* For Sticky Footer, when text of footer wrapped */
+    #ds-content-wrapper {
+        overflow:auto;
+        padding-bottom: 141px;/* must be same height as the footer */
+    }
+
+    #ds-footer-wrapper {
+        position: relative;
+        margin-top: -141px; /* negative value of footer height */
+        height: 141px;
+        clear:both;
+    }
+}
