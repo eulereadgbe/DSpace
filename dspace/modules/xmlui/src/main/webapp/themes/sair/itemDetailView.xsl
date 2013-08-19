@@ -39,6 +39,7 @@
             <table class="ds-includeSet-table detailtable">
                 <xsl:apply-templates mode="itemDetailView-DIM"/>
             </table>
+        </div>
             <xsl:if test="dim:field[@element='identifier' and @qualifier='uri']">
                 <!-- Add QR code in every item -->
                 <xsl:element name="img">
@@ -50,7 +51,6 @@
                     <xsl:attribute name="alt">QRCode</xsl:attribute>
                 </xsl:element>
             </xsl:if>
-        </div>
         <span class="Z3988">
             <xsl:attribute name="title">
                 <xsl:call-template name="renderCOinS"/>
