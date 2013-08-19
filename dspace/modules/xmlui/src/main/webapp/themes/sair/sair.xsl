@@ -413,61 +413,17 @@
             <xsl:value-of select="$jqueryVersion"/>
             <xsl:text>.min.js</xsl:text>
         </xsl:variable>
-
-        <script type="text/javascript">
-            <xsl:text disable-output-escaping="yes">!window.jQuery &amp;&amp; document.write('&lt;script type="text/javascript" src="</xsl:text><xsl:value-of
-                select="$localJQuerySrc"/><xsl:text
-                disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')</xsl:text>
-        </script>
-
-        <!-- CDN for other Javascript Libraries + Fallback -->
-
         <xsl:variable name="localJS">
             <xsl:value-of
                     select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
             <xsl:text>/static/js/</xsl:text>
         </xsl:variable>
 
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js">//empty comment</script>
-
         <script type="text/javascript">
-            <xsl:text disable-output-escaping="yes">
-                if (typeof $.backstretch === 'undefined') {
-                document.write('&lt;script type="text/javascript" src="</xsl:text>
-            <xsl:value-of select="$localJS"/><xsl:text>jquery.backstretch.js</xsl:text>
-            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
+            <xsl:text disable-output-escaping="yes">!window.jQuery &amp;&amp; document.write('&lt;script type="text/javascript" src="</xsl:text><xsl:value-of
+                select="$localJQuerySrc"/><xsl:text
+                disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')</xsl:text>
         </script>
-
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js">//empty comment</script>
-
-        <script type="text/javascript">
-            <xsl:text disable-output-escaping="yes">
-            if (typeof $.easing === 'undefined') {
-                document.write('&lt;script type="text/javascript" src="</xsl:text>
-            <xsl:value-of select="$localJS"/><xsl:text>jquery.easing.1.3.js</xsl:text>
-            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
-        </script>
-
-        <script type="text/javascript" src="//rawgithub.com/davatron5000/FitText.js/master/jquery.fittext.js">//empty comment</script>
-
-        <script type="text/javascript">
-            <xsl:text disable-output-escaping="yes">
-            if (typeof $.fitText === 'undefined') {
-                document.write('&lt;script type="text/javascript" src="</xsl:text>
-            <xsl:value-of select="$localJS"/><xsl:text>jquery.fittext.js</xsl:text>
-            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
-        </script>
-
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js">//empty comment</script>
-
-        <script type="text/javascript">
-            <xsl:text disable-output-escaping="yes">
-            if (typeof $.cookie === 'undefined') {
-                document.write('&lt;script type="text/javascript" src="</xsl:text>
-            <xsl:value-of select="$localJS"/><xsl:text>jquery.cookie.js</xsl:text>
-            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
-        </script>
-        <!-- End of CDN libraries and fallback -->
 
         <!-- Add theme javascipt  -->
         <xsl:for-each
@@ -552,10 +508,65 @@
             <xsl:text>DD_belatedPNG.fix('#ds-header-logo');DD_belatedPNG.fix('#ds-footer-logo');$.each($('img[src$=png]'), function() {DD_belatedPNG.fixPng(this);});</xsl:text>
         </script>
         <xsl:text disable-output-escaping="yes">&lt;![endif]--&gt;</xsl:text>
-
+       <!-- CDN -->
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js">//empty comment</script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js">//empty comment</script>
         <script type="text/javascript">
             runAfterJSImports.execute();
         </script>
+        <script type="text/javascript">
+        <xsl:text disable-output-escaping="yes">
+        if (window.location.pathname == '/community-list' || window.location.pathname == '/' ) {
+            document.write('&lt;script type="text/javascript" src="</xsl:text>
+            <xsl:text>/themes/sair/lib/treeview/jquery.treeview.js</xsl:text>
+            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function () { // On load
+            if (window.location.pathname == '/community-list' || window.location.pathname == '/' ) {
+            //Add Expand / Collapse for the Front page and Community-List
+                        $('ul#tree').before('<div id='sidetreecontrol'>'+'<a href='?#'>Collapse All</a>&#160;<a href='?#'>Expand All</a>'+'</div>');
+            $('div#sidetreecontrol a').addClass("button small white");
+
+            $("#tree").treeview({
+            collapsed: !($(window).width()<xsl:text disable-output-escaping="yes">&gt;</xsl:text> 600),
+            animated: "medium",
+            control: "#sidetreecontrol",
+            persist: "cookie"
+            })
+            };
+            //Open External Links In New Tab/Window
+            $('a').filter(function () {
+            return this.hostname <xsl:text disable-output-escaping="yes">&amp;&amp;</xsl:text> this.hostname !== location.hostname;
+            }).addClass("external");
+            var relatedLink = $("#ds-body").find("a[href^='http://']");
+            relatedLink.attr("target", "_blank");
+            });
+        </script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js">//empty comment</script>
+        <!-- CDN Fallback -->
+        <script type="text/javascript">
+        <xsl:text disable-output-escaping="yes">
+        if (typeof $.backstretch === 'undefined') {
+            document.write('&lt;script type="text/javascript" src="</xsl:text>
+            <xsl:value-of select="$localJS"/><xsl:text>jquery.backstretch.js</xsl:text>
+            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
+        </script>
+        <script type="text/javascript">
+        <xsl:text disable-output-escaping="yes">
+        if (typeof $.cookie === 'undefined') {
+            document.write('&lt;script type="text/javascript" src="</xsl:text>
+            <xsl:value-of select="$localJS"/><xsl:text>jquery.cookie.js</xsl:text>
+            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
+        </script>
+        <script type="text/javascript">
+        <xsl:text disable-output-escaping="yes">
+        if (typeof $.easing === 'undefined') {
+            document.write('&lt;script type="text/javascript" src="</xsl:text>
+            <xsl:value-of select="$localJS"/><xsl:text>jquery.easing.1.3.js</xsl:text>
+            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
+        </script>
+        <!-- End of CDN Fallback -->
 
         <!-- Add a google analytics script if the key is present -->
         <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']">

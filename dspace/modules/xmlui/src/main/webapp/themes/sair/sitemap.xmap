@@ -132,6 +132,7 @@
                     <map:parameter name="stylesheet.screen#6" value="lib/css/authority-control.css"/>
                     <map:parameter name="stylesheet.screen#7" value="lib/webfonts/webfonts.css"/>
                     <map:parameter name="stylesheet.screen#8" value="lib/css/BreadCrumb.css"/>
+                    <map:parameter name="stylesheet.screen#9" value="lib/treeview/jquery.treeview.css"/>
                 </map:transform>
 
                 <map:transform type="IncludePageMeta">
@@ -140,14 +141,13 @@
                 </map:transform>
 
                 <map:transform type="IncludePageMeta">
-                    <map:parameter name="stylesheet#1" value="lib/treeview/jquery.treeview.css"/>
+                    <map:parameter name="stylesheet.all" value="lib/css/media.css"/>
                     <map:parameter name="javascript#1" value="lib/js/jquery-ui-1.8.15.custom.min.js"/>
-                    <map:parameter name="javascript#2" value="lib/treeview/jquery.treeview.js"/>
-                    <map:parameter name="javascript#3" value="lib/js/jquery.jBreadCrumb.1.1.js"/>
-                    <map:parameter name="javascript#4" value="lib/js/linkify.js"/>
+                    <map:parameter name="javascript#2" value="lib/js/jquery.fittext.js"/>
+                    <map:parameter name="javascript#3" value="lib/js/linkify.js"/>
+                    <map:parameter name="javascript#4" value="lib/js/jquery.jBreadCrumb.1.1.js"/>
                     <map:parameter name="javascript#5" value="lib/js/responsive.js"/>
                     <map:parameter name="javascript#6" value="lib/js/jquery.ba-replacetext.min.js"/>
-                    <map:parameter name="stylesheet.all" value="lib/css/media.css"/>
                     <map:parameter name="theme.path" value="{global:theme-path}"/>
                     <map:parameter name="theme.name" value="{global:theme-name}"/>
                 </map:transform>

@@ -53,19 +53,6 @@ var toggleBottom = $("p.ds-paragraph.item-view-toggle-bottom");
             }
         });
 
-        //Add Expand / Collapse for the Front page and Community-List
-        $('ul#tree').before('<div id="sidetreecontrol">' + //Will not display if javascript disabled
-            '<a href="?#">Collapse All</a>&#160;' +
-            '<a href="?#">Expand All</a></div>');
-        $('div#sidetreecontrol a').addClass("button small white");
-
-        $("#tree").treeview({
-            collapsed: !($(window).width() > 600),
-            animated: "medium",
-            control: "#sidetreecontrol",
-            persist: "cookie"
-        });
-
         //Insert 'http://dx.doi.org/' to resolve to DOI
         $('.label-cell:contains(DOI)').next('td').text(function (_, txt) {
             return 'http://dx.doi.org/' + txt;
@@ -78,15 +65,10 @@ var toggleBottom = $("p.ds-paragraph.item-view-toggle-bottom");
             that.html(linkify_html(text));
         });
 
-        //Open External Links In New Tab/Window
-        $('a').filter(function () {
-            return this.hostname && this.hostname !== location.hostname;
-        }).addClass("external");
-        var relatedLink = $("#ds-body").find("a[href^='http://']");
-        relatedLink.attr("target", "_blank");
-
+        if (location.href.match(/show=full/) != null ){
         // Remove the 'http://dx.doi.org/' to display the DOI only
-        $('.external').replaceText(/\bhttp:\/\/dx.doi.org\/\b/gi, '');//http://www.benalman.com/projects/jquery-replacetext-plugin/
+        $('body *').replaceText(/\bhttp:\/\/dx.doi.org\/\b/gi, '' );// http://www.benalman.com/projects/jquery-replacetext-plugin/
+        }
 
         // Open PDFs in new tab/window //
         $("div.file-link a").addClass("button small white");
@@ -95,12 +77,8 @@ var toggleBottom = $("p.ds-paragraph.item-view-toggle-bottom");
         // Create buttons from link //
         $("p.ds-paragraph.item-view-toggle a").addClass("button small white");
         toggleBottom.css('margin-top', '20px');
-    });
 
-})(jQuery);
 
-(function ($) {
-    $(document).ready(function () { // On load
         $(window).resize(function () {
             if ($(window).width() > 501) { //Adaptive background image for header
                 headerWrapper.backstretch("/themes/sair/images/SAIR-banner.jpg");

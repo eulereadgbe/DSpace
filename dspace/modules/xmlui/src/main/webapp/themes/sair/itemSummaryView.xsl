@@ -230,7 +230,8 @@
                     <span>
                         <xsl:for-each select="dim:field[@element='identifier' and @qualifier='doi']">
                             <a>
-                                <xsl:attribute name="href">http://dx.doi.org/
+                                <xsl:attribute name="href">
+                                    <xsl:text>http://dx.doi.org/</xsl:text>
                                     <xsl:copy-of select="./node()"/>
                                 </xsl:attribute>
                                 <xsl:copy-of select="./node()"/>
