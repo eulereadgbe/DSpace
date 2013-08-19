@@ -93,6 +93,17 @@
     <xsl:template match="dim:dim" mode="itemSummaryView-DIM">
         <div class="item-summary-view-metadata">
             <xsl:call-template name="itemSummaryView-DIM-fields"/>
+            <xsl:if test="dim:field[@element='identifier' and @qualifier='uri']">
+            <!-- Add QR code in every item -->
+            <xsl:element name="img">
+                <xsl:attribute name="src">
+                    <xsl:text>http://chart.apis.google.com/chart?cht=qr&amp;chs=100x100&amp;chl=</xsl:text>
+                    <xsl:value-of select="dim:field[@element='identifier' and @qualifier='uri']"/>
+                    <xsl:text>&amp;chld=H|0</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="alt">QRCode</xsl:attribute>
+            </xsl:element>
+            </xsl:if>
         </div>
     </xsl:template>
 
