@@ -111,7 +111,7 @@ public class CoverPage {
     protected static final Font FONT_HEADER = setFont(FONT_SANS, Font.FontFamily.HELVETICA, 24, Font.NORMAL);
 
     /** Footer Font */
-    protected static final Font FONT_FOOTER = setFont(FONT_SANS, Font.FontFamily.HELVETICA, 10, Font.NORMAL);
+    protected static final Font FONT_FOOTER = setFont(FONT_SERIF, Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
 
     /** Cell Tag Font */
     private static final Font FONT_TAG    = setFont(FONT_SANS, Font.FontFamily.HELVETICA, 12, Font.NORMAL);
@@ -495,6 +495,7 @@ public class CoverPage {
             Paragraph para_head = new Paragraph(24f);
             para_head.setAlignment(Element.ALIGN_CENTER);
             para_head.setIndentationLeft(20f);
+            para_head.setLeading(26);
             para_head.add(title);
             doc.add(new Paragraph(""));
             doc.add(para_head);
@@ -509,20 +510,23 @@ public class CoverPage {
             for (int i=0, len=fields.length; i<len; i++)
             {
                 String[] flds = fields[i].split(":");
+                String fldValue = getFieldValue(flds[1]);
+                if (fldValue == null || "".equals(fldValue.trim()))
+                {
+                    continue;
+                }
 
-                // Tag
                 PdfPCell tag = new PdfPCell(new Phrase(flds[0], FONT_TAG));
-                tag.setGrayFill(0.8f);
+                tag.setGrayFill(0.88f);
                 tag.setHorizontalAlignment(Element.ALIGN_LEFT);
                 tag.setVerticalAlignment(Element.ALIGN_TOP);
-                tag.setPaddingLeft(5f);
-                tag.setPaddingTop(5f);
+                tag.setPadding(7f);
 
-                PdfPCell value = new PdfPCell(new Phrase(getFieldValue(flds[1]), FONT_VALUE));
+                PdfPCell value = new PdfPCell(new Phrase(fldValue, FONT_VALUE));
                 value.setHorizontalAlignment(Element.ALIGN_LEFT);
                 value.setVerticalAlignment(Element.ALIGN_TOP);
-                value.setMinimumHeight(26f);
-                value.setPadding(5f);
+                value.setPadding(7f);
+                value.setLeading(13, 0);
 
                 table.addCell(tag);
                 table.addCell(value);
