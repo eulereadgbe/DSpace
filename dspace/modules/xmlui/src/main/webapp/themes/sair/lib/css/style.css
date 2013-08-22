@@ -431,17 +431,19 @@ input.ds-password-field {
 }
 
 .submission .ds-form-list input.ds-text-field,
-.administrative .ds-form-list input.ds-text-field,
+.administrative .ds-form-list input.ds-text-field {
+    width: 500px; /* 500px / 678px */
+}
 textarea.ds-textarea-field {
-    width: 74.631268436578171091445427728614%; /* 500px / 678px */
+    width: 73.74631268436578%; /* 500px / 678px */
 }
 
 table textarea.ds-textarea-field {
-    width: 58.997050147492625368731563421829%; /* 400px / 678px */
+    width: 400px; /* 400px / 678px */
 }
 
 #aspect_administrative_item_EditItemMetadataForm_field_value {
-    width: 84.070796460176991150442477876106%; /* 570px / 678px */
+    width: 84.07079646017699%; /* 570px / 678px */
 }
 
 #aspect_administrative_registries_EditMetadataSchema_list_edit-schema-new-field-form .ds-text-field,
