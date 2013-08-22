@@ -99,5 +99,14 @@
                 <module>oai</module>
             </modules>
         </profile>
+        <profile>
+            <id>cover</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>cover</module>
+            </modules>
+        </profile>
     </profiles>
 </project>
