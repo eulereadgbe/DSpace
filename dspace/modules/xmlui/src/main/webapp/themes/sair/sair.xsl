@@ -507,9 +507,6 @@
             <xsl:text>DD_belatedPNG.fix('#ds-header-logo');DD_belatedPNG.fix('#ds-footer-logo');$.each($('img[src$=png]'), function() {DD_belatedPNG.fixPng(this);});</xsl:text>
         </script>
         <xsl:text disable-output-escaping="yes">&lt;![endif]--&gt;</xsl:text>
-       <!-- CDN -->
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js">//empty comment</script>
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js">//empty comment</script>
         <script type="text/javascript">
             runAfterJSImports.execute();
         </script>
@@ -518,6 +515,14 @@
         if (window.location.pathname == '/community-list' || window.location.pathname == '/' ) {
             document.write('&lt;script type="text/javascript" src="</xsl:text>
             <xsl:text>/themes/sair/lib/treeview/jquery.treeview.js</xsl:text>
+            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
+        </script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js">//empty comment</script>
+        <script type="text/javascript">
+        <xsl:text disable-output-escaping="yes">
+        if (typeof $.cookie === 'undefined') {
+            document.write('&lt;script type="text/javascript" src="</xsl:text>
+            <xsl:value-of select="$localJS"/><xsl:text>jquery.cookie.js</xsl:text>
             <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
         </script>
         <script type="text/javascript">
@@ -542,6 +547,7 @@
             relatedLink.attr("target", "_blank");
             });
         </script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js">//empty comment</script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js">//empty comment</script>
         <!-- CDN Fallback -->
         <script type="text/javascript">
@@ -549,13 +555,6 @@
         if (typeof $.backstretch === 'undefined') {
             document.write('&lt;script type="text/javascript" src="</xsl:text>
             <xsl:value-of select="$localJS"/><xsl:text>jquery.backstretch.js</xsl:text>
-            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
-        </script>
-        <script type="text/javascript">
-        <xsl:text disable-output-escaping="yes">
-        if (typeof $.cookie === 'undefined') {
-            document.write('&lt;script type="text/javascript" src="</xsl:text>
-            <xsl:value-of select="$localJS"/><xsl:text>jquery.cookie.js</xsl:text>
             <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')}</xsl:text>
         </script>
         <script type="text/javascript">
