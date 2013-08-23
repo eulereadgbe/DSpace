@@ -566,6 +566,17 @@
         </script>
         <!-- End of CDN Fallback -->
 
+        <script type="text/javascript">
+            <xsl:text disable-output-escaping="yes">if (location.href.match(/handle/) != null &amp;&amp;
+                window.location.href.indexOf("workflow") == -1 &amp;&amp; window.location.href.indexOf("submit") == -1
+                &amp;&amp; window.location.href.indexOf("browse") == -1 ) {</xsl:text>
+        <xsl:text disable-output-escaping="yes">
+            document.write('&lt;script type="text/javascript" src="</xsl:text>
+            <xsl:text disable-output-escaping="yes">//s7.addthis.com/js/300/addthis_widget.js#username=seafdecaqdlib&amp;domready=1</xsl:text>
+            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')</xsl:text>
+            }
+        </script>
+
         <!-- Add a google analytics script if the key is present -->
         <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']">
             <script type="text/javascript"><xsl:text>

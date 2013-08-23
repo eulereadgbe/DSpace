@@ -78,6 +78,71 @@ var toggleBottom = $("p.ds-paragraph.item-view-toggle-bottom");
         $("p.ds-paragraph.item-view-toggle a").addClass("button small white");
         toggleBottom.css('margin-top', '20px');
 
+        // AddThis
+        var itemUrl = (document.URL);
+        if (location.href.match(/show=full/) != null ){
+            $('#addthis').attr("addthis:url", (itemUrl).replace("?show=full",""));
+        }
+        else {
+            $('#addthis').attr("addthis:url", (document.URL));
+        }
+        if (location.href.match(/handle/) != null && window.location.href.indexOf("workflow") == -1
+            && window.location.href.indexOf("submit") == -1 && window.location.href.indexOf("browse") == -1 ) {
+        addthis.layers({
+            'theme' : 'transparent',
+            'domain' : '',
+            'linkFilter' : function(link, layer) {
+                console.log(link.title + ' - ' + link.url + " - " + layer);
+                return link;
+            },
+            'responsive' : {
+                'maxWidth' : '1080px',
+                'minWidth' : '0px'
+            },
+            'share' : {
+                'position' : 'left',
+                'numPreferredServices' : 5,
+                'postShareTitle' : 'Thanks for sharing!',
+                'postShareFollowMsg' : 'Follow us',
+                'postShareRecommendedMsg' : 'Recommended for you',
+                'desktop' : true,
+                'mobile' : true,
+                'theme' : 'transparent'
+            },
+            'follow' : {
+                'services' : [
+                    {'service': 'facebook', 'id': 'seafdecaqdlib'},
+                    {'service': 'twitter', 'id': 'seafdecaqdlib'},
+                    {'service': 'google_follow', 'id': '111749266242133800967'},
+                    {'service': 'foursquare', 'id': 'seafdecaqdlib'}
+                ],
+                'title' : 'Follow',
+                'postFollowTitle' : 'Thanks for following!',
+                'postFollowRecommendedMsg' : 'Recommended for you',
+                'mobile' : true,
+                'desktop' : true,
+                'theme' : 'transparent'
+            },
+            'whatsnext' : {
+                'recommendedTitle' : 'Recommended for you',
+                'shareMsg' : 'Share to [x]',
+                'followMsg' : 'Follow us on [x]',
+                'theme' : 'transparent',
+                'desktop' : true
+            },
+            'recommended' : {
+                'title' : 'Recommended for you',
+                'mobile' : true,
+                'desktop' : true,
+                'theme' : 'transparent'
+            },
+            'mobile' : {
+                'buttonBarPosition' : 'bottom',
+                'buttonBarTheme' : 'transparent',
+                'mobile' : true
+            }
+        })
+        };
 
         $(window).resize(function () {
             if ($(window).width() > 501) { //Adaptive background image for header
