@@ -84,6 +84,12 @@
                     <xsl:when test="@element='description' and @qualifier='abstract'">
                         <i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text>
                     </xsl:when>
+                    <xsl:when test="@element='description' and @qualifier='provenance'">
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-provenance</i18n:text>
+                    </xsl:when>
+                    <xsl:when test="@element='description' and @qualifier='sponsorship'">
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-sponsorship</i18n:text>
+                    </xsl:when>
                     <xsl:when test="@element='description'">
                         <i18n:text>xmlui.dri2xhtml.METS-1.0.item-description</i18n:text>
                     </xsl:when>

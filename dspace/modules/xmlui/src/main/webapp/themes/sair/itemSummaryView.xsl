@@ -396,9 +396,45 @@
                 </xsl:call-template>
             </xsl:when>
 
+            <!-- Sponsorship row -->
+            <xsl:when
+                    test="$clause = 10 and (dim:field[@element='description' and @qualifier='sponsorship' and descendant::text()])">
+                <div class="simple-item-view-description">
+                    <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.item-sponsorship</i18n:text>:
+                    </h3>
+                    <div>
+                        <xsl:if test="count(dim:field[@element='description' and @qualifier='sponsorship']) &gt; 1">
+                            <div class="spacer">&#160;</div>
+                        </xsl:if>
+                        <xsl:for-each select="dim:field[@element='description' and @qualifier='sponsorship']">
+                            <xsl:choose>
+                                <xsl:when test="node()">
+                                    <xsl:call-template name="break">
+                                        <xsl:with-param name="text" select="./node()"/>
+                                    </xsl:call-template>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:text>&#160;</xsl:text>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:if test="count(following-sibling::dim:field[@element='description' and @qualifier='sponsorship']) != 0">
+                                <div class="spacer">&#160;</div>
+                            </xsl:if>
+                        </xsl:for-each>
+                        <xsl:if test="count(dim:field[@element='description' and @qualifier='sponsorship']) &gt; 1">
+                            <div class="spacer">&#160;</div>
+                        </xsl:if>
+                    </div>
+                </div>
+                <xsl:call-template name="itemSummaryView-DIM-fields">
+                    <xsl:with-param name="clause" select="($clause + 1)"/>
+                    <xsl:with-param name="phase" select="$otherPhase"/>
+                </xsl:call-template>
+            </xsl:when>
+
             <!-- TOC row -->
             <xsl:when
-                    test="$clause = 10 and (dim:field[@element='description' and @qualifier='tableofcontents' and descendant::text()])">
+                    test="$clause = 11 and (dim:field[@element='description' and @qualifier='tableofcontents' and descendant::text()])">
                 <div class="simple-item-view-description">
                     <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.item-toc</i18n:text>:
                     </h3>
@@ -426,7 +462,7 @@
             </xsl:when>
 
             <!-- Keywords row -->
-            <xsl:when test="$clause = 11 and (dim:field[@element='subject'][@qualifier='asfa'] or dim:field[@element='subject' and not(@qualifier)])">
+            <xsl:when test="$clause = 12 and (dim:field[@element='subject'][@qualifier='asfa'] or dim:field[@element='subject' and not(@qualifier)])">
                 <div class="simple-item-view-subject">
                     <h3 class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-keyword</i18n:text>:</h3>
                     <div>
@@ -474,7 +510,7 @@
             </xsl:when>
 
             <!-- Source row -->
-            <xsl:when test="$clause = 12 and (dim:field[@element='relation' and @qualifier='ispartof'])">
+            <xsl:when test="$clause = 13 and (dim:field[@element='relation' and @qualifier='ispartof'])">
                 <xsl:if test="count(dim:field[@element='identifier' and @qualifier='citation']) = 0">
                     <div class="simple-item-view-description">
                         <h3 class="bold"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-ispartof</i18n:text>:
@@ -497,7 +533,7 @@
                 </xsl:call-template>
             </xsl:when>
 
-            <xsl:when test="$clause = 13 and $ds_item_view_toggle_url != ''">
+            <xsl:when test="$clause = 14 and $ds_item_view_toggle_url != ''">
                 <p class="ds-paragraph item-view-toggle item-view-toggle-bottom">
                     <a>
                         <xsl:attribute name="href">
