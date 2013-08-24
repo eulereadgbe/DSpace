@@ -14,6 +14,14 @@ body {
     background: url("../../images/body-bg.jpg") repeat scroll 0 0 transparent;
 }
 
+#file_news_div_news p:first-child:first-letter, div.detail-view p.intro-text:first-letter {/* Drop Caps */
+    float: left; color: #6D859C; font-size: 75px; line-height: 60px; padding-top: 4px; padding-right: 8px; padding-left: 3px; font-family: zendaregular;
+}
+
+p.intro-text {
+    white-space:pre-line;
+    text-align: justify;
+}
 #ds-main {
     background-color: white;
     border: 6px solid #FFFFFF;
