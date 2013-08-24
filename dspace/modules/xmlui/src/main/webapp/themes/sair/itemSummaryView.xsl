@@ -188,16 +188,22 @@
                                             <xsl:text>ds-dc_contributor_author-authority</xsl:text>
                                         </xsl:attribute>
                                     </xsl:if>
-                                    <xsl:copy-of select="node()"/>
-                                </span>
+                                    <a>
+                                        <xsl:attribute name="href">
+                                            <xsl:text>/discover?filtertype=author&amp;filter_relational_operator=contains&amp;filter=</xsl:text>
+                                            <xsl:value-of select="substring-before(node(),',')"/>
+                                        </xsl:attribute>
+                                        <xsl:copy-of select="node()"/>
+                                    </a>
                                 <xsl:if test="count(following-sibling::dim:field[@element='contributor'][@qualifier='author']) != 0">
                                     <xsl:text>; </xsl:text>
                                 </xsl:if>
+                                </span>
                             </xsl:for-each>
                         </xsl:when>
                         <xsl:when test="dim:field[@element='creator']">
                             <xsl:for-each select="dim:field[@element='creator']">
-                                <xsl:copy-of select="node()"/>
+                                        <xsl:copy-of select="node()"/>
                                 <xsl:if test="count(following-sibling::dim:field[@element='creator']) != 0">
                                     <xsl:text>; </xsl:text>
                                 </xsl:if>
@@ -205,7 +211,7 @@
                         </xsl:when>
                         <xsl:when test="dim:field[@element='contributor']">
                             <xsl:for-each select="dim:field[@element='contributor']">
-                                <xsl:copy-of select="node()"/>
+                                        <xsl:copy-of select="node()"/>
                                 <xsl:if test="count(following-sibling::dim:field[@element='contributor']) != 0">
                                     <xsl:text>; </xsl:text>
                                 </xsl:if>

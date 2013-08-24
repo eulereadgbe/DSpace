@@ -970,12 +970,19 @@ div.item-summary-view-metadata {
 }
 
 div.simple-item-view-authors {
-    font-size: 123.1%;
+    font-size: 112%;
     font-weight: bold;
     border-bottom: 1px solid #D8E8EB;
     padding-bottom: 2px;
     margin-bottom: 20px;
     text-align: left;
+}
+div.simple-item-view-authors a {
+    text-decoration: none;
+}
+
+div.simple-item-view-authors a:hover {
+    color: #003366;
 }
 
 div.simple-item-view-authors span {
