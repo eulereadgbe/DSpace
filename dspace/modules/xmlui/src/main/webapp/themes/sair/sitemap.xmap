@@ -152,7 +152,7 @@
                     <map:parameter name="javascript#2" value="lib/js/jquery.fittext.js"/>
                     <map:parameter name="javascript#3" value="lib/js/linkify.js"/>
                     <map:parameter name="javascript#4" value="lib/js/jquery.jBreadCrumb.1.1.js"/>
-                    <map:parameter name="javascript#5" value="lib/js/responsive.js"/>
+                    <map:parameter name="javascript#5" value="lib/js/sair.js"/>
                     <map:parameter name="javascript#6" value="lib/js/jquery.ba-replacetext.min.js"/>
                     <map:parameter name="theme.path" value="{global:theme-path}"/>
                     <map:parameter name="theme.name" value="{global:theme-name}"/>
