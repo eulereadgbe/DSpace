@@ -19,6 +19,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BarcodeQRCode;
 import org.apache.log4j.Logger;
 import org.dspace.content.Bundle;
 import org.dspace.content.Collection;
@@ -549,13 +550,22 @@ public class CoverPage {
             p.add(downloaded);
             doc.add(p);
 
-            java.net.URL url = new
-                    java.net.URL("https://chart.googleapis.com/chart?cht=qr&chs=150x150&chld=H|0&chl="
-                    + org.dspace.handle.HandleManager.getCanonicalForm(item.getHandle()));
-            Image qrcode = Image.getInstance(url);
-            qrcode.scalePercent(72.0f / 96.0f * 100f);
-            qrcode.setAlignment(Element.ALIGN_CENTER);
-            doc.add(qrcode);
+            // Replaced with itext native QR code generator | generation of cover page will fail if cannot connect
+            // to https://chart.googleapis.com
+            //java.net.URL url = new
+            //        java.net.URL("https://chart.googleapis.com/chart?cht=qr&chs=150x150&chld=H|0&chl="
+            //        + org.dspace.handle.HandleManager.getCanonicalForm(item.getHandle()));
+            //Image qrcode = Image.getInstance(url);
+            //qrcode.scalePercent(72.0f / 96.0f * 100f);
+            //qrcode.setAlignment(Element.ALIGN_CENTER);
+            //doc.add(qrcode);
+
+            String handleURI = org.dspace.handle.HandleManager.getCanonicalForm(item.getHandle());
+            BarcodeQRCode qrCode = new BarcodeQRCode(handleURI, 150, 150, null);
+            Image img = qrCode.getImage();
+            //img.scalePercent(72.0f / 96.0f * 100f);
+            img.setAlignment(Element.ALIGN_CENTER);
+            doc.add(img);
 
             if (logo2_path != null && !logo2_path.equals("")) 
             {
