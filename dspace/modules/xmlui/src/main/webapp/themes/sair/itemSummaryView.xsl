@@ -93,18 +93,6 @@
     <xsl:template match="dim:dim" mode="itemSummaryView-DIM">
         <div class="item-summary-view-metadata">
             <!-- Test the item if it's still under submission -->
-            <xsl:if test="dim:field[@element='identifier' and @qualifier='uri']">
-                <!-- AddThis Button BEGIN -->
-                <div id="addthis" class="addthis_toolbox addthis_default_style">
-                    <a class="addthis_button_preferred_1">&#160;</a>
-                    <a class="addthis_button_preferred_2">&#160;</a>
-                    <a class="addthis_button_preferred_3">&#160;</a>
-                    <a class="addthis_button_preferred_4">&#160;</a>
-                    <a class="addthis_button_compact">&#160;</a>
-                    <a class="addthis_counter addthis_bubble_style">&#160;</a>
-                </div>
-                <!-- AddThis Button END -->
-            </xsl:if>
             <xsl:call-template name="itemSummaryView-DIM-fields"/>
             <xsl:if test="dim:field[@element='identifier' and @qualifier='uri']">
             <!-- Add QR code in every item -->

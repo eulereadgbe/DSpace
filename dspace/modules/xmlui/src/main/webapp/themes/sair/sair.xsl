@@ -565,14 +565,68 @@
         </script>
 
         <script type="text/javascript">
-            <xsl:text disable-output-escaping="yes">if (location.href.match(/handle/) != null &amp;&amp;
-                window.location.href.indexOf("workflow") == -1 &amp;&amp; window.location.href.indexOf("submit") == -1
-                &amp;&amp; window.location.href.indexOf("browse") == -1 ) {</xsl:text>
-        <xsl:text disable-output-escaping="yes">
-            document.write('&lt;script type="text/javascript" src="</xsl:text>
-            <xsl:text disable-output-escaping="yes">//s7.addthis.com/js/300/addthis_widget.js#username=seafdecaqdlib&amp;domready=1</xsl:text>
-            <xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;\/script&gt;')</xsl:text>
-            }
+            <xsl:text disable-output-escaping="yes">if (location.href.match(/handle/) != null &amp;&amp; window.location.href.indexOf("workflow") == -1</xsl:text>
+            <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("submit") == -1</xsl:text>
+            <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("browse") == -1) {
+                    $.getScript("//s7.addthis.com/js/300/addthis_widget.js#username=seafdecaqdlib&amp;domready=1", function(){
+                    // here you can use anything you defined in the loaded script
+                    addthis.layers({
+                    'theme': 'transparent',
+                    'domain': '',
+                    'linkFilter': function (link, layer) {
+                        console.log(link.title + ' - ' + link.url + " - " + layer);
+                        return link;
+                    },
+                    'responsive': {
+                        'maxWidth': '1080px',
+                        'minWidth': '0px'
+                    },
+                    'share': {
+                        'position': 'left',
+                        'numPreferredServices': 5,
+                        'postShareTitle': 'Thanks for sharing!',
+                        'postShareFollowMsg': 'Follow us',
+                        'postShareRecommendedMsg': 'Recommended for you',
+                        'desktop': true,
+                        'mobile': true,
+                        'theme': 'transparent'
+                    },
+                    'follow': {
+                        'services': [
+                            {'service': 'facebook', 'id': 'seafdecaqdlib'},
+                            {'service': 'twitter', 'id': 'seafdecaqdlib'},
+                            {'service': 'google_follow', 'id': '111749266242133800967'},
+                            {'service': 'foursquare', 'id': 'seafdecaqdlib'}
+                        ],
+                        'title': 'Follow',
+                        'postFollowTitle': 'Thanks for following!',
+                        'postFollowRecommendedMsg': 'Recommended for you',
+                        'mobile': true,
+                        'desktop': true,
+                        'theme': 'transparent'
+                    },
+                    'whatsnext': {
+                        'recommendedTitle': 'Recommended for you',
+                        'shareMsg': 'Share to [x]',
+                        'followMsg': 'Follow us on [x]',
+                        'theme': 'transparent',
+                        'desktop': true
+                    },
+                    'recommended': {
+                        'title': 'Recommended for you',
+                        'mobile': true,
+                        'desktop': true,
+                        'theme': 'transparent'
+                    },
+                    'mobile': {
+                        'buttonBarPosition': 'bottom',
+                        'buttonBarTheme': 'transparent',
+                        'mobile': true
+                    }
+                });
+            $.getScript("/themes/sair/lib/js/addthis.js");
+                });
+        }</xsl:text>
         </script>
 
         <!-- Add a google analytics script if the key is present -->
