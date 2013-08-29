@@ -966,7 +966,7 @@ div.item-summary-view-metadata h2 {
 div.item-summary-view-metadata {
     text-align: justify;
     line-height: 161.6%;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 div.simple-item-view-authors {
@@ -1461,20 +1461,6 @@ img, embed, object, video {
     hyphens: auto;
 }
 
-/* Fix sub and sup tags to adjust line height */
-sub, sup {
-    font-size: 75%;
-    line-height: 0;
-    position: relative;
-    vertical-align: baseline;
-}
-sup {
-    top: -0.5em;
-}
-sub {
-    bottom: -0.25em;
-}
-
 a[href*="rss_1.0"] {
     background: url("../../images/rss01.png") no-repeat left;
 }
@@ -1566,4 +1552,10 @@ Back to top button
     -webkit-transition: 1s;
     -moz-transition: 1s;
     transition: 1s;
+}
+
+/* Hide QR code on screen */
+#img-buffer, #QRcode, #altQR {
+    visibility: hidden;
+    display: none;
 }

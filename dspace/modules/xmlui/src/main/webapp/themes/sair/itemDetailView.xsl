@@ -40,17 +40,6 @@
                 <xsl:apply-templates mode="itemDetailView-DIM"/>
             </table>
         </div>
-            <xsl:if test="dim:field[@element='identifier' and @qualifier='uri']">
-                <!-- Add QR code in every item -->
-                <xsl:element name="img">
-                    <xsl:attribute name="src">
-                        <xsl:text>http://chart.apis.google.com/chart?cht=qr&amp;chs=100x100&amp;chl=</xsl:text>
-                        <xsl:value-of select="dim:field[@element='identifier' and @qualifier='uri']"/>
-                        <xsl:text>&amp;chld=H|0</xsl:text>
-                    </xsl:attribute>
-                    <xsl:attribute name="alt">QRCode</xsl:attribute>
-                </xsl:element>
-            </xsl:if>
         <span class="Z3988">
             <xsl:attribute name="title">
                 <xsl:call-template name="renderCOinS"/>

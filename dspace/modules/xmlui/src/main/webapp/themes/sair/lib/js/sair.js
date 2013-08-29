@@ -25,11 +25,6 @@ var back2top = $("#back-top");
         $("#breadCrumb").jBreadCrumb();
         $(".ds-trail-arrow").remove();// This will remove the arrows in ds-trail before using the breadCrumbs jquery plugin
 
-        // Will not fire if screen widths is equal to values specified in media queries (media.css)
-        if ($(window).width() <= 972 && ($(window).width() !== 320 && $(window).width() !== 360 && $(window).width() !== 480 && $(window).width() !== 600)) {
-            document.getElementById("ds-main").style.maxWidth = $(window).width() + 'px';
-            document.getElementById("ds-main").style.width = (($(window).width() - 12) / $(window).width()) * 100 + '%';
-        }
         //Collapse if screen width is <=600
         if ($(window).width() <= 600) {
             sublist.css('display', 'none');
@@ -99,7 +94,14 @@ var back2top = $("#back-top");
                 return false;
             });
 
+        var resizeTimer;
+
         $(window).resize(function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(Resize, 100);
+            });
+
+        function Resize() {
             if ($(window).width() > 501) { //Adaptive background image for header
                 headerWrapper.backstretch("/themes/sair/images/SAIR-banner.jpg");
                 headerWrapper.backstretch("resize");
@@ -109,20 +111,20 @@ var back2top = $("#back-top");
                 headerWrapper.backstretch("resize");
             }
 
+            // This will update the width of breadcrumbs when resizing
+            document.getElementById("breadCrumb").style.width = ($('#ds-main').width() - 12) + 'px';
+            var nodes = document.getElementById("breadCrumb").childNodes;
+            for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].nodeName.toLowerCase() == 'div') {
+                    nodes[i].style.width = $('#ds-main').width() - 12 + 'px';
+                }
+            }
+
             // Will not fire if screen widths is equal to values specified in media queries (media.css)
             if ($(window).width() <= 972 && ($(window).width() !== 320 && $(window).width() !== 360 && $(window).width() !== 480 && $(window).width() !== 600)) {
-                document.getElementById("ds-main").style.maxWidth = $(window).width() + 'px';
-                document.getElementById("ds-main").style.width = (($(window).width() - 12) / $(window).width()) * 100 + '%';
                 $("#ds-header-logo").backstretch("/themes/sair/images/seafdec-logo.png");
-
-                // This will update the width of breadcrumbs when resizing
-                document.getElementById("breadCrumb").style.width = ($(window).width() - 12) + 'px';
-                var nodes = document.getElementById("breadCrumb").childNodes;
-                for (var i = 0; i < nodes.length; i++) {
-                    if (nodes[i].nodeName.toLowerCase() == 'div') {
-                        nodes[i].style.width = $(window).width() - 12 + 'px';
-                    }
-                }
+                //document.getElementById("ds-main").style.maxWidth = $(window).width() + 'px';
+                document.getElementById("ds-main").style.width = (($(window).width() - 12) / $(window).width()) * 100 + '%';
             }
             if ($(window).width() <= 600) { // Accordion menu collapsed
                 $('div.ds-option-set ul.sublist').css('display', 'none');
@@ -135,9 +137,7 @@ var back2top = $("#back-top");
                 $('#ds-footer-wrapper').css({'margin-top': '-160px', 'height': '160px'});
                 back2top.css('bottom','44px');
             }
-        });
-
-
+        }
         $(window).resize();
     });
 })(jQuery);

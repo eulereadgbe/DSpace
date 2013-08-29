@@ -645,6 +645,43 @@
            </xsl:text>
             </script>
         </xsl:if>
+
+        <!-- Display QR code and fetch jquery.qrcode-0.7.0.js in item view only -->
+        <xsl:if test="/dri:document/dri:body/dri:div[@id='aspect.artifactbrowser.ItemViewer.div.item-view']">
+            <script type="text/javascript">
+                $.getScript('/themes/sair/lib/js/jquery.qrcode-0.7.0.js', onSuccess);
+                function onSuccess() {
+                var QRcodeContainer = $('#QRcode');
+                var qrText = QRcodeContainer.attr('content');
+                var qrSize = 150;
+                if (navigator.userAgent.match(/msie/i) ){
+                var renderMode = 'div'; //Tested on IE8 only, canvas not supported
+                }
+                else {
+                var renderMode = 'canvas';
+                }
+                QRcodeContainer.qrcode({
+                render: renderMode,
+                size: qrSize,
+                color: '#3a3',
+                text: qrText,
+                label: 'SAIR',
+                fontcolor: '#444',
+                mode: 4,
+                mSize: 0.3,
+                ecLevel: 'H',
+                image: $("#img-buffer")[0]
+                });
+                if (navigator.userAgent.match(/opera/i) ){ //Opera does not support printing of canvas
+                var canvas = document.getElementsByTagName("canvas");
+                var img = canvas[0].toDataURL("image/png");
+                var altQR = '<img id="altQR" src="'+img+'"/>';
+                $('table.ds-includeSet-table.detailtable').after(altQR);
+                $('div.item-summary-view-metadata').append(altQR);
+                }
+                }
+            </script>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="dri:document">
@@ -717,6 +754,40 @@
     <!-- Remove search box from the front page & community/collection pages -->
     <xsl:template match="dri:div[@id='aspect.discovery.CollectionSearch.div.collection-search'] | dri:div[@id='aspect.discovery.CommunitySearch.div.community-search']
      | dri:div[@id='aspect.discovery.SiteViewer.div.front-page-search']">
+    </xsl:template>
+
+    <xsl:template match="dim:dim" mode="itemSummaryView-DIM">
+        <div class="item-summary-view-metadata">
+            <xsl:call-template name="itemSummaryView-DIM-fields"/>
+        </div>
+        <xsl:call-template name="buildQRcode"/>
+    </xsl:template>
+
+    <xsl:template match="dim:dim" mode="itemDetailView-DIM">
+        <table class="ds-includeSet-table detailtable">
+            <xsl:apply-templates mode="itemDetailView-DIM"/>
+        </table>
+        <span class="Z3988">
+            <xsl:attribute name="title">
+                <xsl:call-template name="renderCOinS"/>
+            </xsl:attribute>
+            &#xFEFF; <!-- non-breaking space to force separating the end tag -->
+        </span>
+        <xsl:copy-of select="$SFXLink" />
+        <xsl:call-template name="buildQRcode"/>
+    </xsl:template>
+
+    <xsl:template name="buildQRcode">
+        <xsl:variable name="handle">
+            <xsl:value-of select="dim:field[@element='identifier' and @qualifier='uri']"/>
+        </xsl:variable>
+        <div id="QRcode">
+            <xsl:attribute name="content">
+                <xsl:value-of select="$handle"/>
+            </xsl:attribute>
+            <xsl:text>&#160;</xsl:text>
+        </div>
+        <img src="/themes/sair/images/seafdec-black.png" id="img-buffer"/>
     </xsl:template>
 
     <!-- Add each RSS feed from meta to a list -->
