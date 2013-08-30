@@ -22,11 +22,41 @@
             $('div#addthis').attr("addthis:url", (document.URL));
         }
 
-        if ($(window).width() <= 1080) { // This is to avoid the Add this toolbar from covering the footer signature
-                $('#ds-content-wrapper').css('padding-bottom', '160px');
-                $('#ds-footer-wrapper').css({'margin-top': '-160px', 'height': '160px'});
-                $("#back-top").css('bottom','44px');
-            }
+        if ($(window).width() <= 480) { // This is to avoid the Add this toolbar from covering the footer signature
+            $('#ds-content-wrapper').css('padding-bottom', '243px');
+            $('#ds-footer-wrapper').css({'margin-top': '-243px', 'height': '243px'});
+        }
+        if (($(window).width() <= 522) && ($(window).width() > 480)) { // This is to avoid the Add this toolbar from covering the footer signature
+            $('#ds-content-wrapper').css('padding-bottom', '204px');
+            $('#ds-footer-wrapper').css({'margin-top': '-204px', 'height': '204px'});
+        }
+        if (($(window).width() < 1080) && ($(window).width() > 522)) { // This is to avoid the Add this toolbar from covering the footer signature
+            $('#ds-content-wrapper').css('padding-bottom', '165px');
+            $('#ds-footer-wrapper').css({'margin-top': '-165px', 'height': '165px'});
+        }
 
-    })
+        var resizeTimer;
+
+        $(window).resize(function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(Resize, 100);
+        });
+
+        function Resize() {
+
+            if ($(window).width() <= 480) { // This is to avoid the Add this toolbar from covering the footer signature
+                $('#ds-content-wrapper').css('padding-bottom', '243px');
+                $('#ds-footer-wrapper').css({'margin-top': '-243px', 'height': '243px'});
+            }
+            if (($(window).width() <= 522) && ($(window).width() > 480)) { // This is to avoid the Add this toolbar from covering the footer signature
+                $('#ds-content-wrapper').css('padding-bottom', '204px');
+                $('#ds-footer-wrapper').css({'margin-top': '-204px', 'height': '204px'});
+            }
+            if (($(window).width() < 1080) && ($(window).width() > 522)) { // This is to avoid the Add this toolbar from covering the footer signature
+                $('#ds-content-wrapper').css('padding-bottom', '165px');
+                $('#ds-footer-wrapper').css({'margin-top': '-165px', 'height': '165px'});
+            }
+        }
+        $(window).resize();
+    });
 })(jQuery);

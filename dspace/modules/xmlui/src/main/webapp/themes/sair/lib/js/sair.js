@@ -132,11 +132,6 @@ var back2top = $("#back-top");
             else {
                 $('div.ds-option-set ul.sublist').css('display', 'inherit');
             }
-            if ($(window).width() <= 1080) {
-                $('#ds-content-wrapper').css('padding-bottom', '160px');
-                $('#ds-footer-wrapper').css({'margin-top': '-160px', 'height': '160px'});
-                back2top.css('bottom','44px');
-            }
         }
         $(window).resize();
     });

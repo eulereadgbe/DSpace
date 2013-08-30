@@ -1485,7 +1485,7 @@ html, body {height: 98.5%;}
 
 #ds-content-wrapper {
     overflow:auto;
-    padding-bottom: 132px;/* must be same height as the footer */
+    padding-bottom: 140px;/* must be same height as the footer */
 }
 
 #ds-content {
@@ -1494,8 +1494,8 @@ html, body {height: 98.5%;}
 
 #ds-footer-wrapper {
     position: relative;
-    margin-top: -132px; /* negative value of footer height */
-    height: 132px;
+    margin-top: -140px; /* negative value of footer height */
+    height: 140px;
     clear:both;
 }
 
