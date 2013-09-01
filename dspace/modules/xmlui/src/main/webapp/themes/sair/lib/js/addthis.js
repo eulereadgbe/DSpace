@@ -22,19 +22,6 @@
             $('div#addthis').attr("addthis:url", (document.URL));
         }
 
-        if ($(window).width() <= 480) { // This is to avoid the Add this toolbar from covering the footer signature
-            $('#ds-content-wrapper').css('padding-bottom', '243px');
-            $('#ds-footer-wrapper').css({'margin-top': '-243px', 'height': '243px'});
-        }
-        if (($(window).width() <= 522) && ($(window).width() > 480)) { // This is to avoid the Add this toolbar from covering the footer signature
-            $('#ds-content-wrapper').css('padding-bottom', '204px');
-            $('#ds-footer-wrapper').css({'margin-top': '-204px', 'height': '204px'});
-        }
-        if (($(window).width() < 1080) && ($(window).width() > 522)) { // This is to avoid the Add this toolbar from covering the footer signature
-            $('#ds-content-wrapper').css('padding-bottom', '165px');
-            $('#ds-footer-wrapper').css({'margin-top': '-165px', 'height': '165px'});
-        }
-
         var resizeTimer;
 
         $(window).resize(function () {
@@ -44,17 +31,11 @@
 
         function Resize() {
 
-            if ($(window).width() <= 480) { // This is to avoid the Add this toolbar from covering the footer signature
-                $('#ds-content-wrapper').css('padding-bottom', '243px');
-                $('#ds-footer-wrapper').css({'margin-top': '-243px', 'height': '243px'});
-            }
-            if (($(window).width() <= 522) && ($(window).width() > 480)) { // This is to avoid the Add this toolbar from covering the footer signature
-                $('#ds-content-wrapper').css('padding-bottom', '204px');
-                $('#ds-footer-wrapper').css({'margin-top': '-204px', 'height': '204px'});
-            }
-            if (($(window).width() < 1080) && ($(window).width() > 522)) { // This is to avoid the Add this toolbar from covering the footer signature
-                $('#ds-content-wrapper').css('padding-bottom', '165px');
-                $('#ds-footer-wrapper').css({'margin-top': '-165px', 'height': '165px'});
+            if ($(window).width() < 1080) { // This is to avoid the Add this toolbar from covering the footer signature
+                var footer = $('#ds-footer').height() + 62;
+                document.getElementById("ds-footer-wrapper").style.height = footer + 'px';
+                document.getElementById('ds-footer-wrapper').style.marginTop = '-' + footer + 'px';
+                document.getElementById('ds-content-wrapper').style.paddingBottom = footer  + 'px';
             }
         }
         $(window).resize();

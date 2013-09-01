@@ -11,7 +11,8 @@
  * Primary Styles
  */
 body {
-    background: url("../../images/body-bg.jpg") repeat scroll 0 0 transparent;
+    background: url("../../images/handmadepaper.png") repeat scroll 0 0 transparent;
+    background-attachment: fixed;
 }
 
 #file_news_div_news p:first-child:first-letter, div.detail-view p.intro-text:first-letter {/* Drop Caps */
@@ -176,7 +177,7 @@ select.multiple {
 
 #ds-footer {
     border-top: 1px solid #9CACBA;
-    padding-top: 10px;
+    padding: 15px 0 0;
 }
 
 #ds-footer-signature {
@@ -1485,17 +1486,10 @@ html, body {height: 98.5%;}
 
 #ds-content-wrapper {
     overflow:auto;
-    padding-bottom: 140px;/* must be same height as the footer */
-}
-
-#ds-content {
-    padding-bottom: 5px;
 }
 
 #ds-footer-wrapper {
     position: relative;
-    margin-top: -140px; /* negative value of footer height */
-    height: 140px;
     clear:both;
 }
 
@@ -1513,45 +1507,6 @@ div.addthis_toolbox a {
     text-decoration: none;
     padding: 0;
     margin: -2px
-}
-
-/* http://webdesignerwall.com/tutorials/animated-scroll-to-top
-Back to top button
-*/
-#back-top {
-    bottom: 2%;
-    clear: both;
-    margin-left: -113px;
-    position: fixed;
-    text-align: right;
-    width: 87px;
-    padding: 0 5px;
-    border-radius: 3px 3px;
-    font-size: 11px;
-}
-#back-top a {
-    color: #ADA597;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: background-color 0.7s ease 0s;
-}
-#back-top a:hover {
-    color: #444;
-}
-/* arrow icon (span tag) */
-#back-top span {
-    cursor: pointer;
-    display: block;
-    float: right;
-    height: 9px;
-    margin: 4px 0 0 2px;
-    width: 12px;
-    background: url("../../images/icons-36-black.png") no-repeat -182px -4px;
-    background-size: 774px 18px;
-    /* background color transition */
-    -webkit-transition: 1s;
-    -moz-transition: 1s;
-    transition: 1s;
 }
 
 /* Hide QR code on screen */

@@ -312,9 +312,6 @@
                         </xsl:attribute>
                         <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
                     </a>
-                    <p id="back-top">
-                        <a href="#top"><span>&#160;</span>Back to Top</a>
-                    </p>
                 </div>
                 <!--Invisible link to HTML sitemap (for search engines) -->
                 <a class="hidden">

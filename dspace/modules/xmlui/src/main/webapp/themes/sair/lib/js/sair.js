@@ -4,8 +4,15 @@ var sublist = $('div.ds-option-set ul.sublist');
 var NavList = $('#aspect_discovery_Navigation_list_discovery ul li h2, #aspect_viewArtifacts_Navigation_list_browse ul li h2,' +
     '#aspect_viewArtifacts_Navigation_list_administrative ul li h2');
 var toggleBottom = $("p.ds-paragraph.item-view-toggle-bottom");
-var back2top = $("#back-top");
 (function ($) {
+    $(window).load(function(){
+       var footer = $('#ds-footer-wrapper');
+       var footerHeight = footer.height();
+       document.getElementById('ds-content-wrapper').style.paddingBottom = footerHeight + 'px';
+       document.getElementById('ds-footer-wrapper').style.height = footerHeight + 'px';
+       document.getElementById('ds-footer-wrapper').style.marginTop = '-' + footerHeight + 'px';
+    });
+
     $(document).ready(function () { // On load
         if ($(window).width() > 501) { //Adaptive background image for header
             headerWrapper.backstretch("/themes/sair/images/SAIR-banner.jpg");
@@ -36,7 +43,6 @@ var back2top = $("#back-top");
         }, function () {
             $(this).css({'color': '#444444', 'text-decoration': 'none', 'font-weight': 'normal', 'cursor': 'pointer'});
         });
-
 
         NavList.click
         (function (event) {
@@ -73,26 +79,6 @@ var back2top = $("#back-top");
         // Create buttons from link //
         $("p.ds-paragraph.item-view-toggle a").addClass("button small white");
         toggleBottom.css('margin-top', '20px');
-
-        // hide #back-top first
-        back2top.hide();
-
-        // fade in #back-top
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 100) {
-                    back2top.fadeIn();
-                } else {
-                    back2top.fadeOut();
-                }
-            });
-
-            // scroll body to 0px on click
-            $('#back-top a').click(function () {
-                $('body,html').animate({
-                    scrollTop: 0
-                }, 800);
-                return false;
-            });
 
         var resizeTimer;
 
@@ -132,7 +118,14 @@ var back2top = $("#back-top");
             else {
                 $('div.ds-option-set ul.sublist').css('display', 'inherit');
             }
+
+            var footer = $('#ds-footer').height() + 44;
+            document.getElementById("ds-footer-wrapper").style.height = footer + 'px';
+            document.getElementById('ds-footer-wrapper').style.marginTop = '-' + footer + 'px';
+            document.getElementById('ds-content-wrapper').style.paddingBottom = footer  + 'px';
         }
+
         $(window).resize();
+
     });
 })(jQuery);

@@ -48,20 +48,6 @@
     }
 }
 
-@media screen and (max-width: 480px) {/* For Sticky Footer */
-    #ds-content-wrapper {
-        overflow:auto;
-        padding-bottom: 199px;/* must be same height as the footer */
-    }
-
-    #ds-footer-wrapper {
-        position: relative;
-        margin-top: -199px; /* negative value of footer height */
-        height: 199px;
-        clear:both;
-    }
-}
-
 @media screen and (max-width: 480px) and (min-width: 361px)  {
     #ds-main {
         max-width: 480px;
@@ -135,45 +121,6 @@
     }
 
 
-}
-@media screen and (max-width: 984px) {
-    body {
-        background: none;
-    }
-
-    #ds-main {
-        margin: auto;
-        box-shadow: none;
-    }
-}
-
-@media screen and (max-width: 522px) and (min-width: 481px) {/* For Sticky Footer, when text of footer wrapped */
-    #ds-content-wrapper {
-        overflow:auto;
-        padding-bottom: 160px;/* must be same height as the footer */
-    }
-
-    #ds-footer-wrapper {
-        position: relative;
-        margin-top: -160px; /* negative value of footer height */
-        height: 160px;
-        clear:both;
-    }
-}
-
-@media screen and (max-width: 1175px) {
-    #back-top {
-        position: relative;
-        margin: 3px auto;
-        text-align: center;
-        background: none repeat scroll 0 0 #EBEBEB;
-    }
-    #back-top:hover {
-    background-color: #E2E2E2;
-    }
-    #ds-footer-signature {
-        padding-bottom: 3px;
-    }
 }
 
 @media all {
