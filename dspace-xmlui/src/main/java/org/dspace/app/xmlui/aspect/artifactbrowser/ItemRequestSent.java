@@ -46,10 +46,13 @@ public class ItemRequestSent extends AbstractDSpaceTransformer implements Cachea
     
     public static final Message T_head =
         message("xmlui.ArtifactBrowser.ItemRequestSent.head");
-    
-    public static final Message T_para1 = 
-        message("xmlui.ArtifactBrowser.ItemRequestSent.para1");
-    
+
+    public static final Message T_para1 =
+            message("xmlui.ArtifactBrowser.ItemRequestSent.para1");
+
+    public static final Message T_notice =
+            message("xmlui.ArtifactBrowser.ItemRequestSent.notice");
+
     /**
      * Generate the unique caching key.
      */
@@ -84,8 +87,10 @@ public class ItemRequestSent extends AbstractDSpaceTransformer implements Cachea
         Division feedback = body.addDivision("itemRequest-sent","primary");
      
         feedback.setHead(T_head);
-        
+
         feedback.addPara(T_para1);
-        
+
+        feedback.addPara(T_notice);
+
     }
 }

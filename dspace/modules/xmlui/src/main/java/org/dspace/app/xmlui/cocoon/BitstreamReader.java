@@ -31,6 +31,7 @@ import org.apache.cocoon.environment.http.HttpEnvironment;
 import org.apache.cocoon.environment.http.HttpResponse;
 import org.apache.cocoon.reading.AbstractReader;
 import org.apache.cocoon.util.ByteRange;
+import org.apache.commons.lang.StringUtils;
 import org.dspace.app.xmlui.utils.AuthenticationUtil;
 import org.dspace.app.xmlui.utils.ContextUtil;
 import org.dspace.authorize.AuthorizeException;
@@ -55,8 +56,8 @@ import jp.zuki_ebetsu.dspace.util.CoverPage;
 
 /**
  * The BitstreamReader will query DSpace for a particular bitstream and transmit
- * it to the user. There are several method of specifing the bitstream to be
- * develivered. You may refrence a bitstream by either it's id or attempt to
+ * it to the user. There are several methods of specifing the bitstream to be
+ * delivered. You may reference a bitstream by either it's id or attempt to
  * resolve the bitstream's name.
  *
  *  /bitstream/{handle}/{sequence}/{name}
@@ -67,7 +68,7 @@ import jp.zuki_ebetsu.dspace.util.CoverPage;
  *    &lt;map:parameter name="name" value="{4}"/&gt;
  *  &lt;/map:read&gt;
  *
- *  When no handle is assigned yet you can access a bistream
+ *  When no handle is assigned yet you can access a bitstream
  *  using it's internal ID.
  *
  *  /bitstream/id/{bitstreamID}/{sequence}/{name}
@@ -77,7 +78,7 @@ import jp.zuki_ebetsu.dspace.util.CoverPage;
  *    &lt;map:parameter name="sequence" value="{2}"/&gt;
  *  &lt;/map:read&gt;
  *
- *  Alternativly, you can access the bitstream via a name instead
+ *  Alternatively, you can access the bitstream via a name instead
  *  of directly through it's sequence.
  *
  *  /html/{handle}/{name}
@@ -97,7 +98,12 @@ import jp.zuki_ebetsu.dspace.util.CoverPage;
  *    &lt;map:parameter name="name" value="{2}"/&gt;
  *  &lt;/map:read&gt;
  *
+ * Added request-item support.
+ * Original Concept, JSPUI version:    Universidade do Minho   at www.uminho.pt
+ * Sponsorship of XMLUI version:    Instituto Oceanográfico de España at www.ieo.es
+ *
  * @author Scott Phillips
+ * @author Adán Román Ruiz at arvo.es (added request item support)
  */
 
 public class BitstreamReader extends AbstractReader implements Recyclable
@@ -113,15 +119,15 @@ public class BitstreamReader extends AbstractReader implements Recyclable
     private static final String AUTH_REQUIRED_MESSAGE = "xmlui.BitstreamReader.auth_message";
 
     /**
-     * How big of a buffer should we use when reading from the bitstream before
-     * writting to the HTTP response?
+     * How big a buffer should we use when reading from the bitstream before
+     * writing to the HTTP response?
      */
     protected static final int BUFFER_SIZE = 8192;
 
     /**
      * When should a bitstream expire in milliseconds. This should be set to
-     * some low value just to prevent someone hiting DSpace repeatily from
-     * killing the server. Note: 1000 milliseconds are in a second.
+     * some low value just to prevent someone hiting DSpace repeatedy from
+     * killing the server. Note: there are 1000 milliseconds in a second.
      *
      * Format: minutes * seconds * milliseconds
      *  60 * 60 * 1000 == 1 hour
@@ -170,6 +176,13 @@ public class BitstreamReader extends AbstractReader implements Recyclable
         {
             this.request = ObjectModelHelper.getRequest(objectModel);
             this.response = ObjectModelHelper.getResponse(objectModel);
+
+            // Check to see if a context already exists or not. We may
+            // have been aggregated into an http request by the XSL document
+            // pulling in an XML-based bitstream. In this case the context has
+            // already been created and we should leave it open because the
+            // normal processes will close it.
+            boolean BitstreamReaderOpenedContext = !ContextUtil.isContextAvailable(objectModel);
             Context context = ContextUtil.obtainContext(objectModel);
 
             // Get our parameters that identify the bitstream
@@ -182,13 +195,13 @@ public class BitstreamReader extends AbstractReader implements Recyclable
 
             this.isSpider = par.getParameter("userAgent", "").equals("spider");
 
-            // Reslove the bitstream
+            // Resolve the bitstream
             Bitstream bitstream = null;
             DSpaceObject dso = null;
 
             if (bitstreamID > -1)
             {
-                // Direct refrence to the individual bitstream ID.
+                // Direct reference to the individual bitstream ID.
                 bitstream = Bitstream.find(context, bitstreamID);
             }
             else if (itemID > -1)
@@ -268,10 +281,11 @@ public class BitstreamReader extends AbstractReader implements Recyclable
                 isAuthorized = false;
                 log.info(LogManager.getHeader(context, "view_bitstream", "handle=" + item.getHandle() + ",withdrawn=true"));
             }
-
+            // It item-request is enabled to all request we redirect to restricted-resource immediately without login request
+            String requestItemType = ConfigurationManager.getProperty("request.item.type");
             if (!isAuthorized)
             {
-                if(context.getCurrentUser() != null){
+                if(context.getCurrentUser() != null || StringUtils.equalsIgnoreCase("all", requestItemType)){
                     // A user is logged in, but they are not authorized to read this bitstream,
                     // instead of asking them to login again we'll point them to a friendly error
                     // message that tells them the bitstream is restricted.
@@ -290,10 +304,11 @@ public class BitstreamReader extends AbstractReader implements Recyclable
                     return;
                 }
                 else{
-
-                    // The user does not have read access to this bitstream. Inturrupt this current request
+                	if(ConfigurationManager.getProperty("request.item.type")==null||
+                			                			ConfigurationManager.getProperty("request.item.type").equalsIgnoreCase("logged")){
+                        // The user does not have read access to this bitstream. Interrupt this current request
                     // and then forward them to the login page so that they can be authenticated. Once that is
-                    // successfull they will request will be resumed.
+                        // successful, their request will be resumed.
                     AuthenticationUtil.interruptRequest(objectModel, AUTH_REQUIRED_HEADER, AUTH_REQUIRED_MESSAGE, null);
 
                     // Redirect
@@ -305,9 +320,10 @@ public class BitstreamReader extends AbstractReader implements Recyclable
                     return;
                 }
             }
+            }
 
             // Success, bitstream found and the user has access to read it.
-            // Store these for later retreval:
+            // Store these for later retrieval:
             this.bitstreamInputStream = bitstream.retrieve();
             this.bitstreamSize = bitstream.getSize();
             this.bitstreamMimeType = bitstream.getFormat().getMIMEType();
@@ -352,12 +368,12 @@ public class BitstreamReader extends AbstractReader implements Recyclable
             }
             else
             {
-                // In-case there is no bitstream name...
+                // In case there is no bitstream name...
                 bitstreamName = "bitstream";
             }
 
-            // Log that the bitstream has been viewed, this is none-cached and the complexity
-            // of adding it to the sitemap for every possible bitstre uri is not very tractable
+            // Log that the bitstream has been viewed, this is non-cached and the complexity
+            // of adding it to the sitemap for every possible bitstream uri is not very tractable
             new DSpace().getEventService().fireEvent(
                     new UsageEvent(
                             UsageEvent.Action.VIEW,
@@ -365,9 +381,9 @@ public class BitstreamReader extends AbstractReader implements Recyclable
                             ContextUtil.obtainContext(ObjectModelHelper.getRequest(objectModel)),
                             bitstream));
 
-            // Force close of database connection in case sending a large file
+            // If we created the database connection close it, otherwise leave it open.
+            if (BitstreamReaderOpenedContext)
             context.complete();
-
         }
         catch (SQLException sqle)
         {
@@ -485,7 +501,7 @@ public class BitstreamReader extends AbstractReader implements Recyclable
 
         }
 
-        // The named bitstream was not found and we exausted our the maximum path depth that
+        // The named bitstream was not found and we exhausted the maximum path depth that
         // we search.
         return null;
     }
@@ -494,11 +510,11 @@ public class BitstreamReader extends AbstractReader implements Recyclable
     /**
      * Write the actual data out to the response.
      *
-     * Some implementation notes,
+         * Some implementation notes:
      *
-     * 1) We set a short expires time just in the hopes of preventing someone
+         * 1) We set a short expiration time just in the hopes of preventing someone
      * from overloading the server by clicking reload a bunch of times. I
-     * realize that this is nowhere near 100% effective but it may help in some
+         * Realize that this is nowhere near 100% effective but it may help in some
      * cases and shouldn't hurt anything.
      *
      * 2) We accept partial downloads, thus if you lose a connection half way
@@ -515,7 +531,7 @@ public class BitstreamReader extends AbstractReader implements Recyclable
 
         // Only allow If-Modified-Since protocol if request is from a spider
         // since response headers would encourage a browser to cache results
-        // that might change with different authentication..
+        // that might change with different authentication.
         if (isSpider)
         {
             // Check for if-modified-since header -- ONLY if not authenticated
@@ -523,7 +539,7 @@ public class BitstreamReader extends AbstractReader implements Recyclable
             if (modSince != -1 && item != null && item.getLastModified().getTime() < modSince)
             {
                 // Item has not been modified since requested date,
-                // hence bitstream has not; return 304
+                // hence bitstream has not been, either; return 304
                 response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                 return;
             }
@@ -564,7 +580,7 @@ public class BitstreamReader extends AbstractReader implements Recyclable
         {
             String name  = bitstreamName;
 
-            // Try and make the download file name formated for each browser.
+                // Try and make the download file name formatted for each browser.
             try {
                 String agent = request.getHeader("USER-AGENT");
                 if (agent != null && agent.contains("MSIE"))

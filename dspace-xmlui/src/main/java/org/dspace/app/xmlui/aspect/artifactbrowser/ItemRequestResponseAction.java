@@ -66,14 +66,20 @@ public class ItemRequestResponseAction extends AbstractAction
         String decision = request.getParameter("decision");
         String isSent = request.getParameter("isSent");
         String message = request.getParameter("message");
+        String itemTitle = request.getParameter("title");
         Context context = ContextUtil.obtainContext(objectModel);
         
         TableRow requestItem = DatabaseManager.findByUnique(context, "requestitem", "token", token);
         String title;
         Item item = Item.find(context, requestItem.getIntColumn("item_id"));
-        DCValue[] titleDC = item.getDC("title", null, Item.ANY);
-        if (titleDC != null || titleDC.length > 0) 
+        DCValue[] citationDC = item.getMetadata("dc", "identifier", "citation", Item.ANY);
+        DCValue[] titleDC = item.getMetadata("dc", "title", null, Item.ANY);
+        if (citationDC != null || citationDC.length > 0)
+            title=citationDC[0].value;
+
+        else if (titleDC != null || titleDC.length > 0)
         	title=titleDC[0].value; 
+
         else
         	title="untitled";
         
@@ -128,9 +134,9 @@ public class ItemRequestResponseAction extends AbstractAction
     	String mail = request.getParameter("email");
     	if(StringUtils.isNotEmpty(name)&&StringUtils.isNotEmpty(mail)){
     	    String emailRequest;
-            EPerson submiter = item.getSubmitter();
-            if(submiter!=null){
-     	    	emailRequest=submiter.getEmail();
+            EPerson submitter = item.getSubmitter();
+            if(submitter!=null){
+     	    	emailRequest=submitter.getEmail();
             }else{
                 emailRequest=ConfigurationManager.getProperty("mail.helpdesk");
             }
@@ -152,23 +158,22 @@ public class ItemRequestResponseAction extends AbstractAction
     	return false;
 	}
 
-	private void processSendDocuments(Context context,Request request, TableRow requestItem,Item item,String title) throws SQLException, MessagingException, IOException {
+	private void processSendDocuments(Context context,Request request, TableRow requestItem,Item item,String itemTitle) throws SQLException, MessagingException, IOException {
     	String message = request.getParameter("message");
-    	        
-        EPerson submiter = item.getSubmitter();
-    	Email email = ConfigurationManager.getEmail(I18nUtil.getEmailFilename(context.getCurrentLocale(), "request_item.aprove"));
+
+        EPerson submitter = item.getSubmitter();
+    	Email email = ConfigurationManager.getEmail(I18nUtil.getEmailFilename(context.getCurrentLocale(), "request_item.approve"));
         email.addRecipient(requestItem.getStringColumn("request_email"));
         
         email.addArgument(requestItem.getStringColumn("request_name"));
         email.addArgument("");    
         email.addArgument("");      
         email.addArgument(HandleManager.getCanonicalForm(item.getHandle()));      // User agent
-        email.addArgument(title);    // request item title
+        email.addArgument(itemTitle);    // request item title
         email.addArgument(message);   // message
         email.addArgument("");    //#   token link 
-        email.addArgument(submiter.getFullName());    //#   submmiter name
-        email.addArgument(submiter.getEmail());    //#   submmiter email
-       
+        email.addArgument(submitter.getFullName());    //#   submitter name
+        email.addArgument(submitter.getEmail());    //#   submitter email
         if (requestItem.getBooleanColumn("allfiles")){
             Bundle[] bundles = item.getBundles("ORIGINAL");
             for (int i = 0; i < bundles.length; i++){
@@ -194,7 +199,7 @@ public class ItemRequestResponseAction extends AbstractAction
 	private void processDeny(Context context,Request request, TableRow requestItem,Item item,String title) throws SQLException, IOException, MessagingException {
 		String message = request.getParameter("message");
     	        
-        EPerson submiter = item.getSubmitter();
+        EPerson submitter = item.getSubmitter();
         
     	Email email = ConfigurationManager.getEmail(I18nUtil.getEmailFilename(context.getCurrentLocale(), "request_item.reject"));
         email.addRecipient(requestItem.getStringColumn("request_email"));
@@ -206,8 +211,8 @@ public class ItemRequestResponseAction extends AbstractAction
         email.addArgument(title);    // request item title
         email.addArgument(message);   // message
         email.addArgument("");    //#   token link 
-        email.addArgument(submiter.getFullName());    //#   submmiter name
-        email.addArgument(submiter.getEmail());    //#   submmiter email
+        email.addArgument(submitter.getFullName());    //#   submmiter name
+        email.addArgument(submitter.getEmail());    //#   submmiter email
 
         email.send();
         requestItem.setColumn("decision_date",new Date());

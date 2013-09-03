@@ -98,14 +98,18 @@ public class SendItemRequestAction extends AbstractAction
         
         Item item = (Item) dso;
         String title="";
-        DCValue[] titleDC = item.getDC("title", null, Item.ANY);
-        if (titleDC != null || titleDC.length > 0) {
-        	title=titleDC[0].value;
+        DCValue[] citationDC = item.getMetadata("dc", "identifier", "citation", Item.ANY);
+        DCValue[] titleDC = item.getMetadata("dc", "title", null, Item.ANY);
+        if (citationDC != null || citationDC.length > 0) {
+            title=citationDC[0].value;
+        }
+        else if (titleDC != null || titleDC.length > 0) {
+            title=titleDC[0].value;
         }
         String emailRequest;
-        EPerson submiter = item.getSubmitter();
-        if(submiter!=null){
-            emailRequest=submiter.getEmail();
+        EPerson submitter = item.getSubmitter();
+        if(submitter!=null){
+            emailRequest=submitter.getEmail();
         }else{
             emailRequest=ConfigurationManager.getProperty("mail.helpdesk");
         }
@@ -123,8 +127,8 @@ public class SendItemRequestAction extends AbstractAction
         email.addArgument(title);    // request item title
         email.addArgument(message);   // message
         email.addArgument(getLinkTokenEmail(context,request, bitstreamId, item.getID(), requesterEmail, requesterName, Boolean.parseBoolean(allFiles)));    
-        email.addArgument(submiter.getFullName());    //   submmiter name
-        email.addArgument(submiter.getEmail());    //   submmiter email
+        email.addArgument(submitter.getFullName());    //   submmiter name
+        email.addArgument(submitter.getEmail());    //   submmiter email
         email.addArgument(ConfigurationManager.getProperty("dspace.name"));
         email.addArgument(ConfigurationManager.getProperty("mail.helpdesk"));
 

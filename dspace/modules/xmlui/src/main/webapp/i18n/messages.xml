@@ -318,32 +318,34 @@
 	<!-- org.dspace.app.xmlui.artifactbrowser.ItemRequestForm.java -->
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.title">Request a copy of the document</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.trail">Request a copy of the document</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestForm.head">Request a copy of the document</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestForm.para1">Enter the following information to request a copy of the document to the responsible</message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestForm.head">Request a copy of: </message>
+    <message key="xmlui.ArtifactBrowser.ItemRequestForm.para1"><strong>IF YOU’RE NOT A SEAFDEC/AQD MEMBER</strong>, you can request the author(s) of the document to send you a copy by email, by filling the form below.</message>
+    <message key="xmlui.ArtifactBrowser.ItemRequestForm.restricted"><strong>THIS DOCUMENT IS IN RESTRICTED ACCESS</strong>. If you are a member of SEAFDEC Aquaculture Department, you must “login“ in the system to have access to the contents and services restricted to the members of SEAFDEC/AQD. If you haven’t registered yet, you can do it at: <a href="../register">http://repository.seafdec.org.ph/register</a></message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail">E-mail</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail_help">This email address is used for sending the document.</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail.error">E-mail is mandatory</message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail_help">This email address will be used for sending the document.</message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail.error">E-mail is required</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.message">Message</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestForm.message.error">Message is mandatory</message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestForm.message.error">Message is required</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.files">Files</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.allFiles">All files (of this document) in restricted access.</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.notAllFiles">Only The requested file.</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterName">Name</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterName.error">Name is mandatory</message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterName.error">Name is required</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.submit">Request copy</message>
 
 	<!-- org.dspace.app.xmlui.artifactbrowser.ItemRequestSent.java -->
 	<message key="xmlui.ArtifactBrowser.ItemRequestSent.title">Your request has been sent.</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestSent.trail">Your request has been sent.</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestSent.head">Your request has been sent.</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestSent.para1">Your request has been sent to the author or responsible.</message>
+    <message key="xmlui.ArtifactBrowser.ItemRequestSent.para1">Your request was sent successfully to the author(s).</message>
+    <message key="xmlui.ArtifactBrowser.ItemRequestSent.notice"><strong>Note</strong>: The delay or lack of response may mean that your request has not been attended by the author(s). Please email us at <a href="library@seafdec.org.ph">library@seafdec.org.ph</a> to follow up your request. Thank you.</message>
 
 	<!-- org.dspace.app.xmlui.artifactbrowser.ItemRequestResponseDecisionForm.java -->
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseDecisionForm.title">Document copy request</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseDecisionForm.trail">Document copy request</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseDecisionForm.head">Document copy request</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestResponseDecisionForm.para1">IF YOU ARE THE AUTHOR (OR ONE AUTHOR) DOCUMENT "{0}" uses the buttons to answer the user's request.</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestResponseDecisionForm.para2">According to your choice will be generated a model answer customizable.</message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestResponseDecisionForm.para1">IF YOU ARE THE AUTHOR (OR CO-AUTHOR) OF THE DOCUMENT, "{0}" use the buttons below to answer the user's request.</message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestResponseDecisionForm.para2">An email will be sent to the requester based on your answer.</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseDecisionForm.send">Send copy</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseDecisionForm.dontSend">Don't send copy</message>
 
@@ -351,7 +353,7 @@
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseFalseForm.title">Document copy request</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseFalseForm.trail">Document copy request</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseFalseForm.head">Document copy request</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestResponseFalseForm.para1">This is the text to be sent to the requestor.</message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestResponseFalseForm.para1">This is the text to be sent to the requester.</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseFalseForm.message">Your request was denied for the following reason(s)</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseFalseForm.mail">Send</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseFalseForm.back">Back</message>
@@ -360,8 +362,8 @@
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseTrueForm.title">Document copy request</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseTrueForm.trail">Document copy request</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseTrueForm.head">Document copy request</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestResponseTrueForm.para1">This is the text that will sent to the requestor (together with the document).</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestResponseTrueForm.message">Thanks for your interest in </message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestResponseTrueForm.para1">You can put your message to be sent to the requester (together with the document) by filling the form below.</message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestResponseTrueForm.message">Message</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseTrueForm.mail">Send</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseTrueForm.back">Back</message>
 
@@ -369,11 +371,11 @@
 	<message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.title">Change permissions request</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.trail">Change permissions request</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.head">Change permissions request</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.para1">You can take advantage of the occasion to reconsider the free disposition of the document (to avoid having to respond to these requests), if there is no reason to keep it restricted. This may apply inserting your data below and press the button</message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.para1">You can use this occasion to reconsider changing the status of your document to OPEN ACCESS (to avoid having to respond to these requests), if there are no reasons to keep it in restricted access. For this, after inserting your name and e-mail (for authentication purposes), click in the button "Change to Open Access"</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.name">Name</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.email">E-mail</message>
-    <message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.name.error">The name is mandatory</message>
-	<message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.email.error">The e-mail is mandatory</message>
+    <message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.name.error">Your name is required</message>
+	<message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.email.error">E-mail is required</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestChangeStatusForm.changeToOpen">Change to open access</message>
 
 	<!-- org.dspace.app.xmlui.artifactbrowser.ItemRequestResponseFalseForm.java -->

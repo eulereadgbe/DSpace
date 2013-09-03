@@ -58,10 +58,13 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
     
     private static final Message T_head = 
         message("xmlui.ArtifactBrowser.ItemRequestForm.head");
-    
+
     private static final Message T_para1 =
-        message("xmlui.ArtifactBrowser.ItemRequestForm.para1");
-    
+            message("xmlui.ArtifactBrowser.ItemRequestForm.para1");
+
+    private static final Message T_restricted =
+            message("xmlui.ArtifactBrowser.ItemRequestForm.restricted");
+
     private static final Message T_requesterEmail =
         message("xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail");
 
@@ -143,12 +146,19 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
 		// Build the item viewer division.
 		Division itemRequest = body.addInteractiveDivision("itemRequest-form",
 				request.getRequestURI(), Division.METHOD_POST, "primary");
-		itemRequest.setHead(T_head);
+        itemRequest.setHead(T_head);
 
-		itemRequest.addPara(T_para1);
-		DCValue[] titleDC = item.getDC("title", null, Item.ANY);
-		if (titleDC != null || titleDC.length > 0)
-			itemRequest.addPara(titleDC[0].value);
+        DCValue[] citationDC = item.getMetadata("dc", "identifier", "citation", Item.ANY);
+		DCValue[] titleDC = item.getMetadata("dc", "title", null, Item.ANY);
+		if (citationDC != null || citationDC.length > 0)
+			itemRequest.addPara(citationDC[0].value);
+
+        else if (titleDC != null || titleDC.length > 0)
+            itemRequest.addPara(titleDC[0].value);
+
+        itemRequest.addPara(T_restricted);
+
+        itemRequest.addPara(T_para1);
 
 		List form = itemRequest.addList("form", List.TYPE_FORM);
 

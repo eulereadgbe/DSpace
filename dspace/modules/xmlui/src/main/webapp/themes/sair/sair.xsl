@@ -564,6 +564,7 @@
         <script type="text/javascript">
             <xsl:text disable-output-escaping="yes">if (location.href.match(/handle/) != null &amp;&amp; window.location.href.indexOf("workflow") == -1</xsl:text>
             <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("submit") == -1</xsl:text>
+            <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("restricted-resource") == -1</xsl:text>
             <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("browse") == -1) {
                     $.getScript("//s7.addthis.com/js/300/addthis_widget.js#username=seafdecaqdlib&amp;domready=1", function(){
                     // here you can use anything you defined in the loaded script
@@ -812,6 +813,131 @@
                 </a>
             </li>
         </xsl:for-each>
+    </xsl:template>
+
+    <xsl:template match="mets:file">
+        <xsl:param name="context" select="."/>
+        <div class="file-wrapper clearfix">
+            <div class="thumbnail-wrapper">
+                <a class="image-link">
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+                    </xsl:attribute>
+                    <xsl:choose>
+                        <xsl:when test="$context/mets:fileSec/mets:fileGrp[@USE='THUMBNAIL']/
+                        mets:file[@GROUPID=current()/@GROUPID]">
+                            <xsl:choose>
+                                <xsl:when test="contains(mets:FLocat[@LOCTYPE='URL']/@xlink:href,'isAllowed=n')">
+                                    <img>
+                                        <xsl:attribute name="src">
+                                            <xsl:value-of select="$context-path"/>
+                                            <xsl:text>/static/icons/lock24.png</xsl:text>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="alt">
+                                            <xsl:text>Restricted</xsl:text>
+                                        </xsl:attribute>
+                                    </img>
+                                </xsl:when>
+                                <xsl:otherwise>
+                            <img alt="Thumbnail">
+                                <xsl:attribute name="src">
+                                    <xsl:value-of select="$context/mets:fileSec/mets:fileGrp[@USE='THUMBNAIL']/
+                                    mets:file[@GROUPID=current()/@GROUPID]/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+                                </xsl:attribute>
+                            </img>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <img alt="Icon" src="{concat($theme-path, '/images/mime.png')}" style="height: {$thumbnail.maxheight}px;"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </a>
+            </div>
+            <div class="file-metadata" style="height: {$thumbnail.maxheight}px;">
+                <div>
+                    <span class="bold">
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-name</i18n:text>
+                        <xsl:text>:</xsl:text>
+                    </span>
+                    <span>
+                        <xsl:attribute name="title"><xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:title"/></xsl:attribute>
+                        <xsl:value-of select="util:shortenString(mets:FLocat[@LOCTYPE='URL']/@xlink:title, 17, 5)"/>
+                    </span>
+                </div>
+                <!-- File size always comes in bytes and thus needs conversion -->
+                <div>
+                    <span class="bold">
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-size</i18n:text>
+                        <xsl:text>:</xsl:text>
+                    </span>
+                    <span>
+                        <xsl:choose>
+                            <xsl:when test="@SIZE &lt; 1024">
+                                <xsl:value-of select="@SIZE"/>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.size-bytes</i18n:text>
+                            </xsl:when>
+                            <xsl:when test="@SIZE &lt; 1024 * 1024">
+                                <xsl:value-of select="substring(string(@SIZE div 1024),1,5)"/>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.size-kilobytes</i18n:text>
+                            </xsl:when>
+                            <xsl:when test="@SIZE &lt; 1024 * 1024 * 1024">
+                                <xsl:value-of select="substring(string(@SIZE div (1024 * 1024)),1,5)"/>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.size-megabytes</i18n:text>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="substring(string(@SIZE div (1024 * 1024 * 1024)),1,5)"/>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.size-gigabytes</i18n:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </span>
+                </div>
+                <!-- Lookup File Type description in local messages.xml based on MIME Type.
+         In the original DSpace, this would get resolved to an application via
+         the Bitstream Registry, but we are constrained by the capabilities of METS
+         and can't really pass that info through. -->
+                <div>
+                    <span class="bold">
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-format</i18n:text>
+                        <xsl:text>:</xsl:text>
+                    </span>
+                    <span>
+                        <xsl:call-template name="getFileTypeDesc">
+                            <xsl:with-param name="mimetype">
+                                <xsl:value-of select="substring-before(@MIMETYPE,'/')"/>
+                                <xsl:text>/</xsl:text>
+                                <xsl:value-of select="substring-after(@MIMETYPE,'/')"/>
+                            </xsl:with-param>
+                        </xsl:call-template>
+                    </span>
+                </div>
+                <!---->
+                <!-- Display the contents of 'Description' only if bitstream contains a description -->
+                <xsl:if test="mets:FLocat[@LOCTYPE='URL']/@xlink:label != ''">
+                    <div>
+                        <span class="bold">
+                            <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-description</i18n:text>
+                            <xsl:text>:</xsl:text>
+                        </span>
+                        <span>
+                            <xsl:attribute name="title"><xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:label"/></xsl:attribute>
+                            <!--<xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:label"/>-->
+                            <xsl:value-of select="util:shortenString(mets:FLocat[@LOCTYPE='URL']/@xlink:label, 17, 5)"/>
+                        </span>
+                    </div>
+                </xsl:if>
+            </div>
+            <div class="file-link" style="height: {$thumbnail.maxheight}px;">
+                <xsl:choose>
+                    <xsl:when test="@ADMID">
+                        <xsl:call-template name="display-rights"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:call-template name="view-open"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </div>
+        </div>
     </xsl:template>
 
 </xsl:stylesheet>

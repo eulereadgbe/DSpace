@@ -102,6 +102,7 @@ public class ItemRequestStatusChanged extends AbstractDSpaceTransformer implemen
         itemRequest.setHead(T_head);
         
         itemRequest.addPara(T_para1);
+
         itemRequest.addPara(T_para2);
     }
 }
