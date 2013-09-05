@@ -320,7 +320,7 @@
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.trail">Request a copy of the document</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.head">Request a copy of: </message>
     <message key="xmlui.ArtifactBrowser.ItemRequestForm.para1"><strong>IF YOU’RE NOT A SEAFDEC/AQD MEMBER</strong>, you can request the author(s) of the document to send you a copy by email, by filling the form below.</message>
-    <message key="xmlui.ArtifactBrowser.ItemRequestForm.restricted"><strong>THIS DOCUMENT IS IN RESTRICTED ACCESS</strong>. If you are a member of SEAFDEC Aquaculture Department, you must “login“ in the system to have access to the contents and services restricted to the members of SEAFDEC/AQD. If you haven’t registered yet, you can do it at: <a href="../register">http://repository.seafdec.org.ph/register</a></message>
+    <message key="xmlui.ArtifactBrowser.ItemRequestForm.restricted"><strong>THIS DOCUMENT IS IN RESTRICTED ACCESS</strong>. If you are a member of SEAFDEC Aquaculture Department, you must “<a href="/login">login</a>“ in the system to have access to the contents and services restricted to the members of SEAFDEC/AQD. If you haven’t registered yet, you can do it at: <a href="/register">http://repository.seafdec.org.ph/register</a></message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail">E-mail</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail_help">This email address will be used for sending the document.</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail.error">E-mail is required</message>
@@ -338,7 +338,7 @@
 	<message key="xmlui.ArtifactBrowser.ItemRequestSent.trail">Your request has been sent.</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestSent.head">Your request has been sent.</message>
     <message key="xmlui.ArtifactBrowser.ItemRequestSent.para1">Your request was sent successfully to the author(s).</message>
-    <message key="xmlui.ArtifactBrowser.ItemRequestSent.notice"><strong>Note</strong>: The delay or lack of response may mean that your request has not been attended by the author(s). Please email us at <a href="library@seafdec.org.ph">library@seafdec.org.ph</a> to follow up your request. Thank you.</message>
+    <message key="xmlui.ArtifactBrowser.ItemRequestSent.notice"><strong>Note</strong>: The delay or lack of response may mean that your request has not been attended by the author(s). Please email us at <a href="mailto:library@seafdec.org.ph">library@seafdec.org.ph</a> to follow up your request. Thank you.</message>
 
 	<!-- org.dspace.app.xmlui.artifactbrowser.ItemRequestResponseDecisionForm.java -->
 	<message key="xmlui.ArtifactBrowser.ItemRequestResponseDecisionForm.title">Document copy request</message>

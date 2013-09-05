@@ -150,11 +150,13 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
 
         DCValue[] citationDC = item.getMetadata("dc", "identifier", "citation", Item.ANY);
 		DCValue[] titleDC = item.getMetadata("dc", "title", null, Item.ANY);
-		if (citationDC != null || citationDC.length > 0)
+		if (citationDC != null) {
 			itemRequest.addPara(citationDC[0].value);
-
-        else if (titleDC != null || titleDC.length > 0)
-            itemRequest.addPara(titleDC[0].value);
+        }
+        else {
+            if (titleDC != null)
+                itemRequest.addPara(titleDC[0].value);
+        }
 
         itemRequest.addPara(T_restricted);
 
