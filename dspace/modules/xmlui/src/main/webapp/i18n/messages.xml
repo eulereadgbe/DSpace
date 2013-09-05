@@ -320,7 +320,7 @@
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.trail">Request a copy of the document</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.head">Request a copy of: </message>
     <message key="xmlui.ArtifactBrowser.ItemRequestForm.para1"><strong>IF YOU’RE NOT A SEAFDEC/AQD MEMBER</strong>, you can request the author(s) of the document to send you a copy by email, by filling the form below.</message>
-    <message key="xmlui.ArtifactBrowser.ItemRequestForm.restricted"><strong>THIS DOCUMENT IS IN RESTRICTED ACCESS</strong>. If you are a member of SEAFDEC Aquaculture Department, you must “login“ in the system to have access to the contents and services restricted to the members of SEAFDEC/AQD. If you haven’t registered yet, you can do it at: <a href="../register">http://repository.seafdec.org.ph/register</a></message>
+    <message key="xmlui.ArtifactBrowser.ItemRequestForm.restricted"><strong>THIS DOCUMENT IS IN RESTRICTED ACCESS</strong>. If you are a member of SEAFDEC Aquaculture Department, you must “<a href="/login">login</a>“ in the system to have access to the contents and services restricted to the members of SEAFDEC/AQD. If you haven’t registered yet, you can do it at: <a href="/register">http://repository.seafdec.org.ph/register</a></message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail">E-mail</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail_help">This email address will be used for sending the document.</message>
 	<message key="xmlui.ArtifactBrowser.ItemRequestForm.requesterEmail.error">E-mail is required</message>
