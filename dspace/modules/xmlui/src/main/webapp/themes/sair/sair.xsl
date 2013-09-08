@@ -563,10 +563,12 @@
 
         <script type="text/javascript">
             <xsl:text disable-output-escaping="yes">if (location.href.match(/handle/) != null &amp;&amp; window.location.href.indexOf("workflow") == -1</xsl:text>
-            <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("submit") == -1</xsl:text>
+            <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("submit") == -1 || window.location.pathname == '/'</xsl:text>
             <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("restricted-resource") == -1</xsl:text>
             <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("browse") == -1) {
                     $.getScript("//s7.addthis.com/js/300/addthis_widget.js#username=seafdecaqdlib&amp;domready=1", function(){
+                            $.getScript("/themes/sair/lib/js/addthis.js", onSuccess);
+                                    function onSuccess() {
                     // here you can use anything you defined in the loaded script
                     addthis.layers({
                     'theme': 'transparent',
@@ -621,8 +623,8 @@
                         'buttonBarTheme': 'transparent',
                         'mobile': true
                     }
-                });
-            $.getScript("/themes/sair/lib/js/addthis.js");
+                })
+                }
                 });
         }</xsl:text>
         </script>
@@ -826,32 +828,29 @@
                     <xsl:choose>
                         <xsl:when test="$context/mets:fileSec/mets:fileGrp[@USE='THUMBNAIL']/
                         mets:file[@GROUPID=current()/@GROUPID]">
-                            <xsl:choose>
-                                <xsl:when test="contains(mets:FLocat[@LOCTYPE='URL']/@xlink:href,'isAllowed=n')">
-                                    <img>
-                                        <xsl:attribute name="src">
-                                            <xsl:value-of select="$context-path"/>
-                                            <xsl:text>/static/icons/lock24.png</xsl:text>
-                                        </xsl:attribute>
-                                        <xsl:attribute name="alt">
-                                            <xsl:text>Restricted</xsl:text>
-                                        </xsl:attribute>
-                                    </img>
-                                </xsl:when>
-                                <xsl:otherwise>
                             <img alt="Thumbnail">
                                 <xsl:attribute name="src">
                                     <xsl:value-of select="$context/mets:fileSec/mets:fileGrp[@USE='THUMBNAIL']/
                                     mets:file[@GROUPID=current()/@GROUPID]/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
                                 </xsl:attribute>
                             </img>
-                                </xsl:otherwise>
-                            </xsl:choose>
                         </xsl:when>
                         <xsl:otherwise>
                             <img alt="Icon" src="{concat($theme-path, '/images/mime.png')}" style="height: {$thumbnail.maxheight}px;"/>
                         </xsl:otherwise>
                     </xsl:choose>
+                    <xsl:text>&#160;</xsl:text>
+                    <xsl:if test="contains(mets:FLocat[@LOCTYPE='URL']/@xlink:href,'isAllowed=n')">
+                        <img>
+                            <xsl:attribute name="src">
+                                <xsl:value-of select="$context-path"/>
+                                <xsl:text>/static/icons/lock24.png</xsl:text>
+                            </xsl:attribute>
+                            <xsl:attribute name="alt">
+                                <xsl:text>Restricted</xsl:text>
+                            </xsl:attribute>
+                        </img>
+                    </xsl:if>
                 </a>
             </div>
             <div class="file-metadata" style="height: {$thumbnail.maxheight}px;">

@@ -13,6 +13,9 @@
         $('p.ds-paragraph.item-view-toggle.item-view-toggle-top').after(addthisbuttons); // Add this toolbars in item view
         $('div.responsive').append(addthisbuttons);
         $('div.item-summary-view-metadata').prepend(addthisbuttons);
+        $('#aspect_artifactbrowser_CollectionViewer_div_collection-home').prepend(addthisbuttons);
+        $('#aspect_artifactbrowser_CommunityViewer_div_community-home').prepend(addthisbuttons);
+        $('#file_news_div_news').before(addthisbuttons);
 
         if (location.href.match(/show=full/) != null) {
         $('div#addthis').attr("addthis:url", (itemUrl).replace("?show=full", ""));
