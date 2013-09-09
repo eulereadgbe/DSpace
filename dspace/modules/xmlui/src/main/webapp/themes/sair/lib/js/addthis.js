@@ -11,10 +11,10 @@
             "</div>";
 
         $('p.ds-paragraph.item-view-toggle.item-view-toggle-top').after(addthisbuttons); // Add this toolbars in item view
-        $('div.responsive').append(addthisbuttons);
+        $('table.ds-includeSet-table.detailtable').after(addthisbuttons);
         $('div.item-summary-view-metadata').prepend(addthisbuttons);
-        $('#aspect_artifactbrowser_CollectionViewer_div_collection-home').prepend(addthisbuttons);
-        $('#aspect_artifactbrowser_CommunityViewer_div_community-home').prepend(addthisbuttons);
+        $('#aspect_artifactbrowser_CollectionViewer_div_collection-home').before(addthisbuttons);
+        $('#aspect_artifactbrowser_CommunityViewer_div_community-home').before(addthisbuttons);
         $('#file_news_div_news').before(addthisbuttons);
 
         if (location.href.match(/show=full/) != null) {
