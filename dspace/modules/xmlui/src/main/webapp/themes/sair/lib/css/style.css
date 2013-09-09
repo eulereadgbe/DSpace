@@ -1546,3 +1546,7 @@ div.addthis_toolbox a {
     visibility: hidden;
     display: none;
 }
+
+a.image-link {
+    text-decoration: none;
+}
