@@ -161,7 +161,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
              <dc-qualifier>bookTitle</dc-qualifier>
              <repeatable>false</repeatable>
              <label>Book Title</label>
-             <type-bind>bookSection</type-bind>
+             <type-bind>Book chapter</type-bind>
              <input-type>onebox</input-type>
              <hint> Enter the title of the Book for which this item is part of. </hint>
              <required>You must enter the Book title of this article.</required>
@@ -391,7 +391,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
      </pair>
      <pair>
        <displayed-value>Book chapter</displayed-value>
-       <stored-value>bookSection</stored-value>
+       <stored-value>Book chapter</stored-value>
      </pair>
        <pair>
            <displayed-value>Conference paper</displayed-value>
