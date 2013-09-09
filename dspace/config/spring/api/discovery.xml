@@ -204,9 +204,8 @@
             <list>
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
-                <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterVolume" />
-                <ref bean="searchFilterIssue" />
+                <ref bean="searchFilterIssued" />
             </list>
         </property>
         <!--The search filters which can be used on the discovery search page-->
@@ -218,6 +217,7 @@
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterVolume" />
                 <ref bean="searchFilterIssue" />
+                <ref bean="searchFilterType" />
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -246,6 +246,7 @@
             <list>
                 <!--Only find items-->
                 <value>search.resourcetype:2</value>
+                <value>dc.type:Article</value>
             </list>
         </property>
         <!--The configuration for the recent submissions-->
