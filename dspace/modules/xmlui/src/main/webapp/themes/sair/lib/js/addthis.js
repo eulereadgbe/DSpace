@@ -12,7 +12,7 @@
 
         $('p.ds-paragraph.item-view-toggle.item-view-toggle-top').after(addthisbuttons); // Add this toolbars in item view
         $('table.ds-includeSet-table.detailtable').after(addthisbuttons);
-        $('div.item-summary-view-metadata').prepend(addthisbuttons);
+        $('div.item-summary-view-metadata').before(addthisbuttons);
         $('#aspect_artifactbrowser_CollectionViewer_div_collection-home').before(addthisbuttons);
         $('#aspect_artifactbrowser_CommunityViewer_div_community-home').before(addthisbuttons);
         $('#file_news_div_news').before(addthisbuttons);

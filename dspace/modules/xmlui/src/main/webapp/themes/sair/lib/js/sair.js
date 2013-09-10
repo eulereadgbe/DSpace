@@ -67,6 +67,12 @@ var toggleBottom = $("p.ds-paragraph.item-view-toggle-bottom");
             that.html(linkify_html(text));
         });
 
+        $('.item-summary-view-metadata div.simple-item-view-description div').each(function (){
+            var that =$(this),
+                text = that.html();
+            that.html(linkify_html(text));
+        });
+
         if (location.href.match(/show=full/) != null ){
         // Remove the 'http://dx.doi.org/' to display the DOI only
         $('body *').replaceText(/\bhttp:\/\/dx.doi.org\/\b/gi, '' );// http://www.benalman.com/projects/jquery-replacetext-plugin/
