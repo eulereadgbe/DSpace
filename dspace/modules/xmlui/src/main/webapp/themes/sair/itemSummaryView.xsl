@@ -280,7 +280,14 @@
                     <span>
                         <xsl:for-each select="dim:field[@element='relation' and @qualifier='uri']">
                             <xsl:variable name="related-link">
+                                <xsl:choose>
+                                    <xsl:when test="contains(./node(), 'https')">
+                                        <xsl:value-of select="substring-after(./node(),'https://')"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
                                 <xsl:value-of select="substring-after(./node(),'http://')"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </xsl:variable>
                             <a>
                                 <xsl:attribute name="href">
@@ -289,10 +296,18 @@
                                 <xsl:choose>
                                 <xsl:when test="string-length($related-link) > 23">
                                 <xsl:value-of select="util:shortenString($related-link, 17, 5)"/>
+                                        <xsl:text>&#160;</xsl:text>
                                 <xsl:call-template name="skipAfterDots"/>
                                 </xsl:when>
                                     <xsl:otherwise>
+                                        <xsl:choose>
+                                            <xsl:when test="contains(./node(), 'https')">
+                                                <xsl:value-of select="substring-after(./node(),'https://')"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
                                         <xsl:value-of select="substring-after(./node(),'http://')"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </a>
@@ -910,7 +925,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="vIsDot" select=
-                        "substring($pTotalString, $pPosition, 1) = '.'"/>
+                        "substring($pTotalString, $pPosition, 1) = '/'"/>
 
                 <xsl:call-template name="skipAfterDots">
                     <xsl:with-param name="pTotalString" select="$pTotalString"/>
