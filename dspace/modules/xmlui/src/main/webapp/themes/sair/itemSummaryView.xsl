@@ -91,7 +91,7 @@
                             <xsl:call-template name="replace">
                                 <xsl:with-param name="ptext" select="$message" />
                                 <xsl:with-param name="ppattern" select="'&amp;'" />
-                                <xsl:with-param name="preplacement" select="'and'" />
+                                <xsl:with-param name="preplacement" select="'%26'" />
                             </xsl:call-template>
                             </xsl:variable>
                             <xsl:value-of select="$replacedString"/>
