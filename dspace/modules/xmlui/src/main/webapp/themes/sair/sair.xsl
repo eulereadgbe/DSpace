@@ -563,10 +563,26 @@
 
         <script type="text/javascript">
             <xsl:text disable-output-escaping="yes">if (location.href.match(/handle/) != null &amp;&amp; window.location.href.indexOf("workflow") == -1</xsl:text>
-            <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("submit") == -1 || window.location.pathname == '/'</xsl:text>
-            <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("restricted-resource") == -1</xsl:text>
-            <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("browse") == -1) {
+            <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("submit") == -1</xsl:text>
+            <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("browse") == -1</xsl:text>
+            <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("restricted-resource") == -1 || window.location.pathname == '/') {
                     $.getScript("//s7.addthis.com/js/300/addthis_widget.js#username=seafdecaqdlib&amp;domready=1", function(){
+                        var itemUrl = (document.URL);
+        var addthisbuttons = "&lt;div id='addthis' class='addthis_toolbox addthis_default_style'&gt;" +
+                    "&lt;a class='addthis_button_preferred_1'>&#160;&lt;/a&gt;" +
+                    "&lt;a class='addthis_button_preferred_2'>&#160;&lt;/a&gt;" +
+                    "&lt;a class='addthis_button_preferred_3'>&#160;&lt;/a&gt;" +
+                    "&lt;a class='addthis_button_preferred_4'>&#160;&lt;/a&gt;" +
+                    "&lt;a class='addthis_button_compact'>&#160;&lt;/a&gt;" +
+                    "&lt;a class='addthis_counter addthis_bubble_style'>&#160;&lt;/a&gt;" +
+                    "&lt;/div&gt;";
+
+        $('p.ds-paragraph.item-view-toggle.item-view-toggle-top').after(addthisbuttons); // Add this toolbars in item view
+        $('table.ds-includeSet-table.detailtable').after(addthisbuttons);
+        $('div.item-summary-view-metadata').before(addthisbuttons);
+        $('#aspect_artifactbrowser_CollectionViewer_div_collection-home').before(addthisbuttons);
+        $('#aspect_artifactbrowser_CommunityViewer_div_community-home').before(addthisbuttons);
+        $('#file_news_div_news').before(addthisbuttons);
                             $.getScript("/themes/sair/lib/js/addthis.js", onSuccess);
                                     function onSuccess() {
                     // here you can use anything you defined in the loaded script
@@ -645,6 +661,27 @@
            </xsl:text>
             </script>
         </xsl:if>
+
+<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://repository.seafdec.org.ph/analytics/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", "1"]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+        <noscript>
+            <p>
+                <img src="http://repository.seafdec.org.ph/analytics/piwik.php?idsite=1" style="border:0" alt=""/>
+            </p>
+        </noscript>
+        <!-- End Piwik Tracking Code -->
 
         <!-- Display QR code and fetch jquery.qrcode-0.7.0.js in item view only -->
         <xsl:if test="/dri:document/dri:body/dri:div[@id='aspect.artifactbrowser.ItemViewer.div.item-view']">
