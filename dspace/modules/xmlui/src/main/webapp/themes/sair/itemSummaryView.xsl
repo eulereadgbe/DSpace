@@ -58,6 +58,48 @@
                 <h2>
                     <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-head</i18n:text>
                 </h2>
+                <xsl:choose>
+                    <xsl:when
+                            test="./mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim/dim:field[@element='relation' and @qualifier='uri']">
+                        <xsl:for-each select="./mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim/dim:field[@element='relation' and @qualifier='uri']">
+                            <xsl:variable name="related-link">
+                                <xsl:choose>
+                                    <xsl:when test="contains(./node(), 'https')">
+                                        <xsl:value-of select="substring-after(./node(),'https://')"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                                        <xsl:value-of select="substring-after(./node(),'http://')"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:copy-of select="./node()"/>
+                                </xsl:attribute>
+                                <xsl:choose>
+                                    <xsl:when test="string-length($related-link) > 23">
+                                        <xsl:value-of select="util:shortenString($related-link, 17, 5)"/>
+                                        <xsl:text>&#160;</xsl:text>
+                                        <xsl:call-template name="skipAfterDots"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:choose>
+                                            <xsl:when test="contains(./node(), 'https')">
+                                                <xsl:value-of select="substring-after(./node(),'https://')"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:value-of select="substring-after(./node(),'http://')"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </a>
+                            <xsl:if test="count(following-sibling::dim:field[@element='relation' and @qualifier='uri']) != 0">
+                                <br/>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <xsl:otherwise>
                             <p>
                                 <i18n:text>xmlui.dri2xhtml.METS-1.0.item-no-files</i18n:text>
                                 <xsl:text>&#160;</xsl:text>
@@ -99,6 +141,8 @@
                                     <xsl:text>Request this document for personal reference.</xsl:text>
                                 </a>
                             </p>
+            </xsl:otherwise>
+        </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
 
@@ -925,7 +969,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="vIsDot" select=
-                        "substring($pTotalString, $pPosition, 1) = '/'"/>
+                        "substring($pTotalString, $pPosition, 1) = '.'"/>
 
                 <xsl:call-template name="skipAfterDots">
                     <xsl:with-param name="pTotalString" select="$pTotalString"/>

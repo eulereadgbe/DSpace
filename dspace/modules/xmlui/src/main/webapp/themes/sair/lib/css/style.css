@@ -1027,7 +1027,7 @@ div.simple-item-view-other {
 }
 
 #aspect_artifactbrowser_ItemViewer_div_item-view h2,
-div.item-summary-view-metadata p.item-view-toggle-bottom,
+p.item-view-toggle-bottom,
 div.simple-item-view-description,
 div.simple-item-view-subject {
     margin-top: 20px;
