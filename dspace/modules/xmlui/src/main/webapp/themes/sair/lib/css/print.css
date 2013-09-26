@@ -58,7 +58,7 @@ p.item-view-toggle, .file-link {
     visibility:hidden;
 }
 
-#ds-footer-wrapper, #addthis, #QRcode a, #img-buffer, .addthis-smartlayers {
+#ds-footer-wrapper, #addthis, #QRcode a, #img-buffer, .addthis-smartlayers, div.clickdesk {
     visibility: hidden;
     display: none;
 }

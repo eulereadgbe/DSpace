@@ -242,7 +242,7 @@
                     <xsl:text>/themes/</xsl:text>
                     <xsl:value-of
                             select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='theme'][@qualifier='path']"/>
-                    <xsl:text>/lib/js/modernizr-1.7.min.js</xsl:text>
+                    <xsl:text>/lib/js/modernizr.custom.94877.js</xsl:text>
                 </xsl:attribute>
                 &#160;
             </script>
@@ -566,9 +566,18 @@
             <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("submit") == -1</xsl:text>
             <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("browse") == -1</xsl:text>
             <xsl:text disable-output-escaping="yes"> &amp;&amp; window.location.href.indexOf("restricted-resource") == -1 || window.location.pathname == '/') {
-                    $.getScript("//s7.addthis.com/js/300/addthis_widget.js#username=seafdecaqdlib&amp;domready=1", function(){
-                        var itemUrl = (document.URL);
-        var addthisbuttons = "&lt;div id='addthis' class='addthis_toolbox addthis_default_style'&gt;" +
+
+            var _glc =_glc || []; _glc.push('all_ag9zfmNsaWNrZGVza2NoYXRyDgsSBXVzZXJzGMvVggQM');
+            var glcpath = (('https:' == document.location.protocol) ? 'https://my.clickdesk.com/clickdesk-ui/browser/' :
+                    'http://my.clickdesk.com/clickdesk-ui/browser/');
+            var glcp = (('https:' == document.location.protocol) ? 'https://' : 'http://');
+            var glcspt = document.createElement('script'); glcspt.type = 'text/javascript';
+            glcspt.async = true; glcspt.src = glcpath + 'livechat-new.js';
+            var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(glcspt, s);
+
+                $.getScript("//s7.addthis.com/js/300/addthis_widget.js#username=seafdecaqdlib&amp;domready=1", function(){
+                    var itemUrl = (document.URL);
+                    var addthisbuttons = "&lt;div id='addthis' class='addthis_toolbox addthis_default_style'&gt;" +
                     "&lt;a class='addthis_button_preferred_1'>&#160;&lt;/a&gt;" +
                     "&lt;a class='addthis_button_preferred_2'>&#160;&lt;/a&gt;" +
                     "&lt;a class='addthis_button_preferred_3'>&#160;&lt;/a&gt;" +
@@ -584,9 +593,8 @@
         $('#aspect_artifactbrowser_CommunityViewer_div_community-home').before(addthisbuttons);
         $('#file_news_div_news').before(addthisbuttons);
                             $.getScript("/themes/sair/lib/js/addthis.js", onSuccess);
-                                    function onSuccess() {
-                    // here you can use anything you defined in the loaded script
-                    addthis.layers({
+                    function onSuccess() {
+                        addthis.layers({
                     'theme': 'transparent',
                     'domain': '',
                     'linkFilter': function (link, layer) {
@@ -598,7 +606,7 @@
                         'minWidth': '0px'
                     },
                     'share': {
-                        'position': 'left',
+                        'position': 'right',
                         'numPreferredServices': 5,
                         'postShareTitle': 'Thanks for sharing!',
                         'postShareFollowMsg': 'Follow us',
@@ -640,19 +648,8 @@
                         'mobile': true
                     }
                 })
-                }
+                                         }
                 });
-                <!-- ClickDesk - <a href='http://www.clickdesk.com'> Live Chat Service </a> for websites -->
-                if ($(window).width() &gt; 1080) { //Clickdesk Live chat
-                    var _glc =_glc || []; _glc.push('all_ag9zfmNsaWNrZGVza2NoYXRyDgsSBXVzZXJzGMvVggQM');
-                    var glcpath = (('https:' == document.location.protocol) ? 'https://my.clickdesk.com/clickdesk-ui/browser/' :
-                    'http://my.clickdesk.com/clickdesk-ui/browser/');
-                    var glcp = (('https:' == document.location.protocol) ? 'https://' : 'http://');
-                    var glcspt = document.createElement('script'); glcspt.type = 'text/javascript';
-                    glcspt.async = true; glcspt.src = glcpath + 'livechat-new.js';
-                    var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(glcspt, s);
-        }
-                <!-- End of ClickDesk -->
                 }
             </xsl:text>
         </script>

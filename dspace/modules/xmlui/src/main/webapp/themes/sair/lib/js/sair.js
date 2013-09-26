@@ -129,6 +129,13 @@ var toggleBottom = $("p.ds-paragraph.item-view-toggle-bottom");
             document.getElementById("ds-footer-wrapper").style.height = footer + 'px';
             document.getElementById('ds-footer-wrapper').style.marginTop = '-' + footer + 'px';
             document.getElementById('ds-content-wrapper').style.paddingBottom = footer  + 'px';
+
+            if ($(window).width() <= 1080 ) {
+                $("div#clickdesk").css('bottom', '44px');
+            }
+            else {
+                $("div#clickdesk").css('bottom', '0');
+            }
         }
 
         $(window).resize();
