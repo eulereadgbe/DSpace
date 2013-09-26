@@ -654,6 +654,23 @@
             </xsl:text>
         </script>
 
+        <!-- BEGIN Tynt Script -->
+        <script type="text/javascript">
+            if (document.location.protocol == 'http:') {
+                var Tynt = Tynt || [];
+                Tynt.push('auMDQi5Hyr4BIkacwqm_6l');
+                (function () {
+                    var s = document.createElement('script');
+                    s.async = "async";
+                    s.type = "text/javascript";
+                    s.src = 'http://tcr.tynt.com/ti.js';
+                    var h = document.getElementsByTagName('script')[0];
+                    h.parentNode.insertBefore(s, h);
+                })();
+            }
+        </script>
+        <!-- END Tynt Script -->
+
         <!-- Add a google analytics script if the key is present -->
         <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']">
             <script type="text/javascript"><xsl:text>
