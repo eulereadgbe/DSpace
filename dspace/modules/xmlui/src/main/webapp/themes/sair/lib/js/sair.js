@@ -67,7 +67,7 @@ var toggleBottom = $("p.ds-paragraph.item-view-toggle-bottom");
             that.html(linkify_html(text));
         });
 
-        $('.item-summary-view-metadata div.simple-item-view-description div').each(function (){
+        $('#aspect_artifactbrowser_ItemViewer_div_item-view').each(function (){
             var that =$(this),
                 text = that.html();
             that.html(linkify_html(text));
