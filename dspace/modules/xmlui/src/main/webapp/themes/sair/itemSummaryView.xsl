@@ -39,6 +39,76 @@
         <!-- Generate the info about the item from the metadata section -->
         <xsl:apply-templates select="./mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim"
                              mode="itemSummaryView-DIM"/>
+        <script type="text/javascript">
+            <xsl:text disable-output-escaping="yes">
+            document.write('&lt;script type="text/javascript" src="http://api.elsevier.com/javascript/scopussearch.jsp"&gt; &lt;/' + 'script&gt;');
+
+            callbackCitedbycount = function(){
+                if (sciverse.areSearchResultsValid()) {
+                    var resultObj = sciverse.getSearchResults();
+                    if (resultObj.returnedResults &gt;0) {
+                        citedbycount = resultObj.results[0].citedbycount;
+                        eid = resultObj.results[0].eid;
+                        if (citedbycount &gt; 0) {
+                            citeHtml = '&lt;span class="bold"&gt;Cited:&lt;/span&gt; ';
+
+                            if (eid != null) {
+                                citeHtml += '&lt;a href="http://www.scopus.com/scopus/search/submit/citedby.url?src=s&amp;origin=recordpage&amp;eid=';
+                                citeHtml += eid;
+                                citeHtml += '" class="citing-link" target="_new" title="View citing articles in Scopus"&gt;';
+                                citeHtml += citedbycount;
+                                citeHtml += '&lt;/a&gt;&#160;times in &lt;span class="bold"&gt;Scopus&lt;/span&gt;';
+                            }
+
+                            articleLink = resultObj.results[0].inwardurl;
+
+                            if (articleLink != null) {
+                                citeHtml += '&#160;&#160;&lt;small&gt;(&lt;a href="';
+                                citeHtml += articleLink;
+                                citeHtml += '" class="article-link" target="_new" title="View record in Scopus" &gt;';
+                                citeHtml += 'View record in Scopus';
+                                citeHtml += '&lt;/a&gt;)&lt;/small&gt;';
+                            }
+                </xsl:text>
+                            var citecountsScopus = $("#citecounts-scopus");
+                            citecountsScopus.html(citeHtml);
+                            citecountsScopus.removeClass('hidden');
+                            citecountsScopus.show('blind');
+                            $("#citecounts-scopus a.citing-link").click(function(){
+                                if (_gaq != null) {
+                                    _gaq.push(['_trackEvent', 'Citecount links','Scopus citing items','<xsl:value-of select="./mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim/dim:field[@element='identifier' and @qualifier='uri']"/>']);
+                                }
+                            });
+                            $("#citecounts-scopus a.article-link").click(function(){
+                                if (_gaq) {
+                                    _gaq.push(['_trackEvent','Citecount links','Scopus article','<xsl:value-of select="./mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim/dim:field[@element='identifier' and @qualifier='uri']"/>']);
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+        runSearch = function() {
+        //setting defaults
+        sciverse.setApiKey("336f59c9f4b6e644316e0bdbacf70d03");
+        sciverse.setCallback(callbackCitedbycount);
+
+        //setting search query
+        <xsl:text disable-output-escaping="yes">var strQuery = "DOI(</xsl:text><xsl:value-of select="./mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim/dim:field[@element='identifier' and @qualifier='doi']"/><xsl:text disable-output-escaping="yes">)";
+
+        var varSearchObj = new searchObj();
+        varSearchObj.setSearch(strQuery);
+        varSearchObj.setNumResults('1');
+
+        //launching search
+        try {
+        sciverse.runSearch(varSearchObj);
+        } catch(err) {	}
+        };
+        runAfterJSImports.add(runSearch);
+            </xsl:text>
+    </script>
 
         <xsl:copy-of select="$SFXLink"/>
         <!-- Generate the bitstream information from the file section -->
@@ -411,6 +481,7 @@
 
             <!-- Citation row -->
             <xsl:when test="$clause = 9 and (dim:field[@element='identifier' and @qualifier='citation' and descendant::text()])">
+                <div id="citecounts-scopus" class="simple-item-view-other citecounts hidden">&#160;</div>
                 <div class="simple-item-view-description">
                     <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.item-citation</i18n:text>:
                     </h3>
