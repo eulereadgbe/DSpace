@@ -694,7 +694,7 @@
                            </xsl:attribute>
                             <img alt="Thumbnail">
                                 <xsl:attribute name="src">
-                                <xsl:variable name="request-uri" select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'])"/>
+                                <xsl:variable name="request-uri" select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath']"/>
                                 <xsl:text>/themes/mobile/lib/images/default-thumbnail.png</xsl:text>
                                 </xsl:attribute>
                             </img>
@@ -790,7 +790,7 @@
 </xsl:template>
 
 <!-- ds-options -->
-<!-- the browse section is being implemented in the front page custoization -->
+<!-- the browse section is being implemented in the front page customization -->
 <xsl:template match="dri:options">&#160;
 </xsl:template>
 
