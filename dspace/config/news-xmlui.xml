@@ -1,15 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <document xmlns="http://di.tamu.edu/DRI/1.0/" xmlns:i18n="http://apache.org/cocoon/i18n/2.1" version="1.1">
-<body>
-<div id="file.news.div.news" n="news" rend="primary">
-<head>DSpace Repository</head>
-<p>DSpace is a digital service that collects, preserves, and distributes digital material. Repositories are important tools for preserving an organization&apos;s legacy; they facilitate digital preservation and scholarly communication.</p>
-</div>
-</body>
-<options/>
-<meta>
-<userMeta/>
-<pageMeta/>
-<repositoryMeta/>
-</meta>
+    <body>
+        <div id="file.news.div.news" n="news" rend="primary">
+            <head>DSpace @ SEAFDEC/AQD</head>
+
+            <p>
+                Southeast Asian Fisheries Development Center, Aquaculture Department Institutional Repository (SAIR) is
+                the official digital repository of scholarly and research information of the department. This is to
+                enable the effective dissemination of AQD researchers' in-house and external publications for free and
+                online. The repository uses DSpace, an open source software, developed at Massachusetts Institute of
+                Technology (MIT) Libraries. It is an Open Archives Initiative (OAI)-compliant.
+            </p>
+
+            <p>
+                Initially, the repository shall contain preprints, full-texts or abstracts of journal articles, books
+                and conference proceedings written by SEAFDEC/AQD scientists and researchers. The aim is to promote
+                these publications especially those published in international peer-reviewed journals and generate
+                higher citation through increased visibility.
+            </p>
+
+            <p>
+                It will also provide free access to all in-house publications of SEAFDEC/AQD. Full-text digitized copies
+                of fishfarmer-friendly materials like books, handbooks, policy guidebooks, conference proceedings,
+                extension manuals, institutional reports, annual reports (AQD Highlights), and newsletters (SEAFDEC
+                Asian Aquaculture, Aqua Farm News, AquaDept News and AQD Matters) can be retrieved and downloaded.
+            </p>
+
+            <p>
+                In the future, SAIR will expand its collection to include images, presentations, audios, and videos
+                among others.
+            </p>
+
+            <p>
+                The objectives of the repository are to: (1) to provide reliable means for SEAFDEC/AQD researchers to
+                store, preserve and share their research outputs and (2) to provide easy access and increase the
+                visibility of SEAFDEC/AQD scientific publications
+            </p>
+
+            <p>
+                SAIR also aims to encourage SEAFDEC/AQD researchers for self-archiving and submitting pre-prints from
+                which metadata will be screened and approved by the library staff.
+            </p>
+
+        </div>
+    </body>
+    <options/>
+    <meta>
+        <userMeta/>
+        <pageMeta/>
+        <repositoryMeta/>
+    </meta>
 </document>
