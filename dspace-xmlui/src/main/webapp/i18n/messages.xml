@@ -237,7 +237,32 @@
 	<message key="xmlui.ArtifactBrowser.FeedbackSent.head">Feedback sent</message>
 	<message key="xmlui.ArtifactBrowser.FeedbackSent.para1">Your comments have been received.</message>
 
-	<!-- org.dspace.app.xmlui.artifactbrowser.ItemViewer.java -->
+    <!-- org.dspace.app.xmlui.artifactbrowser.DocumentDeliveryForm.java -->
+    <message key="xmlui.ArtifactBrowser.DocumentDeliveryForm.title">Document delivery</message>
+    <message key="xmlui.ArtifactBrowser.DocumentDeliveryForm.trail">Document delivery</message>
+    <message key="xmlui.ArtifactBrowser.DocumentDeliveryForm.head">Request a copy of:</message>
+    <message key="xmlui.ArtifactBrowser.DocumentDeliveryForm.para1">Thanks for sharing your feedback about the DSpace system. Your comments are appreciated!</message>
+    <message key="xmlui.ArtifactBrowser.DocumentDeliveryForm.email">Your Email</message>
+    <message key="xmlui.ArtifactBrowser.DocumentDeliveryForm.email_help">This email address will be used for sending the document.</message>
+    <message key="xmlui.ArtifactBrowser.DocumentDeliveryForm.message">Message</message>
+    <message key="xmlui.ArtifactBrowser.DocumentDeliveryForm.agreement">I agree<br/><i>I will use the requested material only for
+        private study, scholarship or research. I understand that use for any other purpose may require the
+        authorization of the copyright owner. I accept responsibility for determining if copyright owner authorization
+        is required and for obtaining authorization when it is required</i>.
+    </message><message key="xmlui.ArtifactBrowser.DocumentDeliveryForm.submit">Send Request</message>
+
+    <!-- org.dspace.app.xmlui.artifactbrowser.DocumentDeliverySent.java -->
+    <message key="xmlui.ArtifactBrowser.DocumentDeliverySent.title">Document delivery</message>
+    <message key="xmlui.ArtifactBrowser.DocumentDeliverySent.trail">Document delivery</message>
+    <message key="xmlui.ArtifactBrowser.DocumentDeliverySent.head">Request sent</message>
+    <message key="xmlui.ArtifactBrowser.DocumentDeliverySent.para1">Your request have been received.</message>
+    <message key="xmlui.ArtifactBrowser.DocumentDeliverySent.notice"><strong>Note</strong>: The delay or lack of
+        response may mean that your request has not been attended by the responsible person. It may also mean that you
+        have given us an invalid or non-existing email address. Please email us at
+        <a href="mailto:library@seafdec.org.ph">library@seafdec.org.ph</a>
+        to follow up your request. Thank you.
+    </message>
+    <!-- org.dspace.app.xmlui.artifactbrowser.ItemViewer.java -->
 	<message key="xmlui.ArtifactBrowser.ItemViewer.trail">View Item</message>
 	<message key="xmlui.ArtifactBrowser.ItemViewer.head_parent_collections">This item appears in the following Collection(s)</message>
 	<message key="xmlui.ArtifactBrowser.ItemViewer.show_simple">Show simple item record</message>

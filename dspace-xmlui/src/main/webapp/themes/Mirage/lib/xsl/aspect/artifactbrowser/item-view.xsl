@@ -67,6 +67,7 @@
                     <tr>
                         <td colspan="4">
                             <p><i18n:text>xmlui.dri2xhtml.METS-1.0.item-no-files</i18n:text></p>
+                            <xsl:call-template name="documentdelivery" />
                         </td>
                     </tr>
                 </table>
@@ -555,6 +556,18 @@
                 <xsl:call-template name="view-open"/>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="documentdelivery">
+        <a>
+            <xsl:attribute name="href">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:value-of select="substring-before(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='URI'],'handle/')"/>
+                <xsl:text>/documentdelivery/</xsl:text>
+                <xsl:value-of select="substring-after($request-uri,'handle/')"/>
+            </xsl:attribute>
+            <xsl:text>Request document delivery</xsl:text>
+        </a>
     </xsl:template>
 
 </xsl:stylesheet>
