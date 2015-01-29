@@ -8,18 +8,22 @@
 package org.dspace.app.xmlui.aspect.artifactbrowser;
 
 import org.apache.cocoon.caching.CacheableProcessingComponent;
-import org.apache.cocoon.util.HashUtil;
-import org.apache.excalibur.source.SourceValidity;
-import org.apache.excalibur.source.impl.validity.NOPValidity;
 import org.apache.cocoon.environment.ObjectModelHelper;
 import org.apache.cocoon.environment.Request;
+import org.apache.cocoon.util.HashUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.excalibur.source.SourceValidity;
+import org.apache.excalibur.source.impl.validity.NOPValidity;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.*;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.content.Metadatum;
+import org.dspace.content.DSpaceObject;
+import org.dspace.content.Item;
+import org.dspace.handle.HandleManager;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -31,35 +35,44 @@ import java.sql.SQLException;
  * 
  * @author Scott Phillips
  */
-public class FeedbackForm extends AbstractDSpaceTransformer implements CacheableProcessingComponent
+public class DocumentDeliveryForm extends AbstractDSpaceTransformer implements CacheableProcessingComponent
 {
     /** Language Strings */
     private static final Message T_title =
-        message("xmlui.ArtifactBrowser.FeedbackForm.title");
+        message("xmlui.ArtifactBrowser.DocumentDeliveryForm.title");
     
     private static final Message T_dspace_home =
         message("xmlui.general.dspace_home");
     
     private static final Message T_trail =
-        message("xmlui.ArtifactBrowser.FeedbackForm.trail");
+        message("xmlui.ArtifactBrowser.DocumentDeliveryForm.trail");
     
     private static final Message T_head = 
-        message("xmlui.ArtifactBrowser.FeedbackForm.head");
+        message("xmlui.ArtifactBrowser.DocumentDeliveryForm.head");
     
     private static final Message T_para1 =
-        message("xmlui.ArtifactBrowser.FeedbackForm.para1");
+        message("xmlui.ArtifactBrowser.DocumentDeliveryForm.para1");
     
+    private static final Message T_requesterName =
+            message("xmlui.ArtifactBrowser.ItemRequestForm.requesterName");
+
+    private static final Message T_requesterName_error =
+            message("xmlui.ArtifactBrowser.ItemRequestForm.requesterName.error");
+
     private static final Message T_email =
-        message("xmlui.ArtifactBrowser.FeedbackForm.email");
+        message("xmlui.ArtifactBrowser.DocumentDeliveryForm.email");
 
     private static final Message T_email_help =
-        message("xmlui.ArtifactBrowser.FeedbackForm.email_help");
+        message("xmlui.ArtifactBrowser.DocumentDeliveryForm.email_help");
     
-    private static final Message T_comments = 
-        message("xmlui.ArtifactBrowser.FeedbackForm.comments");
-    
+    private static final Message T_message =
+        message("xmlui.ArtifactBrowser.DocumentDeliveryForm.message");
+
+    private static final Message T_agreement =
+            message("xmlui.ArtifactBrowser.DocumentDeliveryForm.agreement");
+
     private static final Message T_submit =
-        message("xmlui.ArtifactBrowser.FeedbackForm.submit");
+        message("xmlui.ArtifactBrowser.DocumentDeliveryForm.submit");
     
     /**
      * Generate the unique caching key.
@@ -76,12 +89,14 @@ public class FeedbackForm extends AbstractDSpaceTransformer implements Cacheable
         String userTypeOther = parameters.getParameter("userTypeOther","");
         String organization = parameters.getParameter("organization","");
         String organizationOther = parameters.getParameter("organizationOther","");
-        String comments = parameters.getParameter("comments","");
+        String message = parameters.getParameter("message","");
+        String decision = parameters.getParameter("decision","");
         String page = parameters.getParameter("page","unknown");
-        
-       return HashUtil.hash(lastName + "-" + firstName + "-" + email + "-" + page + "-" + institution + "-" + userAddress
-               + "-" + userType + "-" + userTypeOther + "-" + organization + "-" + organizationOther + "-" + comments
-               + "-" + page);
+        String title = parameters.getParameter("title","");
+
+        return HashUtil.hash(lastName + "-" + firstName + "-" + email + "-" + page + "-" + institution + "-"
+                + userAddress + "-" + userType + "-" + userTypeOther + "-" + organization + "-" + organizationOther + "-" + message + "-"
+                + decision + "-" + title);
     }
 
     /**
@@ -110,21 +125,42 @@ public class FeedbackForm extends AbstractDSpaceTransformer implements Cacheable
         Request request = ObjectModelHelper.getRequest(objectModel);
 
         // Build the item viewer division.
-        Division feedback = body.addInteractiveDivision("feedback-form",
-                contextPath+"/feedback",Division.METHOD_POST,"primary");
+        Division documentdelivery = body.addInteractiveDivision("documentdelivery-form",
+                contextPath+"/documentdelivery/"+parameters.getParameter("handle","unknown"),Division.METHOD_POST,"primary");
         
-        feedback.setHead(T_head);
+        documentdelivery.setHead(T_head);
         
-        feedback.addPara(T_para1);
-        
-        List form = feedback.addList("form",List.TYPE_FORM);
+        String handle=parameters.getParameter("handle","unknown");
+        DSpaceObject dso = HandleManager.resolveToObject(context, handle);
+
+        if (dso instanceof Item) {
+            Item item = ((Item) dso);
+            Metadatum[] citationDC = item.getMetadata("dc", "identifier", "citation", Item.ANY);
+            Metadatum[] isPartOfDC = item.getMetadata("dc", "relation", "ispartof", Item.ANY);
+            Metadatum[] titleDC = item.getMetadata("dc", "title", null, Item.ANY);
+            String document = "";
+            if (citationDC != null && citationDC.length > 0) {
+                document = citationDC[0].value;
+            } else {
+                if (isPartOfDC != null && isPartOfDC.length > 0) {
+                    document = titleDC[0].value + " " + isPartOfDC[0].value;
+                } else {
+                    document = titleDC[0].value;
+                }
+            }
+            documentdelivery.addPara(document); // check for nulls or multiple values;
+            documentdelivery.addHidden("title").setValue(document);
+        }
+
+        List form = documentdelivery.addList("form",List.TYPE_FORM);
         
         Text email = form.addItem().addText("email");
         email.setAutofocus("autofocus");
+        email.setSize(50);
         email.setLabel(T_email);
         email.setHelp(T_email_help);
         email.setValue(parameters.getParameter("email",""));
-
+        
         // Composite
         Composite requesterName = form.addItem().addComposite("requesterName");
         requesterName.setLabel("Name");
@@ -174,10 +210,16 @@ public class FeedbackForm extends AbstractDSpaceTransformer implements Cacheable
         userAddress.setValue(parameters.getParameter("userAddress",""));
         userAddress.setSize(50);
 
-        TextArea comments = form.addItem().addTextArea("comments");
-        comments.setLabel(T_comments);
-        comments.setValue(parameters.getParameter("comments",""));
-        
+        TextArea message = form.addItem().addTextArea("message");
+        message.setLabel(T_message);
+        message.setValue(parameters.getParameter("message",""));
+
+        // Checkbox field
+        CheckBox decision = form.addItem().addCheckBox("decision");
+        decision.setRequired(true);
+        decision.addOption("agree", T_agreement);
+        decision.setOptionSelected(parameters.getParameter("decision",""));
+
         form.addItem().addButton("submit").setValue(T_submit);
         
         // if button is pressed and form is re-loaded it means some parameter is missing
@@ -213,10 +255,13 @@ public class FeedbackForm extends AbstractDSpaceTransformer implements Cacheable
                     StringUtils.isEmpty(parameters.getParameter("organizationOther", ""))) {
                 organizationOther.addError("Please write your organization type.");
             }
-            if(StringUtils.isEmpty(parameters.getParameter("comments", ""))){
-                comments.addError("This field is required");
+            if(StringUtils.isEmpty(parameters.getParameter("message", ""))){
+                message.addError("This field is required");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("decision", ""))){
+                decision.addError("Click \"I agree\" to complete your request.");
             }
         }
-        feedback.addHidden("page").setValue(parameters.getParameter("page","unknown"));
+        documentdelivery.addHidden("page").setValue(parameters.getParameter("page","unknown"));
     }
 }

@@ -16,11 +16,14 @@ import org.apache.cocoon.environment.SourceResolver;
 import org.apache.commons.lang.StringUtils;
 import org.dspace.app.xmlui.utils.ContextUtil;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.core.Email;
 import org.dspace.core.I18nUtil;
 import org.dspace.eperson.EPerson;
+import org.dspace.handle.HandleManager;
+import org.dspace.content.DSpaceObject;
 
 import java.net.InetAddress;
 import java.util.Date;
@@ -31,7 +34,7 @@ import java.util.Map;
  * @author Scott Phillips
  */
 
-public class SendFeedbackAction extends AbstractAction
+public class SendDocumentDeliveryAction extends AbstractAction
 {
 
     /**
@@ -46,7 +49,9 @@ public class SendFeedbackAction extends AbstractAction
         String address = request.getParameter("email");
         String agent = request.getHeader("User-Agent");
         String session = request.getSession().getId();
-        String comments = request.getParameter("comments");
+        String message = request.getParameter("message");
+        String title= request.getParameter("title");
+        String handle = parameters.getParameter("handle");
         String lastName = request.getParameter("lastName");
         String firstName = request.getParameter("firstName");
         String institution = request.getParameter("institution");
@@ -118,23 +123,22 @@ public class SendFeedbackAction extends AbstractAction
         if ((address == null) || address.equals("")
                 || (institution == null) || institution.equals("")
                 || (userAddress == null) || userAddress.equals("")
+                || (handle == null) || handle.equals("")
                 || (userType == null) || userType.equals("")
+                || (decision == null) || decision.equals("")
                 || StringUtils.isEmpty(firstName) || StringUtils.isEmpty(lastName)
-                || (comments == null) || comments.equals("")
+                || (message == null) || message.equals("")
                 || (organization == null) || organization.equals("")
                 || (organization.equals("Others") && (organizationOther == null || organizationOther.equals("")))
                 || (userType.equals("Others") && (userTypeOther == null || userTypeOther.equals("")))) {
             // Either the user did not fill out the form or this is the
             // first time they are visiting the page.
-            Map<String,String> map = new HashMap<String,String>();
-            map.put("page",page);
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("page", page);
 
-            if (address == null || address.equals(""))
-            {
+            if (address == null || address.equals("")) {
                 map.put("email", eperson);
-            }
-            else
-            {
+            } else {
                 map.put("email", address);
             }
 
@@ -154,41 +158,48 @@ public class SendFeedbackAction extends AbstractAction
             } else {
                 map.put("organization", organization);
             }
-            map.put("comments",comments);
-
+            map.put("message", message);
+            map.put("decision", decision);
+            map.put("handle", handle);
             return map;
         }
+        DSpaceObject dso = HandleManager.resolveToObject(context, handle);
+        Item item = (Item) dso;
 
         // All data is there, send the email
-        Email email = Email.getEmail(I18nUtil.getEmailFilename(context.getCurrentLocale(), "feedback"));
+        Email email = Email.getEmail(I18nUtil.getEmailFilename(context.getCurrentLocale(), "documentdelivery"));
         email.addRecipient(ConfigurationManager
                 .getProperty("feedback.recipient"));
 
-        email.addArgument(new Date());    // 0.  Date
-        email.addArgument(address);       // 1.  Email
-        email.addArgument(eperson);       // 2.  Logged in as
-        email.addArgument(page);          // 3.  Referring page
-        email.addArgument(agent);         // 4.  User agent
-        email.addArgument(session);       // 5.  Session ID
-        email.addArgument(comments);      // 6.  The feedback itself
-        email.addArgument(lastName);      // 7.  The user's surname
-        email.addArgument(firstName);     // 8.  The user's first name
-        email.addArgument(institution);   // 9.  Institution
-        email.addArgument(userAddress);   // 10. User's address
+        email.addArgument(new Date()); //0 Date
+        email.addArgument(address);    //1 Email
+        email.addArgument(eperson);    //2 Logged in as
+        email.addArgument(page.replace("/documentdelivery/", "/handle/")); //3 Referring page
+        email.addArgument(agent);      //4 User agent
+        email.addArgument(session);    //5 Session ID
+        email.addArgument(message);   //6 Message
+        email.addArgument(title);   //7 Item title
+        email.addArgument(lastName); //8
+        email.addArgument(firstName); //9
+        email.addArgument(institution); //10
+        email.addArgument(userAddress); //11
         if (StringUtils.equals(userType,"Others"))
         {
-            email.addArgument(userTypeOther); // 11. User type
+            email.addArgument(userTypeOther); //12 User type
         }
         else {
-            email.addArgument(userType);      // 11. User type
+            email.addArgument(userType); //12 User type
         }
         if (StringUtils.equals(organization,"Others"))
         {
-            email.addArgument(organizationOther); // 12. Organization type
+            email.addArgument(organizationOther); //13 Organization type
         }
         else {
-            email.addArgument(organization);      //12. Organization type
+            email.addArgument(organization); //13 Organization type
         }
+        email.addArgument(HandleManager.getCanonicalForm(item.getHandle())); //14 Item handle
+        email.addArgument(ConfigurationManager.getProperty("dspace.name")); //15 Repository name
+
 
         // Replying to feedback will reply to email on form
         email.setReplyTo(address);
