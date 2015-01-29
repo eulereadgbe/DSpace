@@ -21,3 +21,157 @@
     color: white;
     background: hotpink;
 }
+
+body { /* Used for navbar-fixed-top */
+  padding-top: 87px;
+}
+
+.dropdown-menu > li > a { /* Wrap text in dropdown */
+  white-space: inherit;
+}
+
+.dropdown-menu > li > form { /* Styling of search form in header */
+  padding: 3px 8px;
+  width: 200px;
+}
+
+.pagination {
+  width: 100%;
+}
+
+.centered-pagination,
+.centered-pagination ul {
+  float: left;
+  position: relative;
+}
+
+.centered-pagination ul {
+  left: -50%;
+}
+
+.centered-pagination {
+  left: 50%;
+}
+
+.thumbnail {
+  border: none;
+  padding-left: 0;
+  & > img {
+    border: 1px solid $thumbnail-border;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  }
+}
+
+.thumbnail > a > img {
+  border: 1px solid $thumbnail-border;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 360px) and (min-width: 321px) {
+  header .navbar-brand img {
+    height: 27px;
+  }
+  .navbar-brand {
+    padding-top: 19px;
+  }
+}
+
+@media (min-width: 361px) {
+  header .navbar-brand img {
+    height: 37px;
+  }
+  .navbar-brand {
+    padding-top: 14px;
+  }
+}
+
+footer {
+  font-size: 12px;
+  font-family: $font-family-sans-serif;
+}
+
+.navbar-default {
+  box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
+  -webkit-box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
+}
+
+.item-page-field-wrapper h5 {
+  margin-top: 0;
+}
+
+body { /* Used for navbar-fixed-top */
+  padding-top: 87px;
+}
+
+.dropdown-menu > li > a { /* Wrap text in dropdown */
+  white-space: inherit;
+}
+
+.dropdown-menu > li > form { /* Styling of search form in header */
+  padding: 3px 8px;
+  width: 200px;
+}
+
+.pagination {
+  width: 100%;
+}
+
+.centered-pagination,
+.centered-pagination ul {
+  float: left;
+  position: relative;
+}
+
+.centered-pagination ul {
+  left: -50%;
+}
+
+.centered-pagination {
+  left: 50%;
+}
+
+.thumbnail {
+  border: none;
+  padding-left: 0;
+  & > img {
+    border: 1px solid $thumbnail-border;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  }
+}
+
+.thumbnail > a > img {
+  border: 1px solid $thumbnail-border;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 360px) and (min-width: 321px) {
+  header .navbar-brand img {
+    height: 27px;
+  }
+  .navbar-brand {
+    padding-top: 19px;
+  }
+}
+
+@media (min-width: 361px) {
+  header .navbar-brand img {
+    height: 37px;
+  }
+  .navbar-brand {
+    padding-top: 14px;
+  }
+}
+
+footer {
+  font-size: 12px;
+  font-family: $font-family-sans-serif;
+}
+
+.navbar-default {
+  box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
+  -webkit-box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
+}
+
+.item-page-field-wrapper h5 {
+  margin-top: 0;
+}
