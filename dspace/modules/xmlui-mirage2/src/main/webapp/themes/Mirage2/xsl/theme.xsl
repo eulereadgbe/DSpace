@@ -25,8 +25,9 @@
 	xmlns:mods="http://www.loc.gov/mods/v3"
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
 	xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:util="org.dspace.app.xmlui.utils.XSLUtils"
     xmlns:confman="org.dspace.core.ConfigurationManager"
-    exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc confman">
+    exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc util confman">
 
     <!--<xsl:import href="../dri2xhtml-alt/dri2xhtml.xsl"/>-->
     <xsl:import href="aspect/artifactbrowser/artifactbrowser.xsl"/>
@@ -51,6 +52,1008 @@
     <xsl:import href="aspect/submission/submission.xsl"/>
     <xsl:output indent="yes"/>
 
+    <xsl:template match="dri:options">
+        <div id="ds-options" class="word-break hidden-print">
+            <xsl:apply-templates/>
+            <!-- DS-984 Add RSS Links to Options Box -->
+            <xsl:if test="count(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='feed']) != 0">
+                <div>
+                    <h2 class="ds-option-set-head h6">
+                        <i18n:text>xmlui.feed.header</i18n:text>
+                    </h2>
+                    <div id="ds-feed-option" class="ds-option-set list-group">
+                        <xsl:call-template name="addRSSLinks"/>
+                    </div>
+                </div>
+
+            </xsl:if>
+        </div>
+    </xsl:template>
+
+    <xsl:template name="buildHeader">
+
+
+        <header>
+            <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+
+                        <button type="button" class="navbar-toggle" data-toggle="offcanvas">
+                            <span class="sr-only">
+                                <i18n:text>xmlui.mirage2.page-structure.toggleNavigation</i18n:text>
+                            </span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+
+                        <div>
+                            <a href="{$context-path}/" class="navbar-brand">
+                                <img class="hidden-lg img-responsive" src="{$theme-path}/images/seafdec-sm.svg" />
+                                <img class="visible-lg" src="{$theme-path}/images/seafdec-lg.svg" />
+                            </a>
+                        </div>
+
+
+                        <div class="navbar-header pull-right visible-xs hidden-sm hidden-md hidden-lg">
+                            <ul class="nav nav-pills pull-left ">
+
+                                <xsl:if test="count(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='page'][@qualifier='supportedLocale']) &gt; 1">
+                                    <li id="ds-language-selection-xs" class="dropdown">
+                                        <xsl:variable name="active-locale" select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='page'][@qualifier='currentLocale']"/>
+                                        <button id="language-dropdown-toggle-xs" href="#" role="button" class="dropdown-toggle navbar-toggle navbar-link" data-toggle="dropdown">
+                                            <b class="visible-xs glyphicon glyphicon-globe" aria-hidden="true"/>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="language-dropdown-toggle-xs" data-no-collapse="true">
+                                            <xsl:for-each
+                                                    select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='page'][@qualifier='supportedLocale']">
+                                                <xsl:variable name="locale" select="."/>
+                                                <li role="presentation">
+                                                    <xsl:if test="$locale = $active-locale">
+                                                        <xsl:attribute name="class">
+                                                            <xsl:text>disabled</xsl:text>
+                                                        </xsl:attribute>
+                                                    </xsl:if>
+                                                    <a>
+                                                        <xsl:attribute name="href">
+                                                            <xsl:value-of select="$current-uri"/>
+                                                            <xsl:text>?locale-attribute=</xsl:text>
+                                                            <xsl:value-of select="$locale"/>
+                                                        </xsl:attribute>
+                                                        <xsl:value-of
+                                                                select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='supportedLocale'][@qualifier=$locale]"/>
+                                                    </a>
+                                                </li>
+                                            </xsl:for-each>
+                                        </ul>
+                                    </li>
+                                </xsl:if>
+
+                                <xsl:if test="not(contains(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='URI'], 'discover'))">
+                                    <li class="dropdown">
+                                    <button class="dropdown-toggle navbar-toggle navbar-link" id="search-dropdown-toggle-xs" href="#" role="button"  data-toggle="dropdown">
+                                        <b class="visible-xs glyphicon glyphicon-search" aria-hidden="true"/>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu"
+                                        aria-labelledby="search-dropdown-toggle-xs" data-no-collapse="true">
+                                        <li>
+                                            <form id="ds-search-form" class="" method="post">
+                                                <xsl:attribute name="action">
+                                                    <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath']"/>
+                                                    <xsl:value-of
+                                                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='simpleURL']"/>
+                                                </xsl:attribute>
+                                                <fieldset>
+                                                    <div class="input-group">
+                                                        <input class="ds-text-field form-control" type="text" placeholder="xmlui.general.search"
+                                                               i18n:attr="placeholder">
+                                                            <xsl:attribute name="name">
+                                                                <xsl:value-of
+                                                                        select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='queryField']"/>
+                                                            </xsl:attribute>
+                                                        </input>
+                                                        <span class="input-group-btn">
+                                                            <button class="ds-button-field btn btn-primary" title="xmlui.general.go" i18n:attr="title">
+                                                                <span class="glyphicon glyphicon-search" aria-hidden="true"/>
+                                                                <xsl:attribute name="onclick">
+                                                    <xsl:text>
+                                                        var radio = document.getElementById(&quot;ds-search-form-scope-container&quot;);
+                                                        if (radio != undefined &amp;&amp; radio.checked)
+                                                        {
+                                                        var form = document.getElementById(&quot;ds-search-form&quot;);
+                                                        form.action=
+                                                    </xsl:text>
+                                                                    <xsl:text>&quot;</xsl:text>
+                                                                    <xsl:value-of
+                                                                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath']"/>
+                                                                    <xsl:text>/handle/&quot; + radio.value + &quot;</xsl:text>
+                                                                    <xsl:value-of
+                                                                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='simpleURL']"/>
+                                                                    <xsl:text>&quot; ; </xsl:text>
+                                                    <xsl:text>
+                                                        }
+                                                    </xsl:text>
+                                                                </xsl:attribute>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+
+                                                    <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container']">
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input id="ds-search-form-scope-all" type="radio" name="scope" value=""
+                                                                       checked="checked"/>
+                                                                <i18n:text>xmlui.dri2xhtml.structural.search</i18n:text>
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input id="ds-search-form-scope-container" type="radio" name="scope">
+                                                                    <xsl:attribute name="value">
+                                                                        <xsl:value-of
+                                                                                select="substring-after(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container'],':')"/>
+                                                                    </xsl:attribute>
+                                                                </input>
+                                                                <xsl:choose>
+                                                                    <xsl:when
+                                                                            test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='containerType']/text() = 'type:community'">
+                                                                        <i18n:text>xmlui.dri2xhtml.structural.search-in-community</i18n:text>
+                                                                    </xsl:when>
+                                                                    <xsl:otherwise>
+                                                                        <i18n:text>xmlui.dri2xhtml.structural.search-in-collection</i18n:text>
+                                                                    </xsl:otherwise>
+
+                                                                </xsl:choose>
+                                                            </label>
+                                                        </div>
+                                                    </xsl:if>
+                                                </fieldset>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
+                                </xsl:if>
+
+                                <xsl:choose>
+                                    <xsl:when test="/dri:document/dri:meta/dri:userMeta/@authenticated = 'yes'">
+                                        <li class="dropdown">
+                                            <button class="dropdown-toggle navbar-toggle navbar-link" id="user-dropdown-toggle-xs" href="#" role="button"  data-toggle="dropdown">
+                                                <b class="visible-xs glyphicon glyphicon-user" aria-hidden="true"/>
+                                            </button>
+                                            <ul class="dropdown-menu pull-right" role="menu"
+                                                aria-labelledby="user-dropdown-toggle-xs" data-no-collapse="true">
+                                                <li>
+                                                    <a href="{/dri:document/dri:meta/dri:userMeta/
+                            dri:metadata[@element='identifier' and @qualifier='url']}">
+                                                        <i18n:text>xmlui.EPerson.Navigation.profile</i18n:text>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{/dri:document/dri:meta/dri:userMeta/
+                            dri:metadata[@element='identifier' and @qualifier='logoutURL']}">
+                                                        <i18n:text>xmlui.dri2xhtml.structural.logout</i18n:text>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <li>
+                                            <form style="display: inline" action="{/dri:document/dri:meta/dri:userMeta/
+                            dri:metadata[@element='identifier' and @qualifier='loginURL']}" method="get">
+                                                <button class="navbar-toggle navbar-link">
+                                                    <b class="visible-xs glyphicon glyphicon-user" aria-hidden="true"/>
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="navbar-header pull-right hidden-xs">
+                        <ul class="nav navbar-nav pull-left">
+                            <xsl:call-template name="languageSelection"/>
+                        </ul>
+                        <xsl:if test="not(contains(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='URI'], 'discover'))">
+                            <ul class="nav navbar-nav pull-left">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Search
+                                        <b class="caret"/>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li>
+                                            <form id="ds-search-form" class="" method="post">
+                                                <xsl:attribute name="action">
+                                                    <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath']"/>
+                                                    <xsl:value-of
+                                                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='simpleURL']"/>
+                                                </xsl:attribute>
+                                                <fieldset>
+                                                    <div class="input-group">
+                                                        <input class="ds-text-field form-control" type="text" placeholder="xmlui.general.search"
+                                                               i18n:attr="placeholder">
+                                                            <xsl:attribute name="name">
+                                                                <xsl:value-of
+                                                                        select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='queryField']"/>
+                                                            </xsl:attribute>
+                                                        </input>
+                                                        <span class="input-group-btn">
+                                                            <button class="ds-button-field btn btn-primary" title="xmlui.general.go" i18n:attr="title">
+                                                                <span class="glyphicon glyphicon-search" aria-hidden="true"/>
+                                                                <xsl:attribute name="onclick">
+                                                    <xsl:text>
+                                                        var radio = document.getElementById(&quot;ds-search-form-scope-container&quot;);
+                                                        if (radio != undefined &amp;&amp; radio.checked)
+                                                        {
+                                                        var form = document.getElementById(&quot;ds-search-form&quot;);
+                                                        form.action=
+                                                    </xsl:text>
+                                                                    <xsl:text>&quot;</xsl:text>
+                                                                    <xsl:value-of
+                                                                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath']"/>
+                                                                    <xsl:text>/handle/&quot; + radio.value + &quot;</xsl:text>
+                                                                    <xsl:value-of
+                                                                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='search'][@qualifier='simpleURL']"/>
+                                                                    <xsl:text>&quot; ; </xsl:text>
+                                                    <xsl:text>
+                                                        }
+                                                    </xsl:text>
+                                                                </xsl:attribute>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+
+                                                    <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container']">
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input id="ds-search-form-scope-all" type="radio" name="scope" value=""
+                                                                       checked="checked"/>
+                                                                <i18n:text>xmlui.dri2xhtml.structural.search</i18n:text>
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input id="ds-search-form-scope-container" type="radio" name="scope">
+                                                                    <xsl:attribute name="value">
+                                                                        <xsl:value-of
+                                                                                select="substring-after(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='container'],':')"/>
+                                                                    </xsl:attribute>
+                                                                </input>
+                                                                <xsl:choose>
+                                                                    <xsl:when
+                                                                            test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='focus'][@qualifier='containerType']/text() = 'type:community'">
+                                                                        <i18n:text>xmlui.dri2xhtml.structural.search-in-community</i18n:text>
+                                                                    </xsl:when>
+                                                                    <xsl:otherwise>
+                                                                        <i18n:text>xmlui.dri2xhtml.structural.search-in-collection</i18n:text>
+                                                                    </xsl:otherwise>
+
+                                                                </xsl:choose>
+                                                            </label>
+                                                        </div>
+                                                    </xsl:if>
+                                                </fieldset>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </xsl:if>
+                        <ul class="nav navbar-nav pull-left">
+                            <xsl:choose>
+                                <xsl:when test="/dri:document/dri:meta/dri:userMeta/@authenticated = 'yes'">
+                                    <li class="dropdown">
+                                        <a id="user-dropdown-toggle" href="#" role="button" class="dropdown-toggle"
+                                           data-toggle="dropdown">
+                                            <span class="hidden-xs">
+                                                <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+                            dri:metadata[@element='identifier' and @qualifier='firstName']"/>
+                                                <xsl:text> </xsl:text>
+                                                <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
+                            dri:metadata[@element='identifier' and @qualifier='lastName']"/>&#160;<b class="caret"/>
+                                            </span>
+                                        </a>
+                                        <ul class="dropdown-menu pull-right" role="menu"
+                                            aria-labelledby="user-dropdown-toggle" data-no-collapse="true">
+                                            <li>
+                                                <a href="{/dri:document/dri:meta/dri:userMeta/
+                            dri:metadata[@element='identifier' and @qualifier='url']}">
+                                                    <i18n:text>xmlui.EPerson.Navigation.profile</i18n:text>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{/dri:document/dri:meta/dri:userMeta/
+                            dri:metadata[@element='identifier' and @qualifier='logoutURL']}">
+                                                    <i18n:text>xmlui.dri2xhtml.structural.logout</i18n:text>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <li>
+                                        <a href="{/dri:document/dri:meta/dri:userMeta/
+                            dri:metadata[@element='identifier' and @qualifier='loginURL']}">
+                                            <span class="hidden-xs">
+                                                <i18n:text>xmlui.dri2xhtml.structural.login</i18n:text>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </ul>
+
+                        <button data-toggle="offcanvas" class="navbar-toggle visible-sm" type="button">
+                            <span class="sr-only"><i18n:text>xmlui.mirage2.page-structure.toggleNavigation</i18n:text></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+    </xsl:template>
+
+    <!-- Like the header, the footer contains various miscellaneous text, links, and image placeholders -->
+    <xsl:template name="buildFooter">
+        <footer>
+            <div class="row">
+                <hr/>
+                <div align="center">
+                    <div>
+                        Library &amp; Data Banking Services Section | Training &amp; Information Division
+                    </div>
+                    <div>
+                        Aquaculture Department | Southeast Asian Fisheries Development Center (SEAFDEC)
+                    </div>
+                    <div>
+                        Tigbauan, Iloilo 5021 Philippines | Tel. 63 33 5119170, 5119171 | Fax. 63 33 5119174, 5118709
+                    </div>
+                    <div>
+                        Website: <a target="_blank" href="http://www.seafdec.org.ph">http://www.seafdec.org.ph</a> | Email: <a target="_blank" href="mailto:library@seafdec.org.ph">library@seafdec.org.ph</a>
+                    </div>
+                    <div class="hidden-print">
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:value-of
+                                        select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                                <xsl:text>/contact</xsl:text>
+                            </xsl:attribute>
+                            <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
+                        </a>
+                        <xsl:text> | </xsl:text>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:value-of
+                                        select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                                <xsl:text>/feedback</xsl:text>
+                            </xsl:attribute>
+                            <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--Invisible link to HTML sitemap (for search engines) -->
+            <a class="hidden">
+                <xsl:attribute name="href">
+                    <xsl:value-of
+                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                    <xsl:text>/htmlmap</xsl:text>
+                </xsl:attribute>
+                <xsl:text>&#160;</xsl:text>
+            </a>
+            <p>&#160;</p>
+        </footer>
+    </xsl:template>
+
+    <xsl:template match="dim:dim" mode="itemSummaryView-DIM">
+        <div class="item-summary-view-metadata">
+            <xsl:call-template name="itemSummaryView-DIM-title"/>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-12">
+                            <xsl:call-template name="itemSummaryView-DIM-thumbnail"/>
+                        </div>
+                        <div class="col-xs-6 col-sm-12">
+                            <xsl:call-template name="itemSummaryView-DIM-file-section"/>
+                        </div>
+                    </div>
+                    <xsl:call-template name="itemSummaryView-DIM-date"/>
+                    <xsl:call-template name="itemSummaryView-DIM-authors"/>
+                    <xsl:if test="$ds_item_view_toggle_url != ''">
+                        <xsl:call-template name="itemSummaryView-show-full"/>
+                    </xsl:if>
+                </div>
+                <div class="col-sm-8">
+                    <xsl:call-template name="itemSummaryView-DIM-abstract"/>
+                    <xsl:call-template name="itemSummaryView-DIM-description"/>
+                    <xsl:call-template name="itemSummaryView-DIM-URI"/>
+                    <xsl:call-template name="itemSummaryView-DIM-contents"/>
+                    <xsl:choose>
+                        <xsl:when test="dim:field[@element='identifier' and @qualifier='citation']">
+                            <xsl:call-template name="itemSummaryView-DIM-citation"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:call-template name="itemSummaryView-DIM-ispartof"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:call-template name="itemSummaryView-DIM-subject"/>
+                    <div class="row">
+                        <xsl:call-template name="itemSummaryView-DIM-type"/>
+                            <xsl:call-template name="itemSummaryView-DIM-DOI"/>
+                            <xsl:call-template name="itemSummaryView-DIM-ISSN"/>
+                            <xsl:call-template name="itemSummaryView-DIM-ISBN"/>
+                        </div>
+                    <xsl:call-template name="itemSummaryView-DIM-sponsorship"/>
+                    <xsl:call-template name="itemSummaryView-collections"/>
+                </div>
+            </div>
+        </div>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-abstract">
+        <xsl:if test="dim:field[@element='description' and @qualifier='abstract']">
+            <div class="simple-item-view-description item-page-field-wrapper table">
+                <h5 class="visible-xs"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text></h5>
+                <div>
+                    <xsl:for-each select="dim:field[@element='description' and @qualifier='abstract']">
+                        <xsl:choose>
+                            <xsl:when test="node()">
+                                <xsl:call-template name="break">
+                                    <xsl:with-param name="text" select="./node()"/>
+                                </xsl:call-template>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>&#160;</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:if test="count(following-sibling::dim:field[@element='description' and @qualifier='abstract']) != 0">
+                            <div class="spacer">&#160;</div>
+                        </xsl:if>
+                    </xsl:for-each>
+                    <xsl:if test="count(dim:field[@element='description' and @qualifier='abstract']) &gt; 1">
+                        <div class="spacer">&#160;</div>
+                    </xsl:if>
+                </div>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-description">
+        <xsl:if test="dim:field[@element='description' and not(@qualifier)]">
+            <div class="simple-item-view-description item-page-field-wrapper table">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-description</i18n:text></h5>
+                <div>
+                    <xsl:for-each select="dim:field[@element='description' and not(@qualifier)]">
+                        <xsl:choose>
+                            <xsl:when test="node()">
+                                <xsl:call-template name="break">
+                                    <xsl:with-param name="text" select="./node()"/>
+                                </xsl:call-template>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>&#160;</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:if test="count(following-sibling::dim:field[@element='description' and not(@qualifier)]) != 0">
+                            <div class="spacer">&#160;</div>
+                        </xsl:if>
+                    </xsl:for-each>
+                    <xsl:if test="count(dim:field[@element='description' and not(@qualifier)]) &gt; 1">
+                        <div class="spacer">&#160;</div>
+                    </xsl:if>
+                </div>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-contents">
+        <xsl:if test="dim:field[@element='description' and @qualifier='tableofcontents']">
+            <div class="simple-item-view-description item-page-field-wrapper table">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-tableofcontents</i18n:text></h5>
+                <div>
+                    <xsl:for-each select="dim:field[@element='description' and @qualifier='tableofcontents']">
+                        <xsl:choose>
+                            <xsl:when test="node()">
+                                <xsl:call-template name="break">
+                                    <xsl:with-param name="text" select="./node()"/>
+                                </xsl:call-template>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>&#160;</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:if test="count(following-sibling::dim:field[@element='description' and @qualifier='tableofcontents']) != 0">
+                            <div class="spacer">&#160;</div>
+                        </xsl:if>
+                    </xsl:for-each>
+                    <xsl:if test="count(dim:field[@element='description' and @qualifier='tableofcontents']) &gt; 1">
+                        <div class="spacer">&#160;</div>
+                    </xsl:if>
+                </div>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-sponsorship">
+        <xsl:if test="dim:field[@element='description' and @qualifier='sponsorship']">
+            <div class="simple-item-view-description item-page-field-wrapper table">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-sponsorship</i18n:text></h5>
+                <div>
+                    <xsl:for-each select="dim:field[@element='description' and @qualifier='sponsorship']">
+                        <xsl:choose>
+                            <xsl:when test="node()">
+                                <xsl:call-template name="break">
+                                    <xsl:with-param name="text" select="./node()"/>
+                                </xsl:call-template>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>&#160;</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:if test="count(following-sibling::dim:field[@element='description' and @qualifier='sponsorship']) != 0">
+                            <div class="spacer">&#160;</div>
+                        </xsl:if>
+                    </xsl:for-each>
+                    <xsl:if test="count(dim:field[@element='description' and @qualifier='sponsorship']) &gt; 1">
+                        <div class="spacer">&#160;</div>
+                    </xsl:if>
+                </div>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-citation">
+        <xsl:if test="dim:field[@element='identifier' and @qualifier='citation']">
+            <div class="simple-item-view-description item-page-field-wrapper table">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-citation</i18n:text></h5>
+                <div>
+                    <xsl:for-each select="dim:field[@element='identifier' and @qualifier='citation']">
+                        <xsl:choose>
+                            <xsl:when test="node()">
+                                <xsl:copy-of select="node()"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>&#160;</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:if test="count(following-sibling::dim:field[@element='identifier' and @qualifier='citation']) != 0">
+                            <div class="spacer">&#160;</div>
+                        </xsl:if>
+                    </xsl:for-each>
+                    <xsl:if test="count(dim:field[@element='identifier' and @qualifier='citation']) &gt; 1">
+                        <div class="spacer">&#160;</div>
+                    </xsl:if>
+                </div>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-ispartof">
+        <xsl:if test="dim:field[@element='relation' and @qualifier='ispartof']">
+            <div class="simple-item-view-description item-page-field-wrapper table">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-ispartof</i18n:text></h5>
+                <div>
+                    <xsl:for-each select="dim:field[@element='relation' and @qualifier='ispartof']">
+                        <xsl:choose>
+                            <xsl:when test="node()">
+                                <xsl:copy-of select="node()"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>&#160;</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:if test="count(following-sibling::dim:field[@element='relation' and @qualifier='ispartof']) != 0">
+                            <div class="spacer">&#160;</div>
+                        </xsl:if>
+                    </xsl:for-each>
+                    <xsl:if test="count(dim:field[@element='relation' and @qualifier='ispartof']) &gt; 1">
+                        <div class="spacer">&#160;</div>
+                    </xsl:if>
+                </div>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+
+    <!-- This is to render line breaks in abstract and description fields in item simple view -->
+    <xsl:template name="break">
+        <xsl:param name="text" select="."/>
+        <xsl:choose>
+            <xsl:when test="contains($text, '&#xa;')">
+                <xsl:value-of select="substring-before($text, '&#xa;')" disable-output-escaping="yes"/>
+                <p/>
+                <xsl:call-template name="break">
+                    <xsl:with-param name="text" select="substring-after($text, '&#xa;')"/>
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$text" disable-output-escaping="yes"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="text()" mode="literal">
+        <xsl:value-of select="." disable-output-escaping="yes" />
+    </xsl:template>
+
+    <!-- This is to render html entities in abstract and description fields in item summary list -->
+    <xsl:template match="dim:dim" mode="itemSummaryList-DIM-metadata">
+        <xsl:param name="href"/>
+        <div class="artifact-description">
+            <h4 class="artifact-title">
+                <xsl:element name="a">
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="$href"/>
+                    </xsl:attribute>
+                    <xsl:choose>
+                        <xsl:when test="dim:field[@element='title']">
+                            <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:element>
+                <span class="Z3988">
+                    <xsl:attribute name="title">
+                        <xsl:call-template name="renderCOinS"/>
+                    </xsl:attribute>
+                    &#xFEFF; <!-- non-breaking space to force separating the end tag -->
+                </span>
+            </h4>
+            <div class="artifact-info">
+                <span class="author h4">
+                    <small>
+                        <xsl:choose>
+                            <xsl:when test="dim:field[@element='contributor'][@qualifier='author']">
+                                <xsl:for-each select="dim:field[@element='contributor'][@qualifier='author']">
+                                    <span>
+                                        <xsl:if test="@authority">
+                                            <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
+                                        </xsl:if>
+                                        <xsl:copy-of select="node()"/>
+                                    </span>
+                                    <xsl:if test="count(following-sibling::dim:field[@element='contributor'][@qualifier='author']) != 0">
+                                        <xsl:text>; </xsl:text>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:when test="dim:field[@element='creator']">
+                                <xsl:for-each select="dim:field[@element='creator']">
+                                    <xsl:copy-of select="node()"/>
+                                    <xsl:if test="count(following-sibling::dim:field[@element='creator']) != 0">
+                                        <xsl:text>; </xsl:text>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:when test="dim:field[@element='contributor']">
+                                <xsl:for-each select="dim:field[@element='contributor']">
+                                    <xsl:copy-of select="node()"/>
+                                    <xsl:if test="count(following-sibling::dim:field[@element='contributor']) != 0">
+                                        <xsl:text>; </xsl:text>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.no-author</i18n:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </small>
+                </span>
+                <xsl:text> </xsl:text>
+                <xsl:if test="dim:field[@element='date' and @qualifier='issued']">
+                    <span class="publisher-date h4">  <small>
+                        <xsl:text>(</xsl:text>
+                        <xsl:if test="dim:field[@element='publisher']">
+                            <span class="publisher">
+                                <xsl:copy-of select="dim:field[@element='publisher']/node()"/>
+                            </span>
+                            <xsl:text>, </xsl:text>
+                        </xsl:if>
+                        <span class="date">
+                            <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
+                        </span>
+                        <xsl:text>)</xsl:text>
+                    </small></span>
+                </xsl:if>
+            </div>
+            <xsl:choose>
+                <xsl:when test="dim:field[@element = 'description' and @qualifier='abstract']">
+                    <xsl:variable name="abstract" select="dim:field[@element = 'description' and @qualifier='abstract']/node()"/>
+                    <div class="artifact-abstract">
+                        <xsl:value-of select="util:shortenString($abstract, 220, 10)" disable-output-escaping="yes"/>
+                    </div>
+                </xsl:when>
+                <xsl:when test="dim:field[@element='description' and not(@qualifier)]">
+                    <xsl:variable name="description" select="dim:field[@element='description' and not(@qualifier)]/node()"/>
+                    <div class="artifact-abstract">
+                        <xsl:value-of select="util:shortenString($description, 220, 10)" disable-output-escaping="yes"/>
+                    </div>
+                </xsl:when>
+            </xsl:choose>
+        </div>
+    </xsl:template>
+
+    <!-- This is to render html entities in abstract and description fields of search results -->
+    <xsl:template name="itemSummaryList">
+        <xsl:param name="handle"/>
+        <xsl:param name="externalMetadataUrl"/>
+
+        <xsl:variable name="metsDoc" select="document($externalMetadataUrl)"/>
+
+        <div class="row ds-artifact-item ">
+
+            <!--Generates thumbnails (if present)-->
+            <div class="col-sm-3 hidden-xs">
+                <xsl:apply-templates select="$metsDoc/mets:METS/mets:fileSec" mode="artifact-preview">
+                    <xsl:with-param name="href" select="concat($context-path, '/handle/', $handle)"/>
+                </xsl:apply-templates>
+            </div>
+
+
+            <div class="col-sm-9 artifact-description">
+                <xsl:element name="a">
+                    <xsl:attribute name="href">
+                        <xsl:choose>
+                            <xsl:when test="$metsDoc/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/@withdrawn">
+                                <xsl:value-of select="$metsDoc/mets:METS/@OBJEDIT"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="concat($context-path, '/handle/', $handle)"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:attribute>
+                    <h4>
+                        <xsl:choose>
+                            <xsl:when test="dri:list[@n=(concat($handle, ':dc.title'))]">
+                                <xsl:apply-templates select="dri:list[@n=(concat($handle, ':dc.title'))]/dri:item"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.no-title</i18n:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <!-- Generate COinS with empty content per spec but force Cocoon to not create a minified tag  -->
+                        <span class="Z3988">
+                            <xsl:attribute name="title">
+                                <xsl:for-each select="$metsDoc/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim">
+                                    <xsl:call-template name="renderCOinS"/>
+                                </xsl:for-each>
+                            </xsl:attribute>
+                            <xsl:text>&#160;</xsl:text>
+                            <!-- non-breaking space to force separating the end tag -->
+                        </span>
+                    </h4>
+                </xsl:element>
+                <div class="artifact-info">
+                    <span class="author h4">    <small>
+                        <xsl:choose>
+                            <xsl:when test="dri:list[@n=(concat($handle, ':dc.contributor.author'))]">
+                                <xsl:for-each select="dri:list[@n=(concat($handle, ':dc.contributor.author'))]/dri:item">
+                                    <xsl:variable name="author">
+                                        <xsl:apply-templates select="."/>
+                                    </xsl:variable>
+                                    <span>
+                                        <!--Check authority in the mets document-->
+                                        <xsl:if test="$metsDoc/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='contributor' and @qualifier='author' and . = $author]/@authority">
+                                            <xsl:attribute name="class">
+                                                <xsl:text>ds-dc_contributor_author-authority</xsl:text>
+                                            </xsl:attribute>
+                                        </xsl:if>
+                                        <xsl:apply-templates select="."/>
+                                    </span>
+
+                                    <xsl:if test="count(following-sibling::dri:item) != 0">
+                                        <xsl:text>; </xsl:text>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:when test="dri:list[@n=(concat($handle, ':dc.creator'))]">
+                                <xsl:for-each select="dri:list[@n=(concat($handle, ':dc.creator'))]/dri:item">
+                                    <xsl:apply-templates select="."/>
+                                    <xsl:if test="count(following-sibling::dri:item) != 0">
+                                        <xsl:text>; </xsl:text>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:when test="dri:list[@n=(concat($handle, ':dc.contributor'))]">
+                                <xsl:for-each select="dri:list[@n=(concat($handle, ':dc.contributor'))]/dri:item">
+                                    <xsl:apply-templates select="."/>
+                                    <xsl:if test="count(following-sibling::dri:item) != 0">
+                                        <xsl:text>; </xsl:text>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.no-author</i18n:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </small></span>
+                    <xsl:text> </xsl:text>
+                    <xsl:if test="dri:list[@n=(concat($handle, ':dc.date.issued'))]">
+                        <span class="publisher-date h4">   <small>
+                            <xsl:text>(</xsl:text>
+                            <xsl:if test="dri:list[@n=(concat($handle, ':dc.publisher'))]">
+                                <span class="publisher">
+                                    <xsl:apply-templates select="dri:list[@n=(concat($handle, ':dc.publisher'))]/dri:item"/>
+                                </span>
+                                <xsl:text>, </xsl:text>
+                            </xsl:if>
+                            <span class="date">
+                                <xsl:value-of
+                                        select="substring(dri:list[@n=(concat($handle, ':dc.date.issued'))]/dri:item,1,10)"/>
+                            </span>
+                            <xsl:text>)</xsl:text>
+                        </small></span>
+                    </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="dri:list[@n=(concat($handle, ':dc.description.abstract'))]/dri:item/dri:hi">
+                            <div class="abstract">
+                                <xsl:for-each select="dri:list[@n=(concat($handle, ':dc.description.abstract'))]/dri:item">
+                                    <xsl:apply-templates select="." mode="literal"/>
+                                    <xsl:text>...</xsl:text>
+                                    <br/>
+                                </xsl:for-each>
+
+                            </div>
+                        </xsl:when>
+                        <xsl:when test="dri:list[@n=(concat($handle, ':fulltext'))]">
+                            <div class="abstract">
+                                <xsl:for-each select="dri:list[@n=(concat($handle, ':fulltext'))]/dri:item">
+                                    <xsl:apply-templates select="."/>
+                                    <xsl:text>...</xsl:text>
+                                    <br/>
+                                </xsl:for-each>
+                            </div>
+                        </xsl:when>
+                        <xsl:when test="dri:list[@n=(concat($handle, ':dc.description.abstract'))]/dri:item">
+                            <div class="abstract">
+                                <xsl:value-of select="util:shortenString(dri:list[@n=(concat($handle, ':dc.description.abstract'))]/dri:item[1], 220, 10)" disable-output-escaping="yes"/>
+                            </div>
+                        </xsl:when>
+                    </xsl:choose>
+                </div>
+            </div>
+        </div>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-DOI">
+        <xsl:if test="dim:field[@element='identifier' and @qualifier='doi' and descendant::text()]">
+            <div class="col-sm-6 col-print-4">
+                <div class="simple-item-view-uri item-page-field-wrapper table word-break">
+                    <h5>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-doi</i18n:text>
+                    </h5>
+                <span>
+                    <xsl:for-each select="dim:field[@element='identifier' and @qualifier='doi']">
+                        <a>
+                            <xsl:attribute name="target">
+                                <xsl:text>_blank</xsl:text>
+                            </xsl:attribute>
+                            <xsl:attribute name="href">
+                                <xsl:text>http://dx.doi.org/</xsl:text>
+                                <xsl:copy-of select="./node()"/>
+                            </xsl:attribute>
+                            <xsl:copy-of select="./node()"/>
+                        </a>
+                        <xsl:if test="count(following-sibling::dim:field[@element='identifier' and @qualifier='doi']) != 0">
+                            <br/>
+                        </xsl:if>
+                    </xsl:for-each>
+                </span>
+            </div>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-ISSN">
+        <xsl:if test="dim:field[@element='identifier' and @qualifier='issn' and descendant::text()] or
+         dim:field[@element='identifier' and @qualifier='essn' and descendant::text()]">
+            <div class="col-sm-6 col-print-4">
+            <div class="simple-item-view-issn item-page-field-wrapper table">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-issn</i18n:text></h5>
+                <span>
+                    <xsl:for-each select="dim:field[@element='identifier' and (@qualifier='issn' or @qualifier='essn') and descendant::text()]">
+                        <xsl:copy-of select="./node()"/>
+                        <xsl:if test="count(following-sibling::dim:field[@element='identifier' and (@qualifier='issn' or @qualifier='essn')]) != 0">
+                            <xsl:text>; </xsl:text>
+                        </xsl:if>
+                    </xsl:for-each>
+                </span>
+            </div>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-ISBN">
+        <xsl:if test="dim:field[@element='identifier' and @qualifier='isbn' and descendant::text()]">
+            <div class="col-sm-6 col-print-4">
+            <div class="simple-item-view-isbn item-page-field-wrapper table">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-isbn</i18n:text></h5>
+                <span>
+                    <xsl:for-each select="dim:field[@element='identifier' and @qualifier='isbn']">
+                        <xsl:copy-of select="./node()"/>
+                        <xsl:if test="count(following-sibling::dim:field[@element='identifier' and @qualifier='isbn']) != 0">
+                            <br/>
+                        </xsl:if>
+                    </xsl:for-each>
+                </span>
+            </div>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-subject">
+        <xsl:if test="dim:field[@element='subject'][@qualifier='asfa'] or dim:field[@element='subject' and not(@qualifier)]">
+            <div class="item-page-field-wrapper table">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-subject</i18n:text></h5>
+                <div>
+                    <xsl:for-each select="dim:field[@element='subject'][@qualifier='asfa']">
+                        <xsl:choose>
+                            <xsl:when test="node()">
+                                <a>
+                                    <xsl:attribute name="href">
+                                        <xsl:value-of
+                                                select="concat($context-path,'/discover?filtertype=')"/>
+                                        <xsl:text>subject&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
+                                        <xsl:copy-of select="node()"/>
+                                    </xsl:attribute>
+                                    <xsl:value-of select="text()"/>
+                                </a>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>&#160;</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:if test="count(following-sibling::dim:field[@element='subject'][@qualifier='asfa']) != 0">
+                            <xsl:text>; </xsl:text>
+                        </xsl:if>
+                    </xsl:for-each>
+                    <xsl:if test="(dim:field[@element='subject' and not(@qualifier)])">
+                        <xsl:if test="count(dim:field[@element='subject'][@qualifier='asfa']) != 0">
+                            <xsl:text>; </xsl:text>
+                        </xsl:if>
+                        <xsl:for-each select="dim:field[@element='subject' and not(@qualifier)]">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:value-of
+                                            select="concat($context-path,'/discover?filtertype=')"/>
+                                    <xsl:text>subject&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
+                                    <xsl:copy-of select="."/>
+                                </xsl:attribute>
+                                <xsl:value-of select="text()"/>
+                            </a>
+                            <xsl:if test="count(following-sibling::dim:field[@element='subject' and not(@qualifier)]) != 0">
+                                <xsl:text>; </xsl:text>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </xsl:if>
+                </div>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-authors-entry">
+        <div>
+            <xsl:if test="@authority">
+                <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
+            </xsl:if>
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:text>/discover?filtertype=author&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
+                    <xsl:copy-of select="node()"/>
+                </xsl:attribute>
+                <xsl:copy-of select="node()"/>
+            </a>
+        </div>
+    </xsl:template>
 
     <xsl:template name="itemSummaryView-DIM-file-section">
         <xsl:choose>
@@ -121,7 +1124,7 @@
                 <xsl:text>/documentdelivery/</xsl:text>
                 <xsl:value-of select="substring-after($request-uri,'handle/')"/>
             </xsl:attribute>
-            <xsl:text>Request document delivery</xsl:text>
+            <xsl:text>Request this document</xsl:text>
         </a>
     </xsl:template>
 
@@ -133,6 +1136,22 @@
                 </h5>
                 <xsl:for-each select="dim:field[@element='relation' and @qualifier='uri']">
                     <a>
+                        <xsl:attribute name="data-original-title">
+                        <xsl:text>
+                            &lt;b&gt;EXTERNAL LINKS DISCLAIMER&lt;/b&gt;&lt;br/&gt;
+                            This link is being provided as a convenience and for informational purposes only.
+                            SEAFDEC/AQD bears no responsibility for the accuracy, legality or content of the external
+                            site or for that of subsequent links. Contact the external site for answers to questions
+                            regarding its content. If you come across any external links that don't work, we would be
+                            grateful if you could report them to the repository administrators.
+                        </xsl:text>
+                        </xsl:attribute>
+                        <xsl:attribute name="data-html">
+                            <xsl:text>true</xsl:text>
+                        </xsl:attribute>
+                        <xsl:attribute name="data-toggle">
+                            <xsl:text>tooltip</xsl:text>
+                        </xsl:attribute>
                         <xsl:attribute name="href">
                             <xsl:copy-of select="./node()"/>
                         </xsl:attribute>
@@ -142,49 +1161,51 @@
                         <xsl:attribute name="class">
                             <xsl:text>word-break</xsl:text>
                         </xsl:attribute>
-                                <xsl:variable name="output">
-                                    <xsl:call-template name="eatAllSlashes">
-                                        <xsl:with-param name="pText" select="."/>
-                                    </xsl:call-template>
-                                </xsl:variable>
-                                <xsl:choose>
-                                    <xsl:when test="string-length($output) > 0">
-                                        <xsl:value-of select="$output"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:value-of select="text()"/>
-                                    </xsl:otherwise>
-                                </xsl:choose>
+                        <xsl:variable name="output">
+                            <xsl:call-template name="eatAllSlashes">
+                                <xsl:with-param name="pText" select="."/>
+                            </xsl:call-template>
+                        </xsl:variable>
+                        <xsl:choose>
+                            <xsl:when test="string-length($output) > 0">
+                                <xsl:value-of select="$output"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="text()"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </a>
                     <xsl:text> </xsl:text>
                     <i aria-hidden="true">
                         <xsl:attribute name="class">
                             <xsl:text>glyphicon </xsl:text>
-                            <xsl:text>glyphicon-exclamation-sign</xsl:text>
-                        </xsl:attribute>
-                        <xsl:attribute name="data-original-title">
-                        <xsl:text>
-                            &lt;b&gt;DISCLAIMER&lt;/b&gt;&lt;br/&gt;
-                            This link is being provided as a convenience and for informational purposes only.
-                            SEAFDEC/AQD bears no responsibility for the accuracy, legality or content of the
-                            external site or for that of subsequent links. Contact the external site for answers to
-                            questions regarding its content.
-                        </xsl:text>
-                        </xsl:attribute>
-                        <xsl:attribute name="data-placement">
-                            <xsl:text>top</xsl:text>
-                        </xsl:attribute>
-                        <xsl:attribute name="data-html">
-                            <xsl:text>true</xsl:text>
-                        </xsl:attribute>
-                        <xsl:attribute name="data-toggle">
-                            <xsl:text>tooltip</xsl:text>
+                            <xsl:text>glyphicon-new-window</xsl:text>
                         </xsl:attribute>
                     </i>
                     <xsl:if test="count(following-sibling::dim:field[@element='relation' and @qualifier='uri']) != 0">
                         <br/>
                     </xsl:if>
                 </xsl:for-each>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-type">
+        <xsl:if test="dim:field[@element='type' and not(@qualifier)]">
+            <div class="col-sm-6 col-print-4">
+                <div class="simple-item-view-issn item-page-field-wrapper table">
+                    <h5>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-type</i18n:text>
+                    </h5>
+                    <span>
+                        <xsl:for-each select="dim:field[@element='type' and not(@qualifier)]">
+                            <xsl:copy-of select="./node()"/>
+                            <xsl:if test="count(following-sibling::dim:field[@element='type' and not(@qualifier)]) != 0">
+                                <xsl:text>; </xsl:text>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </span>
+                </div>
             </div>
         </xsl:if>
     </xsl:template>

@@ -48,6 +48,9 @@
     <script src="scripts/yui-min.js">&#160;</script>
     <script src="scripts/aui-min.js">&#160;</script>
 
+    <!-- custom javascript for SAIR -->
+    <script src="scripts/sair.js">&#160;</script>
+
     <!-- endbuild -->
 
     <!--the build comments below need to be inline to fix the 'undefined'
