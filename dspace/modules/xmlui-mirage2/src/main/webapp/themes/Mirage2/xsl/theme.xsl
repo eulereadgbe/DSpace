@@ -52,6 +52,89 @@
     <xsl:import href="aspect/submission/submission.xsl"/>
     <xsl:output indent="yes"/>
 
+    <xsl:template match="dri:document">
+
+        <xsl:choose>
+            <xsl:when test="not($isModal)">
+
+
+            <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;
+            </xsl:text>
+            <xsl:text disable-output-escaping="yes">&lt;!--[if lt IE 7]&gt; &lt;html class=&quot;no-js lt-ie9 lt-ie8 lt-ie7&quot; lang=&quot;en&quot;&gt; &lt;![endif]--&gt;
+            &lt;!--[if IE 7]&gt;    &lt;html class=&quot;no-js lt-ie9 lt-ie8&quot; lang=&quot;en&quot;&gt; &lt;![endif]--&gt;
+            &lt;!--[if IE 8]&gt;    &lt;html class=&quot;no-js lt-ie9&quot; lang=&quot;en&quot;&gt; &lt;![endif]--&gt;
+            &lt;!--[if gt IE 8]&gt;&lt;!--&gt; &lt;html class=&quot;no-js&quot; lang=&quot;en&quot;&gt; &lt;!--&lt;![endif]--&gt;
+            </xsl:text>
+
+                <!-- First of all, build the HTML head element -->
+
+                <xsl:call-template name="buildHead"/>
+
+                <!-- Then proceed to the body -->
+                <body>
+                    <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
+                   chromium.org/developers/how-tos/chrome-frame-getting-started -->
+                    <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+                    <xsl:choose>
+                        <xsl:when
+                                test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='framing'][@qualifier='popup']">
+                            <xsl:apply-templates select="dri:body/*"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:call-template name="buildHeader"/>
+                            <xsl:call-template name="buildTrail"/>
+                            <!--javascript-disabled warning, will be invisible if javascript is enabled-->
+                            <div id="no-js-warning-wrapper" class="hidden">
+                                <div id="no-js-warning">
+                                    <div class="notice failure">
+                                        <xsl:text>JavaScript is disabled for your browser. Some features of this site may not work without it.</xsl:text>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="main-container" class="container">
+
+                                <div class="row row-offcanvas row-offcanvas-right">
+                                    <div class="horizontal-slider clearfix">
+                                        <div class="col-xs-12 col-sm-12 col-md-9 main-content">
+                                            <xsl:apply-templates select="*[not(self::dri:options)]"/>
+
+                                            <div class="visible-xs">
+                                                <xsl:call-template name="buildFooterSmall"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+                                            <xsl:apply-templates select="dri:options"/>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!--
+                            The footer div, dropping whatever extra information is needed on the page. It will
+                            most likely be something similar in structure to the currently given example. -->
+                                <div class="hidden-xs">
+                                    <xsl:call-template name="buildFooter"/>
+                                </div>
+                            </div>
+
+
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <!-- Javascript at the bottom for fast page loading -->
+                    <xsl:call-template name="addJavascript"/>
+                </body>
+                <xsl:text disable-output-escaping="yes">&lt;/html&gt;</xsl:text>
+
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- This is only a starting point. If you want to use this feature you need to implement
+                JavaScript code and a XSLT template by yourself. Currently this is used for the DSpace Value Lookup -->
+                <xsl:apply-templates select="dri:body" mode="modal"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <xsl:template match="dri:options">
         <div id="ds-options" class="word-break hidden-print">
             <xsl:apply-templates/>
@@ -400,26 +483,129 @@
 
     </xsl:template>
 
+    <!--The Trail-->
+    <xsl:template match="dri:trail">
+        <!--put an arrow between the parts of the trail-->
+        <li>
+            <xsl:if test="position()=1">
+                <i class="fa fa-home" aria-hidden="true"/>&#160;
+            </xsl:if>
+            <!-- Determine whether we are dealing with a link or plain text trail link -->
+            <xsl:choose>
+                <xsl:when test="./@target">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:value-of select="./@target"/>
+                        </xsl:attribute>
+                        <xsl:apply-templates />
+                    </a>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:attribute name="class">active</xsl:attribute>
+                    <xsl:apply-templates />
+                </xsl:otherwise>
+            </xsl:choose>
+        </li>
+    </xsl:template>
+
+    <xsl:template match="dri:trail" mode="dropdown">
+        <!--put an arrow between the parts of the trail-->
+        <li role="presentation">
+            <!-- Determine whether we are dealing with a link or plain text trail link -->
+            <xsl:choose>
+                <xsl:when test="./@target">
+                    <a role="menuitem">
+                        <xsl:attribute name="href">
+                            <xsl:value-of select="./@target"/>
+                        </xsl:attribute>
+                        <xsl:if test="position()=1">
+                            <i class="fa fa-home" aria-hidden="true"/>&#160;
+                        </xsl:if>
+                        <xsl:apply-templates />
+                    </a>
+                </xsl:when>
+                <xsl:when test="position() > 1 and position() = last()">
+                    <xsl:attribute name="class">disabled</xsl:attribute>
+                    <a role="menuitem" href="#">
+                        <xsl:apply-templates />
+                    </a>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:attribute name="class">active</xsl:attribute>
+                    <xsl:if test="position()=1">
+                        <i class="fa fa-home" aria-hidden="true"/>&#160;
+                    </xsl:if>
+                    <xsl:apply-templates />
+                </xsl:otherwise>
+            </xsl:choose>
+        </li>
+    </xsl:template>
+
     <!-- Like the header, the footer contains various miscellaneous text, links, and image placeholders -->
     <xsl:template name="buildFooter">
         <footer>
             <div class="row">
                 <hr/>
                 <div align="center">
-                    <div>
-                        Library &amp; Data Banking Services Section | Training &amp; Information Division
+                    <div>Library &amp; Data Banking Services Section | Training &amp; Information Division</div>
+                    <div>Aquaculture Department | Southeast Asian Fisheries Development Center (SEAFDEC)</div>
+                    <div>Tigbauan, Iloilo 5021 Philippines | Tel: (63-33) 330 7088, (63-33) 330 7000 loc 1340 | Fax: (63-33) 330 7088</div>
+                    <div>Follow us on:
+                        <a href="http://www.facebook.com/seafdecaqdlib" class="facebook">
+                            <i aria-hidden="true">
+                                <xsl:attribute name="class">
+                                    <xsl:text>fa </xsl:text>
+                                    <xsl:text>fa-facebook-square</xsl:text>
+                                </xsl:attribute>
+                            </i>
+                            <xsl:text> Facebook</xsl:text>
+                        </a>
+                        <xsl:text> | </xsl:text>
+                        <a href="http://twitter.com/seafdecaqdlib" class="twitter">
+                            <i aria-hidden="true">
+                                <xsl:attribute name="class">
+                                    <xsl:text>fa </xsl:text>
+                                    <xsl:text>fa-twitter-square</xsl:text>
+                                </xsl:attribute>
+                            </i>
+                            <xsl:text> Twitter</xsl:text>
+                        </a>
+                        <xsl:text> | </xsl:text>
+                        <a href="https://plus.google.com/111749266242133800967" class="google-plus">
+                            <i aria-hidden="true">
+                                <xsl:attribute name="class">
+                                    <xsl:text>fa </xsl:text>
+                                    <xsl:text>fa-google-plus-square</xsl:text>
+                                </xsl:attribute>
+                            </i>
+                            <xsl:text> Google+</xsl:text>
+                        </a>
+                        <xsl:text> | </xsl:text>
+                        <a href="http://foursquare.com/seafdecaqdlib" class="foursquare">
+                            <i aria-hidden="true">
+                                <xsl:attribute name="class">
+                                    <xsl:text>fa </xsl:text>
+                                    <xsl:text>fa-foursquare</xsl:text>
+                                </xsl:attribute>
+                            </i>
+                            <xsl:text> Foursquare</xsl:text>
+                        </a>
+                        <xsl:text> | </xsl:text>
+                        <a href="http://instagram.com/seafdecaqdlib" class="instagram">
+                            <i aria-hidden="true">
+                                <xsl:attribute name="class">
+                                    <xsl:text>fa </xsl:text>
+                                    <xsl:text>fa-instagram</xsl:text>
+                                </xsl:attribute>
+                            </i>
+                            <xsl:text> Instagram</xsl:text>
+                        </a>
                     </div>
-                    <div>
-                        Aquaculture Department | Southeast Asian Fisheries Development Center (SEAFDEC)
-                    </div>
-                    <div>
-                        Tigbauan, Iloilo 5021 Philippines | Tel. 63 33 5119170, 5119171 | Fax. 63 33 5119174, 5118709
-                    </div>
-                    <div>
-                        Website: <a target="_blank" href="http://www.seafdec.org.ph">http://www.seafdec.org.ph</a> | Email: <a target="_blank" href="mailto:library@seafdec.org.ph">library@seafdec.org.ph</a>
+                    <div>Website: <a target="_blank" href="http://www.seafdec.org.ph">www.seafdec.org.ph</a>
+                        | Email: <a target="_blank" href="mailto:library@seafdec.org.ph">library@seafdec.org.ph</a>
                     </div>
                     <div class="hidden-print">
-                        <a>
+                        <a class="contact">
                             <xsl:attribute name="href">
                                 <xsl:value-of
                                         select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
@@ -428,7 +614,7 @@
                             <i18n:text>xmlui.dri2xhtml.structural.contact-link</i18n:text>
                         </a>
                         <xsl:text> | </xsl:text>
-                        <a>
+                        <a class="feedback">
                             <xsl:attribute name="href">
                                 <xsl:value-of
                                         select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
@@ -436,6 +622,142 @@
                             </xsl:attribute>
                             <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
                         </a>
+                    </div>
+                </div>
+            </div>
+            <!--Invisible link to HTML sitemap (for search engines) -->
+            <a class="hidden">
+                <xsl:attribute name="href">
+                    <xsl:value-of
+                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                    <xsl:text>/htmlmap</xsl:text>
+                </xsl:attribute>
+                <xsl:text>&#160;</xsl:text>
+            </a>
+            <p>&#160;</p>
+        </footer>
+    </xsl:template>
+
+    <xsl:template name="buildFooterSmall">
+        <footer>
+            <div class="row">
+                <hr/>
+                <div class="footer-small" align="center">
+                    <div>
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAADdgAAA3YBfdWCzAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAITSURBVEiJtdU9SFZRGAfw3zErTYOWxqDAPkAdNHApCHQKnRtqDopoaCiIjKik5oYamhqMiKZojLchoyEKGiozaAiHosI+TOmDPA33vHG53vv6pvTAgfuc+3/+zznPeT5CjNH/lNZmQCGEDnSjJ209w/MY49ySxjHGyoURPMUCYmEtpH8jDTkqiLtRKyEtW68TtruMq6UkHL2YwAvsx+cGAXiMrXiIiWRbHSJ04S1O5/bOFcJyG/eTPpTDHU+2XaUhQkinHis43YT5dMqBtLcG50tCeyZxhDIHI/iI9SWG7Y0eMofrwPv8w+d/1nCyGaIlnJxAra63hhAupjAM4lMI4VqDR21GOjAYQhjHdMBLbM8BvuEQDuIG9uAVfmEzvuJH0rdgEgO4g0vozHFNlVVyJ6ZwLzn/iaM4jJ2yGH/BBVzBO3yX1UNnkWxRHSTpl6XiNrxBH9bJ0jRgQ8JMJsyDpC+Sql40jNXYnchgL9owh43pcH0YSjcaLiMKqD/yAdxM112JtGMfrmM61Nt1CKGG2bTa8AiXY4zzSzGGENbKsrBHlgg7YoxDWFRoxUZ2tsncHyvYlRZavVXkgVcrCHfhFkaxCh9yNuWtotDs6uBjFQ7Gc5jR3Hd1s8sZ92ImGTypcNAvK7b8bWfQu5yBcyTpLQXMqRx55cD5l5E5Kyu+u5jGb02MzL9pukQaLnvoN+VgJfIHBQl8wqpqpqYAAAAASUVORK5CYII426afec8a9f3ce10f522c7faeeaf2c5a"/>
+                        <xsl:text> </xsl:text>
+                        <a target="_blank" href="http://www.seafdec.org.ph">
+                            <xsl:text>www.seafdec.org.ph</xsl:text>
+                        </a>
+                    </div>
+                    <div>
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAARCAYAAADHeGwwAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAPcQAAD3EB4Su3owAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAFOSURBVDiNndQxS1xBFIbhZ+KSdIu4prMJ/gBLgyJYiaUprC23WQg2Woj4O4IWCikEC63Uwk6MYJuAYGkp2liEWOhYOMj1Onvv3RyYYubMeT/mOzMTEL2PR/zEv0wuF3P40i8Z+4wzdGKMqga6eKrg9E1EXGG8At7LwK+rBI4zIjf4moEvZ/YeYr5KYBZLeCit/8W3Anw1A9/Hx8ToL5AAM7gt5R7xHesZ+C5aqbZeIG0cx2VNjyJ2MFSoayaQNg/jpAL+A6FU01wgFbQSqAzfKsNzAh/URxufcVpY+5VAkw3qKy2a8vLgphDSSbYxhAn8QXdgixJsBQcKrzmth8K8jT1s4lMji0IInQQOXu7+3etRUxTm9zHGRfzGSQhhrM6iNZxjuu4PyjR3EhfYqLLoCKODwgsiI4nR/Jr+h8ibHrRKdvVCCAs5HweIN314BvYm3ABTMJPbAAAAAElFTkSuQmCC7bc57552ce05a5b2f5d477895d312c64"/>
+                        <xsl:text> </xsl:text>
+                        <a target="_blank" href="mailto:library@seafdec.org.ph">
+                            <xsl:text>library@seafdec.org.ph</xsl:text>
+                        </a>
+                    </div>
+                    <div>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>glyphicon </xsl:text>
+                                <xsl:text>glyphicon-phone-alt</xsl:text>
+                            </xsl:attribute>
+                        </i>
+                        <xsl:text> (63-33) 330 7088, (63-33) 330 7000 loc 1340</xsl:text>
+                        </div>
+                    <div>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>fa </xsl:text>
+                                <xsl:text>fa-fax</xsl:text>
+                            </xsl:attribute>
+                        </i>
+                        <xsl:text> (63 33) 330 7088</xsl:text>
+                    </div>
+                    <div>
+                        <ul class="social-links fa-ul">
+                            <li class="facebook">
+                                <a href="http://www.facebook.com/seafdecaqdlib">
+                                    <i aria-hidden="true">
+                                        <xsl:attribute name="class">
+                                            <xsl:text>fa </xsl:text>
+                                            <xsl:text>fa-facebook-square fa-lg</xsl:text>
+                                        </xsl:attribute>
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="twitter">
+                                <a href="http://twitter.com/seafdecaqdlib">
+                                    <i aria-hidden="true">
+                                        <xsl:attribute name="class">
+                                            <xsl:text>fa </xsl:text>
+                                            <xsl:text>fa-twitter-square fa-lg</xsl:text>
+                                        </xsl:attribute>
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="google-plus">
+                                <a href="https://plus.google.com/111749266242133800967">
+                                    <i aria-hidden="true">
+                                        <xsl:attribute name="class">
+                                            <xsl:text>fa </xsl:text>
+                                            <xsl:text>fa-google-plus-square fa-lg</xsl:text>
+                                        </xsl:attribute>
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="foursquare">
+                                <a href="http://foursquare.com/seafdecaqdlib">
+                                    <i aria-hidden="true">
+                                        <xsl:attribute name="class">
+                                            <xsl:text>fa </xsl:text>
+                                            <xsl:text>fa-foursquare fa-lg</xsl:text>
+                                        </xsl:attribute>
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="instagram">
+                                <a href="http://instagram.com/seafdecaqdlib">
+                                    <i aria-hidden="true">
+                                        <xsl:attribute name="class">
+                                            <xsl:text>fa </xsl:text>
+                                            <xsl:text>fa-instagram fa-lg</xsl:text>
+                                        </xsl:attribute>
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="contact">
+                                <a>
+                                    <xsl:attribute name="href">
+                                        <xsl:value-of
+                                                select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                                        <xsl:text>/contact</xsl:text>
+                                    </xsl:attribute>
+                                    <i aria-hidden="true">
+                                        <xsl:attribute name="class">
+                                            <xsl:text>fa </xsl:text>
+                                            <xsl:text>fa-envelope fa-lg</xsl:text>
+                                        </xsl:attribute>
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="feedback">
+                                <a>
+                                    <xsl:attribute name="href">
+                                        <xsl:value-of
+                                                select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                                        <xsl:text>/feedback</xsl:text>
+                                    </xsl:attribute>
+                                    <i aria-hidden="true">
+                                        <xsl:attribute name="class">
+                                            <xsl:text>fa </xsl:text>
+                                            <xsl:text>fa-comments fa-lg</xsl:text>
+                                        </xsl:attribute>
+                                    </i>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -470,6 +792,7 @@
                     <xsl:if test="$ds_item_view_toggle_url != ''">
                         <xsl:call-template name="itemSummaryView-show-full"/>
                     </xsl:if>
+                    <xsl:call-template name="itemSummaryView-DIM-share"/>
                 </div>
                 <div class="col-sm-8">
                     <xsl:call-template name="itemSummaryView-DIM-abstract"/>
@@ -484,6 +807,7 @@
                             <xsl:call-template name="itemSummaryView-DIM-ispartof"/>
                         </xsl:otherwise>
                     </xsl:choose>
+                    <xsl:call-template name="itemSummaryView-DIM-publisher"/>
                     <xsl:call-template name="itemSummaryView-DIM-subject"/>
                     <div class="row">
                         <xsl:call-template name="itemSummaryView-DIM-type"/>
@@ -934,9 +1258,6 @@
                 <span>
                     <xsl:for-each select="dim:field[@element='identifier' and @qualifier='doi']">
                         <a>
-                            <xsl:attribute name="target">
-                                <xsl:text>_blank</xsl:text>
-                            </xsl:attribute>
                             <xsl:attribute name="href">
                                 <xsl:text>http://dx.doi.org/</xsl:text>
                                 <xsl:copy-of select="./node()"/>
@@ -1063,7 +1384,12 @@
             <xsl:when test="//mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='LICENSE']/mets:file">
                 <div class="item-page-field-wrapper table">
                     <h5>
-                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-viewOpen</i18n:text>
+                        <xsl:text>Download </xsl:text>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>fa fa-download</xsl:text>
+                            </xsl:attribute>
+                        </i>
                     </h5>
 
                     <xsl:variable name="label-1">
@@ -1124,6 +1450,13 @@
                 <xsl:text>/documentdelivery/</xsl:text>
                 <xsl:value-of select="substring-after($request-uri,'handle/')"/>
             </xsl:attribute>
+            <i aria-hidden="true">
+                <xsl:attribute name="class">
+                    <xsl:text>fa </xsl:text>
+                    <xsl:text>fa-envelope-o</xsl:text>
+                </xsl:attribute>
+            </i>
+            <xsl:text> </xsl:text>
             <xsl:text>Request this document</xsl:text>
         </a>
     </xsl:template>
@@ -1155,9 +1488,6 @@
                         <xsl:attribute name="href">
                             <xsl:copy-of select="./node()"/>
                         </xsl:attribute>
-                        <xsl:attribute name="target">
-                            <xsl:text>_blank</xsl:text>
-                        </xsl:attribute>
                         <xsl:attribute name="class">
                             <xsl:text>word-break</xsl:text>
                         </xsl:attribute>
@@ -1167,6 +1497,23 @@
                             </xsl:call-template>
                         </xsl:variable>
                         <xsl:choose>
+                            <xsl:when test="contains(node(),'pdf')">
+                                <img src="{$theme-path}/images/pdf.png"/>
+                            </xsl:when>
+                            <xsl:when test="contains(node(),'htm')">
+                                <img src="{$theme-path}/images/page.png"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <i aria-hidden="true">
+                                    <xsl:attribute name="class">
+                                        <xsl:text>fa </xsl:text>
+                                        <xsl:text>fa-link</xsl:text>
+                                    </xsl:attribute>
+                                </i>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:text> </xsl:text>
+                        <xsl:choose>
                             <xsl:when test="string-length($output) > 0">
                                 <xsl:value-of select="$output"/>
                             </xsl:when>
@@ -1174,19 +1521,37 @@
                                 <xsl:value-of select="text()"/>
                             </xsl:otherwise>
                         </xsl:choose>
-                    </a>
                     <xsl:text> </xsl:text>
                     <i aria-hidden="true">
                         <xsl:attribute name="class">
-                            <xsl:text>glyphicon </xsl:text>
-                            <xsl:text>glyphicon-new-window</xsl:text>
+                            <xsl:text>fa </xsl:text>
+                            <xsl:text>fa-external-link</xsl:text>
                         </xsl:attribute>
                     </i>
+                    </a>
                     <xsl:if test="count(following-sibling::dim:field[@element='relation' and @qualifier='uri']) != 0">
                         <br/>
                     </xsl:if>
                 </xsl:for-each>
             </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-publisher">
+        <xsl:if test="dim:field[@element='publisher' and not(@qualifier)]">
+                <div class="simple-item-view-uri item-page-field-wrapper table">
+                    <h5>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-publisher</i18n:text>
+                    </h5>
+                    <span>
+                        <xsl:for-each select="dim:field[@element='publisher' and not(@qualifier)]">
+                            <xsl:copy-of select="./node()"/>
+                            <xsl:if test="count(following-sibling::dim:field[@element='publisher' and not(@qualifier)]) != 0">
+                                <xsl:text>; </xsl:text>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </span>
+                </div>
         </xsl:if>
     </xsl:template>
 
@@ -1210,6 +1575,95 @@
         </xsl:if>
     </xsl:template>
 
+    <xsl:template name="itemSummaryView-DIM-share">
+        <div class="item-page-field-wrapper table">
+            <h5>
+                <xsl:text>Share </xsl:text>
+                <i aria-hidden="true">
+                    <xsl:attribute name="class">
+                        <xsl:text>fa fa-share-alt</xsl:text>
+                    </xsl:attribute>
+                </i>
+            </h5>
+            <ul class="social-links fa-ul">
+                <li class="facebook">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:text>http://www.facebook.com/sharer.php?u=</xsl:text>
+                            <xsl:value-of select="$current-uri"/>
+                            <xsl:text>&amp;title=</xsl:text>
+                            <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                        </xsl:attribute>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>fa fa-facebook-square fa-lg</xsl:text>
+                            </xsl:attribute>
+                        </i>
+                        <xsl:text> </xsl:text>
+                    </a>
+                </li>
+                <li class="twitter">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:text>http://twitter.com/share?text=</xsl:text>
+                            <xsl:value-of select="util:shortenString(concat(dim:field[@element='title'][1]/node(),'&amp;url=',$current-uri), 90, 50)"/>
+                        </xsl:attribute>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>fa fa-twitter-square fa-lg</xsl:text>
+                            </xsl:attribute>
+                        </i>
+                        <xsl:text> </xsl:text>
+                    </a>
+                </li>
+                <li class="google-plus">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:text>https://plus.google.com/share?url=</xsl:text>
+                            <xsl:value-of select="$current-uri"/>
+                        </xsl:attribute>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>fa fa-google-plus-square fa-lg</xsl:text>
+                            </xsl:attribute>
+                        </i>
+                        <xsl:text> </xsl:text>
+                    </a>
+                </li>
+                <li class="linkedin">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:text>http://www.linkedin.com/shareArticle?mini=true&amp;url=</xsl:text>
+                            <xsl:value-of select="$current-uri"/>
+                            <xsl:text disable-output-escaping="yes">&amp;title=</xsl:text>
+                            <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                        </xsl:attribute>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>fa fa-linkedin-square fa-lg</xsl:text>
+                            </xsl:attribute>
+                        </i>
+                        <xsl:text> </xsl:text>
+                    </a>
+                </li>
+                <li class="mendeley">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:text>http://www.mendeley.com/import/?url=</xsl:text>
+                            <xsl:value-of select="$current-uri"/>
+                        </xsl:attribute>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>ai ai-mendeley-square fa-lg</xsl:text>
+                            </xsl:attribute>
+                        </i>
+                        <xsl:text> </xsl:text>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </xsl:template>
+
     <xsl:template name="eatAllSlashes">
         <xsl:param name="pText"/>
 
@@ -1224,6 +1678,31 @@
                 </xsl:call-template>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="getFileIcon">
+        <xsl:param name="mimetype"/>
+        <xsl:choose>
+            <xsl:when test="contains(mets:FLocat[@LOCTYPE='URL']/@xlink:href,'isAllowed=n')">
+                <i aria-hidden="true">
+                    <xsl:attribute name="class">
+                        <xsl:text>fa fa-lock</xsl:text>
+                    </xsl:attribute>
+                </i>
+            </xsl:when>
+            <xsl:when test="contains(mets:FLocat[@LOCTYPE='URL']/@xlink:href,'pdf')">
+                <img src="{$theme-path}/images/pdf.png"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <i aria-hidden="true">
+                    <xsl:attribute name="class">
+                        <xsl:text>fa fa-file</xsl:text>
+                    </xsl:attribute>
+                </i>
+            </xsl:otherwise>
+        </xsl:choose>
+
+        <xsl:text> </xsl:text>
     </xsl:template>
 
 </xsl:stylesheet>

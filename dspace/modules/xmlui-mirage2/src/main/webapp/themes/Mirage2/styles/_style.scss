@@ -21,9 +21,19 @@
     color: white;
     background: hotpink;
 }
+@import "./academicons/academicons.css";
+@import "./font-awesome/font-awesome.min.css";
 
 body { /* Used for navbar-fixed-top */
   padding-top: 87px;
+}
+
+h2, .h2 {
+  font-size: 26px;
+}
+
+.ds-option-set-head {
+  text-transform: uppercase;
 }
 
 .dropdown-menu > li > a { /* Wrap text in dropdown */
@@ -86,13 +96,20 @@ body { /* Used for navbar-fixed-top */
 }
 
 footer {
-  font-size: 12px;
+  font-size: small;
   font-family: $font-family-sans-serif;
 }
 
 .navbar-default {
   box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
   -webkit-box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
+}
+
+@media (max-width: 768px) {
+  .navbar .navbar-nav > li > a {
+    margin: 12px 6px;
+    padding: 8px 12px
+  }
 }
 
 .item-page-field-wrapper h5 {
@@ -162,11 +179,6 @@ body { /* Used for navbar-fixed-top */
   }
 }
 
-footer {
-  font-size: 12px;
-  font-family: $font-family-sans-serif;
-}
-
 .navbar-default {
   box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
   -webkit-box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
@@ -174,4 +186,66 @@ footer {
 
 .item-page-field-wrapper h5 {
   margin-top: 0;
+}
+
+.social-links.fa-ul {
+  margin-left: 0;
+}
+.social-links li {
+  display: inline;
+}
+
+.social-links > li > a {
+  text-decoration: none;
+}
+
+.social-links > li.facebook > a:hover, a.facebook:hover {
+  color: #3b5998;
+}
+
+.social-links > li.twitter > a:hover, a.twitter:hover {
+  color: #55acee;
+}
+
+.social-links > li.google-plus > a:hover, a.google-plus:hover {
+  color: #d14836;
+}
+
+.social-links > li.mendeley > a:hover, a.mendeley:hover {
+  color: #b61f2f;
+}
+
+.social-links > li.linkedin > a:hover, a.linkedin:hover {
+  color: #007fb1;
+}
+
+.social-links > li.foursquare > a:hover, a.foursquare:hover {
+  color: #2398c9;
+}
+
+.social-links > li.instagram > a:hover, a.instagram:hover {
+  color: #3F729B;
+}
+
+.social-links > li.contact > a:hover {
+  color: #00aff0;
+}
+
+.social-links > li.feedback > a:hover {
+  color: #a82400;
+}
+
+.breadcrumb > li + li:before {
+  content: "\f054";
+  font-family: "FontAwesome";
+  font-size: small;
+}
+
+.footer-small {
+  text-decoration: none;
+  font-size: medium;
+}
+
+.footer-small .social-links li {
+  margin-right: 5px;
 }
