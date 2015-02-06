@@ -488,7 +488,7 @@
         <!--put an arrow between the parts of the trail-->
         <li>
             <xsl:if test="position()=1">
-                <i class="fa fa-home" aria-hidden="true"/>&#160;
+                <i class="fa fa-institution" aria-hidden="true"/>&#160;
             </xsl:if>
             <!-- Determine whether we are dealing with a link or plain text trail link -->
             <xsl:choose>
@@ -519,7 +519,7 @@
                             <xsl:value-of select="./@target"/>
                         </xsl:attribute>
                         <xsl:if test="position()=1">
-                            <i class="fa fa-home" aria-hidden="true"/>&#160;
+                            <i class="fa fa-institution" aria-hidden="true"/>&#160;
                         </xsl:if>
                         <xsl:apply-templates />
                     </a>
@@ -533,7 +533,7 @@
                 <xsl:otherwise>
                     <xsl:attribute name="class">active</xsl:attribute>
                     <xsl:if test="position()=1">
-                        <i class="fa fa-home" aria-hidden="true"/>&#160;
+                        <i class="fa fa-institution" aria-hidden="true"/>&#160;
                     </xsl:if>
                     <xsl:apply-templates />
                 </xsl:otherwise>
@@ -644,14 +644,24 @@
                 <hr/>
                 <div class="footer-small" align="center">
                     <div>
-                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAADdgAAA3YBfdWCzAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAITSURBVEiJtdU9SFZRGAfw3zErTYOWxqDAPkAdNHApCHQKnRtqDopoaCiIjKik5oYamhqMiKZojLchoyEKGiozaAiHosI+TOmDPA33vHG53vv6pvTAgfuc+3/+zznPeT5CjNH/lNZmQCGEDnSjJ209w/MY49ySxjHGyoURPMUCYmEtpH8jDTkqiLtRKyEtW68TtruMq6UkHL2YwAvsx+cGAXiMrXiIiWRbHSJ04S1O5/bOFcJyG/eTPpTDHU+2XaUhQkinHis43YT5dMqBtLcG50tCeyZxhDIHI/iI9SWG7Y0eMofrwPv8w+d/1nCyGaIlnJxAra63hhAupjAM4lMI4VqDR21GOjAYQhjHdMBLbM8BvuEQDuIG9uAVfmEzvuJH0rdgEgO4g0vozHFNlVVyJ6ZwLzn/iaM4jJ2yGH/BBVzBO3yX1UNnkWxRHSTpl6XiNrxBH9bJ0jRgQ8JMJsyDpC+Sql40jNXYnchgL9owh43pcH0YSjcaLiMKqD/yAdxM112JtGMfrmM61Nt1CKGG2bTa8AiXY4zzSzGGENbKsrBHlgg7YoxDWFRoxUZ2tsncHyvYlRZavVXkgVcrCHfhFkaxCh9yNuWtotDs6uBjFQ7Gc5jR3Hd1s8sZ92ImGTypcNAvK7b8bWfQu5yBcyTpLQXMqRx55cD5l5E5Kyu+u5jGb02MzL9pukQaLnvoN+VgJfIHBQl8wqpqpqYAAAAASUVORK5CYII426afec8a9f3ce10f522c7faeeaf2c5a"/>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>flaticon </xsl:text>
+                                <xsl:text>flaticon-world89 fa-lg</xsl:text>
+                            </xsl:attribute>
+                        </i>
                         <xsl:text> </xsl:text>
                         <a target="_blank" href="http://www.seafdec.org.ph">
                             <xsl:text>www.seafdec.org.ph</xsl:text>
                         </a>
                     </div>
                     <div>
-                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAARCAYAAADHeGwwAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAPcQAAD3EB4Su3owAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAFOSURBVDiNndQxS1xBFIbhZ+KSdIu4prMJ/gBLgyJYiaUprC23WQg2Woj4O4IWCikEC63Uwk6MYJuAYGkp2liEWOhYOMj1Onvv3RyYYubMeT/mOzMTEL2PR/zEv0wuF3P40i8Z+4wzdGKMqga6eKrg9E1EXGG8At7LwK+rBI4zIjf4moEvZ/YeYr5KYBZLeCit/8W3Anw1A9/Hx8ToL5AAM7gt5R7xHesZ+C5aqbZeIG0cx2VNjyJ2MFSoayaQNg/jpAL+A6FU01wgFbQSqAzfKsNzAh/URxufcVpY+5VAkw3qKy2a8vLgphDSSbYxhAn8QXdgixJsBQcKrzmth8K8jT1s4lMji0IInQQOXu7+3etRUxTm9zHGRfzGSQhhrM6iNZxjuu4PyjR3EhfYqLLoCKODwgsiI4nR/Jr+h8ibHrRKdvVCCAs5HweIN314BvYm3ABTMJPbAAAAAElFTkSuQmCC7bc57552ce05a5b2f5d477895d312c64"/>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>flaticon </xsl:text>
+                                <xsl:text>flaticon-email118</xsl:text>
+                            </xsl:attribute>
+                        </i>
                         <xsl:text> </xsl:text>
                         <a target="_blank" href="mailto:library@seafdec.org.ph">
                             <xsl:text>library@seafdec.org.ph</xsl:text>
@@ -1655,6 +1665,38 @@
                         <i aria-hidden="true">
                             <xsl:attribute name="class">
                                 <xsl:text>ai ai-mendeley-square fa-lg</xsl:text>
+                            </xsl:attribute>
+                        </i>
+                        <xsl:text> </xsl:text>
+                    </a>
+                </li>
+                <li class="researchgate">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:text>https://www.researchgate.net/go.Share.html?url=</xsl:text>
+                            <xsl:value-of select="$current-uri"/>
+                            <xsl:text>&amp;title=</xsl:text>
+                            <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                        </xsl:attribute>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>ai ai-researchgate-square fa-lg</xsl:text>
+                            </xsl:attribute>
+                        </i>
+                        <xsl:text> </xsl:text>
+                    </a>
+                </li>
+                <li class="citeulike">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:text>http://www.citeulike.org/posturl2?url=</xsl:text>
+                            <xsl:value-of select="$current-uri"/>
+                            <xsl:text>&amp;title=</xsl:text>
+                            <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                        </xsl:attribute>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>flaticon flaticon-citeulike2 fa-lg</xsl:text>
                             </xsl:attribute>
                         </i>
                         <xsl:text> </xsl:text>

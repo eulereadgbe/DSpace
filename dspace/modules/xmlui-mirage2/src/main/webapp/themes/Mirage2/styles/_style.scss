@@ -21,8 +21,9 @@
     color: white;
     background: hotpink;
 }
-@import "./academicons/academicons.css";
-@import "./font-awesome/font-awesome.min.css";
+@import "./font-icons/academicons.css";
+@import "./font-icons/flaticon.css";
+@import "./font-icons/font-awesome.min.css";
 
 body { /* Used for navbar-fixed-top */
   padding-top: 87px;
@@ -211,11 +212,19 @@ body { /* Used for navbar-fixed-top */
   color: #d14836;
 }
 
-.social-links > li.mendeley > a:hover, a.mendeley:hover {
+.social-links > li.mendeley > a:hover {
   color: #b61f2f;
 }
 
-.social-links > li.linkedin > a:hover, a.linkedin:hover {
+.social-links > li.researchgate > a:hover {
+  color: #666;
+}
+
+.social-links > li.citeulike > a:hover {
+  color: #647b0f;
+}
+
+.social-links > li.linkedin > a:hover {
   color: #007fb1;
 }
 
@@ -236,9 +245,8 @@ body { /* Used for navbar-fixed-top */
 }
 
 .breadcrumb > li + li:before {
-  content: "\f054";
-  font-family: "FontAwesome";
-  font-size: small;
+  content: "\e002";
+  font-family: "Flaticon";
 }
 
 .footer-small {
@@ -248,4 +256,8 @@ body { /* Used for navbar-fixed-top */
 
 .footer-small .social-links li {
   margin-right: 5px;
+}
+
+.fa-external-link {
+  font-size: x-small;
 }
