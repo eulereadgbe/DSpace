@@ -1049,10 +1049,16 @@
                             <xsl:when test="dim:field[@element='contributor'][@qualifier='author']">
                                 <xsl:for-each select="dim:field[@element='contributor'][@qualifier='author']">
                                     <span>
+                                        <a>
                                         <xsl:if test="@authority">
                                             <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
                                         </xsl:if>
+                                            <xsl:attribute name="href">
+                                                <xsl:text>/discover?filtertype=author&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
                                         <xsl:copy-of select="node()"/>
+                                            </xsl:attribute>
+                                            <xsl:copy-of select="node()"/>
+                                        </a>
                                     </span>
                                     <xsl:if test="count(following-sibling::dim:field[@element='contributor'][@qualifier='author']) != 0">
                                         <xsl:text>; </xsl:text>
@@ -1174,13 +1180,19 @@
                                         <xsl:apply-templates select="."/>
                                     </xsl:variable>
                                     <span>
+                                        <a>
                                         <!--Check authority in the mets document-->
                                         <xsl:if test="$metsDoc/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='contributor' and @qualifier='author' and . = $author]/@authority">
                                             <xsl:attribute name="class">
                                                 <xsl:text>ds-dc_contributor_author-authority</xsl:text>
                                             </xsl:attribute>
+                                                <xsl:attribute name="href">
+                                                    <xsl:text>/discover?filtertype=author&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
+                                                    <xsl:copy-of select="node()"/>
+                                                </xsl:attribute>
                                         </xsl:if>
                                         <xsl:apply-templates select="."/>
+                                        </a>
                                     </span>
 
                                     <xsl:if test="count(following-sibling::dri:item) != 0">

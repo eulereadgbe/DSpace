@@ -261,3 +261,11 @@ body { /* Used for navbar-fixed-top */
 .fa-external-link {
   font-size: x-small;
 }
+
+.author > small > span > a {
+  color: #b3b3b3;
+}
+
+.author > small > span > a:hover {
+  color: #4582ec;
+}
