@@ -98,7 +98,6 @@
                                     <div class="horizontal-slider clearfix">
                                         <div class="col-xs-12 col-sm-12 col-md-9 main-content">
                                             <xsl:apply-templates select="*[not(self::dri:options)]"/>
-
                                             <div class="visible-xs">
                                                 <xsl:call-template name="buildFooterSmall"/>
                                             </div>
@@ -1452,6 +1451,95 @@
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template name="itemSummaryView-DIM-file-section-entry">
+        <xsl:param name="href" />
+        <xsl:param name="mimetype" />
+        <xsl:param name="label-1" />
+        <xsl:param name="label-2" />
+        <xsl:param name="title" />
+        <xsl:param name="label" />
+        <xsl:param name="size" />
+        <div>
+            <a>
+                <xsl:attribute name="target">
+                    <xsl:text>_blank</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="$href"/>
+                </xsl:attribute>
+                <xsl:call-template name="getFileIcon">
+                    <xsl:with-param name="mimetype">
+                        <xsl:value-of select="substring-before($mimetype,'/')"/>
+                        <xsl:text>/</xsl:text>
+                        <xsl:value-of select="substring-after($mimetype,'/')"/>
+                    </xsl:with-param>
+                </xsl:call-template>
+                <xsl:choose>
+                    <xsl:when test="contains($label-1, 'label') and string-length($label)!=0">
+                        <xsl:value-of select="$label"/>
+                    </xsl:when>
+                    <xsl:when test="contains($label-1, 'title') and string-length($title)!=0">
+                        <xsl:value-of select="$title"/>
+                    </xsl:when>
+                    <xsl:when test="contains($label-2, 'label') and string-length($label)!=0">
+                        <xsl:value-of select="$label"/>
+                    </xsl:when>
+                    <xsl:when test="contains($label-2, 'title') and string-length($title)!=0">
+                        <xsl:value-of select="$title"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:call-template name="getFileTypeDesc">
+                            <xsl:with-param name="mimetype">
+                                <xsl:value-of select="substring-before($mimetype,'/')"/>
+                                <xsl:text>/</xsl:text>
+                                <xsl:choose>
+                                    <xsl:when test="contains($mimetype,';')">
+                                        <xsl:value-of select="substring-before(substring-after($mimetype,'/'),';')"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="substring-after($mimetype,'/')"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:with-param>
+                        </xsl:call-template>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:text> (</xsl:text>
+                <xsl:choose>
+                    <xsl:when test="$size &lt; 1024">
+                        <xsl:value-of select="$size"/>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.size-bytes</i18n:text>
+                    </xsl:when>
+                    <xsl:when test="$size &lt; 1024 * 1024">
+                        <xsl:value-of select="substring(string($size div 1024),1,5)"/>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.size-kilobytes</i18n:text>
+                    </xsl:when>
+                    <xsl:when test="$size &lt; 1024 * 1024 * 1024">
+                        <xsl:value-of select="substring(string($size div (1024 * 1024)),1,5)"/>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.size-megabytes</i18n:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="substring(string($size div (1024 * 1024 * 1024)),1,5)"/>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.size-gigabytes</i18n:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:text>)</xsl:text>
+            </a>
+        </div>
+    </xsl:template>
+
+    <xsl:template name="view-open">
+        <a>
+            <xsl:attribute name="target">
+                <xsl:text>_blank</xsl:text>
+            </xsl:attribute>
+            <xsl:attribute name="href">
+                <xsl:value-of select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+            </xsl:attribute>
+            <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-viewOpen</i18n:text>
+        </a>
+    </xsl:template>
+
     <xsl:template name="documentdelivery">
         <a>
             <xsl:attribute name="href">
@@ -1479,19 +1567,6 @@
                 </h5>
                 <xsl:for-each select="dim:field[@element='relation' and @qualifier='uri']">
                     <a>
-                        <xsl:attribute name="data-original-title">
-                        <xsl:text>
-                            &lt;b&gt;EXTERNAL LINKS DISCLAIMER&lt;/b&gt;&lt;br/&gt;
-                            This link is being provided as a convenience and for informational purposes only.
-                            SEAFDEC/AQD bears no responsibility for the accuracy, legality or content of the external
-                            site or for that of subsequent links. Contact the external site for answers to questions
-                            regarding its content. If you come across any external links that don't work, we would be
-                            grateful if you could report them to the repository administrators.
-                        </xsl:text>
-                        </xsl:attribute>
-                        <xsl:attribute name="data-html">
-                            <xsl:text>true</xsl:text>
-                        </xsl:attribute>
                         <xsl:attribute name="data-toggle">
                             <xsl:text>tooltip</xsl:text>
                         </xsl:attribute>
