@@ -1617,6 +1617,33 @@
                     <xsl:if test="count(following-sibling::dim:field[@element='relation' and @qualifier='uri']) != 0">
                         <br/>
                     </xsl:if>
+                    <div class="modal fade" id="externalLinkModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">
+                                            <xsl:text disable-output-escaping="yes">&amp;times;</xsl:text>
+                                        </span>
+                                    </button>
+                                    <h4 class="modal-title">EXTERNAL LINKS DISCLAIMER</h4>
+                                </div>
+                                <div class="modal-body justify">
+                                    <p>This link is being provided as a convenience and for informational purposes only.
+                                        SEAFDEC/AQD bears no responsibility for the accuracy, legality or content of the
+                                        external site or for that of subsequent links. Contact the external site for
+                                        answers to questions regarding its content.
+                                    </p>
+                                    <p>If you come across any external links that don't work, we would be grateful if
+                                        you could report them to the <a href="/contact">repository administrators</a>.
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
                 </xsl:for-each>
             </div>
         </xsl:if>
