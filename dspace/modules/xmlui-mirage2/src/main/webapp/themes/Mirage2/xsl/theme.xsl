@@ -1588,36 +1588,44 @@
                         <xsl:attribute name="class">
                             <xsl:text>word-break</xsl:text>
                         </xsl:attribute>
-                        <xsl:variable name="output">
-                            <xsl:call-template name="eatAllSlashes">
-                                <xsl:with-param name="pText" select="."/>
-                            </xsl:call-template>
-                        </xsl:variable>
+                        <xsl:attribute name="id">
+                            <xsl:text>external-link</xsl:text>
+                        </xsl:attribute>
                         <xsl:choose>
                             <xsl:when test="contains(node(),'pdf')">
-                                <img src="{$theme-path}/images/pdf.png"/>
+                                <img class="type" src="{$theme-path}/images/pdf.png"/>
                             </xsl:when>
                             <xsl:when test="contains(node(),'htm')">
-                                <img src="{$theme-path}/images/page.png"/>
+                                <img class="type" src="{$theme-path}/images/page.png"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <i aria-hidden="true">
                                     <xsl:attribute name="class">
                                         <xsl:text>fa </xsl:text>
                                         <xsl:text>fa-link</xsl:text>
+                                        <xsl:text> type</xsl:text>
                                     </xsl:attribute>
                                 </i>
                             </xsl:otherwise>
                         </xsl:choose>
-                        <xsl:text> </xsl:text>
+                        <xsl:text> from </xsl:text>
+                        <xsl:variable name="url_ini">
+                                <xsl:copy-of select="./node()"/>
+                        </xsl:variable>
+                        <xsl:variable name="url_minus_http">
                         <xsl:choose>
-                            <xsl:when test="string-length($output) > 0">
-                                <xsl:value-of select="$output"/>
+                                <xsl:when test="contains($url_ini,'www')">
+                                    <xsl:value-of select="substring-after($url_ini,'www.')"/>
                             </xsl:when>
+                                <xsl:when test="contains($url_ini,'ftp')">
+                                    <xsl:value-of select="substring-after($url_ini,'ftp.')"/>
+                                </xsl:when>
                             <xsl:otherwise>
-                                <xsl:value-of select="text()"/>
+                                    <xsl:value-of select="substring-after($url_ini,'://')"/>
                             </xsl:otherwise>
                         </xsl:choose>
+                        </xsl:variable>
+                        <xsl:value-of select="substring-before($url_minus_http,'/')"/>
                     <xsl:text> </xsl:text>
                     <i aria-hidden="true">
                         <xsl:attribute name="class">
