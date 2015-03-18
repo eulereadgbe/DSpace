@@ -221,6 +221,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>jp.zuki_ebetsu.dspace</groupId>
+            <artifactId>cover</artifactId>
+            <version>1.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>
