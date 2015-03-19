@@ -101,7 +101,7 @@ footer {
   font-family: $font-family-sans-serif;
 }
 
-.navbar-default {
+.navbar-default.scrolled {
   box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
   -webkit-box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
 }
@@ -178,11 +178,6 @@ body { /* Used for navbar-fixed-top */
   .navbar-brand {
     padding-top: 14px;
   }
-}
-
-.navbar-default {
-  box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
-  -webkit-box-shadow: 0 3px 2px -2px rgba(200, 200, 200, 0.3);
 }
 
 .item-page-field-wrapper h5 {
