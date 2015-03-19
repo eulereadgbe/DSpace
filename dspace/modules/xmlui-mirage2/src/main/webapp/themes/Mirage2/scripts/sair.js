@@ -25,8 +25,6 @@ $(function(){
         $.getJSON(url, function(json){
             if(json.ok && json.headers['content-length']) {
                 var length = parseInt(json.headers['content-length'], 10);
-                var content = json.headers['content-type'].split('/');
-                var format = content[content.length -1];
                 // divide the length into its largest unit
                 var units = [
                     [1024 * 1024 * 1024, 'Gb'],
@@ -49,15 +47,20 @@ $(function(){
                     }
                 }
 
+                if (length != 0) {
+                    $(".fa-external-link").before(' (' + length + ' ' + lengthUnits + ') ');
+                }
+            }
+            if (json.ok && json.headers['content-type']) {
+                var content = json.headers['content-type'].split('/');
+                var format = content[content.length - 1];
+                var type = format.toUpperCase();
                 // insert the text directly after the link and add a class to the link
                 if (format.indexOf("html") === 0) {
-                    $('.type').after(' [' + format.substring(0,4) + ']');
+                    $('.type').after(' [' + type.substring(0, 4) + ']');
                 }
                 else {
-                    $('.type').after(' [' + format.substring(0,3) + ']');
-                }
-                if (length != 0) {
-                $(".fa-external-link").before(' (' + length + ' ' + lengthUnits + ') ');
+                    $('.type').after(' [' + type.substring(0, 3) + ']');
                 }
             }
         });
