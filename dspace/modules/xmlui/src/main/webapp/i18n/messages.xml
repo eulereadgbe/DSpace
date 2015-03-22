@@ -2259,9 +2259,10 @@
     <message key="xmlui.dri2xhtml.METS-1.0.item-type">Type</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-isbn">ISBN</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-essn">ESSN</message>
-    <message key="xmlui.dri2xhtml.METS-1.0.item-journalTitle">Journal Title</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-journalTitle">Journal</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-sponsorship">Acknowledgment/Sponsorship</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-tableofcontents">Contents</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-format">Format</message>
 
 	<message key="xmlui.dri2xhtml.METS-1.0.size-bytes">bytes</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.size-kilobytes">Kb</message>
