@@ -1950,6 +1950,9 @@
                             <xsl:text>&amp;title=</xsl:text>
                             <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
                         </xsl:attribute>
+                        <xsl:attribute name="title">
+                            <xsl:text>Facebook</xsl:text>
+                        </xsl:attribute>
                         <i aria-hidden="true">
                             <xsl:attribute name="class">
                                 <xsl:text>fa fa-facebook-square fa-lg</xsl:text>
@@ -1964,6 +1967,9 @@
                             <xsl:text>http://twitter.com/share?text=</xsl:text>
                             <xsl:value-of select="util:shortenString(concat(dim:field[@element='title'][1]/node(),'&amp;url=',$current-uri), 90, 50)"/>
                         </xsl:attribute>
+                        <xsl:attribute name="title">
+                            <xsl:text>Tweet</xsl:text>
+                        </xsl:attribute>
                         <i aria-hidden="true">
                             <xsl:attribute name="class">
                                 <xsl:text>fa fa-twitter-square fa-lg</xsl:text>
@@ -1977,6 +1983,9 @@
                         <xsl:attribute name="href">
                             <xsl:text>https://plus.google.com/share?url=</xsl:text>
                             <xsl:value-of select="$current-uri"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="title">
+                            <xsl:text>Google+</xsl:text>
                         </xsl:attribute>
                         <i aria-hidden="true">
                             <xsl:attribute name="class">
@@ -1994,6 +2003,9 @@
                             <xsl:text disable-output-escaping="yes">&amp;title=</xsl:text>
                             <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
                         </xsl:attribute>
+                        <xsl:attribute name="title">
+                            <xsl:text>LinkedIn</xsl:text>
+                        </xsl:attribute>
                         <i aria-hidden="true">
                             <xsl:attribute name="class">
                                 <xsl:text>fa fa-linkedin-square fa-lg</xsl:text>
@@ -2007,6 +2019,9 @@
                         <xsl:attribute name="href">
                             <xsl:text>http://www.mendeley.com/import/?url=</xsl:text>
                             <xsl:value-of select="$current-uri"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="title">
+                            <xsl:text>Import to Mendeley</xsl:text>
                         </xsl:attribute>
                         <i aria-hidden="true">
                             <xsl:attribute name="class">
@@ -2024,9 +2039,28 @@
                             <xsl:text>&amp;title=</xsl:text>
                             <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
                         </xsl:attribute>
+                        <xsl:attribute name="title">
+                            <xsl:text>ResearchGate</xsl:text>
+                        </xsl:attribute>
                         <i aria-hidden="true">
                             <xsl:attribute name="class">
                                 <xsl:text>ai ai-researchgate-square fa-lg</xsl:text>
+                            </xsl:attribute>
+                        </i>
+                        <xsl:text> </xsl:text>
+                    </a>
+                </li>
+                <li class="zotero">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:text>javascript:var%20d=document,s=d.createElement('script');s.src='https://www.zotero.org/bookmarklet/loader.js';(d.body?d.body:d.documentElement).appendChild(s);void(0);</xsl:text>
+                        </xsl:attribute>
+                        <xsl:attribute name="title">
+                            <xsl:text>Import to Zotero</xsl:text>
+                        </xsl:attribute>
+                        <i aria-hidden="true">
+                            <xsl:attribute name="class">
+                                <xsl:text>ai ai-zotero-square fa-lg</xsl:text>
                             </xsl:attribute>
                         </i>
                         <xsl:text> </xsl:text>
@@ -2039,6 +2073,9 @@
                             <xsl:value-of select="$current-uri"/>
                             <xsl:text>&amp;title=</xsl:text>
                             <xsl:value-of select="dim:field[@element='title'][1]/node()"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="title">
+                            <xsl:text>Citeulike</xsl:text>
                         </xsl:attribute>
                         <i aria-hidden="true">
                             <xsl:attribute name="class">

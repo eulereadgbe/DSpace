@@ -33,6 +33,10 @@ h2, .h2 {
   font-size: 26px;
 }
 
+h3, .h3 {
+  font-size: 22px;
+}
+
 .ds-option-set-head {
   text-transform: uppercase;
 }
@@ -195,47 +199,55 @@ body { /* Used for navbar-fixed-top */
   text-decoration: none;
 }
 
-.social-links > li.facebook > a:hover, a.facebook:hover {
+.social-links > li > a:hover {
+  opacity: 0.79;
+}
+
+.social-links > li.facebook > a, a.facebook {
   color: #3b5998;
 }
 
-.social-links > li.twitter > a:hover, a.twitter:hover {
+.social-links > li.twitter > a, a.twitter {
   color: #55acee;
 }
 
-.social-links > li.google-plus > a:hover, a.google-plus:hover {
+.social-links > li.google-plus > a, a.google-plus {
   color: #d14836;
 }
 
-.social-links > li.mendeley > a:hover {
+.social-links > li.mendeley > a {
   color: #b61f2f;
 }
 
-.social-links > li.researchgate > a:hover {
+.social-links > li.researchgate > a {
   color: #666;
 }
 
-.social-links > li.citeulike > a:hover {
+.social-links > li.citeulike > a {
   color: #647b0f;
 }
 
-.social-links > li.linkedin > a:hover {
+.social-links > li.linkedin > a {
   color: #007fb1;
 }
 
-.social-links > li.foursquare > a:hover, a.foursquare:hover {
+.social-links > li.zotero > a {
+  color: #9C1D2E;
+}
+
+.social-links > li.foursquare > a, a.foursquare {
   color: #2398c9;
 }
 
-.social-links > li.instagram > a:hover, a.instagram:hover {
-  color: #3F729B;
+.social-links > li.instagram > a, a.instagram {
+  color: #BC805E;
 }
 
-.social-links > li.contact > a:hover {
+.social-links > li.contact > a {
   color: #00aff0;
 }
 
-.social-links > li.feedback > a:hover {
+.social-links > li.feedback > a {
   color: #a82400;
 }
 
