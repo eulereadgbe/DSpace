@@ -7,10 +7,6 @@
  */
 package org.dspace.app.xmlui.aspect.artifactbrowser;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.sql.SQLException;
-
 import org.apache.avalon.framework.parameters.ParameterException;
 import org.apache.cocoon.caching.CacheableProcessingComponent;
 import org.apache.cocoon.environment.ObjectModelHelper;
@@ -31,13 +27,16 @@ import org.dspace.app.xmlui.wing.element.*;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Bitstream;
-import org.dspace.content.Metadatum;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
+import org.dspace.content.Metadatum;
 import org.dspace.core.Constants;
 import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.SQLException;
 
 /**
  * Display to the user a simple form letting the user to request a protected item.
@@ -112,13 +111,22 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
      */
     public Serializable getKey() {
     	
-        String requesterName = parameters.getParameter("requesterName","");
         String requesterEmail = parameters.getParameter("requesterEmail","");
         String allFiles = parameters.getParameter("allFiles","");
         String message = parameters.getParameter("message","");
         String bitstreamId = parameters.getParameter("bitstreamId","");
-        
-       return HashUtil.hash(requesterName + "-" + requesterEmail + "-" + allFiles +"-"+message+"-"+bitstreamId);
+        String lastName = parameters.getParameter("lastName","");
+        String firstName = parameters.getParameter("firstName","");
+        String institution = parameters.getParameter("institution","");
+        String userAddress = parameters.getParameter("userAddress","");
+        String userType = parameters.getParameter("userType","");
+        String userTypeOther = parameters.getParameter("userTypeOther","");
+        String organization = parameters.getParameter("organization","");
+        String organizationOther = parameters.getParameter("organizationOther","");
+
+        return HashUtil.hash(requesterEmail + "-" + allFiles + "-" + message + "-" + bitstreamId + "-" + lastName + "-"
+        + firstName + "-" + institution + "-" + userAddress + "-" + userType + "-" + userTypeOther + "-" + organization
+        + "-" + organizationOther);
     }
 
     /**
@@ -138,6 +146,7 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
  
         pageMeta.addTrailLink(contextPath + "/",T_dspace_home);
         pageMeta.addTrail().addContent(T_trail);
+        pageMeta.addMetadata("javascript", "static", null, true).addContent("static/js/request-forms.js");
     }
 
 	public void addBody(Body body) throws SAXException, WingException,
@@ -155,6 +164,23 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
 		Division itemRequest = body.addInteractiveDivision("itemRequest-form",
 				request.getRequestURI(), Division.METHOD_POST, "primary");
 		itemRequest.setHead(T_head);
+
+        Metadatum[] handleDC = item.getMetadata("dc", "identifier", "uri", Item.ANY);
+        Metadatum[] citationDC = item.getMetadata("dc", "identifier", "citation", Item.ANY);
+        Metadatum[] isPartOfDC = item.getMetadata("dc", "relation", "ispartof", Item.ANY);
+        Metadatum[] titleDC = item.getMetadata("dc", "title", null, Item.ANY);
+        String document = "";
+        String handle = handleDC[0].value;
+        if (citationDC != null && citationDC.length > 0) {
+            document = citationDC[0].value;
+        } else {
+            if (isPartOfDC != null && isPartOfDC.length > 0) {
+                document = titleDC[0].value + " " + isPartOfDC[0].value;
+            } else {
+                document = titleDC[0].value;
+            }
+        }
+        itemRequest.addPara(document);
 
         // add a login link if user !loggedIn
         if (context.getCurrentUser() == null)
@@ -192,20 +218,63 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
 
         itemRequest.addPara(T_para1);
 
-		Metadatum[] titleDC = item.getDC("title", null, Item.ANY);
-		if (titleDC != null && titleDC.length > 0)
-			itemRequest.addPara(titleDC[0].value);
+
 
 		List form = itemRequest.addList("form", List.TYPE_FORM);
 
-		Text requesterName = form.addItem().addText("requesterName");
-		requesterName.setLabel(T_requesterName);
-		requesterName.setValue(parameters.getParameter("requesterName", ""));
+        // Composite
+        Composite requesterName = form.addItem().addComposite("requesterName");
+        requesterName.setLabel("Name");
+        Text text = requesterName.addText("lastName");
+        text.setLabel("Last name");
+        text.setValue(parameters.getParameter("lastName",""));
+
+        text = requesterName.addText("firstName");
+        text.setLabel("First name");
+        text.setValue(parameters.getParameter("firstName", ""));
 
 		Text requesterEmail = form.addItem().addText("requesterEmail");
 		requesterEmail.setLabel(T_requesterEmail);
 		requesterEmail.setHelp(T_requesterEmail_help);
 		requesterEmail.setValue(parameters.getParameter("requesterEmail", ""));
+
+        Select userType = form.addItem().addSelect("userType");
+        userType.setLabel("User type");
+        userType.addOption("","Please select your category");
+        userType.addOption("Undergraduate/BS","Undergraduate/BS");
+        userType.addOption("MS Student","MS Student");
+        userType.addOption("PhD Student","PhD Student");
+        userType.addOption("Faculty","Faculty");
+        userType.addOption("Researcher","Researcher");
+        userType.addOption("Businessman/Private","Businessman/Private");
+        userType.addOption("Fish farmer","Fish farmer");
+        userType.addOption("Others", "Others");
+        userType.setOptionSelected(parameters.getParameter("userType",""));
+        TextArea userTypeOther = form.addItem().addTextArea("userTypeOther");
+        userTypeOther.setValue(parameters.getParameter("userTypeOther", ""));
+
+        Select organization = form.addItem().addSelect("organization");
+        organization.setLabel("Organization type");
+        organization.addOption("","Please select your organization type");
+        organization.addOption("Governmental Organization","Governmental Organization");
+        organization.addOption("Academic Institution","Academic Institution");
+        organization.addOption("Regional/International Organization","Regional/International Organization");
+        organization.addOption("Private Sector","Private Sector");
+        organization.addOption("NGO","NGO");
+        organization.addOption("Others","Others");
+        organization.setOptionSelected(parameters.getParameter("organization",""));
+        TextArea organizationOther = form.addItem().addTextArea("organizationOther");
+        organizationOther.setValue(parameters.getParameter("organizationOther", ""));
+
+        Text institution = form.addItem().addText("institution");
+        institution.setLabel("Institution Name");
+        institution.setValue(parameters.getParameter("institution",""));
+        institution.setSize(50);
+
+        Text userAddress = form.addItem().addText("userAddress");
+        userAddress.setLabel("Address");
+        userAddress.setValue(parameters.getParameter("userAddress",""));
+        userAddress.setSize(50);
 
 		Radio radio = form.addItem().addRadio("allFiles");
 		String selected=!parameters.getParameter("allFiles","true").equalsIgnoreCase("false")?"true":"false";
@@ -223,16 +292,43 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
 		
 		// if button is pressed and form is re-loaded it means some parameter is missing
 		if(request.getParameter("submit")!=null){
-			if(StringUtils.isEmpty(parameters.getParameter("requesterName", ""))){
+            if(StringUtils.isEmpty(parameters.getParameter("lastName", "")) ||
+                    StringUtils.isEmpty(parameters.getParameter("firstName", "")))
+            {
 				requesterName.addError(T_requesterName_error);
 			}
 			if(StringUtils.isEmpty(parameters.getParameter("requesterEmail", ""))){
 				requesterEmail.addError(T_requesterEmail_error);
 			}
-			if(StringUtils.isEmpty(parameters.getParameter("message", ""))){
+            if(StringUtils.isEmpty(parameters.getParameter("institution", ""))){
+                institution.addError("Institution Name is required");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("userType", "")))
+            {
+                userType.addError("Please select your user type.");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("userAddress", "")))
+            {
+                userAddress.addError("Address is required.");
+            }
+            if (request.getParameter("userType").equals("Others") &&
+                    StringUtils.isEmpty(parameters.getParameter("userTypeOther",""))) {
+                userTypeOther.addError("Please write your user type.");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("organization", "")))
+            {
+                organization.addError("Please select your organization type.");
+            }
+            if (request.getParameter("organization").equals("Others") &&
+                    StringUtils.isEmpty(parameters.getParameter("organizationOther", ""))) {
+                organizationOther.addError("Please write your organization type.");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("message", ""))){
 				message.addError(T_message_error);
 			}
 		}
-		itemRequest.addHidden("page").setValue(parameters.getParameter("page", "unknown"));
+        itemRequest.addHidden("title").setValue(document);
+        itemRequest.addHidden("handle").setValue(handle);
+        itemRequest.addHidden("page").setValue(parameters.getParameter("page", "unknown"));
 	}
 }
