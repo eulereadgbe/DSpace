@@ -1027,11 +1027,11 @@
                                         <xsl:copy-of select="node()"/>
                                             </xsl:attribute>
                                             <xsl:choose>
-                                                <xsl:when test="not(contains(.,','))">
-                                            <xsl:copy-of select="node()"/>
+                                                <xsl:when test="contains(.,',')">
+                                                    <xsl:value-of select="$parseNames"/>
                                                 </xsl:when>
                                                 <xsl:otherwise>
-                                                    <xsl:value-of select="$parseNames"/>
+                                                    <xsl:copy-of select="node()"/>
                                                 </xsl:otherwise>
                                             </xsl:choose>
                                         </a>
@@ -1053,7 +1053,14 @@
                                         <xsl:text> </xsl:text>
                                         <xsl:value-of select="substring-before(., ', ')" />
                                     </xsl:variable>
-                                    <xsl:value-of select="$parseNames"/>
+                                    <xsl:choose>
+                                        <xsl:when test="contains(.,',')">
+                                            <xsl:value-of select="$parseNames"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:copy-of select="node()"/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                     <xsl:if test="count(following-sibling::dim:field[@element='contributor'][@qualifier='editor']) = 1">
                                         <xsl:text> &amp; </xsl:text>
                                     </xsl:if>
@@ -1061,6 +1068,12 @@
                                         <xsl:text>, </xsl:text>
                                     </xsl:if>
                                 </xsl:for-each>
+                                <xsl:if test="count(dim:field[@element='contributor'][@qualifier='editor']) &gt; 1">
+                                    <xsl:text> (Eds.) </xsl:text>
+                                </xsl:if>
+                                <xsl:if test="count(dim:field[@element='contributor'][@qualifier='editor']) = 1">
+                                    <xsl:text> (Ed.) </xsl:text>
+                                </xsl:if>
                             </xsl:when>
                             <xsl:when test="dim:field[@element='creator']">
                                 <xsl:for-each select="dim:field[@element='creator']">
@@ -1096,7 +1109,8 @@
                                     <xsl:text disable-output-escaping="yes">&lt;/i&gt;</xsl:text>
                                     <xsl:text>, </xsl:text>
                                     <span class="date">
-                                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
+                                            <xsl:value-of
+                                                    select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,4)"/>
                                     </span>
                                     <xsl:text> - </xsl:text>
                                     <xsl:copy-of select="dim:field[@element='publisher']/node()"/>
@@ -1108,16 +1122,98 @@
                         <span class="publisher-date h4">  <small>
                             <xsl:if test="dim:field[@element='publisher']">
                                 <span class="publisher">
-                                    <xsl:text> - </xsl:text>
+                                        <xsl:text> - In </xsl:text>
+                                        <xsl:if test="dim:field[@element='contributor'][@qualifier='editor']">
+                                            <xsl:for-each select="dim:field[@element='contributor'][@qualifier='editor']">
+                                                <xsl:variable name="parseNames">
+                                                    <xsl:for-each select="str:tokenize(substring-after(., ', '),' -.')">
+                                                        <xsl:value-of select="substring(., 1, 1)" />
+                                                    </xsl:for-each>
+                                                    <xsl:text> </xsl:text>
+                                                    <xsl:value-of select="substring-before(., ', ')" />
+                                                </xsl:variable>
+                                                <xsl:choose>
+                                                    <xsl:when test="contains(.,',')">
+                                                        <xsl:value-of select="$parseNames"/>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <xsl:value-of select="."/>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <xsl:if test="count(following-sibling::dim:field[@element='contributor'][@qualifier='editor']) = 1">
+                                                    <xsl:text> &amp; </xsl:text>
+                                                </xsl:if>
+                                                <xsl:if test="count(following-sibling::dim:field[@element='contributor'][@qualifier='editor']) &gt; 1">
+                                                    <xsl:text>, </xsl:text>
+                                                </xsl:if>
+                                            </xsl:for-each>
+                                            <xsl:if test="count(dim:field[@element='contributor'][@qualifier='editor']) &gt; 1">
+                                                <xsl:text> (Eds.), </xsl:text>
+                                            </xsl:if>
+                                            <xsl:if test="count(dim:field[@element='contributor'][@qualifier='editor']) = 1">
+                                                <xsl:text> (Ed.), </xsl:text>
+                                            </xsl:if>
+                                        </xsl:if>
                                     <xsl:text disable-output-escaping="yes">&lt;i&gt;</xsl:text>
-                                    <xsl:copy-of select="dim:field[@element='citation' and @qualifier='bookTitle']"/>
+                                        <xsl:value-of select="util:shortenString(dim:field[@element='citation'][@qualifier='bookTitle'], 79, 10)"/>
                                     <xsl:text disable-output-escaping="yes">&lt;/i&gt;</xsl:text>
                                     <xsl:text>, </xsl:text>
                                     <span class="date">
-                                        <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
+                                            <xsl:value-of
+                                                    select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,4)"/>
                                     </span>
                                     <xsl:text> - </xsl:text>
                                     <xsl:copy-of select="dim:field[@element='publisher']/node()"/>
+                                </span>
+                            </xsl:if>
+                            </small>
+                        </span>
+                    </xsl:when>
+                    <xsl:when test="dim:field[@element='citation' and @qualifier='conferenceTitle']">
+                        <span class="publisher-date h4">   <small>
+                            <xsl:if test="dim:field[@element='publisher']">
+                                <span class="publisher">
+                                    <xsl:text> - In </xsl:text>
+                                    <xsl:if test="dim:field[@element='contributor'][@qualifier='editor']">
+                                        <xsl:for-each select="dim:field[@element='contributor'][@qualifier='editor']">
+                                            <xsl:variable name="parseNames">
+                                                <xsl:for-each select="str:tokenize(substring-after(., ', '),' -.')">
+                                                    <xsl:value-of select="substring(., 1, 1)" />
+                                                </xsl:for-each>
+                                                <xsl:text> </xsl:text>
+                                                <xsl:value-of select="substring-before(., ', ')" />
+                                            </xsl:variable>
+                                            <xsl:choose>
+                                                <xsl:when test="contains(.,',')">
+                                                    <xsl:value-of select="$parseNames"/>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:value-of select="."/>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                            <xsl:if test="count(following-sibling::dim:field[@element='contributor'][@qualifier='editor']) = 1">
+                                                <xsl:text> &amp; </xsl:text>
+                                            </xsl:if>
+                                            <xsl:if test="count(following-sibling::dim:field[@element='contributor'][@qualifier='editor']) &gt; 1">
+                                                <xsl:text>, </xsl:text>
+                                            </xsl:if>
+                                        </xsl:for-each>
+                                        <xsl:if test="count(dim:field[@element='contributor'][@qualifier='editor']) &gt; 1">
+                                            <xsl:text> (Eds.), </xsl:text>
+                                        </xsl:if>
+                                        <xsl:if test="count(dim:field[@element='contributor'][@qualifier='editor']) = 1">
+                                            <xsl:text> (Ed.), </xsl:text>
+                                        </xsl:if>
+                                    </xsl:if>
+                                    <xsl:text disable-output-escaping="yes">&lt;i&gt;</xsl:text>
+                                    <xsl:value-of select="util:shortenString(dim:field[@element='citation'][@qualifier='conferenceTitle'], 79, 10)"/>
+                                    <xsl:text disable-output-escaping="yes">&lt;/i&gt;</xsl:text>
+                                    <xsl:text>, </xsl:text>
+                                    <span class="date">
+                                        <xsl:value-of select="substring(dim:field[@element='date'][@qualifier='issued'],1,4)"/>
+                                    </span>
+                                    <xsl:text> - </xsl:text>
+                                    <xsl:apply-templates select="dim:field[@element='publisher']/node()"/>
                                 </span>
                             </xsl:if>
                         </small></span>
@@ -1126,7 +1222,7 @@
                         <span class="publisher-date h4">  <small>
                         <xsl:text> - </xsl:text>
                             <span class="date">
-                                <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,10)"/>
+                                <xsl:value-of select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,4)"/>
                             </span>
                         <xsl:if test="dim:field[@element='publisher']">
                                 <xsl:text> - </xsl:text>
@@ -1258,7 +1354,14 @@
                                         <xsl:text> </xsl:text>
                                         <xsl:value-of select="substring-before(., ', ')" />
                                     </xsl:variable>
+                                    <xsl:choose>
+                                        <xsl:when test="contains(.,',')">
                                     <xsl:value-of select="$parseNames"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="."/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                     <xsl:if test="count(following-sibling::dri:item) = 1">
                                         <xsl:text> &amp; </xsl:text>
                                     </xsl:if>
@@ -1266,6 +1369,12 @@
                                         <xsl:text>, </xsl:text>
                                     </xsl:if>
                                 </xsl:for-each>
+                                <xsl:if test="count(dri:list[@n=(concat($handle, ':dc.contributor.editor'))]/dri:item) &gt; 1">
+                                    <xsl:text> (Eds.) </xsl:text>
+                                </xsl:if>
+                                <xsl:if test="count(dri:list[@n=(concat($handle, ':dc.contributor.editor'))]/dri:item) = 1">
+                                    <xsl:text> (Ed.) </xsl:text>
+                                </xsl:if>
                             </xsl:when>
                             <xsl:when test="dri:list[@n=(concat($handle, ':dc.creator'))]">
                                 <xsl:for-each select="dri:list[@n=(concat($handle, ':dc.creator'))]/dri:item">
@@ -1300,7 +1409,7 @@
                                         <xsl:text disable-output-escaping="yes">&lt;/i&gt;</xsl:text>
                                         <xsl:text>, </xsl:text>
                                         <span class="date">
-                                            <xsl:value-of select="substring(dri:list[@n=(concat($handle, ':dc.date.issued'))]/dri:item,1,10)"/>
+                                            <xsl:value-of select="substring(dri:list[@n=(concat($handle, ':dc.date.issued'))]/dri:item,1,4)"/>
                                         </span>
                                         <xsl:text> - </xsl:text>
                                         <xsl:apply-templates select="dri:list[@n=(concat($handle, ':dc.publisher'))]/dri:item"/>
@@ -1312,13 +1421,93 @@
                             <span class="publisher-date h4">   <small>
                                 <xsl:if test="dri:list[@n=(concat($handle, ':dc.publisher'))]">
                                     <span class="publisher">
-                                        <xsl:text> - </xsl:text>
+                                        <xsl:text> - In </xsl:text>
+                                        <xsl:if test="dri:list[@n=(concat($handle, ':dc.contributor.editor'))]">
+                                            <xsl:for-each select="dri:list[@n=(concat($handle, ':dc.contributor.editor'))]/dri:item">
+                                                <xsl:variable name="parseNames">
+                                                    <xsl:for-each select="str:tokenize(substring-after(., ', '),' -.')">
+                                                        <xsl:value-of select="substring(., 1, 1)" />
+                                                    </xsl:for-each>
+                                                    <xsl:text> </xsl:text>
+                                                    <xsl:value-of select="substring-before(., ', ')" />
+                                                </xsl:variable>
+                                                <xsl:choose>
+                                                    <xsl:when test="contains(.,',')">
+                                                        <xsl:value-of select="$parseNames"/>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <xsl:value-of select="."/>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <xsl:if test="count(following-sibling::dri:item) = 1">
+                                                    <xsl:text> &amp; </xsl:text>
+                                                </xsl:if>
+                                                <xsl:if test="count(following-sibling::dri:item) &gt; 1">
+                                                    <xsl:text>, </xsl:text>
+                                                </xsl:if>
+                                            </xsl:for-each>
+                                            <xsl:if test="count(dri:list[@n=(concat($handle, ':dc.contributor.editor'))]/dri:item) &gt; 1">
+                                                <xsl:text> (Eds.), </xsl:text>
+                                            </xsl:if>
+                                            <xsl:if test="count(dri:list[@n=(concat($handle, ':dc.contributor.editor'))]/dri:item) = 1">
+                                                <xsl:text> (Ed.), </xsl:text>
+                                            </xsl:if>
+                                        </xsl:if>
                                         <xsl:text disable-output-escaping="yes">&lt;i&gt;</xsl:text>
                                         <xsl:apply-templates select="dri:list[@n=(concat($handle, ':dc.citation.bookTitle'))]/dri:item"/>
                                         <xsl:text disable-output-escaping="yes">&lt;/i&gt;</xsl:text>
                                         <xsl:text>, </xsl:text>
                                         <span class="date">
-                                            <xsl:value-of select="substring(dri:list[@n=(concat($handle, ':dc.date.issued'))]/dri:item,1,10)"/>
+                                            <xsl:value-of select="substring(dri:list[@n=(concat($handle, ':dc.date.issued'))]/dri:item,1,4)"/>
+                                        </span>
+                                        <xsl:text> - </xsl:text>
+                                        <xsl:apply-templates select="dri:list[@n=(concat($handle, ':dc.publisher'))]/dri:item"/>
+                                    </span>
+                                </xsl:if>
+                            </small></span>
+                        </xsl:when>
+                        <xsl:when test="dri:list[@n=(concat($handle, ':dc.citation.conferenceTitle'))]">
+                            <span class="publisher-date h4">   <small>
+                                <xsl:if test="dri:list[@n=(concat($handle, ':dc.publisher'))]">
+                                    <span class="publisher">
+                                        <xsl:text> - In </xsl:text>
+                                        <xsl:if test="dri:list[@n=(concat($handle, ':dc.contributor.editor'))]">
+                                            <xsl:for-each select="dri:list[@n=(concat($handle, ':dc.contributor.editor'))]/dri:item">
+                                                <xsl:variable name="parseNames">
+                                                    <xsl:for-each select="str:tokenize(substring-after(., ', '),' -.')">
+                                                        <xsl:value-of select="substring(., 1, 1)" />
+                                                    </xsl:for-each>
+                                                    <xsl:text> </xsl:text>
+                                                    <xsl:value-of select="substring-before(., ', ')" />
+                                                </xsl:variable>
+                                                <xsl:choose>
+                                                    <xsl:when test="contains(.,',')">
+                                                        <xsl:value-of select="$parseNames"/>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <xsl:value-of select="."/>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                                <xsl:if test="count(following-sibling::dri:item) = 1">
+                                                    <xsl:text> &amp; </xsl:text>
+                                                </xsl:if>
+                                                <xsl:if test="count(following-sibling::dri:item) &gt; 1">
+                                                    <xsl:text>, </xsl:text>
+                                                </xsl:if>
+                                            </xsl:for-each>
+                                            <xsl:if test="count(dri:list[@n=(concat($handle, ':dc.contributor.editor'))]/dri:item) &gt; 1">
+                                                <xsl:text> (Eds.), </xsl:text>
+                                            </xsl:if>
+                                            <xsl:if test="count(dri:list[@n=(concat($handle, ':dc.contributor.editor'))]/dri:item) = 1">
+                                                <xsl:text> (Ed.), </xsl:text>
+                                            </xsl:if>
+                                        </xsl:if>
+                                        <xsl:text disable-output-escaping="yes">&lt;i&gt;</xsl:text>
+                                        <xsl:value-of select="util:shortenString(dri:list[@n=(concat($handle, ':dc.citation.conferenceTitle'))]/dri:item[1], 79, 10)"/>
+                                        <xsl:text disable-output-escaping="yes">&lt;/i&gt;</xsl:text>
+                                        <xsl:text>, </xsl:text>
+                                        <span class="date">
+                                            <xsl:value-of select="substring(dri:list[@n=(concat($handle, ':dc.date.issued'))]/dri:item,1,4)"/>
                                         </span>
                                         <xsl:text> - </xsl:text>
                                         <xsl:apply-templates select="dri:list[@n=(concat($handle, ':dc.publisher'))]/dri:item"/>
@@ -1332,7 +1521,7 @@
                                     <xsl:text> - </xsl:text>
                                     <span class="date">
                                         <xsl:value-of
-                                                select="substring(dri:list[@n=(concat($handle, ':dc.date.issued'))]/dri:item,1,10)"/>
+                                                select="substring(dri:list[@n=(concat($handle, ':dc.date.issued'))]/dri:item,1,4)"/>
                                     </span>
                                     <xsl:if test="dri:list[@n=(concat($handle, ':dc.publisher'))]">
                                         <span class="publisher">
