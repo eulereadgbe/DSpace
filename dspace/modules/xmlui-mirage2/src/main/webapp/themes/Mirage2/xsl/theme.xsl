@@ -51,6 +51,7 @@
     <xsl:import href="aspect/discovery/discovery.xsl"/>
     <xsl:import href="aspect/artifactbrowser/one-offs.xsl"/>
     <xsl:import href="aspect/submission/submission.xsl"/>
+    <xsl:import href="generate-journalCitation.xsl"/>
     <xsl:output indent="yes"/>
 
     <xsl:template match="dri:document">
@@ -763,6 +764,16 @@
                     <xsl:call-template name="itemSummaryView-DIM-URI"/>
                     <xsl:call-template name="itemSummaryView-DIM-contents"/>
                     <xsl:choose>
+                        <xsl:when test="dim:field[@element='citation' and @qualifier='journalTitle']">
+                            <xsl:variable name="item-type">
+                                <xsl:value-of select="dim:field[@element='type' and not(@qualifier)]"/>
+                            </xsl:variable>
+                            <xsl:choose>
+                                <xsl:when test="$item-type = 'Article' or 'Magazine article'">
+                                    <xsl:call-template name="journalCitation"/>
+                                </xsl:when>
+                            </xsl:choose>
+                        </xsl:when>
                         <xsl:when test="dim:field[@element='identifier' and @qualifier='citation']">
                             <xsl:call-template name="itemSummaryView-DIM-citation"/>
                         </xsl:when>
