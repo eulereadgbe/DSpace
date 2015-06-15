@@ -837,7 +837,7 @@ public class AuthorizeManager
             throws SQLException
     {
         DatabaseManager.updateQuery(c, "DELETE FROM resourcepolicy WHERE "
-                + "resource_type_id= ? AND resource_id= ? AND rptype <> ? ",
+                + "resource_type_id= ? AND resource_id= ? AND (rptype <> ? OR rptype IS NULL)",
                 o.getType(), o.getID(), type);
     }
 
@@ -1171,7 +1171,7 @@ public class AuthorizeManager
             } else
             {
                 // add policy just for anonymous
-                ResourcePolicy rp = AuthorizeManager.createOrModifyPolicy(null, context, null, 0, null, embargoDate, Constants.READ, reason, dso);
+                ResourcePolicy rp = AuthorizeManager.createOrModifyPolicy(null, context, null, Group.ANONYMOUS_ID, null, embargoDate, Constants.READ, reason, dso);
                 if (rp != null)
                     rp.update();
             }
