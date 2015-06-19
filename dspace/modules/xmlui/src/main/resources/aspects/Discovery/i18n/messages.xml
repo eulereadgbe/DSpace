@@ -104,6 +104,7 @@
     <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.subject">Subject</message>
     <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.subject_filter">Subject</message>
     <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.dateIssued.year">Date Issued</message>
+    <message key="xmlui.Discovery.AbstractSearch.type_type">Filter by: Type</message>
 
 
     <message key="xmlui.Discovery.AbstractSearch.startswith">Starts with</message>
