@@ -1,4 +1,4 @@
-Subject: Request copy of document
+Subject: Request copy of (restricted) document
 
 Dear {8},
 
@@ -14,7 +14,7 @@ User type: {14}
 Institution: {12}
 Institution type: {15}
 Address: {13}
-
+Reason: {16}
 
 To answer, click {7}. Whether you choose to grant or deny the request, we think that it''s in your best interest to respond.
 

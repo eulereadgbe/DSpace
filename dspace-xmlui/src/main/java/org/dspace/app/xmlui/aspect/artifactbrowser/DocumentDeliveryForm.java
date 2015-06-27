@@ -64,7 +64,7 @@ public class DocumentDeliveryForm extends AbstractDSpaceTransformer implements C
 
     private static final Message T_email_help =
         message("xmlui.ArtifactBrowser.DocumentDeliveryForm.email_help");
-    
+
     private static final Message T_message =
         message("xmlui.ArtifactBrowser.DocumentDeliveryForm.message");
 
@@ -89,14 +89,15 @@ public class DocumentDeliveryForm extends AbstractDSpaceTransformer implements C
         String userTypeOther = parameters.getParameter("userTypeOther","");
         String organization = parameters.getParameter("organization","");
         String organizationOther = parameters.getParameter("organizationOther","");
+        String reason = parameters.getParameter("reason","");
         String message = parameters.getParameter("message","");
         String decision = parameters.getParameter("decision","");
         String page = parameters.getParameter("page","unknown");
         String title = parameters.getParameter("title","");
 
         return HashUtil.hash(lastName + "-" + firstName + "-" + email + "-" + page + "-" + institution + "-"
-                + userAddress + "-" + userType + "-" + userTypeOther + "-" + organization + "-" + organizationOther + "-" + message + "-"
-                + decision + "-" + title);
+                + userAddress + "-" + userType + "-" + userTypeOther + "-" + organization + "-" + organizationOther + "-" + reason + "-"
+                + message + "-" + decision + "-" + title);
     }
 
     /**
@@ -210,6 +211,12 @@ public class DocumentDeliveryForm extends AbstractDSpaceTransformer implements C
         userAddress.setValue(parameters.getParameter("userAddress",""));
         userAddress.setSize(50);
 
+        TextArea reason = form.addItem().addTextArea("reason");
+        reason.setLabel("Reason");
+        reason.setHelp("Please provide a rationale for requesting this document. This will be included in the email" +
+                " to the responsible person for authorisation.");
+        reason.setValue(parameters.getParameter("reason",""));
+
         TextArea message = form.addItem().addTextArea("message");
         message.setLabel(T_message);
         message.setValue(parameters.getParameter("message",""));
@@ -254,6 +261,9 @@ public class DocumentDeliveryForm extends AbstractDSpaceTransformer implements C
             if (request.getParameter("organization").equals("Others") &&
                     StringUtils.isEmpty(parameters.getParameter("organizationOther", ""))) {
                 organizationOther.addError("Please write your organization type.");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("reason", ""))){
+                reason.addError("This field is required");
             }
             if(StringUtils.isEmpty(parameters.getParameter("message", ""))){
                 message.addError("This field is required");

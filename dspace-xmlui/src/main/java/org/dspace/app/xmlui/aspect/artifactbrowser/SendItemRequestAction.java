@@ -66,6 +66,7 @@ public class SendItemRequestAction extends AbstractAction
         String userTypeOther = request.getParameter("userTypeOther");
         String organization = request.getParameter("organization");
         String organizationOther = request.getParameter("organizationOther");
+        String reason = request.getParameter("reason");
 
         // User email from context
         Context context = ContextUtil.obtainContext(objectModel);
@@ -85,6 +86,7 @@ public class SendItemRequestAction extends AbstractAction
                 || (organization == null) || organization.equals("")
                 || (organization.equals("Others") && (organizationOther == null || organizationOther.equals("")))
                 || (userType.equals("Others") && (userTypeOther == null || userTypeOther.equals("")))
+                || (reason == null) || reason.equals("")
                 || StringUtils.isEmpty(message))
         {
             // Either the user did not fill out the form or this is the
@@ -118,6 +120,7 @@ public class SendItemRequestAction extends AbstractAction
             }
             map.put("allFiles",allFiles);
             map.put("message",message);
+            map.put("reason", reason);
             return map;
         }
     	DSpaceObject dso = HandleUtil.obtainHandle(objectModel);
@@ -163,23 +166,24 @@ public class SendItemRequestAction extends AbstractAction
         email.addArgument(requestItemAuthor.getEmail());    //   corresponding author email
         email.addArgument(ConfigurationManager.getProperty("dspace.name"));
         email.addArgument(ConfigurationManager.getProperty("mail.helpdesk"));
-        email.addArgument(institution); //10
-        email.addArgument(userAddress); //11
+        email.addArgument(institution); //12
+        email.addArgument(userAddress); //13
         if (StringUtils.equals(userType,"Others"))
         {
-            email.addArgument(userTypeOther); //12 User type
+            email.addArgument(userTypeOther); //14 User type
         }
         else {
-            email.addArgument(userType); //12 User type
+            email.addArgument(userType); //14 User type
         }
         if (StringUtils.equals(organization,"Others"))
         {
-            email.addArgument(organizationOther); //13 Organization type
+            email.addArgument(organizationOther); //15 Organization type
         }
         else {
-            email.addArgument(organization); //13 Organization type
+            email.addArgument(organization); //15 Organization type
         }
 
+        email.addArgument(reason);   //16 Reason for requesting
         email.setReplyTo(requesterEmail);
          
         email.send();

@@ -49,6 +49,7 @@ public class SendDocumentDeliveryAction extends AbstractAction
         String address = request.getParameter("email");
         String agent = request.getHeader("User-Agent");
         String session = request.getSession().getId();
+        String reason = request.getParameter("reason");
         String message = request.getParameter("message");
         String title= request.getParameter("title");
         String handle = parameters.getParameter("handle");
@@ -127,6 +128,7 @@ public class SendDocumentDeliveryAction extends AbstractAction
                 || (userType == null) || userType.equals("")
                 || (decision == null) || decision.equals("")
                 || StringUtils.isEmpty(firstName) || StringUtils.isEmpty(lastName)
+                || (reason == null) || reason.equals("")
                 || (message == null) || message.equals("")
                 || (organization == null) || organization.equals("")
                 || (organization.equals("Others") && (organizationOther == null || organizationOther.equals("")))
@@ -158,6 +160,7 @@ public class SendDocumentDeliveryAction extends AbstractAction
             } else {
                 map.put("organization", organization);
             }
+            map.put("reason", reason);
             map.put("message", message);
             map.put("decision", decision);
             map.put("handle", handle);
@@ -199,6 +202,7 @@ public class SendDocumentDeliveryAction extends AbstractAction
         }
         email.addArgument(HandleManager.getCanonicalForm(item.getHandle())); //14 Item handle
         email.addArgument(ConfigurationManager.getProperty("dspace.name")); //15 Repository name
+        email.addArgument(reason);   //16 Reason for requesting
 
 
         // Replying to feedback will reply to email on form

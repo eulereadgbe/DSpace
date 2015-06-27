@@ -139,6 +139,7 @@ and searching the repository.
                             <map:transform type="ItemRequestForm">
 								<map:parameter name="requesterEmail" value="{requesterEmail}" />
 								<map:parameter name="allFiles" value="{allFiles}" />
+                                <map:parameter name="reason" value="{reason}" />
 								<map:parameter name="message" value="{message}" />
 								<map:parameter name="bitstreamId" value="{bitstreamId}" />
                                 <map:parameter name="lastName" value="{lastName}" />
@@ -378,6 +379,7 @@ and searching the repository.
                     <map:transform type="DocumentDeliveryForm">
                         <map:parameter name="handle" value="{handle}" />
                         <map:parameter name="title" value="{title}" />
+                        <map:parameter name="reason" value="{reason}" />
                         <map:parameter name="message" value="{message}" />
                         <map:parameter name="email" value="{email}" />
                         <map:parameter name="page" value="{page}" />

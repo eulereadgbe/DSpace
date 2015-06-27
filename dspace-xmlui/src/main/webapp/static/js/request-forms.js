@@ -35,9 +35,11 @@ $(document).ready(function () {
         '#aspect_artifactbrowser_ItemRequestForm_field_institution');
     var itemHandle = $('#aspect_artifactbrowser_DocumentDeliveryForm_field_page,' +
         '#aspect_artifactbrowser_ItemRequestForm_field_handle');
+    var reason = $('#aspect_artifactbrowser_DocumentDeliveryForm_field_reason,' +
+        '#aspect_artifactbrowser_ItemRequestForm_field_reason');
     var textArea = $('#aspect_artifactbrowser_DocumentDeliveryForm_field_message,' +
         '#aspect_artifactbrowser_ItemRequestForm_field_message');
-    var text = "To Whom It May Concern:\n\nPlease supply document: \":title:\" (:handle:)" +
+    var text = "To Whom It May Concern:\n\nPlease supply document: \":title:\" (:handle:)" + "\n\n" + ":reason:" +
         "\n\nI will use the requested materials only for private study, scholarship or research. " +
         "I understand that use for any other purpose may require the authorization of the copyright owner. " +
         "I accept responsibility for determining if copyright owner authorization is required and for obtaining" +
@@ -54,6 +56,7 @@ $(document).ready(function () {
     textArea.focus(function () {
         text = text.replace(":title:", itemTitle.val());
         text = text.replace(":handle:", itemHandle.val());
+        text = text.replace(":reason:", reason.val());
         $(this).val(text + firstName.val() + " " + lastName.val() +
             " <" + email.val() + ">\n" + institution.val() + "\n" + userAddress.val());
     });
@@ -201,6 +204,9 @@ $(document).ready(function () {
                 comments: {
                     required: true
                 },
+                reason: {
+                    required: true
+                },
                 message: {
                     required: true
                 },
@@ -234,6 +240,9 @@ $(document).ready(function () {
                 },
                 comments: {
                     required: 'Please provide your comments.'
+                },
+                reason: {
+                    required: 'This field is required.'
                 },
                 message: {
                     required: 'Please provide your message.'

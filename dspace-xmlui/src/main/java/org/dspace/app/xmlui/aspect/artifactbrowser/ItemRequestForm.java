@@ -123,10 +123,11 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
         String userTypeOther = parameters.getParameter("userTypeOther","");
         String organization = parameters.getParameter("organization","");
         String organizationOther = parameters.getParameter("organizationOther","");
+        String reason = parameters.getParameter("reason","");
 
         return HashUtil.hash(requesterEmail + "-" + allFiles + "-" + message + "-" + bitstreamId + "-" + lastName + "-"
         + firstName + "-" + institution + "-" + userAddress + "-" + userType + "-" + userTypeOther + "-" + organization
-        + "-" + organizationOther);
+        + "-" + organizationOther + "-" + reason);
     }
 
     /**
@@ -282,7 +283,12 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
 		radio.setLabel(T_files);
 		radio.addOption("true", T_allFiles);
 		radio.addOption("false", T_notAllFiles);
-		
+
+        TextArea reason = form.addItem().addTextArea("reason");
+        reason.setLabel("Reason");
+        reason.setHelp("Please provide a rationale for requesting this document. This will be included in the email" +
+                " to the responsible person for authorisation.");
+        reason.setValue(parameters.getParameter("reason",""));
 
 		TextArea message = form.addItem().addTextArea("message");
 		message.setLabel(T_message);
@@ -322,6 +328,9 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
             if (request.getParameter("organization").equals("Others") &&
                     StringUtils.isEmpty(parameters.getParameter("organizationOther", ""))) {
                 organizationOther.addError("Please write your organization type.");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("reason", ""))){
+                reason.addError("This field is required");
             }
             if(StringUtils.isEmpty(parameters.getParameter("message", ""))){
 				message.addError(T_message_error);
