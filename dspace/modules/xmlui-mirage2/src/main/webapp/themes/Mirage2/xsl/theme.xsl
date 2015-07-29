@@ -762,6 +762,7 @@
                     <xsl:call-template name="itemSummaryView-DIM-abstract"/>
                     <xsl:call-template name="itemSummaryView-DIM-description"/>
                     <xsl:call-template name="itemSummaryView-DIM-URI"/>
+                    <xsl:call-template name="itemSummaryView-DIM-HASVERSION"/>
                     <xsl:call-template name="itemSummaryView-DIM-contents"/>
                     <xsl:choose>
                         <xsl:when test="dim:field[@element='citation' and @qualifier='journalTitle']">
@@ -2275,6 +2276,27 @@
         </xsl:choose>
 
         <xsl:text> </xsl:text>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-HASVERSION">
+        <xsl:if test="dim:field[@element='relation' and @qualifier='hasversion' and descendant::text()]">
+            <div class="simple-item-view-uri item-page-field-wrapper table">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-hasversion</i18n:text></h5>
+                <span>
+                    <xsl:for-each select="dim:field[@element='relation' and @qualifier='hasversion']">
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:copy-of select="./node()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="util:isoLanguageToDisplay(./@language)"/>
+                        </a>
+                        <xsl:if test="count(following-sibling::dim:field[@element='relation' and @qualifier='hasversion']) != 0">
+                            <xsl:text>; </xsl:text>
+                        </xsl:if>
+                    </xsl:for-each>
+                </span>
+            </div>
+        </xsl:if>
     </xsl:template>
 
 </xsl:stylesheet>

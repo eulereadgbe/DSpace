@@ -2266,7 +2266,7 @@
     <message key="xmlui.dri2xhtml.METS-1.0.item-sponsorship">Acknowledgment/Sponsorship</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-tableofcontents">Contents</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-format">Format</message>
-
+    <message key="xmlui.dri2xhtml.METS-1.0.item-hasversion">Other version</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.size-bytes">bytes</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.size-kilobytes">Kb</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.size-megabytes">Mb</message>
