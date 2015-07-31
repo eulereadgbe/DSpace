@@ -49,6 +49,8 @@
     <script src="scripts/aui-min.js">&#160;</script>
 
     <!-- custom javascript for SAIR -->
+    <script src="scripts/treeview/jquery.treeview.js">&#160;</script>
+    <script src="scripts/treeview/jquery.cookie.js">&#160;</script>
     <script src="scripts/sair.js">&#160;</script>
 
     <!-- endbuild -->

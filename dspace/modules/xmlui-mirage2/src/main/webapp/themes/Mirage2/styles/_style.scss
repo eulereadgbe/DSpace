@@ -24,6 +24,7 @@
 @import "./font-icons/academicons.css";
 @import "./font-icons/flaticon.css";
 @import "./font-icons/font-awesome.min.css";
+@import url(../scripts/treeview/jquery.treeview.css);
 
 body { /* Used for navbar-fixed-top */
   padding-top: 87px;
@@ -275,4 +276,8 @@ body { /* Used for navbar-fixed-top */
 
 .author > small > span > a:hover {
   color: #4582ec;
+}
+
+#aspect_artifactbrowser_CommunityBrowser_div_comunity-browser h4 {
+  font-weight: bold;
 }

@@ -70,3 +70,12 @@ $(function(){
 $(document).scroll(function(){
     $('.navbar-default').toggleClass('scrolled', $(this).scrollTop() > 1);
 });
+
+$(function() {
+    $("#tree").treeview({
+        collapsed: false,
+        animated: "medium",
+        control:"#sidetreecontrol",
+        persist: "cookie"
+    });
+});
