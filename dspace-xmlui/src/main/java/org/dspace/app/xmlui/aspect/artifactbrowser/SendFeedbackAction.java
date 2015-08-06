@@ -7,17 +7,13 @@
  */
 package org.dspace.app.xmlui.aspect.artifactbrowser;
 
-import java.net.InetAddress;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.avalon.framework.parameters.Parameters;
 import org.apache.cocoon.acting.AbstractAction;
 import org.apache.cocoon.environment.ObjectModelHelper;
 import org.apache.cocoon.environment.Redirector;
 import org.apache.cocoon.environment.Request;
 import org.apache.cocoon.environment.SourceResolver;
+import org.apache.commons.lang.StringUtils;
 import org.dspace.app.xmlui.utils.ContextUtil;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.core.ConfigurationManager;
@@ -25,6 +21,11 @@ import org.dspace.core.Context;
 import org.dspace.core.Email;
 import org.dspace.core.I18nUtil;
 import org.dspace.eperson.EPerson;
+
+import java.net.InetAddress;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Scott Phillips
@@ -46,6 +47,15 @@ public class SendFeedbackAction extends AbstractAction
         String agent = request.getHeader("User-Agent");
         String session = request.getSession().getId();
         String comments = request.getParameter("comments");
+        String lastName = request.getParameter("lastName");
+        String firstName = request.getParameter("firstName");
+        String institution = request.getParameter("institution");
+        String userAddress = request.getParameter("userAddress");
+        String userType = request.getParameter("userType");
+        String userTypeOther = request.getParameter("userTypeOther");
+        String organization = request.getParameter("organization");
+        String organizationOther = request.getParameter("organizationOther");
+        String decision = request.getParameter("decision");
 
         // Obtain information from request
         // The page where the user came from
@@ -106,8 +116,14 @@ public class SendFeedbackAction extends AbstractAction
 
         // Check all data is there
         if ((address == null) || address.equals("")
-                || (comments == null) || comments.equals(""))
-        {
+                || (institution == null) || institution.equals("")
+                || (userAddress == null) || userAddress.equals("")
+                || (userType == null) || userType.equals("")
+                || StringUtils.isEmpty(firstName) || StringUtils.isEmpty(lastName)
+                || (comments == null) || comments.equals("")
+                || (organization == null) || organization.equals("")
+                || (organization.equals("Others") && (organizationOther == null || organizationOther.equals("")))
+                || (userType.equals("Others") && (userTypeOther == null || userTypeOther.equals("")))) {
             // Either the user did not fill out the form or this is the
             // first time they are visiting the page.
             Map<String,String> map = new HashMap<String,String>();
@@ -122,6 +138,22 @@ public class SendFeedbackAction extends AbstractAction
                 map.put("email", address);
             }
 
+            map.put("lastName", lastName);
+            map.put("firstName", firstName);
+            map.put("institution", institution);
+            map.put("userAddress", userAddress);
+            if (StringUtils.equals(userType, "Others")) {
+                map.put("userType", userType);
+                map.put("userTypeOther", userTypeOther);
+            } else {
+                map.put("userType", userType);
+            }
+            if (StringUtils.equals(organization, "Others")) {
+                map.put("organization", organization);
+                map.put("organizationOther", organizationOther);
+            } else {
+                map.put("organization", organization);
+            }
             map.put("comments",comments);
 
             return map;
@@ -132,13 +164,31 @@ public class SendFeedbackAction extends AbstractAction
         email.addRecipient(ConfigurationManager
                 .getProperty("feedback.recipient"));
 
-        email.addArgument(new Date()); // Date
-        email.addArgument(address);    // Email
-        email.addArgument(eperson);    // Logged in as
-        email.addArgument(page);       // Referring page
-        email.addArgument(agent);      // User agent
-        email.addArgument(session);    // Session ID
-        email.addArgument(comments);   // The feedback itself
+        email.addArgument(new Date());    // 0.  Date
+        email.addArgument(address);       // 1.  Email
+        email.addArgument(eperson);       // 2.  Logged in as
+        email.addArgument(page);          // 3.  Referring page
+        email.addArgument(agent);         // 4.  User agent
+        email.addArgument(session);       // 5.  Session ID
+        email.addArgument(comments);      // 6.  The feedback itself
+        email.addArgument(lastName);      // 7.  The user's surname
+        email.addArgument(firstName);     // 8.  The user's first name
+        email.addArgument(institution);   // 9.  Institution
+        email.addArgument(userAddress);   // 10. User's address
+        if (StringUtils.equals(userType,"Others"))
+        {
+            email.addArgument(userTypeOther); // 11. User type
+        }
+        else {
+            email.addArgument(userType);      // 11. User type
+        }
+        if (StringUtils.equals(organization,"Others"))
+        {
+            email.addArgument(organizationOther); // 12. Organization type
+        }
+        else {
+            email.addArgument(organization);      //12. Organization type
+        }
 
         // Replying to feedback will reply to email on form
         email.setReplyTo(address);

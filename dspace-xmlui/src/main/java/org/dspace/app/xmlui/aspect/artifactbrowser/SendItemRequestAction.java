@@ -7,11 +7,6 @@
  */
 package org.dspace.app.xmlui.aspect.artifactbrowser;
 
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.avalon.framework.parameters.Parameters;
 import org.apache.cocoon.acting.AbstractAction;
 import org.apache.cocoon.environment.ObjectModelHelper;
@@ -26,19 +21,20 @@ import org.dspace.app.requestitem.RequestItemAuthorExtractor;
 import org.dspace.app.xmlui.utils.ContextUtil;
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.content.Bitstream;
-import org.dspace.content.Metadatum;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
+import org.dspace.content.Metadatum;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.core.Email;
 import org.dspace.core.I18nUtil;
-import org.dspace.core.Utils;
 import org.dspace.eperson.EPerson;
 import org.dspace.handle.HandleManager;
-import org.dspace.storage.rdbms.DatabaseManager;
-import org.dspace.storage.rdbms.TableRow;
 import org.dspace.utils.DSpace;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
  /**
  * This action will send a mail to request a item to administrator when all mandatory data is present.
@@ -58,12 +54,20 @@ public class SendItemRequestAction extends AbstractAction
     {
         Request request = ObjectModelHelper.getRequest(objectModel);
        
-        String requesterName = request.getParameter("requesterName");
         String requesterEmail = request.getParameter("requesterEmail");
         String allFiles = request.getParameter("allFiles");
         String message = request.getParameter("message");
         String bitstreamId = request.getParameter("bitstreamId");
-     
+        String lastName = request.getParameter("lastName");
+        String firstName = request.getParameter("firstName");
+        String institution = request.getParameter("institution");
+        String userAddress = request.getParameter("userAddress");
+        String userType = request.getParameter("userType");
+        String userTypeOther = request.getParameter("userTypeOther");
+        String organization = request.getParameter("organization");
+        String organizationOther = request.getParameter("organizationOther");
+        String reason = request.getParameter("reason");
+
         // User email from context
         Context context = ContextUtil.obtainContext(objectModel);
         EPerson loggedin = context.getCurrentUser();
@@ -74,7 +78,16 @@ public class SendItemRequestAction extends AbstractAction
         }
 
         // Check all data is there
-        if (StringUtils.isEmpty(requesterName) || StringUtils.isEmpty(requesterEmail) || StringUtils.isEmpty(allFiles) || StringUtils.isEmpty(message))
+        if (StringUtils.isEmpty(lastName) || StringUtils.isEmpty(requesterEmail) || StringUtils.isEmpty(allFiles)
+                || (institution == null) || institution.equals("")
+                || (userAddress == null) || userAddress.equals("")
+                || (userType == null) || userType.equals("")
+                || StringUtils.isEmpty(firstName) || StringUtils.isEmpty(lastName)
+                || (organization == null) || organization.equals("")
+                || (organization.equals("Others") && (organizationOther == null || organizationOther.equals("")))
+                || (userType.equals("Others") && (userTypeOther == null || userTypeOther.equals("")))
+                || (reason == null) || reason.equals("")
+                || StringUtils.isEmpty(message))
         {
             // Either the user did not fill out the form or this is the
             // first time they are visiting the page.
@@ -89,9 +102,25 @@ public class SendItemRequestAction extends AbstractAction
             {
                 map.put("requesterEmail", requesterEmail);
             }
-            map.put("requesterName",requesterName);
+            map.put("lastName", lastName);
+            map.put("firstName", firstName);
+            map.put("institution", institution);
+            map.put("userAddress", userAddress);
+            if (StringUtils.equals(userType, "Others")) {
+                map.put("userType", userType);
+                map.put("userTypeOther", userTypeOther);
+            } else {
+                map.put("userType", userType);
+            }
+            if (StringUtils.equals(organization, "Others")) {
+                map.put("organization", organization);
+                map.put("organizationOther", organizationOther);
+            } else {
+                map.put("organization", organization);
+            }
             map.put("allFiles",allFiles);
             map.put("message",message);
+            map.put("reason", reason);
             return map;
         }
     	DSpaceObject dso = HandleUtil.obtainHandle(objectModel);
@@ -99,7 +128,7 @@ public class SendItemRequestAction extends AbstractAction
         {
             throw new Exception("Invalid DspaceObject at ItemRequest.");
         }
-        
+
         Item item = (Item) dso;
         String title = "";
         Metadatum[] titleDC = item.getDC("title", null, Item.ANY);
@@ -117,17 +146,19 @@ public class SendItemRequestAction extends AbstractAction
                         RequestItemAuthorExtractor.class
                 )
                 .getRequestItemAuthor(context, item);
-
-        RequestItem requestItem = new RequestItem(item.getID(), Integer.parseInt(bitstreamId), requesterEmail, requesterName, message, Boolean.getBoolean(allFiles));
+        String requesterName = firstName + " " + lastName;
+        RequestItem requestItem = new RequestItem(item.getID(), Integer.parseInt(bitstreamId), requesterEmail,
+                requesterName, message, Boolean.getBoolean(allFiles));
 
         // All data is there, send the email
         Email email = Email.getEmail(I18nUtil.getEmailFilename(context.getCurrentLocale(), "request_item.author"));
         email.addRecipient(requestItemAuthor.getEmail());
 
-        email.addArgument(requesterName);    
-        email.addArgument(requesterEmail);   
+        email.addArgument(lastName);
+        email.addArgument(firstName);
+        email.addArgument(requesterEmail);
         email.addArgument(allFiles.equals("true")?I18nUtil.getMessage("itemRequest.all"):Bitstream.find(context,Integer.parseInt(bitstreamId)).getName());      
-        email.addArgument(HandleManager.getCanonicalForm(item.getHandle()));      
+        email.addArgument(HandleManager.getCanonicalForm(item.getHandle()));
         email.addArgument(title);    // request item title
         email.addArgument(message);   // message
         email.addArgument(getLinkTokenEmail(context,requestItem));
@@ -135,7 +166,24 @@ public class SendItemRequestAction extends AbstractAction
         email.addArgument(requestItemAuthor.getEmail());    //   corresponding author email
         email.addArgument(ConfigurationManager.getProperty("dspace.name"));
         email.addArgument(ConfigurationManager.getProperty("mail.helpdesk"));
+        email.addArgument(institution); //12
+        email.addArgument(userAddress); //13
+        if (StringUtils.equals(userType,"Others"))
+        {
+            email.addArgument(userTypeOther); //14 User type
+        }
+        else {
+            email.addArgument(userType); //14 User type
+        }
+        if (StringUtils.equals(organization,"Others"))
+        {
+            email.addArgument(organizationOther); //15 Organization type
+        }
+        else {
+            email.addArgument(organization); //15 Organization type
+        }
 
+        email.addArgument(reason);   //16 Reason for requesting
         email.setReplyTo(requesterEmail);
          
         email.send();

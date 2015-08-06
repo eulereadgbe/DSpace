@@ -45,6 +45,8 @@ and searching the repository.
 			<map:transformer name="ItemRequestStatusChanged" src="org.dspace.app.xmlui.aspect.artifactbrowser.ItemRequestStatusChanged" />
 
             <map:transformer name="Statistics" src="org.dspace.app.xmlui.aspect.artifactbrowser.StatisticsViewer"/>
+            <map:transformer name="DocumentDeliveryForm" src="org.dspace.app.xmlui.aspect.artifactbrowser.DocumentDeliveryForm" />
+            <map:transformer name="DocumentDeliverySent" src="org.dspace.app.xmlui.aspect.artifactbrowser.DocumentDeliverySent" />
         </map:transformers>
 
 
@@ -62,6 +64,7 @@ and searching the repository.
 			<map:action name="UsageLoggerAction" src="org.dspace.app.xmlui.cocoon.UsageLoggerAction" />
 			<map:action name="NotModifiedAction" src="org.dspace.app.xmlui.aspect.general.NotModifiedAction" />
 			<map:action name="ItemRequestResponseAction" src="org.dspace.app.xmlui.aspect.artifactbrowser.ItemRequestResponseAction" />
+            <map:action name="SendDocumentDeliveryAction" src="org.dspace.app.xmlui.aspect.artifactbrowser.SendDocumentDeliveryAction" />
 		</map:actions>
 
 
@@ -133,13 +136,21 @@ and searching the repository.
 					<!-- If request copy is enabled it comes here -->
 					<map:match type="ConfigurationMatcher" pattern="request.item.type">
 						<map:act type="SendItemRequestAction">
-							<map:transform type="ItemRequestForm">
-								<map:parameter name="requesterName" value="{requesterName}" />
+                            <map:transform type="ItemRequestForm">
 								<map:parameter name="requesterEmail" value="{requesterEmail}" />
 								<map:parameter name="allFiles" value="{allFiles}" />
+                                <map:parameter name="reason" value="{reason}" />
 								<map:parameter name="message" value="{message}" />
 								<map:parameter name="bitstreamId" value="{bitstreamId}" />
-							</map:transform>
+                                <map:parameter name="lastName" value="{lastName}" />
+                                <map:parameter name="firstName" value="{firstName}" />
+                                <map:parameter name="institution" value="{institution}" />
+                                <map:parameter name="userAddress" value="{userAddress}" />
+                                <map:parameter name="userType" value="{userType}" />
+                                <map:parameter name="userTypeOther" value="{userTypeOther}" />
+                                <map:parameter name="organization" value="{organization}" />
+                                <map:parameter name="organizationOther" value="{organizationOther}" />
+                            </map:transform>
 							<map:serialize type="xml" />
 						</map:act>
 						<map:transform type="ItemRequestSent" />
@@ -280,7 +291,15 @@ and searching the repository.
 						<map:parameter name="comments" value="{comments}" />
 						<map:parameter name="email" value="{email}" />
 						<map:parameter name="page" value="{page}" />
-					</map:transform>
+                        <map:parameter name="lastName" value="{lastName}" />
+                        <map:parameter name="firstName" value="{firstName}" />
+                        <map:parameter name="institution" value="{institution}" />
+                        <map:parameter name="userAddress" value="{userAddress}" />
+                        <map:parameter name="userType" value="{userType}" />
+                        <map:parameter name="userTypeOther" value="{userTypeOther}" />
+                        <map:parameter name="organization" value="{organization}" />
+                        <map:parameter name="organizationOther" value="{organizationOther}" />
+                    </map:transform>
 
 					<map:serialize type="xml" />
 				</map:act>
@@ -354,7 +373,32 @@ and searching the repository.
 				<map:serialize type="xml" />
 			</map:match>
 
+            <map:match pattern="documentdelivery/**">
+                <map:act type="SendDocumentDeliveryAction">
+                    <map:parameter name="handle" value="{1}" />
+                    <map:transform type="DocumentDeliveryForm">
+                        <map:parameter name="handle" value="{handle}" />
+                        <map:parameter name="title" value="{title}" />
+                        <map:parameter name="reason" value="{reason}" />
+                        <map:parameter name="message" value="{message}" />
+                        <map:parameter name="email" value="{email}" />
+                        <map:parameter name="page" value="{page}" />
+                        <map:parameter name="lastName" value="{lastName}" />
+                        <map:parameter name="firstName" value="{firstName}" />
+                        <map:parameter name="institution" value="{institution}" />
+                        <map:parameter name="userAddress" value="{userAddress}" />
+                        <map:parameter name="userType" value="{userType}" />
+                        <map:parameter name="userTypeOther" value="{userTypeOther}" />
+                        <map:parameter name="organization" value="{organization}" />
+                        <map:parameter name="organizationOther" value="{organizationOther}" />
+                        <map:parameter name="decision" value="{decision}" />
+                    </map:transform>
 
+                    <map:serialize type="xml" />
+                </map:act>
+                <map:transform type="DocumentDeliverySent" />
+                <map:serialize type="xml" />
+            </map:match>
 			<!-- Not a URL we care about, so just pass it on. -->
 			<map:serialize type="xml" />
 

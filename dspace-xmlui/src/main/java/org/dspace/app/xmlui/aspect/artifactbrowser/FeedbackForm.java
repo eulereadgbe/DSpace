@@ -7,26 +7,24 @@
  */
 package org.dspace.app.xmlui.aspect.artifactbrowser;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.sql.SQLException;
-
 import org.apache.cocoon.caching.CacheableProcessingComponent;
 import org.apache.cocoon.util.HashUtil;
 import org.apache.excalibur.source.SourceValidity;
 import org.apache.excalibur.source.impl.validity.NOPValidity;
+import org.apache.cocoon.environment.ObjectModelHelper;
+import org.apache.cocoon.environment.Request;
+import org.apache.commons.lang.StringUtils;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
-import org.dspace.app.xmlui.wing.element.Body;
-import org.dspace.app.xmlui.wing.element.Division;
-import org.dspace.app.xmlui.wing.element.List;
-import org.dspace.app.xmlui.wing.element.PageMeta;
-import org.dspace.app.xmlui.wing.element.Text;
-import org.dspace.app.xmlui.wing.element.TextArea;
+import org.dspace.app.xmlui.wing.element.*;
 import org.dspace.authorize.AuthorizeException;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.SQLException;
 
 /**
  * Display to the user a simple form letting the user give feedback.
@@ -70,10 +68,20 @@ public class FeedbackForm extends AbstractDSpaceTransformer implements Cacheable
     public Serializable getKey() {
         
         String email = parameters.getParameter("email","");
+        String lastName = parameters.getParameter("lastName","");
+        String firstName = parameters.getParameter("firstName","");
+        String institution = parameters.getParameter("institution","");
+        String userAddress = parameters.getParameter("userAddress","");
+        String userType = parameters.getParameter("userType","");
+        String userTypeOther = parameters.getParameter("userTypeOther","");
+        String organization = parameters.getParameter("organization","");
+        String organizationOther = parameters.getParameter("organizationOther","");
         String comments = parameters.getParameter("comments","");
         String page = parameters.getParameter("page","unknown");
         
-       return HashUtil.hash(email + "-" + comments + "-" + page);
+       return HashUtil.hash(lastName + "-" + firstName + "-" + email + "-" + page + "-" + institution + "-" + userAddress
+               + "-" + userType + "-" + userTypeOther + "-" + organization + "-" + organizationOther + "-" + comments
+               + "-" + page);
     }
 
     /**
@@ -93,11 +101,13 @@ public class FeedbackForm extends AbstractDSpaceTransformer implements Cacheable
  
         pageMeta.addTrailLink(contextPath + "/",T_dspace_home);
         pageMeta.addTrail().addContent(T_trail);
+        pageMeta.addMetadata("javascript", "static", null, true).addContent("static/js/request-forms.js");
     }
 
     public void addBody(Body body) throws SAXException, WingException,
             UIException, SQLException, IOException, AuthorizeException
     {
+        Request request = ObjectModelHelper.getRequest(objectModel);
 
         // Build the item viewer division.
         Division feedback = body.addInteractiveDivision("feedback-form",
@@ -114,13 +124,99 @@ public class FeedbackForm extends AbstractDSpaceTransformer implements Cacheable
         email.setLabel(T_email);
         email.setHelp(T_email_help);
         email.setValue(parameters.getParameter("email",""));
-        
+
+        // Composite
+        Composite requesterName = form.addItem().addComposite("requesterName");
+        requesterName.setLabel("Name");
+        Text text = requesterName.addText("lastName");
+        text.setLabel("Last name");
+        text.setValue(parameters.getParameter("lastName",""));
+
+        text = requesterName.addText("firstName");
+        text.setLabel("First name");
+        text.setValue(parameters.getParameter("firstName", ""));
+
+        Select userType = form.addItem().addSelect("userType");
+        userType.setLabel("User type");
+        userType.addOption("","Please select your category");
+        userType.addOption("Undergraduate/BS","Undergraduate/BS");
+        userType.addOption("MS Student","MS Student");
+        userType.addOption("PhD Student","PhD Student");
+        userType.addOption("Faculty","Faculty");
+        userType.addOption("Researcher","Researcher");
+        userType.addOption("Businessman/Private","Businessman/Private");
+        userType.addOption("Fish farmer","Fish farmer");
+        userType.addOption("Others", "Others");
+        userType.setOptionSelected(parameters.getParameter("userType",""));
+        TextArea userTypeOther = form.addItem().addTextArea("userTypeOther");
+        userTypeOther.setValue(parameters.getParameter("userTypeOther", ""));
+
+        Select organization = form.addItem().addSelect("organization");
+        organization.setLabel("Organization type");
+        organization.addOption("","Please select your organization type");
+        organization.addOption("Governmental Organization","Governmental Organization");
+        organization.addOption("Academic Institution","Academic Institution");
+        organization.addOption("Regional/International Organization","Regional/International Organization");
+        organization.addOption("Private Sector","Private Sector");
+        organization.addOption("NGO","NGO");
+        organization.addOption("Others","Others");
+        organization.setOptionSelected(parameters.getParameter("organization",""));
+        TextArea organizationOther = form.addItem().addTextArea("organizationOther");
+        organizationOther.setValue(parameters.getParameter("organizationOther", ""));
+
+        Text institution = form.addItem().addText("institution");
+        institution.setLabel("Institution Name");
+        institution.setValue(parameters.getParameter("institution",""));
+        institution.setSize(50);
+
+        Text userAddress = form.addItem().addText("userAddress");
+        userAddress.setLabel("Address");
+        userAddress.setValue(parameters.getParameter("userAddress",""));
+        userAddress.setSize(50);
+
         TextArea comments = form.addItem().addTextArea("comments");
         comments.setLabel(T_comments);
         comments.setValue(parameters.getParameter("comments",""));
         
         form.addItem().addButton("submit").setValue(T_submit);
         
+        // if button is pressed and form is re-loaded it means some parameter is missing
+        if(request.getParameter("submit")!=null){
+            if(StringUtils.isEmpty(parameters.getParameter("email", ""))){
+                email.addError("email is required");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("lastName", "")) ||
+                    StringUtils.isEmpty(parameters.getParameter("firstName", "")))
+            {
+                requesterName.addError("Complete name is required");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("institution", ""))){
+                institution.addError("Institution Name is required");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("userType", "")))
+            {
+                userType.addError("Please select your user type.");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("userAddress", "")))
+            {
+                userAddress.addError("Address is required.");
+            }
+            if (request.getParameter("userType").equals("Others") &&
+                    StringUtils.isEmpty(parameters.getParameter("userTypeOther",""))) {
+                userTypeOther.addError("Please write your user type.");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("organization", "")))
+            {
+                organization.addError("Please select your organization type.");
+            }
+            if (request.getParameter("organization").equals("Others") &&
+                    StringUtils.isEmpty(parameters.getParameter("organizationOther", ""))) {
+                organizationOther.addError("Please write your organization type.");
+            }
+            if(StringUtils.isEmpty(parameters.getParameter("comments", ""))){
+                comments.addError("This field is required");
+            }
+        }
         feedback.addHidden("page").setValue(parameters.getParameter("page","unknown"));
     }
 }

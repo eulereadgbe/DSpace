@@ -85,7 +85,7 @@ public class DefaultItemVersionProvider extends AbstractVersionProvider implemen
             {
                 identifierService.reserve(c, itemNew);
             } catch (IdentifierException e) {
-                throw new RuntimeException("Can't create Identifier!");
+                throw new RuntimeException("Can't create Identifier!", e);
             }
             // DSpace knows several types of resource policies (see the class
             // org.dspace.authorize.ResourcePolicy): Submission, Workflow, Custom

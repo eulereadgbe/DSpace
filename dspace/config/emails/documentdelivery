@@ -1,0 +1,38 @@
+# E-mail sent with the information filled out in document delivery form.
+#
+# Parameters: {0} current date
+#             {1} email address that the user provided
+#             {2} logged in as
+#             {3} page that the user was on when they selected request delivery
+#             {4} User-Agent HTTP Header
+#             {5} Session Id
+#             {6} The user's message
+#             {7} Item requested
+#             {8} Surname of the requester
+#             {9} First name of the requester
+#             {10} Institution
+#             {11} Address
+#             {12} User type
+#             {13} Organization type
+#             {14} Item handle
+#             {15} Repository name
+#
+# See org.dspace.core.Email for information on the format of this file.
+#
+Subject: Request copy of document
+
+{6}
+
+Date: {0}
+Item requested: {7}
+Name: {9} {8}
+Email: {1}
+Institution: {10}
+Address: {11}
+User type: {12}
+Organization type: {13}
+Reason: {16}
+Logged In As: {2}
+Referring Page: {3}
+User Agent: {4}
+Session: {5}

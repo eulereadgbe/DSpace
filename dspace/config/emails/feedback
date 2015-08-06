@@ -7,6 +7,12 @@
 #             {4} User-Agent HTTP Header
 #             {5} Session Id
 #             {6} The user's comments
+#             {7} The user's surname
+#             {8} The user's first name
+#             {9} Institution
+#             {10} Address
+#             {11} User type
+#             {12} Organization type
 #
 # See org.dspace.core.Email for information on the format of this file.
 #
@@ -18,7 +24,12 @@ Comments:
 
 
 Date: {0}
+Name: {8} {7}
 Email: {1}
+Institution: {9}
+Address: {10}
+User type: {11}
+Organization type: {12}
 Logged In As: {2}
 Referring Page: {3}
 User Agent: {4}
