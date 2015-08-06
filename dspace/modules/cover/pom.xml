@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>jp.zuki_ebetsu.dspace</groupId>
+  <artifactId>cover</artifactId>
+  <version>1.1</version>
+  <name>Cover Page module</name>
+  <description>Cover Page module</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.dspace</groupId>
+      <artifactId>dspace-api</artifactId>
+      <version>5.0</version>
+    </dependency>
+    <dependency>
+       <groupId>log4j</groupId>
+       <artifactId>log4j</artifactId>
+      <version>1.2.14</version>
+    </dependency>
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>itextpdf</artifactId>
+      <version>5.3.0</version>
+    </dependency>
+    <!-- Comment out this dependency unless you use CJK fonts -->
+    <!-- if you use CJK fonts, download iTextAsian.jar from 
+         http://sourceforge.net/projects/itext/files/ and install it
+         to local maven repository as the following ids -->
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>itext-asian</artifactId>
+      <version>5.1.1</version>
+    </dependency>
+  </dependencies>
+
+</project>
