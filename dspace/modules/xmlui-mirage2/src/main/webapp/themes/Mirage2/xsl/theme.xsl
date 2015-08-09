@@ -1167,7 +1167,7 @@
                                             </xsl:if>
                                         </xsl:if>
                                     <xsl:text disable-output-escaping="yes">&lt;i&gt;</xsl:text>
-                                        <xsl:value-of select="util:shortenString(dim:field[@element='citation'][@qualifier='bookTitle'], 79, 10)"/>
+                                        <xsl:value-of select="util:abbreviateMiddle(dim:field[@element='citation'][@qualifier='bookTitle'], ' &#8230; ', 220)"/>
                                     <xsl:text disable-output-escaping="yes">&lt;/i&gt;</xsl:text>
                                     <xsl:text>, </xsl:text>
                                     <span class="date">
@@ -1218,7 +1218,7 @@
                                         </xsl:if>
                                     </xsl:if>
                                     <xsl:text disable-output-escaping="yes">&lt;i&gt;</xsl:text>
-                                    <xsl:value-of select="util:shortenString(dim:field[@element='citation'][@qualifier='conferenceTitle'], 79, 10)"/>
+                                    <xsl:value-of select="util:abbreviateMiddle(dim:field[@element='citation'][@qualifier='conferenceTitle'], ' &#8230; ', 220)"/>
                                     <xsl:text disable-output-escaping="yes">&lt;/i&gt;</xsl:text>
                                     <xsl:text>, </xsl:text>
                                     <span class="date">
@@ -1466,7 +1466,7 @@
                                             </xsl:if>
                                         </xsl:if>
                                         <xsl:text disable-output-escaping="yes">&lt;i&gt;</xsl:text>
-                                        <xsl:apply-templates select="dri:list[@n=(concat($handle, ':dc.citation.bookTitle'))]/dri:item"/>
+                                        <xsl:value-of select="util:abbreviateMiddle(dri:list[@n=(concat($handle, ':dc.citation.bookTitle'))]/dri:item[1], ' &#8230; ', 220)"/>
                                         <xsl:text disable-output-escaping="yes">&lt;/i&gt;</xsl:text>
                                         <xsl:text>, </xsl:text>
                                         <span class="date">
@@ -1515,7 +1515,7 @@
                                             </xsl:if>
                                         </xsl:if>
                                         <xsl:text disable-output-escaping="yes">&lt;i&gt;</xsl:text>
-                                        <xsl:value-of select="util:shortenString(dri:list[@n=(concat($handle, ':dc.citation.conferenceTitle'))]/dri:item[1], 79, 10)"/>
+                                        <xsl:value-of select="util:abbreviateMiddle(dri:list[@n=(concat($handle, ':dc.citation.conferenceTitle'))]/dri:item[1], ' &#8230; ', 220)"/>
                                         <xsl:text disable-output-escaping="yes">&lt;/i&gt;</xsl:text>
                                         <xsl:text>, </xsl:text>
                                         <span class="date">
