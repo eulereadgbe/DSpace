@@ -281,3 +281,8 @@ body { /* Used for navbar-fixed-top */
 #aspect_artifactbrowser_CommunityBrowser_div_comunity-browser h4 {
   font-weight: bold;
 }
+
+a.disabled:hover {
+  cursor: not-allowed;
+  text-decoration: none;
+}

@@ -1733,6 +1733,14 @@
             <xsl:when test="dim:field[@element='relation'][@qualifier='uri']">
                 <xsl:call-template name="itemSummaryView-DIM-uri"/>
             </xsl:when>
+            <xsl:when test="$document//dri:referenceSet[@id='aspect.artifactbrowser.ItemViewer.referenceSet.collection-viewer']//dri:reference[@url='/metadata/handle/10862/2160/mets.xml']">
+                <div class="item-page-field-wrapper table">
+                    <h5>Request copy</h5>
+                    <div>
+                        <xsl:call-template name="forSale" />
+                    </div>
+                </div>
+            </xsl:when>
             <xsl:when test="//mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='LICENSE']/mets:file">
                 <div class="item-page-field-wrapper table">
                     <h5>
@@ -1900,6 +1908,59 @@
             <xsl:text> </xsl:text>
             <xsl:text>Request this document</xsl:text>
         </a>
+    </xsl:template>
+
+    <xsl:template name="forSale">
+        <a class="disabled">
+            <xsl:attribute name="data-toggle">
+                <xsl:text>modal</xsl:text>
+            </xsl:attribute>
+            <xsl:attribute name="data-target">
+                <xsl:text>#forSale</xsl:text>
+            </xsl:attribute>
+            <i aria-hidden="true">
+                <xsl:attribute name="class">
+                    <xsl:text>fa </xsl:text>
+                    <xsl:text>fa-ban</xsl:text>
+                </xsl:attribute>
+            </i>
+            <xsl:text> </xsl:text>
+            <xsl:text>Request not available</xsl:text>
+        </a>
+
+        <!-- Modal -->
+        <div id="forSale" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">
+                                <xsl:text disable-output-escaping="yes">&amp;times;</xsl:text>
+                            </span>
+                        </button>
+                        <h4 class="modal-title"><b>Document Request Not Available</b></h4>
+                    </div>
+                    <div class="modal-body justify word-break">
+                        <p>This publication is still available (<b>in PRINT</b>) and <b>for sale</b>
+                            at AQD bookstore. The library is currently restricted to send PDF of publications that are still
+                            for sale.
+                            </p>
+                        <p>You may contact <a href="mailto:bookstore@seafdec.org.ph" target="_blank">bookstore@seafdec.org.ph</a>
+                            or visit <a href="http://www.seafdec.org.ph/2012/bookstore" target="_blank">
+                                http://www.seafdec.org.ph/2012/bookstore
+                            </a>
+                            for orders.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </xsl:template>
 
     <xsl:template name="itemSummaryView-DIM-uri">
