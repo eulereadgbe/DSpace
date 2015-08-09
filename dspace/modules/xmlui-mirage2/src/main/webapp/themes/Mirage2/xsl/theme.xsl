@@ -2372,4 +2372,187 @@
         </div>
     </xsl:template>
 
+    <xsl:template match="dri:div[@id='aspect.artifactbrowser.DocumentDeliverySent.div.documentdelivery-sent'
+     or @id='aspect.artifactbrowser.ItemRequestSent.div.itemRequest-sent']">
+        <xsl:apply-templates/>
+        <div id="share" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">
+                                <xsl:text disable-output-escaping="yes">&amp;times;</xsl:text>
+                            </span>
+                        </button>
+                        <h4 class="modal-title">
+                            <b>THANK YOU!!!</b>
+                        </h4>
+                    </div>
+                    <div class="modal-body justify word-break">
+                        <p>
+                            Thanks for using our <i>Document Delivery Service</i>, we've receive your request!
+                            You'll receive your request in your inbox in 1 - 2 days. In the mean time, we would really
+                            appreciate it if if you can return the favor by helping us increase our visibility just by
+                            sharing this document (or any item pages) to your friends and colleagues.
+                        </p>
+                    </div>
+                    <div class="social-links">
+                        <xsl:variable name="shareURI">
+                            <xsl:value-of select="substring-before($current-uri,'documentdelivery')"/>
+                            <xsl:text>handle</xsl:text>
+                            <xsl:value-of select="substring-after($current-uri,'documentdelivery')"/>
+                        </xsl:variable>
+                        <span class="facebook">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:text>http://www.facebook.com/sharer.php?u=</xsl:text>
+                                    <xsl:value-of select="$shareURI"/>
+                                </xsl:attribute>
+                                <xsl:attribute name="title">
+                                    <xsl:text>Facebook</xsl:text>
+                                </xsl:attribute>
+                                <i aria-hidden="true">
+                                    <xsl:attribute name="class">
+                                        <xsl:text>fa fa-facebook-square fa-3x</xsl:text>
+                                    </xsl:attribute>
+                                </i>
+                                <xsl:text> </xsl:text>
+                            </a>
+                        </span>
+                        <span class="twitter">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:text>http://twitter.com/share?url=</xsl:text>
+                                    <xsl:value-of select="$shareURI"/>
+                                </xsl:attribute>
+                                <xsl:attribute name="title">
+                                    <xsl:text>Tweet</xsl:text>
+                                </xsl:attribute>
+                                <i aria-hidden="true">
+                                    <xsl:attribute name="class">
+                                        <xsl:text>fa fa-twitter-square fa-3x</xsl:text>
+                                    </xsl:attribute>
+                                </i>
+                                <xsl:text> </xsl:text>
+                            </a>
+                        </span>
+                        <span class="google-plus">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:text>https://plus.google.com/share?url=</xsl:text>
+                                    <xsl:value-of select="$shareURI"/>
+                                </xsl:attribute>
+                                <xsl:attribute name="title">
+                                    <xsl:text>Google+</xsl:text>
+                                </xsl:attribute>
+                                <i aria-hidden="true">
+                                    <xsl:attribute name="class">
+                                        <xsl:text>fa fa-google-plus-square fa-3x</xsl:text>
+                                    </xsl:attribute>
+                                </i>
+                                <xsl:text> </xsl:text>
+                            </a>
+                        </span>
+                        <span class="linkedin">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:text>http://www.linkedin.com/shareArticle?mini=true&amp;url=</xsl:text>
+                                    <xsl:value-of select="$shareURI"/>
+                                </xsl:attribute>
+                                <xsl:attribute name="title">
+                                    <xsl:text>LinkedIn</xsl:text>
+                                </xsl:attribute>
+                                <i aria-hidden="true">
+                                    <xsl:attribute name="class">
+                                        <xsl:text>fa fa-linkedin-square fa-3x</xsl:text>
+                                    </xsl:attribute>
+                                </i>
+                                <xsl:text> </xsl:text>
+                            </a>
+                        </span>
+                        <span class="mendeley">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:text>http://www.mendeley.com/import/?url=</xsl:text>
+                                    <xsl:value-of select="$shareURI"/>
+                                </xsl:attribute>
+                                <xsl:attribute name="title">
+                                    <xsl:text>Import to Mendeley</xsl:text>
+                                </xsl:attribute>
+                                <i aria-hidden="true">
+                                    <xsl:attribute name="class">
+                                        <xsl:text>ai ai-mendeley-square fa-3x</xsl:text>
+                                    </xsl:attribute>
+                                </i>
+                                <xsl:text> </xsl:text>
+                            </a>
+                        </span>
+                        <span class="researchgate">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:text>https://www.researchgate.net/go.Share.html?url=</xsl:text>
+                                    <xsl:value-of select="$shareURI"/>
+                                </xsl:attribute>
+                                <xsl:attribute name="title">
+                                    <xsl:text>ResearchGate</xsl:text>
+                                </xsl:attribute>
+                                <i aria-hidden="true">
+                                    <xsl:attribute name="class">
+                                        <xsl:text>ai ai-researchgate-square fa-3x</xsl:text>
+                                    </xsl:attribute>
+                                </i>
+                                <xsl:text> </xsl:text>
+                            </a>
+                        </span>
+                        <span class="citeulike">
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:text>http://www.citeulike.org/posturl2?url=</xsl:text>
+                                    <xsl:value-of select="$shareURI"/>
+                                </xsl:attribute>
+                                <xsl:attribute name="title">
+                                    <xsl:text>Citeulike</xsl:text>
+                                </xsl:attribute>
+                                <i aria-hidden="true">
+                                    <xsl:attribute name="class">
+                                        <xsl:text>flaticon flaticon-citeulike2 fa-3x</xsl:text>
+                                    </xsl:attribute>
+                                </i>
+                                <xsl:text> </xsl:text>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </xsl:template>
+
+    <xsl:template name="replace">
+        <xsl:param name="ptext"/>
+        <xsl:param name="ppattern"/>
+        <xsl:param name="preplacement"/>
+
+        <xsl:choose>
+            <xsl:when test="not(contains($ptext, $ppattern))">
+                <xsl:value-of select="$ptext"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="substring-before($ptext, $ppattern)"/>
+                <xsl:value-of select="$preplacement"/>
+                <xsl:call-template name="replace">
+                    <xsl:with-param name="ptext"
+                                    select="substring-after($ptext, $ppattern)"/>
+                    <xsl:with-param name="ppattern" select="$ppattern"/>
+                    <xsl:with-param name="preplacement" select="$preplacement"/>
+                </xsl:call-template>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
 </xsl:stylesheet>

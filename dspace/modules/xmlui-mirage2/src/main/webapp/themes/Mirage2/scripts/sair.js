@@ -79,3 +79,7 @@ $(function() {
         persist: "cookie"
     });
 });
+
+$(window).load(function(){
+    $('#share').modal('show');
+});
