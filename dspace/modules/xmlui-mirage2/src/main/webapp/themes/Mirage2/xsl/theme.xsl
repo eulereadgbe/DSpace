@@ -1987,15 +1987,17 @@
                         <h4 class="modal-title"><b>Document Request Not Available</b></h4>
                     </div>
                     <div class="modal-body justify word-break">
-                        <p>This publication is still available (<b>in PRINT</b>) and <b>for sale</b>
-                            at AQD bookstore. The library is currently restricted to send PDF of publications that are still
+                        <p>This publication is still available (<b>in PRINT</b>) and
+                            <b>for sale</b>
+                            at <a href="http://www.seafdec.org.ph/2012/bookstore" target="_blank">AQD bookstore</a>. The
+                            library is currently restricted to send PDF of publications that are still
                             for sale.
                             </p>
-                        <p>You may contact <a href="mailto:bookstore@seafdec.org.ph" target="_blank">bookstore@seafdec.org.ph</a>
-                            or visit <a href="http://www.seafdec.org.ph/2012/bookstore" target="_blank">
-                                http://www.seafdec.org.ph/2012/bookstore
-                            </a>
-                            for orders.
+                        <p>You may contact
+                                            <a href="mailto:bookstore@seafdec.org.ph" target="_blank">bookstore@seafdec.org.ph</a>
+                            or visit
+                            <a href="http://www.seafdec.org.ph/2012/bookstore" target="_blank">AQD bookstore</a>
+            for orders.
                         </p>
                     </div>
                     <div class="modal-footer">
@@ -2444,9 +2446,16 @@
                     </div>
                     <div class="social-links">
                         <xsl:variable name="shareURI">
+                            <xsl:choose>
+                                <xsl:when test="contains($current-uri,'documentdelivery')">
                             <xsl:value-of select="substring-before($current-uri,'documentdelivery')"/>
                             <xsl:text>handle</xsl:text>
                             <xsl:value-of select="substring-after($current-uri,'documentdelivery')"/>
+                                </xsl:when>
+                                <xsl:when test="contains($current-uri,'restricted-resource')">
+                                    <xsl:value-of select="substring-before($current-uri,'/restricted-resource')"/>
+                                </xsl:when>
+                            </xsl:choose>
                         </xsl:variable>
                         <span class="facebook">
                             <a>
