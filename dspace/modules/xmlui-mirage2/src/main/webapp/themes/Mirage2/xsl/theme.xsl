@@ -173,8 +173,8 @@
 
                         <div>
                             <a href="{$context-path}/" class="navbar-brand">
-                                <img class="hidden-lg img-responsive" src="{$theme-path}/images/seafdec-sm.svg" />
-                                <img class="visible-lg" src="{$theme-path}/images/seafdec-lg.svg" />
+                                <img class="img-responsive" src="{$theme-path}/images/seafdec-sm.svg" />
+                                <!-- <img class="visible-lg" src="{$theme-path}/images/seafdec-lg.svg" /> -->
                             </a>
                         </div>
 
@@ -765,7 +765,7 @@
                     <xsl:call-template name="itemSummaryView-DIM-HASVERSION"/>
                     <xsl:call-template name="itemSummaryView-DIM-contents"/>
                     <xsl:choose>
-                        <xsl:when test="dim:field[@element='citation' and @qualifier='journalTitle']">
+                        <xsl:when test="(dim:field[@element='citation' and @qualifier='journalTitle']) and (dim:field[@element='citation' and @qualifier='spage'])">
                             <xsl:variable name="item-type">
                                 <xsl:value-of select="dim:field[@element='type' and not(@qualifier)]"/>
                             </xsl:variable>
@@ -782,14 +782,7 @@
                             <xsl:call-template name="itemSummaryView-DIM-ispartof"/>
                         </xsl:otherwise>
                     </xsl:choose>
-                    <xsl:choose>
-                        <xsl:when test="dim:field[@element='citation' and @qualifier='journalTitle']">
-                            <xsl:call-template name="itemSummaryView-DIM-journal"/>
-                        </xsl:when>
-                        <xsl:otherwise>
                     <xsl:call-template name="itemSummaryView-DIM-publisher"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
                     <xsl:call-template name="itemSummaryView-DIM-subject"/>
                     <div class="row">
                         <xsl:call-template name="itemSummaryView-DIM-type"/>
@@ -808,7 +801,7 @@
     <xsl:template name="itemSummaryView-DIM-abstract">
         <xsl:if test="dim:field[@element='description' and @qualifier='abstract']">
             <div class="simple-item-view-description item-page-field-wrapper table">
-                <h5 class="visible-xs"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text></h5>
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text></h5>
                 <div>
                     <xsl:for-each select="dim:field[@element='description' and @qualifier='abstract']">
                         <xsl:choose>
@@ -1031,13 +1024,21 @@
                                     </xsl:variable>
                                     <span>
                                         <a>
-                                        <xsl:if test="@authority">
-                                            <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
-                                        </xsl:if>
-                                            <xsl:attribute name="href">
-                                                <xsl:text>/discover?filtertype=author&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
-                                        <xsl:copy-of select="node()"/>
-                                            </xsl:attribute>
+                                            <xsl:choose>
+                                                <xsl:when test="@authority">
+                                                    <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
+                                                    <xsl:attribute name="href">
+                                                        <xsl:text>/browse?type=author&amp;authority=</xsl:text>
+                                                        <xsl:value-of select="@authority"/>
+                                                    </xsl:attribute>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:attribute name="href">
+                                                        <xsl:text>/discover?filtertype=author&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
+                                                        <xsl:copy-of select="node()"/>
+                                                    </xsl:attribute>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
                                             <xsl:choose>
                                                 <xsl:when test="contains(.,',')">
                                                     <xsl:value-of select="$parseNames"/>
@@ -1125,7 +1126,12 @@
                                                     select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,4)"/>
                                     </span>
                                     <xsl:text> - </xsl:text>
-                                    <xsl:copy-of select="dim:field[@element='publisher']/node()"/>
+                                    <xsl:for-each select="dim:field[@element='publisher']">
+                                        <xsl:apply-templates select="."/>
+                                        <xsl:if test="count(following-sibling::dim:field[@element='publisher']) != 0">
+                                            <xsl:text>; </xsl:text>
+                                        </xsl:if>
+                                    </xsl:for-each>
                                 </span>
                             </xsl:if>
                         </small></span>
@@ -1175,7 +1181,12 @@
                                                     select="substring(dim:field[@element='date' and @qualifier='issued']/node(),1,4)"/>
                                     </span>
                                     <xsl:text> - </xsl:text>
-                                    <xsl:copy-of select="dim:field[@element='publisher']/node()"/>
+                                    <xsl:for-each select="dim:field[@element='publisher']">
+                                        <xsl:apply-templates select="."/>
+                                        <xsl:if test="count(following-sibling::dim:field[@element='publisher']) != 0">
+                                            <xsl:text>; </xsl:text>
+                                        </xsl:if>
+                                    </xsl:for-each>
                                 </span>
                             </xsl:if>
                             </small>
@@ -1225,7 +1236,12 @@
                                         <xsl:value-of select="substring(dim:field[@element='date'][@qualifier='issued'],1,4)"/>
                                     </span>
                                     <xsl:text> - </xsl:text>
-                                    <xsl:apply-templates select="dim:field[@element='publisher']/node()"/>
+                                    <xsl:for-each select="dim:field[@element='publisher']">
+                                        <xsl:apply-templates select="."/>
+                                        <xsl:if test="count(following-sibling::dim:field[@element='publisher']) != 0">
+                                            <xsl:text>; </xsl:text>
+                                        </xsl:if>
+                                    </xsl:for-each>
                                 </span>
                             </xsl:if>
                         </small></span>
@@ -1323,6 +1339,9 @@
                         <xsl:choose>
                             <xsl:when test="dri:list[@n=(concat($handle, ':dc.contributor.author'))]">
                                 <xsl:for-each select="dri:list[@n=(concat($handle, ':dc.contributor.author'))]/dri:item">
+                                    <xsl:variable name="author">
+                                        <xsl:apply-templates select="."/>
+                                    </xsl:variable>
                                     <xsl:variable name="parseNames">
                                         <xsl:for-each select="str:tokenize(substring-after(., ', '),' -.')">
                                             <xsl:value-of select="substring(., 1, 1)" />
@@ -1336,8 +1355,8 @@
                                                 <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
                                             </xsl:if>
                                                 <xsl:attribute name="href">
-                                                    <xsl:text>/discover?filtertype=author&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
-                                                    <xsl:copy-of select="node()"/>
+                                                    <xsl:text>/browse?type=author&amp;authority=</xsl:text>
+                                                    <xsl:value-of select="$metsDoc/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='contributor' and @qualifier='author' and . = $author]/@authority"/>
                                                 </xsl:attribute>
                                             <xsl:choose>
                                                 <xsl:when test="not(contains(.,','))">
@@ -1424,7 +1443,13 @@
                                             <xsl:value-of select="substring(dri:list[@n=(concat($handle, ':dc.date.issued'))]/dri:item,1,4)"/>
                                         </span>
                                         <xsl:text> - </xsl:text>
-                                        <xsl:apply-templates select="dri:list[@n=(concat($handle, ':dc.publisher'))]/dri:item"/>
+                                        <xsl:for-each
+                                                select="dri:list[@n=(concat($handle, ':dc.publisher'))]/dri:item">
+                                            <xsl:apply-templates select="."/>
+                                            <xsl:if test="count(following-sibling::dri:item) != 0">
+                                                <xsl:text>; </xsl:text>
+                                            </xsl:if>
+                                        </xsl:for-each>
                                     </span>
                                 </xsl:if>
                             </small></span>
@@ -1473,7 +1498,13 @@
                                             <xsl:value-of select="substring(dri:list[@n=(concat($handle, ':dc.date.issued'))]/dri:item,1,4)"/>
                                         </span>
                                         <xsl:text> - </xsl:text>
-                                        <xsl:apply-templates select="dri:list[@n=(concat($handle, ':dc.publisher'))]/dri:item"/>
+                                        <xsl:for-each
+                                                select="dri:list[@n=(concat($handle, ':dc.publisher'))]/dri:item">
+                                            <xsl:apply-templates select="."/>
+                                            <xsl:if test="count(following-sibling::dri:item) != 0">
+                                                <xsl:text>; </xsl:text>
+                                            </xsl:if>
+                                        </xsl:for-each>
                                     </span>
                                 </xsl:if>
                             </small></span>
@@ -1522,7 +1553,13 @@
                                             <xsl:value-of select="substring(dri:list[@n=(concat($handle, ':dc.date.issued'))]/dri:item,1,4)"/>
                                         </span>
                                         <xsl:text> - </xsl:text>
-                                        <xsl:apply-templates select="dri:list[@n=(concat($handle, ':dc.publisher'))]/dri:item"/>
+                                        <xsl:for-each
+                                                select="dri:list[@n=(concat($handle, ':dc.publisher'))]/dri:item">
+                                            <xsl:apply-templates select="."/>
+                                            <xsl:if test="count(following-sibling::dri:item) != 0">
+                                                <xsl:text>; </xsl:text>
+                                            </xsl:if>
+                                        </xsl:for-each>
                                     </span>
                                 </xsl:if>
                             </small></span>
@@ -1718,13 +1755,20 @@
             <xsl:if test="@authority">
                 <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
             </xsl:if>
-            <a>
-                <xsl:attribute name="href">
-                    <xsl:text>/discover?filtertype=author&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
+            <xsl:choose>
+                <xsl:when test="@authority">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:text>/browse?type=author&amp;authority=</xsl:text>
+                            <xsl:value-of select="@authority"/>
+                        </xsl:attribute>
+                        <xsl:copy-of select="node()"/>
+                    </a>
+                </xsl:when>
+                <xsl:otherwise>
                     <xsl:copy-of select="node()"/>
-                </xsl:attribute>
-                <xsl:copy-of select="node()"/>
-            </a>
+                </xsl:otherwise>
+            </xsl:choose>
         </div>
     </xsl:template>
 

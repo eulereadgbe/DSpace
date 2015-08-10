@@ -83,6 +83,32 @@ h3, .h3 {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
+.img-thumbnail {
+
+  /*padding: 4px; */
+
+  line-height: 1.42857143;
+
+  background-color: #ffffff;
+
+  border: 1px solid #dddddd;
+
+  /*border-radius: 4px;*/
+
+  -webkit-transition: all 0.2s ease-in-out;
+
+  -o-transition: all 0.2s ease-in-out;
+
+  transition: all 0.2s ease-in-out;
+
+  display: inline-block;
+
+  max-width: 100%;
+
+  height: auto;
+
+}
+
 @media (max-width: 360px) and (min-width: 321px) {
   header .navbar-brand img {
     height: 27px;
