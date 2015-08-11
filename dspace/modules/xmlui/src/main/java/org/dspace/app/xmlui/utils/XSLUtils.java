@@ -9,6 +9,7 @@ package org.dspace.app.xmlui.utils;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,6 +58,25 @@ public class XSLUtils {
 
         return string.substring(0, targetLength) + " ...";
 
+    }
+
+    public static String isoLanguageToDisplay(String iso) {
+        if (StringUtils.isBlank(iso)) {
+            return iso;
+        }
+        Locale locale;
+        if (iso.contains("_")) {
+            String language = iso.substring(0, iso.indexOf("_"));
+            locale = new Locale(language);
+        } else {
+            locale = new Locale(iso);
+        }
+        String englishNameOfLanguage = locale.getDisplayLanguage(Locale.getDefault());
+        if (!StringUtils.isBlank(englishNameOfLanguage))
+        {
+            return englishNameOfLanguage;
+        }
+        return iso;
     }
 
     public static String abbreviateMiddle(String input, String middle, int length) {

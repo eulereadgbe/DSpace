@@ -26,8 +26,7 @@ public class XSLUtils {
     public static String shortenString(String string, int targetLength, int maxDeviation) {
         targetLength = Math.abs(targetLength);
         maxDeviation = Math.abs(maxDeviation);
-        if (string == null || string.length() <= targetLength + maxDeviation)
-        {
+        if (string == null || string.length() <= targetLength + maxDeviation) {
             return string;
         }
 
@@ -35,16 +34,13 @@ public class XSLUtils {
         int currentDeviation = 0;
         while (currentDeviation <= maxDeviation) {
             try {
-                if (string.charAt(targetLength) == ' ')
-                {
+                if (string.charAt(targetLength) == ' ') {
                     return string.substring(0, targetLength) + " ...";
                 }
-                if (string.charAt(targetLength + currentDeviation) == ' ')
-                {
+                if (string.charAt(targetLength + currentDeviation) == ' ') {
                     return string.substring(0, targetLength + currentDeviation) + " ...";
                 }
-                if (string.charAt(targetLength - currentDeviation) == ' ')
-                {
+                if (string.charAt(targetLength - currentDeviation) == ' ') {
                     return string.substring(0, targetLength - currentDeviation) + " ...";
                 }
             } catch (Exception e) {
@@ -58,22 +54,4 @@ public class XSLUtils {
 
     }
 
-    public static String isoLanguageToDisplay(String iso) {
-        if (StringUtils.isBlank(iso)) {
-            return iso;
-        }
-        Locale locale;
-        if (iso.contains("_")) {
-            String language = iso.substring(0, iso.indexOf("_"));
-            locale = new Locale(language);
-        } else {
-            locale = new Locale(iso);
-        }
-        String englishNameOfLanguage = locale.getDisplayLanguage(Locale.getDefault());
-        if (!StringUtils.isBlank(englishNameOfLanguage))
-        {
-            return englishNameOfLanguage;
-        }
-        return iso;
-    }
 }
