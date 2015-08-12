@@ -150,6 +150,7 @@ and searching the repository.
                                 <map:parameter name="userTypeOther" value="{userTypeOther}" />
                                 <map:parameter name="organization" value="{organization}" />
                                 <map:parameter name="organizationOther" value="{organizationOther}" />
+                                <map:parameter name="requiredField" value="{requiredField}"/>
                             </map:transform>
 							<map:serialize type="xml" />
 						</map:act>

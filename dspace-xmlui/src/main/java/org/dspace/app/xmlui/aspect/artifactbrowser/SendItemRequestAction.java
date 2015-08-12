@@ -67,6 +67,7 @@ public class SendItemRequestAction extends AbstractAction
         String organization = request.getParameter("organization");
         String organizationOther = request.getParameter("organizationOther");
         String reason = request.getParameter("reason");
+        String requiredField = request.getParameter("requiredField");
 
         // User email from context
         Context context = ContextUtil.obtainContext(objectModel);
@@ -87,7 +88,8 @@ public class SendItemRequestAction extends AbstractAction
                 || (organization.equals("Others") && (organizationOther == null || organizationOther.equals("")))
                 || (userType.equals("Others") && (userTypeOther == null || userTypeOther.equals("")))
                 || (reason == null) || reason.equals("")
-                || StringUtils.isEmpty(message))
+                || StringUtils.isEmpty(message)
+                || StringUtils.isNotEmpty(requiredField) || StringUtils.isNotBlank(requiredField) || !requiredField.equals(""))
         {
             // Either the user did not fill out the form or this is the
             // first time they are visiting the page.
@@ -121,6 +123,7 @@ public class SendItemRequestAction extends AbstractAction
             map.put("allFiles",allFiles);
             map.put("message",message);
             map.put("reason", reason);
+            map.put("requiredField", requiredField);
             return map;
         }
     	DSpaceObject dso = HandleUtil.obtainHandle(objectModel);

@@ -124,10 +124,11 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
         String organization = parameters.getParameter("organization","");
         String organizationOther = parameters.getParameter("organizationOther","");
         String reason = parameters.getParameter("reason","");
+        String requiredField = parameters.getParameter("requiredField","");
 
         return HashUtil.hash(requesterEmail + "-" + allFiles + "-" + message + "-" + bitstreamId + "-" + lastName + "-"
         + firstName + "-" + institution + "-" + userAddress + "-" + userType + "-" + userTypeOther + "-" + organization
-        + "-" + organizationOther + "-" + reason);
+        + "-" + organizationOther + "-" + reason + "-" + requiredField);
     }
 
     /**
@@ -293,11 +294,22 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
 		TextArea message = form.addItem().addTextArea("message");
 		message.setLabel(T_message);
 		message.setValue(parameters.getParameter("message", ""));
-		form.addItem().addHidden("bitstreamId").setValue(parameters.getParameter("bitstreamId", ""));
+
+        TextArea requiredField = form.addItem().addTextArea("requiredField");
+        requiredField.setLabel("Required field");
+        requiredField.setHelp("If you are human, DO NOT fill up this form");
+        requiredField.setValue(parameters.getParameter("requiredField",""));
+
+        form.addItem().addHidden("bitstreamId").setValue(parameters.getParameter("bitstreamId", ""));
 		form.addItem().addButton("submit").setValue(T_submit);
 		
 		// if button is pressed and form is re-loaded it means some parameter is missing
 		if(request.getParameter("submit")!=null){
+            if(StringUtils.isNotEmpty(parameters.getParameter("requiredField","")) ||
+                    StringUtils.isNotBlank(parameters.getParameter("requiredField","")))
+            {
+                requiredField.addError("You are not human.");
+            }
             if(StringUtils.isEmpty(parameters.getParameter("lastName", "")) ||
                     StringUtils.isEmpty(parameters.getParameter("firstName", "")))
             {

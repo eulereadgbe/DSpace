@@ -1986,18 +1986,18 @@
                         </button>
                         <h4 class="modal-title"><b>Document Request Not Available</b></h4>
                     </div>
-                    <div class="modal-body justify word-break">
+                    <div class="modal-body justify">
                         <p>This publication is still available (<b>in PRINT</b>) and
                             <b>for sale</b>
-                            at <a href="http://www.seafdec.org.ph/2012/bookstore" target="_blank">AQD bookstore</a>. The
+                            at<a href="http://www.seafdec.org.ph/2012/bookstore" target="_blank">AQD bookstore</a>. The
                             library is currently restricted to send PDF of publications that are still
                             for sale.
-                            </p>
+                        </p>
                         <p>You may contact
-                                            <a href="mailto:bookstore@seafdec.org.ph" target="_blank">bookstore@seafdec.org.ph</a>
+                            <a href="mailto:bookstore@seafdec.org.ph" target="_blank">bookstore@seafdec.org.ph</a>
                             or visit
                             <a href="http://www.seafdec.org.ph/2012/bookstore" target="_blank">AQD bookstore</a>
-            for orders.
+                            for orders.
                         </p>
                     </div>
                     <div class="modal-footer">
@@ -2436,7 +2436,7 @@
                             <b>THANK YOU!!!</b>
                         </h4>
                     </div>
-                    <div class="modal-body justify word-break">
+                    <div class="modal-body justify">
                         <p>
                             Thanks for using our <i>Document Delivery Service</i>, we've receive your request!
                             You'll receive your request in your inbox in 1 - 2 days. In the mean time, we would really

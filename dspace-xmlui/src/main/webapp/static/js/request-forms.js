@@ -92,6 +92,8 @@ $(document).ready(function () {
             requestButton.attr("disabled", "disabled") : requestButton.removeAttr('disabled'));
     });
 
+    $('#aspect_artifactbrowser_ItemRequestForm_field_requiredField').parent().css({"display": "none"});
+
     // Autocomplete user address
     YUI().use('autocomplete', function (Y) {
         var acNode = Y.one('#aspect_artifactbrowser_DocumentDeliveryForm_field_userAddress,' +
