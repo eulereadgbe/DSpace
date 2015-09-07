@@ -2586,26 +2586,36 @@
         </div>
     </xsl:template>
 
-    <xsl:template name="replace">
-        <xsl:param name="ptext"/>
-        <xsl:param name="ppattern"/>
-        <xsl:param name="preplacement"/>
+    <xsl:template match="dri:body">
+        <div>
+            <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']">
+                <div class="alert">
+                    <button type="button" class="close" data-dismiss="alert">&#215;</button>
+                    <xsl:copy-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='alert'][@qualifier='message']/node()"/>
+                </div>
+            </xsl:if>
 
-        <xsl:choose>
-            <xsl:when test="not(contains($ptext, $ppattern))">
-                <xsl:value-of select="$ptext"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="substring-before($ptext, $ppattern)"/>
-                <xsl:value-of select="$preplacement"/>
-                <xsl:call-template name="replace">
-                    <xsl:with-param name="ptext"
-                                    select="substring-after($ptext, $ppattern)"/>
-                    <xsl:with-param name="ppattern" select="$ppattern"/>
-                    <xsl:with-param name="preplacement" select="$preplacement"/>
-                </xsl:call-template>
-            </xsl:otherwise>
-        </xsl:choose>
+            <!-- Check for the custom pages -->
+            <xsl:choose>
+                <xsl:when test="starts-with($request-uri, 'page/about')">
+                    <div class="hero-unit">
+                        <h1><i18n:text>xmlui.mirage2.page-structure.heroUnit.title</i18n:text></h1>
+                        <p><i18n:text>xmlui.mirage2.page-structure.heroUnit.content</i18n:text></p>
+                    </div>
+                </xsl:when>
+                <xsl:when test="$request-uri=''">
+                    <xsl:apply-templates select="*[@n='news']"/>
+                    <xsl:apply-templates select="*[@n='read-of-week-home']"/>
+                    <xsl:apply-templates select="*[@n='comunity-browser']"/>
+                    <xsl:apply-templates select="*[@n='site-home']"/>
+                </xsl:when>
+                <!-- Otherwise use default handling of body -->
+                <xsl:otherwise>
+                    <xsl:apply-templates />
+                </xsl:otherwise>
+            </xsl:choose>
+
+        </div>
     </xsl:template>
 
 </xsl:stylesheet>
