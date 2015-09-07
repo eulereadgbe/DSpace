@@ -1602,9 +1602,13 @@
                         <xsl:when test="dri:list[@n=(concat($handle, ':fulltext'))]">
                             <div class="abstract">
                                 <xsl:for-each select="dri:list[@n=(concat($handle, ':fulltext'))]/dri:item">
-                                    <xsl:apply-templates select="."/>
-                                    <xsl:text>...</xsl:text>
-                                    <br/>
+                                    <xsl:choose>
+                                        <xsl:when test="not(contains(.,'stream_'))">
+                                            <xsl:apply-templates select="."/>
+                                            <xsl:text>...</xsl:text>
+                                            <br/>
+                                        </xsl:when>
+                                    </xsl:choose>
                                 </xsl:for-each>
                             </div>
                         </xsl:when>
