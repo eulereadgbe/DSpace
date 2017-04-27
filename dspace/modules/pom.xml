@@ -40,6 +40,17 @@
     -->
     <profiles>
         <profile>
+            <id>impact</id>
+            <activation>
+                <file>
+                    <exists>impact/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>impact</module>
+            </modules>
+        </profile>
+        <profile>
             <id>dspace-xmlui</id>
             <activation>
                 <file>

@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.dspace.modules</groupId>
+    <artifactId>impact</artifactId>
+    <packaging>war</packaging>
+    <name>Impact :: Local Customizations</name>
+    <description>
+        This project allows you to overlay your own local Impact customizations
+        on top of the default Impact web application.
+    </description>
+
+    <parent>
+        <groupId>org.dspace</groupId>
+        <artifactId>modules</artifactId>
+        <version>4.3</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <properties>
+        <!-- This is the path to the root [dspace-src] directory. -->
+        <root.basedir>${basedir}/../../..</root.basedir>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.python</groupId>
+                                    <artifactId>jython-installer</artifactId>
+                                    <version>2.7.0</version>
+                                    <type>jar</type>
+                                    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib/</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <overlays>
+                        <!--
+                        the priority of overlays is determined here
+                        1.) default: anything in the current project has highest
+                        2.) anything defined here has precedence in the order defined
+                        3.) any war found transitively in the dependencies will be applied
+                        next. the order is unpredictable.
+                        -->
+                        <overlay>
+                            <groupId>org.dspace</groupId>
+                            <artifactId>impact</artifactId>
+                            <type>war</type>
+                        </overlay>
+                    </overlays>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.dspace</groupId>
+            <artifactId>impact</artifactId>
+            <version>4.3</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+</project>

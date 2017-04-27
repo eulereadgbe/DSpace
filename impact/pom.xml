@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.dspace</groupId>
+    <artifactId>impact</artifactId>
+    <packaging>war</packaging>
+    <name>Impact</name>
+    <description>
+        Servlet to query impact from different sources.
+    </description>
+
+    <parent>
+        <groupId>org.dspace</groupId>
+        <artifactId>dspace-parent</artifactId>
+        <version>4.3</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <properties>
+        <!-- This is the path to the root [dspace-src] directory. -->
+        <root.basedir>${basedir}/..</root.basedir>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.sf.mavenjython</groupId>
+                <artifactId>jython-compile-maven-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>jython</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</outputDirectory>
+                    <libraries>
+                        <param>chardet</param>
+                        <param>urllib3</param>
+                        <param>requests</param>
+                        <param>six</param>
+                    </libraries>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.python</groupId>
+                        <artifactId>jython-standalone</artifactId>
+                        <version>2.7.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.python</groupId>
+            <artifactId>jython</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+    </dependencies>
+</project>
