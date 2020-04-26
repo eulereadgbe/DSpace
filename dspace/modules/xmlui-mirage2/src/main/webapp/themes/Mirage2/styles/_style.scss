@@ -19,7 +19,96 @@
 
 @include selection {
     color: white;
-    background: hotpink;
+    background: lighten($brand-primary, 13%);
+}
+
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('../vendor/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot');
+    src: url('../vendor/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../vendor/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url('../vendor/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url('../vendor/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.navbar-brand {
+    padding: 5px 15px;
+    height: 54px
+}
+
+ header .navbar-brand img {
+    height: 39px
+}
+
+.headerInfoName {
+    color: $brand-primary;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-left: -5px;
+    position: absolute
+}
+
+.headerInfoText {
+    font-size: 15px;
+    color: $brand-primary;
+    position: absolute;
+    top: 25px;
+    margin-left: -5px
+}
+
+.breadcrumb {
+border-style:none; //remove border from lumens breadcrumb
+}
+
+.breadcrumb > li + li:before {
+  content: "\00BB";
+}
+
+.thumbnail > img, .thumbnail > img, .thumbnail a > img {
+  border: 1px solid #dddddd;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin: auto;
+}
+
+a:hover, a:focus {
+  text-decoration: none;
+  color: darken($brand-primary, 13%);
+}
+
+.trail-wrapper {
+    background-color: #003340;
+	min-height: 36px;
+    border-bottom: 3px solid $brand-primary;
+    padding-top: 4px;
+    color: #fff;
+}
+
+.trail-wrapper .breadcrumb > li + li:before, .breadcrumb > li > a {
+  color: lightseagreen;
+}
+
+.trail-wrapper .breadcrumb > .active, .breadcrumb > li > a:hover, a#trail-dropdown-toggle {
+  color: lighten(lightseagreen, 13%);
+}
+
+header .navbar-default .navbar-nav > li > a {
+    color: whitesmoke;
+}
+
+header .navbar-default .navbar-nav > li > a, header .navbar-default .navbar-nav {
+    color: $brand-primary;
+}
+
+.dropdown-menu > li > a { /* Wrap text in dropdown */
+  white-space: inherit;
+  color: $brand-primary;
+}
+
+.dropdown-menu > .disabled > a {
+  color: lighten($brand-primary, 13%);
+}
+
+.navbar-toggle {
+  margin: auto;
 }
 
 .publication-records-modal, .publication-records-modal ul {
