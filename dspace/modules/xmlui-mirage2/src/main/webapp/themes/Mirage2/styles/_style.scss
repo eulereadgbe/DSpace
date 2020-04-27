@@ -22,6 +22,8 @@
     background: lighten($brand-primary, 13%);
 }
 
+@import url(../scripts/treeview/jquery.treeview.css);
+
 @font-face {
     font-family: 'Glyphicons Halflings';
     src: url('../vendor/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot');
