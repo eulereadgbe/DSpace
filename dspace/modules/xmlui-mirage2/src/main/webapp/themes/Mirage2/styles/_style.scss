@@ -150,3 +150,11 @@ header .navbar-default .navbar-nav > li > a, header .navbar-default .navbar-nav 
     margin-bottom:5px;
   }
 }
+
+.modal-backdrop { /* Send modal window to front */
+  z-index: -1;
+}
+
+a.disabled:hover {
+    cursor:not-allowed
+ }
