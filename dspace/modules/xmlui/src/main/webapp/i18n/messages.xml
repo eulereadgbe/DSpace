@@ -2211,12 +2211,21 @@
 	<message key="xmlui.dri2xhtml.METS-1.0.item-preview">Preview</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-title">Title</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-author">Author</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-editor">Editor</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-abstract">Abstract</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-citation">Suggested Citation</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-description">Description</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-contents">Contents</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-uri">URI</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-doi">DOI</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-date">Date</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-publisher">Publisher</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-subject">Subject</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-type">Type</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-isbn">ISBN</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-issn">ISSN</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-format">Format</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-edition">Other versions</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-url">Associated URLs</message>
 
 	<message key="xmlui.dri2xhtml.METS-1.0.item-files-head">Files in this item</message>
