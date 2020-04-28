@@ -328,6 +328,17 @@
 
     <xsl:template name="itemSummaryView-DIM-file-section">
         <xsl:choose>
+            <xsl:when test="dim:field[@element='relation' and @qualifier='uri' and descendant::text()]">
+                <xsl:call-template name="relation-associatedurl"/>
+            </xsl:when>
+            <xsl:when test="$document//dri:referenceSet[@id='aspect.artifactbrowser.ItemViewer.referenceSet.collection-viewer']//dri:reference[@url='/metadata/handle/10862/2160/mets.xml']">
+                <div class="item-page-field-wrapper table">
+                    <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-requestCopy</i18n:text></h5>
+                    <div>
+                        <xsl:call-template name="forSale" />
+                    </div>
+                </div>
+            </xsl:when>
             <xsl:when test="//mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='LICENSE']/mets:file">
                 <div class="item-page-field-wrapper table word-break">
                     <h5>
@@ -373,6 +384,16 @@
             <xsl:when test="//mets:fileSec/mets:fileGrp[@USE='ORE']">
                 <xsl:apply-templates select="//mets:fileSec/mets:fileGrp[@USE='ORE']" mode="itemSummaryView-DIM" />
             </xsl:when>
+            <xsl:otherwise>
+                <div class="item-page-field-wrapper table">
+                    <h5>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-requestCopy</i18n:text>
+                    </h5>
+                    <div>
+                        <xsl:call-template name="documentdelivery" />
+                    </div>
+                </div>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
@@ -743,5 +764,75 @@
         <i18n:text i18n:key="{$mimetype-key}"><xsl:value-of select="$mimetype"/></i18n:text>
     </xsl:template>
 
+    <xsl:template name="relation-associatedurl">
+        <xsl:if test="dim:field[@element='relation' and @qualifier='uri' and descendant::text()]">
+            <div class="simple-item-view-uri item-page-field-wrapper table">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-url</i18n:text></h5>
+                <span>
+                    <xsl:for-each select="dim:field[@element='relation' and @qualifier='uri']">
+                        <a>
+                            <xsl:attribute name="data-target">
+                                <xsl:text>#externalLinkModal</xsl:text>
+                            </xsl:attribute>
+                            <xsl:attribute name="href">
+                                <xsl:copy-of select="./node()"/>
+                            </xsl:attribute>
+                            <xsl:attribute name="data-toggle">
+                                <xsl:text>modal</xsl:text>
+                            </xsl:attribute>
+                            <xsl:variable name="url_ini">
+                                <xsl:copy-of select="./node()"/>
+                            </xsl:variable>
+                            <xsl:variable name="url_minus_http">
+                                <xsl:value-of select="substring-after($url_ini,'://')"/>
+                            </xsl:variable>
+                            <xsl:text> </xsl:text>
+                            <xsl:value-of select="substring-before($url_minus_http,'/')"/>
+                            <xsl:text> </xsl:text>
+                            <i aria-hidden="true">
+                                <xsl:attribute name="class">
+                                    <xsl:text>fa fa-external-link</xsl:text>
+                                </xsl:attribute>
+                            </i>
+                        </a>
+                        <xsl:if test="count(following-sibling::dim:field[@element='relation' and @qualifier='uri']) != 0">
+                            <br/>
+                        </xsl:if>
+                    </xsl:for-each>
+                </span>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="documentdelivery">
+        <a>
+            <xsl:attribute name="href">
+                <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                <xsl:value-of select="substring-before(/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='URI'],'handle/')"/>
+                <xsl:text>/documentdelivery/</xsl:text>
+                <xsl:value-of select="substring-after($request-uri,'handle/')"/>
+            </xsl:attribute>
+            <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-requestDocument</i18n:text>
+        </a>
+    </xsl:template>
+
+    <xsl:template name="forSale">
+        <a class="disabled">
+            <xsl:attribute name="data-toggle">
+                <xsl:text>modal</xsl:text>
+            </xsl:attribute>
+            <xsl:attribute name="data-target">
+                <xsl:text>#forSale</xsl:text>
+            </xsl:attribute>
+            <i aria-hidden="true">
+                <xsl:attribute name="class">
+                    <xsl:text>fa </xsl:text>
+                    <xsl:text>fa-ban</xsl:text>
+                </xsl:attribute>
+            </i>
+            <xsl:text> </xsl:text>
+            <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-requestDocument</i18n:text>
+        </a>
+    </xsl:template>
 
 </xsl:stylesheet>
