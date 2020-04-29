@@ -24,10 +24,10 @@
 		-->
 
 	<!-- General keys -->
-	<message key="xmlui.general.dspace_home">DSpace Home</message>
+	<message key="xmlui.general.dspace_home">SAIR Home</message>
 	<message key="xmlui.general.search">Search</message>
 	<message key="xmlui.general.go">Go</message>
-	<message key="xmlui.general.go_home">Go to DSpace home</message>
+    <message key="xmlui.general.go_home">Go to SAIR home</message>
 	<message key="xmlui.general.save">Save</message>
 	<message key="xmlui.general.cancel">Cancel</message>
 	<message key="xmlui.general.return">Return</message>
@@ -65,7 +65,7 @@
 	<!--
 		This section is for feed syndications (RSS, atom, etc)
 	-->
-	<message key="xmlui.feed.general_description">The DSpace digital repository system captures, stores, indexes, preserves, and distributes digital research material.</message>
+	<message key="xmlui.feed.general_description">SAIR is the official digital repository of scholarly and research information of the Southeast Asian Fisheries Development Center, Aquaculture Department.</message>
     <message key="xmlui.feed.header">RSS Feeds</message>
 	<message key="xmlui.feed.logo_title">The Channel Image</message>
 	<message key="xmlui.feed.untitled">Untitled</message>
@@ -97,7 +97,7 @@
 	<message key="xmlui.ArtifactBrowser.AbstractSearch.head2">Communities or Collections matching your query</message>
 	<message key="xmlui.ArtifactBrowser.AbstractSearch.head3">Items matching your query</message>
 	<message key="xmlui.ArtifactBrowser.AbstractSearch.no_results">Search produced no results.</message>
-	<message key="xmlui.ArtifactBrowser.AbstractSearch.all_of_dspace">All of DSpace</message>
+    <message key="xmlui.ArtifactBrowser.AbstractSearch.all_of_dspace">All of SAIR</message>
 
    <message key="xmlui.ArtifactBrowser.AbstractSearch.sort_by.title">title</message>
    <message key="xmlui.ArtifactBrowser.AbstractSearch.sort_by.dateissued">issue date</message>
@@ -208,7 +208,7 @@
 
 	<!-- org.dspace.app.xmlui.artifactbrowser.CollectionViewer.java -->
 	<message key="xmlui.ArtifactBrowser.CollectionViewer.search_scope">Search Scope</message>
-	<message key="xmlui.ArtifactBrowser.CollectionViewer.all_of_dspace">All of DSpace</message>
+    <message key="xmlui.ArtifactBrowser.CollectionViewer.all_of_dspace">All of SAIR</message>
 	<message key="xmlui.ArtifactBrowser.CollectionViewer.full_text_search">Search within this collection:</message>
 	<message key="xmlui.ArtifactBrowser.CollectionViewer.head_browse">Browse by</message>
 	<message key="xmlui.ArtifactBrowser.CollectionViewer.browse_titles">Titles</message>
@@ -220,12 +220,12 @@
 	<!-- org.dspace.app.xmlui.artifactbrowser.CommunityBrowser.java -->
 	<message key="xmlui.ArtifactBrowser.CommunityBrowser.title">Community List</message>
 	<message key="xmlui.ArtifactBrowser.CommunityBrowser.trail">Community List</message>
-	<message key="xmlui.ArtifactBrowser.CommunityBrowser.head">Communities in DSpace</message>
+	<message key="xmlui.ArtifactBrowser.CommunityBrowser.head">Communities in SAIR</message>
 	<message key="xmlui.ArtifactBrowser.CommunityBrowser.select">Select a community to browse its collections.</message>
 
 	<!-- org.dspace.app.xmlui.artifactbrowser.CommunityViewer.java -->
 	<message key="xmlui.ArtifactBrowser.CommunityViewer.search_scope">Search Scope</message>
-	<message key="xmlui.ArtifactBrowser.CommunityViewer.all_of_dspace">All of DSpace</message>
+	<message key="xmlui.ArtifactBrowser.CommunityViewer.all_of_dspace">All of SAIR</message>
 	<message key="xmlui.ArtifactBrowser.CommunityViewer.full_text_search">Search within this community and its collections:</message>
 	<message key="xmlui.ArtifactBrowser.CommunityViewer.head_browse">Browse by</message>
 	<message key="xmlui.ArtifactBrowser.CommunityViewer.browse_titles">Titles</message>
@@ -272,7 +272,7 @@
 
 	<!-- org.dspace.app.xmlui.artifactbrowser.Navigation.java -->
 	<message key="xmlui.ArtifactBrowser.Navigation.head_browse">Browse</message>
-	<message key="xmlui.ArtifactBrowser.Navigation.head_all_of_dspace">All of DSpace</message>
+	<message key="xmlui.ArtifactBrowser.Navigation.head_all_of_dspace">All of SAIR</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.communities_and_collections">Communities &amp; Collections</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.browse_title">Titles</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.browse_author">Authors</message>
@@ -519,20 +519,20 @@
 	<!-- org.dspace.app.xmlui.eperson.PasswordLogin.java -->
 	<message key="xmlui.EPerson.PasswordLogin.title">Sign in</message>
 	<message key="xmlui.EPerson.PasswordLogin.trail">Sign in</message>
-	<message key="xmlui.EPerson.PasswordLogin.head1">Sign in to DSpace</message>
+	<message key="xmlui.EPerson.PasswordLogin.head1">Sign in to SAIR</message>
 	<message key="xmlui.EPerson.PasswordLogin.email_address">E-Mail Address</message>
 	<message key="xmlui.EPerson.PasswordLogin.error_bad_login">The email address and/or password supplied were not valid.</message>
 	<message key="xmlui.EPerson.PasswordLogin.password">Password</message>
 	<message key="xmlui.EPerson.PasswordLogin.forgot_link"> Forgot your password?</message>
 	<message key="xmlui.EPerson.PasswordLogin.submit">Sign in</message>
 	<message key="xmlui.EPerson.PasswordLogin.head2">Register new user</message>
-	<message key="xmlui.EPerson.PasswordLogin.para1">Register an account to subscribe to collections for email updates, and submit new items to DSpace.</message>
+	<message key="xmlui.EPerson.PasswordLogin.para1">Register an account to subscribe to collections for email updates, and submit new items to SAIR.</message>
 	<message key="xmlui.EPerson.PasswordLogin.register_link">Click here to register.</message>
 
 	<!-- org.dspace.app.xmlui.eperson.LDAPLogin.java -->
 	<message key="xmlui.EPerson.LDAPLogin.title">Sign in</message>
 	<message key="xmlui.EPerson.LDAPLogin.trail">Sign in</message>
-	<message key="xmlui.EPerson.LDAPLogin.head1">Sign in to DSpace</message>
+	<message key="xmlui.EPerson.LDAPLogin.head1">Sign in to SAIR</message>
 	<message key="xmlui.EPerson.LDAPLogin.username">User Name</message>
 	<message key="xmlui.EPerson.LDAPLogin.error_bad_login">The user name and/or password supplied were not valid.</message>
 	<message key="xmlui.EPerson.LDAPLogin.password">Password</message>
@@ -571,7 +571,7 @@
 	<!-- org.dspace.app.xmlui.eperson.RegistrationFinished.java -->
 	<message key="xmlui.EPerson.RegistrationFinished.title">Registration finished</message>
 	<message key="xmlui.EPerson.RegistrationFinished.head">Registration Finished</message>
-	<message key="xmlui.EPerson.RegistrationFinished.para1">You're now registered to use the DSpace system.  You can subscribe to collections to receive email updates about new items.</message>
+	<message key="xmlui.EPerson.RegistrationFinished.para1">You're now registered to use SAIR.  You can subscribe to collections to receive email updates about new items.</message>
 
 	<!-- org.dspace.app.xmlui.eperson.ResetPassword.java -->
 	<message key="xmlui.EPerson.ResetPassword.title">Reset password</message>
@@ -587,7 +587,7 @@
 	<!-- org.dspace.app.xmlui.eperson.StartForgotPassword.java -->
 	<message key="xmlui.EPerson.StartForgotPassword.title">Forgot Password</message>
 	<message key="xmlui.EPerson.StartForgotPassword.head">Forgot Password</message>
-	<message key="xmlui.EPerson.StartForgotPassword.para1">Enter the email address you provided when you registered with DSpace. An email will be sent to that address with further instructions.</message>
+	<message key="xmlui.EPerson.StartForgotPassword.para1">Enter the email address you provided when you registered with SAIR. An email will be sent to that address with further instructions.</message>
 	<message key="xmlui.EPerson.StartForgotPassword.email_address">Email Address</message>
 	<message key="xmlui.EPerson.StartForgotPassword.email_address_help">Enter the same address used when registering.</message>
 	<message key="xmlui.EPerson.StartForgotPassword.error_not_found">Email address not found.</message>
@@ -600,7 +600,7 @@
 	<message key="xmlui.EPerson.StartRegistration.reset_password_for">Reset password for</message>
 	<message key="xmlui.EPerson.StartRegistration.submit_reset">Reset password</message>
 	<message key="xmlui.EPerson.StartRegistration.head2">New user registration</message>
-	<message key="xmlui.EPerson.StartRegistration.para2">Register an account to subscribe to collections for email updates, and submit new items to DSpace.</message>
+	<message key="xmlui.EPerson.StartRegistration.para2">Register an account to subscribe to collections for email updates, and submit new items to SAIR.</message>
 	<message key="xmlui.EPerson.StartRegistration.email_address">Email Address</message>
 	<message key="xmlui.EPerson.StartRegistration.email_address_help">This address will be verified and used as your login name.</message>
 	<message key="xmlui.EPerson.StartRegistration.error_bad_email">Unable to send email to this address.</message>
@@ -708,7 +708,7 @@
 	<message key="xmlui.Submission.Submissions.status_unknown">Unknown state</message>
         <!-- Same transformer, completed submissions section -->
         <message key="xmlui.Submission.Submissions.completed.head">Archived Submissions</message>
-        <message key="xmlui.Submission.Submissions.completed.info">These are your completed submissions which have been accepted into DSpace.</message>
+        <message key="xmlui.Submission.Submissions.completed.info">These are your completed submissions which have been accepted into SAIR.</message>
         <message key="xmlui.Submission.Submissions.completed.column1">Date accepted</message>
         <message key="xmlui.Submission.Submissions.completed.column2">Title</message>
         <message key="xmlui.Submission.Submissions.completed.column3">Collection</message>
@@ -924,7 +924,7 @@
 
 	<!-- org.dspace.app.xmlui.Submission.submit.LicenseStep -->
 	<message key="xmlui.Submission.submit.LicenseStep.head">Distribution License</message>
-	<message key="xmlui.Submission.submit.LicenseStep.info1"><strong>There is one last step:</strong> In order for DSpace to reproduce, translate and distribute your submission worldwide, you must agree to the following terms.</message>
+	<message key="xmlui.Submission.submit.LicenseStep.info1"><strong>There is one last step:</strong> In order for SAIR to reproduce, translate and distribute your submission worldwide, you must agree to the following terms.</message>
 	<message key="xmlui.Submission.submit.LicenseStep.info2">Grant the standard distribution license by selecting 'I Grant the License'; and then click 'Complete Submission'.</message>
 	<message key="xmlui.Submission.submit.LicenseStep.info3">If you have questions regarding this license please contact the system administrators.</message>
 	<message key="xmlui.Submission.submit.LicenseStep.decision_label">Distribution license</message>
@@ -1513,7 +1513,9 @@
 	<message key="xmlui.administrative.item.AddBitstreamForm.head1">Upload a new bitstream</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle_label">Bundle</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.ORIGINAL">Content Files (default)</message>
+    <message key="xmlui.administrative.item.AddBitstreamForm.bundle.TEXT">Text</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.METADATA">Metadata Files</message>
+	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.ORE">ORE Files</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.THUMBNAIL">Thumbnails</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.LICENSE">Licenses</message>
 	<message key="xmlui.administrative.item.AddBitstreamForm.bundle.CC-LICENSE">Creative Commons Licenses</message>
@@ -1967,7 +1969,7 @@
 	<message key="xmlui.administrative.ControlPanel.trail">Control panel</message>
 	<message key="xmlui.administrative.ControlPanel.head">Control Panel</message>
 	<message key="xmlui.administrative.ControlPanel.option_java">Java Information</message>
-	<message key="xmlui.administrative.ControlPanel.option_dspace">DSpace Configuration</message>
+    <message key="xmlui.administrative.ControlPanel.option_dspace">SAIR Configuration</message>
 	<message key="xmlui.administrative.ControlPanel.option_alerts">System-wide Alerts</message>
 	<message key="xmlui.administrative.ControlPanel.hours">{0} h</message>
 	<message key="xmlui.administrative.ControlPanel.minutes">{0} m</message>
@@ -2176,13 +2178,13 @@
 	<message key="xmlui.dri2xhtml.structural.contact-link">Contact Us</message>
 	<message key="xmlui.dri2xhtml.structural.feedback-link">Send Feedback</message>
 
-	<message key="xmlui.dri2xhtml.structural.head-subtitle">DSpace Repository</message>
+    <message key="xmlui.dri2xhtml.structural.head-subtitle">SEAFDEC/AQD Institutional Repository</message>
 
 	<message key="xmlui.dri2xhtml.structural.profile">Profile: </message>
 	<message key="xmlui.dri2xhtml.structural.logout">Logout</message>
 	<message key="xmlui.dri2xhtml.structural.login">Login</message>
 
-	<message key="xmlui.dri2xhtml.structural.search">Search DSpace</message>
+    <message key="xmlui.dri2xhtml.structural.search">Search SAIR</message>
 	<message key="xmlui.dri2xhtml.structural.search-advanced">Advanced Search</message>
 	<message key="xmlui.dri2xhtml.structural.search-in-community">This Community</message>
 	<message key="xmlui.dri2xhtml.structural.search-in-collection">This Collection</message>
@@ -2401,6 +2403,16 @@
   <message key="xmlui.ChoiceLookupTransformer.field.dc_contributor_author.title">LC Name Authority author lookup</message>
   <message key="xmlui.ChoiceLookupTransformer.field.dc_contributor_author.nonauthority">Local value "@1@" (not in Naming Authority)</message>
 
+    <!-- Choice Lookup - sample config for dc.citation.journalTitle field -->
+    <message key="xmlui.ChoiceLookupTransformer.field.dc_citation_journalTitle.help">Journal</message>
+    <message key="xmlui.ChoiceLookupTransformer.field.dc_citation_journalTitle.title">Look up Journal Title</message>
+
+    <!-- Choice Lookup - sample config for dc.subject field -->
+    <message key="xmlui.ChoiceLookupTransformer.field.dc_subject.help">Subject</message>
+    <message key="xmlui.ChoiceLookupTransformer.field.dc_subject.title">Look up Subject</message>
+    <message key="xmlui.ChoiceLookupTransformer.field.dc_subject_asfa.help">ASFA Keywords</message>
+    <message key="xmlui.ChoiceLookupTransformer.field.dc_subject_asfa.title">Look up ASFA Keywords</message>
+
   <!-- mobile theme -->
   <message key="xmlui.mobile.home_mobile">DSpace Mobile</message>
   <message key="xmlui.mobile.search_all">Search ALL</message>
@@ -2569,4 +2581,35 @@
     <message key="xmlui.mirage2.choice-authority-control.loading">Loading...</message>
 
     <message key="xmlui.mirage2.item-list.thumbnail">Thumbnail</message>
+
+	<!-- For news-xmlui.xml -->
+	<message key="news.xmlui.title">DSpace @ SEAFDEC/AQD</message>
+	<message key="news.xmlui.content">
+		<p class="justify">Southeast Asian Fisheries Development Center, Aquaculture Department Institutional Repository
+			(SAIR) is the official digital repository of scholarly and research information of the department. This is
+			to enable the effective dissemination of AQD researchers' in-house and external publications for free and
+			online. The repository uses DSpace, an open source software, developed at Massachusetts Institute of
+			Technology (MIT) Libraries. It is an Open Archives Initiative (OAI)-compliant.
+		</p>
+		<p class="justify">Initially, the repository shall contain preprints, full-texts or abstracts of journal
+			articles, books and conference proceedings written by SEAFDEC/AQD scientists and researchers. The aim is to
+			promote these publications especially those published in international peer-reviewed journals and generate
+			higher citation through increased visibility.
+		</p>
+		<p class="justify">It will also provide free access to all in-house publications of SEAFDEC/AQD. Full-text
+			digitized copies of fishfarmer-friendly materials like books, handbooks, policy guidebooks, conference
+			proceedings, extension manuals, institutional reports, annual reports (AQD Highlights), and newsletters
+			(SEAFDEC Asian Aquaculture, Aqua Farm News, AquaDept News and AQD Matters) can be retrieved and downloaded.
+		</p>
+		<p class="justify">In the future, SAIR will expand its collection to include images, presentations, audios, and
+			videos among others.
+		</p>
+		<p class="justify">The objectives of the repository are to: (1) to provide reliable means for SEAFDEC/AQD
+			researchers to store, preserve and share their research outputs and (2) to provide easy access and increase
+			the visibility of SEAFDEC/AQD scientific publications
+		</p>
+		<p class="justify">SAIR also aims to encourage SEAFDEC/AQD researchers for self-archiving and submitting
+			pre-prints from which metadata will be screened and approved by the library staff.
+		</p>
+	</message>
 </catalogue>
