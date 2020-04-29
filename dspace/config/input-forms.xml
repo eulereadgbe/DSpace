@@ -51,6 +51,17 @@
 
        <field>
          <dc-schema>dc</dc-schema>
+         <dc-element>contributor</dc-element>
+         <dc-qualifier>corporateauthor</dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Corporate Authors</label>
+         <input-type>onebox</input-type>
+         <hint>Enter the organization or corporate name for this item IF no personal author(s) are found, eg Southeast Asian Fisheries Development Center</hint>
+         <required></required>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
          <dc-element>title</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
@@ -101,7 +112,7 @@
          <dc-qualifier>citation</dc-qualifier>
          <repeatable>false</repeatable>
          <label>Citation</label>
-         <input-type>onebox</input-type>
+         <input-type>textarea</input-type>
          <hint>Enter the standard citation for the previously issued instance of this item.</hint>
          <required></required>
        </field>
@@ -140,6 +151,131 @@ it, please enter the types and the actual numbers or codes.</hint>
          <hint>Select the type(s) of content of the item. To select more than one value in the list, you may have to hold down the "CTRL" or "Shift" key.</hint>
          <required></required>
        </field>
+</page>
+
+     <page number="2">
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>contributor</dc-element>
+         <dc-qualifier>editor</dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Editors</label>
+         <type-bind>Book,Book chapter,Conference paper,Conference publication,Magazine,Newsletter</type-bind>
+         <input-type>name</input-type>
+         <hint>Enter the names of the editors of this item below.</hint>
+         <required></required>
+       </field>
+
+         <field>
+             <dc-schema>dc</dc-schema>
+             <dc-element>citation</dc-element>
+             <dc-qualifier>journalTitle</dc-qualifier>
+             <repeatable>false</repeatable>
+             <label>Journal Title</label>
+             <type-bind>Article,magazineArticle</type-bind>
+             <input-type>onebox</input-type>
+             <hint> Enter the name of the journal for this item. </hint>
+             <required>You must enter the Journal title of this article.</required>
+         </field>
+
+         <field>
+             <dc-schema>dc</dc-schema>
+             <dc-element>citation</dc-element>
+             <dc-qualifier>bookTitle</dc-qualifier>
+             <repeatable>false</repeatable>
+             <label>Book Title</label>
+             <type-bind>Book chapter</type-bind>
+             <input-type>onebox</input-type>
+             <hint> Enter the title of the Book for which this item is part of. </hint>
+             <required>You must enter the Book title of this article.</required>
+         </field>
+
+         <field>
+             <dc-schema>dc</dc-schema>
+             <dc-element>citation</dc-element>
+             <dc-qualifier>conferenceTitle</dc-qualifier>
+             <repeatable>false</repeatable>
+             <label>Proceedings Title</label>
+             <type-bind>Conference paper</type-bind>
+             <input-type>textarea</input-type>
+             <hint> Enter the Proceedngs title for which this item is part of. </hint>
+             <required>You must enter the Proceedings title of this paper to proceed.</required>
+         </field>
+
+         <field>
+             <dc-schema>dc</dc-schema>
+             <dc-element>citation</dc-element>
+             <dc-qualifier>volume</dc-qualifier>
+             <label>Volume</label>
+             <type-bind>Article,magazineArticle</type-bind>
+             <input-type>onebox</input-type>
+             <hint> Enter the volume number. </hint>
+         </field>
+
+         <field>
+             <dc-schema>dc</dc-schema>
+             <dc-element>citation</dc-element>
+             <dc-qualifier>issue</dc-qualifier>
+             <label>Issue</label>
+             <type-bind>Article,magazineArticle</type-bind>
+             <input-type>onebox</input-type>
+             <hint> Enter the issue number. </hint>
+         </field>
+
+         <field>
+             <dc-schema>dc</dc-schema>
+             <dc-element>relation</dc-element>
+             <dc-qualifier>uri</dc-qualifier>
+             <repeatable>false</repeatable>
+             <label>Related link</label>
+             <input-type>onebox</input-type>
+             <hint> Enter the url of the full text. </hint>
+         </field>
+
+         <field>
+             <dc-schema>dc</dc-schema>
+             <dc-element>citation</dc-element>
+             <dc-qualifier>spage</dc-qualifier>
+             <repeatable>false</repeatable>
+             <label>Starting page</label>
+             <type-bind>Article,Conference paper,Book chapter,magazineArticle</type-bind>
+             <input-type>onebox</input-type>
+             <hint> Enter the starting page of this article. </hint>
+             <required>You must enter the starting page of this article.</required>
+         </field>
+
+         <field>
+             <dc-schema>dc</dc-schema>
+             <dc-element>citation</dc-element>
+             <dc-qualifier>epage</dc-qualifier>
+             <repeatable>false</repeatable>
+             <label>Ending page</label>
+             <type-bind>Article,Conference paper,Book chapter,magazineArticle</type-bind>
+             <input-type>onebox</input-type>
+             <hint> Enter the end page of this article. </hint>
+         </field>
+
+         <field>
+             <dc-schema>seafdecaqd</dc-schema>
+             <dc-element>databank</dc-element>
+             <dc-qualifier>controlnumber</dc-qualifier>
+             <repeatable>false</repeatable>
+             <label>Databank Control No.</label>
+             <type-bind>Article</type-bind>
+             <input-type>onebox</input-type>
+             <hint> Enter Databank Control No. of this item. (e.g. 1988-05) </hint>
+         </field>
+
+         <field>
+             <dc-schema>seafdecaqd</dc-schema>
+             <dc-element>library</dc-element>
+             <dc-qualifier>callnumber</dc-qualifier>
+             <repeatable>false</repeatable>
+             <label>Library Call No.</label>
+             <type-bind>Article</type-bind>
+             <input-type>onebox</input-type>
+             <hint> Enter Library Call No. of this item. (e.g. VF SJ 0001) </hint>
+         </field>
 
        <field>
          <dc-schema>dc</dc-schema>
@@ -164,7 +300,32 @@ it, please enter the types and the actual numbers or codes.</hint>
          <input-type>twobox</input-type>
          <hint>Enter appropriate subject keywords or phrases. </hint>
          <required></required>
-         <vocabulary>srsc</vocabulary>
+         <vocabulary>agrovoc</vocabulary>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+             <dc-element>subject</dc-element>
+             <dc-qualifier>asfa</dc-qualifier>
+             <!-- An input-type of twobox MUST be marked as repeatable -->
+             <repeatable>true</repeatable>
+             <label>ASFA Keywords</label>
+             <input-type>onebox</input-type>
+             <hint>Enter appropriate ASFA keywords or phrases below. </hint>
+             <required></required>
+             <vocabulary closed="true">asfa</vocabulary>
+         </field>
+
+         <field>
+             <dc-schema>dc</dc-schema>
+             <dc-element>subject</dc-element>
+             <dc-qualifier>lcsh</dc-qualifier>
+             <!-- An input-type of twobox MUST be marked as repeatable -->
+             <repeatable>true</repeatable>
+             <label>LC Subject Headings</label>
+             <input-type>twobox</input-type>
+             <hint>Enter appropriate Library of Congress Subject Headings below. </hint>
+             <required></required>
        </field>
 
        <field>
@@ -181,22 +342,33 @@ it, please enter the types and the actual numbers or codes.</hint>
        <field>
          <dc-schema>dc</dc-schema>
          <dc-element>description</dc-element>
-         <dc-qualifier>sponsorship</dc-qualifier>
+             <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Sponsors</label>
+             <label>Description</label>
          <input-type>textarea</input-type>
-         <hint>Enter the names of any sponsors and/or funding codes in the box. </hint>
+             <hint>Enter any other description or comments in this box. </hint>
          <required></required>
        </field>
 
        <field>
          <dc-schema>dc</dc-schema>
          <dc-element>description</dc-element>
-         <dc-qualifier></dc-qualifier>
+             <dc-qualifier>sponsorship</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Description</label>
+             <label>Sponsors</label>
          <input-type>textarea</input-type>
-         <hint>Enter any other description or comments in this box. </hint>
+             <hint>Enter the names of any sponsors and/or funding codes in this box.</hint>
+         <required></required>
+       </field>
+         <field>
+             <dc-schema>dc</dc-schema>
+             <dc-element>format</dc-element>
+             <dc-qualifier>extent</dc-qualifier>
+             <repeatable>false</repeatable>
+             <label>Physical Description</label>
+         <type-bind>Book,Conference publication,Technical Report</type-bind>
+             <input-type>onebox</input-type>
+             <hint>Enter the physical details (eg. x, 109 pages : color illustrations, color maps.)</hint>
          <required></required>
        </field>
      </page>
@@ -239,6 +411,14 @@ it, please enter the types and the actual numbers or codes.</hint>
        <stored-value>issn</stored-value>
      </pair>
      <pair>
+       <displayed-value>ESSN</displayed-value>
+       <stored-value>essn</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>DOI</displayed-value>
+       <stored-value>doi</stored-value>
+     </pair>
+     <pair>
        <displayed-value>Other</displayed-value>
        <stored-value>other</stored-value>
      </pair>
@@ -278,6 +458,14 @@ it, please enter the types and the actual numbers or codes.</hint>
        <stored-value>Book chapter</stored-value>
      </pair>
      <pair>
+           <displayed-value>Conference paper</displayed-value>
+           <stored-value>Conference paper</stored-value>
+     </pair>
+       <pair>
+           <displayed-value>Conference publication</displayed-value>
+           <stored-value>Conference publication</stored-value>
+     </pair>
+     <pair>
        <displayed-value>Dataset</displayed-value>
        <stored-value>Dataset</stored-value>
      </pair>
@@ -294,12 +482,24 @@ it, please enter the types and the actual numbers or codes.</hint>
        <stored-value>Image, 3-D</stored-value>
      </pair>
      <pair>
+       <displayed-value>Magazine</displayed-value>
+       <stored-value>Magazine</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Magazine article</displayed-value>
+       <stored-value>magazineArticle</stored-value>
+     </pair>
+     <pair>
        <displayed-value>Map</displayed-value>
        <stored-value>Map</stored-value>
      </pair>
      <pair>
        <displayed-value>Musical Score</displayed-value>
        <stored-value>Musical Score</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Newsletter</displayed-value>
+       <stored-value>Newsletter</stored-value>
      </pair>
      <pair>
        <displayed-value>Plan or blueprint</displayed-value>
@@ -360,12 +560,52 @@ it, please enter the types and the actual numbers or codes.</hint>
        <stored-value></stored-value>
      </pair>
      <pair>
-       <displayed-value>English (United States)</displayed-value>
-       <stored-value>en_US</stored-value>
-      </pair>
-     <pair>
        <displayed-value>English</displayed-value>
        <stored-value>en</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Thai</displayed-value>
+       <stored-value>th</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Indonesian</displayed-value>
+       <stored-value>id</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Japanese</displayed-value>
+       <stored-value>ja</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Malay</displayed-value>
+       <stored-value>ms</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Filipino</displayed-value>
+       <stored-value>fil</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Hiligaynon</displayed-value>
+       <stored-value>hil</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Cebuano (Bisaya)</displayed-value>
+       <stored-value>ceb</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Burmese</displayed-value>
+       <stored-value>my</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Cambodian</displayed-value>
+       <stored-value>km</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Lao</displayed-value>
+       <stored-value>lo</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Vietnamese</displayed-value>
+       <stored-value>vi</stored-value>
      </pair>
      <pair>
        <displayed-value>Spanish</displayed-value>
