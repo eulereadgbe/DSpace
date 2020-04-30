@@ -147,6 +147,15 @@
 			<xsl:for-each select="doc:metadata/doc:element[@name='dc']/doc:element[@name='source']/doc:element/doc:element/doc:field[@name='value']">
 				<dc:source><xsl:value-of select="." /></dc:source>
 			</xsl:for-each>
+			<xsl:for-each select="doc:metadata/doc:element[@name='bundles']/doc:element[@name='bundle']">
+				<xsl:if test="doc:field[@name='name']/text() = 'THUMBNAIL'">
+					<xsl:for-each select="doc:element[@name='bitstreams']/doc:element[@name='bitstream']">
+						<dc:identifier.thumbnail>
+							<xsl:value-of select="doc:field[@name='url']/text()"></xsl:value-of>
+						</dc:identifier.thumbnail>
+					</xsl:for-each>
+				</xsl:if>
+			</xsl:for-each>
 		</oai_dc:dc>
 	</xsl:template>
 </xsl:stylesheet>
