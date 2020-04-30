@@ -61,6 +61,8 @@ public class GoogleMetadata
 
     public static final String JOURNAL_TITLE = "citation_journal_title";
 
+    public static final String BOOK_TITLE = "citation_inbook_title";
+
     public static final String PUBLISHER = "citation_publisher";
 
     public static final String AUTHORS = "citation_author";
@@ -94,6 +96,8 @@ public class GoogleMetadata
     public static final String KEYWORDS = "citation_keywords";
 
     public static final String CONFERENCE = "citation_conference";
+
+    public static final String CONFERENCE_TITLE = "citation_conference_title";
 
     public static final String DISSERTATION_ID = "identifiers.dissertation";
 
@@ -669,6 +673,9 @@ public class GoogleMetadata
         // ISBN
         addSingleField(ISBN);
 
+        // BOOK_TITLE
+        addSingleField(BOOK_TITLE);
+
         // JOURNAL_TITLE
         addSingleField(JOURNAL_TITLE);
 
@@ -707,6 +714,9 @@ public class GoogleMetadata
 
         // CONFERENCE
         addSingleField(CONFERENCE);
+
+        // CONFERENCE TITLE
+        addSingleField(CONFERENCE_TITLE);
 
         // Dissertations
         if (itemIsDissertation())
@@ -803,6 +813,14 @@ public class GoogleMetadata
     public List<String> getJournalTitle()
     {
         return metadataMappings.get(JOURNAL_TITLE);
+    }
+
+    /**
+     * @return the citation_inbook_title
+     */
+    public List<String> getBookTitle()
+    {
+        return metadataMappings.get(BOOK_TITLE);
     }
 
     /**
@@ -939,6 +957,14 @@ public class GoogleMetadata
     public List<String> getConference()
     {
         return metadataMappings.get(CONFERENCE);
+    }
+
+    /**
+     * @return the citation_conference_title
+     */
+    public List<String> getConferenceTitle()
+    {
+        return metadataMappings.get(CONFERENCE_TITLE);
     }
 
     /**
