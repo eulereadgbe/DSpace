@@ -390,7 +390,7 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
                 organizationType.addError(T_organizationType_error);
             }
             if (request.getParameter("organizationType").equals("Others") &&
-                    StringUtils.isEmpty(parameters.getParameter("organizationOther", ""))) {
+                    StringUtils.isEmpty(parameters.getParameter("organizationTypeOther", ""))) {
                 organizationTypeOther.addError(T_organizationTypeOther_error);
             }
             if(StringUtils.isEmpty(parameters.getParameter("userAddress",""))){

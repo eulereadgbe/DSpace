@@ -309,7 +309,7 @@ public class DocumentDeliveryForm extends AbstractDSpaceTransformer implements C
                 organizationType.addError(T_organizationType_error);
             }
             if (request.getParameter("organizationType").equals("Others") &&
-                    StringUtils.isEmpty(parameters.getParameter("organizationOther", ""))) {
+                    StringUtils.isEmpty(parameters.getParameter("organizationTypeOther", ""))) {
                 organizationTypeOther.addError(T_organizationTypeOther_error);
             }
             if(StringUtils.isEmpty(parameters.getParameter("purpose", ""))){

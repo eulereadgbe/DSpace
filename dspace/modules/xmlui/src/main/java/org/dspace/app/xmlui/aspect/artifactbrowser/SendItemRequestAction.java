@@ -33,6 +33,7 @@ import org.dspace.eperson.EPerson;
 import org.dspace.handle.factory.HandleServiceFactory;
 import org.dspace.handle.service.HandleService;
 import org.dspace.services.factory.DSpaceServicesFactory;
+import org.dspace.content.service.ItemService;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -56,6 +57,7 @@ public class SendItemRequestAction extends AbstractAction
    protected HandleService handleService = HandleServiceFactory.getInstance().getHandleService();
    protected RequestItemService requestItemService = RequestItemServiceFactory.getInstance().getRequestItemService();
    protected BitstreamService bitstreamService = ContentServiceFactory.getInstance().getBitstreamService();
+   private final transient ItemService itemService = ContentServiceFactory.getInstance().getItemService();
 
    @Override
    public Map act(Redirector redirector, SourceResolver resolver, Map objectModel,
@@ -146,23 +148,28 @@ public class SendItemRequestAction extends AbstractAction
                .getRequestItemAuthor(context, item);
 
        String token = requestItemService.createRequest(context, bitstream, item, Boolean.valueOf(allFiles), requesterEmail, requesterName, message);
+       String citationDC = itemService.getMetadataFirstValue(item, "dc", "identifier", "citation", Item.ANY);
 
        // All data is there, send the email
        Email email = Email.getEmail(I18nUtil.getEmailFilename(context.getCurrentLocale(), "request_item.author"));
        email.addRecipient(requestItemAuthor.getEmail());
 
-       email.addArgument(new Date()); // Date 0
-       email.addArgument(requesterName);
-       email.addArgument(requesterEmail);
-       email.addArgument(allFiles.equals("true") ? I18nUtil.getMessage("itemRequest.all") : bitstream.getName());
-       email.addArgument(handleService.getCanonicalForm(item.getHandle()));
-       email.addArgument(title);    // request item title
-       email.addArgument(message);   // message
-       email.addArgument(getLinkTokenEmail(context,token));
-       email.addArgument(requestItemAuthor.getFullName());    //   corresponding author name
-       email.addArgument(requestItemAuthor.getEmail());    //   corresponding author email
-       email.addArgument(DSpaceServicesFactory.getInstance().getConfigurationService().getProperty("dspace.name"));
-       email.addArgument(DSpaceServicesFactory.getInstance().getConfigurationService().getProperty("mail.helpdesk"));
+       email.addArgument(new Date()); // 0 Date
+       email.addArgument(requesterName); // 1 Requester
+       email.addArgument(requesterEmail); // 2 Email
+       email.addArgument(allFiles.equals("true") ? I18nUtil.getMessage("itemRequest.all") : bitstream.getName()); // 3 Bitstream
+       email.addArgument(handleService.getCanonicalForm(item.getHandle())); // 4 Item handle
+       if (StringUtils.isNotEmpty(citationDC)) {
+           email.addArgument(citationDC); // 5 requested item
+       } else {
+           email.addArgument(title);    // 5 requested item title
+       }
+       email.addArgument(message);   // 6 message
+       email.addArgument(getLinkTokenEmail(context,token)); // 7
+       email.addArgument(requestItemAuthor.getFullName());    // 8   corresponding author name
+       email.addArgument(requestItemAuthor.getEmail());    // 9  corresponding author email
+       email.addArgument(DSpaceServicesFactory.getInstance().getConfigurationService().getProperty("dspace.name")); // 10
+       email.addArgument(DSpaceServicesFactory.getInstance().getConfigurationService().getProperty("mail.helpdesk")); // 11
        if (StringUtils.equals(userType,"Others"))
        {
            email.addArgument(userTypeOther); //12 User type
@@ -172,13 +179,13 @@ public class SendItemRequestAction extends AbstractAction
        }
        if (StringUtils.equals(organizationType,"Others"))
        {
-           email.addArgument(organizationTypeOther); // Organization type 13
+           email.addArgument(organizationTypeOther); // 13 Organization type
        }
        else {
-           email.addArgument(organizationType); // Organization type 13
+           email.addArgument(organizationType); // 13 Organization type
        }
-       email.addArgument(institution);      // Institution 14
-       email.addArgument(userAddress);      // Address 15
+       email.addArgument(institution);      // 14 Institution
+       email.addArgument(userAddress);      // 15 Address
 
        email.setReplyTo(requesterEmail);
 

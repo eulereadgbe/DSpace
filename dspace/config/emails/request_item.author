@@ -37,6 +37,10 @@ This is a document request from SAIR user, submitted through the {10} Request a 
 
 -------------------------------------------------
 
+Date: {0}
+
+Item requested: {5} ({4})
+
 Requestor: {1}
 Email address: {2}
 Institution: {14}
@@ -44,8 +48,6 @@ Address: {15}
 User type: {12}
 Organization type: {13}
 
-Date: {0}
-Item requested: {5}
 Item handle: {4}
 
 -------------------------------------------------
