@@ -158,3 +158,18 @@ header .navbar-default .navbar-nav > li > a, header .navbar-default .navbar-nav 
 a.disabled:hover {
     cursor:not-allowed
  }
+
+ .citation-count {
+   background: #106370 none repeat scroll 0 0;
+   border: 3px solid #989898;
+   border-radius: 100%;
+   color: #ffffff;
+   font-size: 12px;
+   height: 40px;
+   width: 40px;
+   margin: 0 auto;
+   padding: 0px;
+   text-align: center;
+   line-height: 33px;
+   display: inline-block;
+ }

@@ -121,6 +121,18 @@
                     <xsl:if test="$ds_item_view_toggle_url != ''">
                         <xsl:call-template name="itemSummaryView-show-full"/>
                     </xsl:if>
+                    <xsl:if test="$identifier_doi">
+                    <xsl:call-template name="impact-scopus"/>
+                    </xsl:if>
+                    <xsl:if test='confman:getProperty("dimensions.enabled") and $identifier_doi'>
+                        <xsl:call-template name="impact-dimensions"/>
+                    </xsl:if>
+                    <xsl:if test='confman:getProperty("altmetric.enabled") and ($identifier_doi or $identifier_handle)'>
+                        <xsl:call-template name="impact-altmetric"/>
+                    </xsl:if>
+                    <xsl:if test='confman:getProperty("plumx.enabled") and $identifier_doi'>
+                        <xsl:call-template name="impact-plumx"/>
+                    </xsl:if>
                 </div>
                 <div class="col-sm-8">
                     <xsl:call-template name="itemSummaryView-DIM-abstract"/>
@@ -1154,5 +1166,180 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
+    <xsl:template name="impact-scopus">
+            <script src="{$theme-path}scripts/impact.js" defer="defer">&#160;</script>
+            <p id="scopus" class="hidden">
+                <xsl:attribute name="data-doi">
+                    <xsl:value-of select="dim:field[@element='identifier' and @qualifier='doi']" />
+                </xsl:attribute>
+                <small>Cited </small>
+                <a href="to be filled by impact.js" target="_blank">
+                    <!-- <img src="{concat($theme-path,'/images/scopus.png')}"
+                         i18n:attr="alt"
+                         alt="xmlui.mirage2.itemSummaryView.ImpactSection.ScopusLogoAlt" />-->
+                    <span class="citation-count badge" title="View citing articles in Scopus"></span>
+                </a>
+                <small> times in
+                    <a class="scopus-record" target="_blank" title="View record in Scopus">Scopus</a>
+                </small>
+            </p>
+    </xsl:template>
+
+    <xsl:template name='impact-dimensions'>
+        <script type="text/javascript" src="https://badge.dimensions.ai/badge.js" charset="utf-8">&#xFEFF;</script>
+            <div class="table">
+                <span class="__dimensions_badge_embed__">
+                    <xsl:variable name='badge_type' select='confman:getProperty("dimensions.style")'/>
+                    <xsl:if test='boolean($badge_type)'>
+                        <xsl:attribute name='data-style'>
+                            <xsl:value-of select='$badge_type'/>
+                        </xsl:attribute>
+        </xsl:if>
+                    <xsl:variable name="legend" select="confman:getProperty('dimensions.legend')"/>
+                    <xsl:if test="boolean($legend)">
+                        <xsl:attribute name="data-legend">
+                            <xsl:value-of select="$legend"/>
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:attribute name="data-doi">
+                        <xsl:value-of select="$identifier_doi"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="data-hide-zero-citations">
+                        <xsl:text>true</xsl:text>
+                    </xsl:attribute>
+                </span>
+            </div>
+    </xsl:template>
+
+    <xsl:template name='impact-altmetric'>
+        <div id='impact-altmetric' class="table">
+            <!-- Altmetric.com -->
+            <script type="text/javascript" src="{concat($scheme, 'd1bxh8uas1mnw7.cloudfront.net/assets/embed.js')}">&#xFEFF;
+            </script>
+            <div id='altmetric'
+                 class='altmetric-embed'>
+                <xsl:variable name='badge_type' select='confman:getProperty("altmetric.badgeType")'/>
+                <xsl:if test='boolean($badge_type)'>
+                    <xsl:attribute name='data-badge-type'><xsl:value-of select='$badge_type'/></xsl:attribute>
+                </xsl:if>
+
+                <xsl:variable name='badge_popover' select='confman:getProperty("altmetric.popover")'/>
+                <xsl:if test='$badge_popover'>
+                    <xsl:attribute name='data-badge-popover'><xsl:value-of select='$badge_popover'/></xsl:attribute>
+                </xsl:if>
+
+                <xsl:variable name='badge_details' select='confman:getProperty("altmetric.details")'/>
+                <xsl:if test='$badge_details'>
+                    <xsl:attribute name='data-badge-details'><xsl:value-of select='$badge_details'/></xsl:attribute>
+                </xsl:if>
+
+                <xsl:variable name='no_score' select='confman:getProperty("altmetric.noScore")'/>
+                <xsl:if test='$no_score'>
+                    <xsl:attribute name='data-no-score'><xsl:value-of select='$no_score'/></xsl:attribute>
+                </xsl:if>
+
+                <xsl:if test='confman:getProperty("altmetric.hideNoMentions")'>
+                    <xsl:attribute name='data-hide-no-mentions'>true</xsl:attribute>
+                </xsl:if>
+
+                <xsl:variable name='link_target' select='confman:getProperty("altmetric.linkTarget")'/>
+                <xsl:if test='$link_target'>
+                    <xsl:attribute name='data-link-target'><xsl:value-of select='$link_target'/></xsl:attribute>
+                </xsl:if>
+
+                <xsl:choose>    <!-- data-doi data-handle data-arxiv-id data-pmid -->
+                    <xsl:when test='$identifier_doi'>
+                        <xsl:attribute name='data-doi'><xsl:value-of select='$identifier_doi'/></xsl:attribute>
+                    </xsl:when>
+                    <xsl:when test='$identifier_handle'>
+                        <xsl:attribute name='data-handle'><xsl:value-of select='$identifier_handle'/></xsl:attribute>
+                    </xsl:when>
+                </xsl:choose>
+                &#xFEFF;
+            </div>
+        </div>
+    </xsl:template>
+
+    <xsl:template name="impact-plumx">
+        <div id="impact-plumx" style="clear:right" class="table">
+            <!-- PlumX <http://plu.mx> -->
+            <xsl:variable name="plumx_type" select="confman:getProperty('plumx.widget-type')"/>
+            <xsl:variable name="plumx-script-url">
+                <xsl:choose>
+                    <xsl:when test="boolean($plumx_type)">
+                        <xsl:value-of select="concat($scheme, 'd39af2mgp1pqhg.cloudfront.net/widget-', $plumx_type, '.js')"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="concat($scheme, 'd39af2mgp1pqhg.cloudfront.net/widget-popup.js')"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+
+            <script type="text/javascript" src="{$plumx-script-url}">&#xFEFF;
+            </script>
+
+            <xsl:variable name="plumx-class">
+                <xsl:choose>
+                    <xsl:when test="boolean($plumx_type) and ($plumx_type != 'popup')">
+                        <xsl:value-of select="concat('plumx-', $plumx_type)"/>
+                    </xsl:when>
+                    <xsl:otherwise>plumx-plum-print-popup</xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+
+            <a>
+                <xsl:attribute name="id">plumx</xsl:attribute>
+                <xsl:attribute name="class"><xsl:value-of select="$plumx-class"/></xsl:attribute>
+                <xsl:attribute name="href">https://plu.mx/pitt/a/?doi=<xsl:value-of select="$identifier_doi"/></xsl:attribute>
+
+                <xsl:variable name="plumx_data-popup" select="confman:getProperty('plumx.data-popup')"/>
+                <xsl:if test="$plumx_data-popup">
+                    <xsl:attribute name="data-popup"><xsl:value-of select="$plumx_data-popup"/></xsl:attribute>
+                </xsl:if>
+
+                <xsl:if test="confman:getProperty('plumx.data-hide-when-empty')">
+                    <xsl:attribute name="data-hide-when-empty">true</xsl:attribute>
+                </xsl:if>
+
+                <xsl:if test="confman:getProperty('plumx.data-hide-print')">
+                    <xsl:attribute name="data-hide-print">true</xsl:attribute>
+                </xsl:if>
+
+                <xsl:variable name="plumx_data-orientation" select="confman:getProperty('plumx.data-orientation')"/>
+                <xsl:if test="$plumx_data-orientation">
+                    <xsl:attribute name="data-orientation"><xsl:value-of select="$plumx_data-orientation"/></xsl:attribute>
+                </xsl:if>
+
+                <xsl:variable name="plumx_data-width" select="confman:getProperty('plumx.data-width')"/>
+                <xsl:if test="$plumx_data-width">
+                    <xsl:attribute name="data-width"><xsl:value-of select="$plumx_data-width"/></xsl:attribute>
+                </xsl:if>
+
+                <xsl:if test="confman:getProperty('plumx.data-border')">
+                    <xsl:attribute name="data-border">true</xsl:attribute>
+                </xsl:if>
+                &#xFEFF;
+            </a>
+
+        </div>
+    </xsl:template>
+
+    <xsl:variable name="scheme">
+        <xsl:choose>
+            <xsl:when test="starts-with(confman:getProperty('dspace.baseUrl'), 'https://')">
+                <xsl:text>https://</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text>http://</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+
+    <!-- item metadata reference -->
+    <xsl:variable name='identifier_doi'
+                  select='//dri:meta/dri:pageMeta/dri:metadata[@element="citation_doi"]'/>
+    <xsl:variable name='identifier_handle'
+                  select='//dri:meta/dri:pageMeta/dri:metadata[@element="identifier" and @qualifier="handle"]'/>
 
 </xsl:stylesheet>
