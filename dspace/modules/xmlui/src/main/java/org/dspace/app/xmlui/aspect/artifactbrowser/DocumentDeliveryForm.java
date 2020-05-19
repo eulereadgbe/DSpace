@@ -315,6 +315,9 @@ public class DocumentDeliveryForm extends AbstractDSpaceTransformer implements C
             if(StringUtils.isEmpty(parameters.getParameter("purpose", ""))){
                 purpose.addError(T_purpose_error);
             }
+            if(StringUtils.length("purpose") < 8) {
+                purpose.addError("Don't be lazy, provide the purpose for this request.");
+            }
             if(StringUtils.isEmpty(parameters.getParameter("userAddress",""))){
                 userAddress.addError(T_userAddress_error);
             }

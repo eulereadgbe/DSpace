@@ -376,6 +376,9 @@ public class ItemRequestForm extends AbstractDSpaceTransformer implements Cachea
 			if(StringUtils.isEmpty(parameters.getParameter("message", ""))){
 				message.addError(T_message_error);
 			}
+			if(StringUtils.length("message") < 8) {
+			    message.addError("Don't be lazy, provide the purpose for this request.");
+            }
             if(StringUtils.isEmpty(parameters.getParameter("institution", ""))){
                 institution.addError(T_institution_error);
             }
