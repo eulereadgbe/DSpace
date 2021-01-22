@@ -19,7 +19,101 @@
 
 @include selection {
     color: white;
-    background: hotpink;
+    background: darken($brand-info, 13%);
+}
+
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('../vendor/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot');
+    src: url('../vendor/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../vendor/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url('../vendor/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url('../vendor/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.navbar {
+    min-height: 70px;
+}
+
+.navbar-brand {
+    padding: 5px 15px;
+    height: 54px
+}
+
+ header .navbar-brand img {
+    height: 60px
+}
+
+.headerInfoName {
+    color: $brand-primary;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-left: -10px;
+    position: absolute
+}
+
+.headerInfoText {
+    font-size: 15px;
+    color: $brand-primary;
+    position: absolute;
+    top: 40px;
+    margin-left: -10px
+}
+
+.breadcrumb {
+border-style:none; //remove border from lumens breadcrumb
+}
+
+.breadcrumb > li + li:before {
+  content: "\00BB";
+}
+
+.thumbnail > img, .thumbnail > img, .thumbnail a > img {
+  border: 1px solid #dddddd;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin: auto;
+  max-height: 200px;
+}
+
+a:hover, a:focus {
+  text-decoration: none;
+  color: lighten($brand-primary, 13%);
+}
+
+.trail-wrapper {
+    background-color: $brand-primary;
+	min-height: 36px;
+    border-bottom: 3px solid $brand-info;
+    padding-top: 4px;
+    color: #fff;
+}
+
+.trail-wrapper .breadcrumb > li + li:before, .breadcrumb > li > a {
+  color: whitesmoke;
+}
+
+.trail-wrapper .breadcrumb > .active, .breadcrumb > li > a:hover, a#trail-dropdown-toggle {
+  color: #FED531;
+}
+
+header .navbar-default .navbar-nav > li > a {
+    color: whitesmoke;
+}
+
+header .navbar-default .navbar-nav > li > a, header .navbar-default .navbar-nav {
+    color: $brand-primary;
+}
+
+.dropdown-menu > li > a { /* Wrap text in dropdown */
+  white-space: inherit;
+  color: $brand-primary;
+}
+
+.dropdown-menu > .disabled > a {
+  color: lighten($brand-primary, 13%);
+}
+
+.navbar-toggle {
+  margin: auto;
 }
 
 .publication-records-modal, .publication-records-modal ul {
@@ -58,4 +152,27 @@
   #aspect_submission_StepTransformer_item_publication-title{
     margin-bottom:5px;
   }
+}
+
+header .navbar-brand .cpu-logo img {
+border-right: 1px solid #002147;
+padding-right: 5px;
+}
+
+header .navbar-brand .bahandian-logo img {
+padding-left: 5px;
+}
+
+.modal-backdrop { /* Send modal window to front */
+  z-index: -1;
+}
+
+.btn-success{
+    background-color: $brand-primary;
+    border-color: $brand-primary;
+}
+
+.btn-success[disabled]{
+    background-color: lighten($brand-primary,15%);
+    border-color: lighten($brand-primary,15%);
 }
