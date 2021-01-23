@@ -2506,9 +2506,11 @@
 	<!-- For news.xmlui.xml -->
 	<message key="bahandian.news.title">Bahándìan: the official Institutional Repository of Central Philippine University</message>
 	<message key="bahandian.news.content">
-		<p><b>Bahándìan</b> is the institutional repository of the Central Philippine University for the management, dissemination,
-			and preservation of digital materials that represent the scholarly work production of the academic community and
-			its affiliates and their faculty members, staff, and students in higher education.
+		<p>
+			<b>Bahándìan</b>
+			is the institutional repository of the Central Philippine University for the management, dissemination, and
+			preservation of digital materials that represent the scholarly work of the academic community and its
+			affiliates and their faculty members and students.
 		</p>
 		<p>
 			<b>Bahándìan</b>
