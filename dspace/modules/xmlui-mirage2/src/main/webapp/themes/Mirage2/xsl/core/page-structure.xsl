@@ -283,6 +283,9 @@
                     <xsl:when test="starts-with($request-uri, 'page/about')">
                         <i18n:text>xmlui.mirage2.page-structure.aboutThisRepository</i18n:text>
                     </xsl:when>
+                    <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='URI']='disclaimer'">
+                        <i18n:text>xmlui.Bahandian.DisclaimerPage.title</i18n:text>
+                    </xsl:when>
                     <xsl:when test="not($page_title)">
                         <xsl:text>  </xsl:text>
                     </xsl:when>
@@ -710,15 +713,6 @@
                 <div class="row">
                     <hr/>
                     <div class="col-xs-7 col-sm-8">
-                        <div>
-                            <a target="_blank" href="http://www.cpu.edu.ph">
-                                <acronym title="Central Philippine University">
-                                    <xsl:text>Central Philippine University</xsl:text>
-                                </acronym>
-                            </a>
-                            <xsl:text>&#160;&#169;&#160;</xsl:text>
-                            <xsl:value-of select="date:year()"/>
-                        </div>
                         <div class="hidden-print">
                             <a>
                                 <xsl:attribute name="href">
@@ -737,6 +731,24 @@
                                 </xsl:attribute>
                                 <i18n:text>xmlui.dri2xhtml.structural.feedback-link</i18n:text>
                             </a>
+                            <xsl:text> | </xsl:text>
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:value-of
+                                            select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+                                    <xsl:text>/disclaimer</xsl:text>
+                                </xsl:attribute>
+                                <i18n:text>xmlui.Bahandian.DisclaimerPage.title</i18n:text>
+                            </a>
+                        </div>
+                        <div>
+                            <a target="_blank" href="http://www.cpu.edu.ph">
+                                <acronym title="Central Philippine University">
+                                    <xsl:text>Central Philippine University</xsl:text>
+                                </acronym>
+                            </a>
+                            <xsl:text>&#160;&#169;&#160;</xsl:text>
+                            <xsl:value-of select="date:year()"/>
                         </div>
                     </div>
                     <div class="col-xs-5 col-sm-4 hidden-print">
@@ -790,6 +802,11 @@
                     <div class="hero-unit">
                         <h1><i18n:text>xmlui.mirage2.page-structure.heroUnit.title</i18n:text></h1>
                         <p><i18n:text>xmlui.mirage2.page-structure.heroUnit.content</i18n:text></p>
+                    </div>
+                </xsl:when>
+                <xsl:when test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='URI']='disclaimer'">
+                    <div class="simple-item-view-description">
+                        <xsl:apply-templates/>
                     </div>
                 </xsl:when>
                 <!-- Otherwise use default handling of body -->

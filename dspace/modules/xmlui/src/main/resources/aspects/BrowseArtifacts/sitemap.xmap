@@ -25,6 +25,7 @@ collections / items / and bitstreams.
             <map:transformer name="CollectionBrowse" src="org.dspace.app.xmlui.aspect.browseArtifacts.CollectionBrowse"/>
             <map:transformer name="ConfigurableBrowse" src="org.dspace.app.xmlui.aspect.artifactbrowser.ConfigurableBrowse"/>
             <map:transformer name="StaticPage" src="org.dspace.app.xmlui.aspect.browseArtifacts.StaticPage"/>
+            <map:transformer name="DisclaimerPage" src="org.dspace.app.xmlui.aspect.bahandian.DisclaimerPage"/>
         </map:transformers>
 
         <map:matchers default="wildcard">
@@ -97,7 +98,11 @@ collections / items / and bitstreams.
                     </map:match>
 
                 </map:match>
+            </map:match>
 
+            <map:match pattern="disclaimer">
+                <map:transform type="DisclaimerPage"/>
+                <map:serialize type="xml" />
             </map:match>
 
             <!-- Not a URL we care about, so just pass it on. -->
