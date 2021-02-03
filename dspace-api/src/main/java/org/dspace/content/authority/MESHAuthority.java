@@ -33,7 +33,7 @@ import org.json.JSONObject;
  */
 public class MESHAuthority implements ChoiceAuthority {
 
-	Logger log = Logger.getLogger(VIAFAuthority.class);
+	Logger log = Logger.getLogger(MESHAuthority.class);
 	String meshurl = "https://id.nlm.nih.gov/mesh/lookup/descriptor";
 	
 	@Override

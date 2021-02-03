@@ -33,7 +33,7 @@ import org.json.JSONObject;
  */
 public class EukaryotaAuthority implements ChoiceAuthority {
 
-	Logger log = Logger.getLogger(VIAFAuthority.class);
+	Logger log = Logger.getLogger(EukaryotaAuthority.class);
 	String agrovocurl = "https://agrovoc.uniroma2.it/agrovoc/rest/v1/search";
 	
 	@Override
