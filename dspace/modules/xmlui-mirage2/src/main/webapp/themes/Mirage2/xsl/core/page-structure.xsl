@@ -352,7 +352,7 @@
                                 <img src="{$theme-path}images/CPU-logo.png"/>
                             </span>
                             <span class="bahandian-logo">
-                                <img src="{$theme-path}images/bahandian-logo.png"/>
+                                <img src="{$theme-path}images/bahandian-logo-inline.svg"/>
                             </span>
                         </a>
                         </span>
@@ -710,7 +710,7 @@
     <!-- Like the header, the footer contains various miscellaneous text, links, and image placeholders -->
     <xsl:template name="buildFooter">
         <footer>
-                <div class="row">
+                <div class="row small">
                     <hr/>
                     <div class="col-xs-7 col-sm-8">
                         <div class="hidden-print">
@@ -756,7 +756,8 @@
                             <span class="theme-by">Managed by&#160;</span>
                             <br/>
                             <a title="Henry Luce III Library" target="_blank" href="https://library.cpu.edu.ph/">
-                                <img alt="Henry Luce III Library" src="{concat($theme-path, 'images/HLLibrary.png')}"/>
+                                <img alt="Henry Luce III Library" class="visible-xs" src="{concat($theme-path, 'images/HLLibrary.svg')}"/>
+                                <img alt="Henry Luce III Library" class="hidden-xs" src="{concat($theme-path, 'images/HLLibrary-inline.svg')}"/>
                             </a>
                         </div>
 
