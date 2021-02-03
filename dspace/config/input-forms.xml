@@ -215,7 +215,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier>advisor</dc-qualifier>
          <repeatable>true</repeatable>
          <label>Thesis advisor</label>
-         <type-bind>Thesis,Dissertation</type-bind>
+         <type-bind>Thesis,Dissertation,Special paper</type-bind>
          <input-type>name</input-type>
          <hint>Enter the names of the thesis advisor of this item.</hint>
          <required></required>
@@ -226,7 +226,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>contributor</dc-element>
          <dc-qualifier>corporateauthor</dc-qualifier>
          <label>Corporate author</label>
-         <type-bind>Book,Thesis,Dissertation</type-bind>
+         <type-bind>Book,Thesis,Dissertation,Special paper</type-bind>
          <input-type>onebox</input-type>
          <hint>Central Philippine University. Graduate Studies</hint>
        </field>
@@ -237,7 +237,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier>chair</dc-qualifier>
          <repeatable>false</repeatable>
          <label>Committee chair</label>
-         <type-bind>Thesis,Dissertation</type-bind>
+         <type-bind>Thesis,Dissertation,Special paper</type-bind>
          <input-type>name</input-type>
          <hint></hint>
        </field>
@@ -248,7 +248,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier>committeemember</dc-qualifier>
          <repeatable>true</repeatable>
          <label>Committee member</label>
-         <type-bind>Thesis,Dissertation</type-bind>
+         <type-bind>Thesis,Dissertation,Special paper</type-bind>
          <input-type>name</input-type>
          <hint></hint>
        </field>
@@ -258,7 +258,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>contributor</dc-element>
          <dc-qualifier>department</dc-qualifier>
          <label>Department</label>
-         <type-bind>Thesis,Dissertation</type-bind>
+         <type-bind>Thesis,Dissertation,Special paper</type-bind>
          <input-type>onebox</input-type>
          <hint>Enter the Department's name (eg. School of Graduate Studies)</hint>
          <required>You must enter the Department's name.</required>
@@ -270,7 +270,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-qualifier>degree</dc-qualifier>
          <repeatable>false</repeatable>
          <label>Degree</label>
-         <type-bind>Thesis,Dissertation</type-bind>
+         <type-bind>Thesis,Dissertation,Special paper</type-bind>
          <input-type>onebox</input-type>
          <hint>Example: Master of Science in Social Work</hint>
          <required>You must enter the Degree for this item</required>
@@ -317,7 +317,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>description</dc-element>
          <dc-qualifier>bibliographicalreferences</dc-qualifier>
          <label>Bibliographical references</label>
-         <type-bind>Book,Thesis,Dissertation</type-bind>
+         <type-bind>Book,Thesis,Dissertation,Special paper</type-bind>
          <input-type>onebox</input-type>
          <hint>Example: Includes bibliographical references (83-85)</hint>
        </field>
@@ -327,7 +327,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>format</dc-element>
          <dc-qualifier>extent</dc-qualifier>
          <label>Physical description</label>
-         <type-bind>Book,Thesis,Dissertation</type-bind>
+         <type-bind>Book,Thesis,Dissertation,Special paper</type-bind>
          <input-type>onebox</input-type>
          <hint>Enter the physical details (eg. ii, 96 p. : ill. (col.).</hint>
        </field>
@@ -397,7 +397,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>subject</dc-element>
          <dc-qualifier>ddc</dc-qualifier>
          <label>DDC Classification No.</label>
-         <type-bind>Book,Thesis,Dissertation</type-bind>
+         <type-bind>Book,Thesis,Dissertation,Special paper</type-bind>
          <input-type>onebox</input-type>
          <hint>Example: GSL Theses 361.30072 D566</hint>
        </field>
@@ -407,7 +407,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>subject</dc-element>
          <dc-qualifier>lcc</dc-qualifier>
          <label>LC Classification No.</label>
-         <type-bind>Book,Thesis,Dissertation</type-bind>
+         <type-bind>Book,Thesis,Dissertation,Special paper</type-bind>
          <input-type>onebox</input-type>
          <hint>Enter the LC Classification No. for this item (If applicable)</hint>
        </field>
@@ -545,6 +545,10 @@ it, please enter the types and the actual numbers or codes.</hint>
      <pair>
        <displayed-value>Software</displayed-value>
        <stored-value>Software</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Special paper</displayed-value>
+       <stored-value>Special paper</stored-value>
      </pair>
      <pair>
        <displayed-value>Technical Report</displayed-value>
