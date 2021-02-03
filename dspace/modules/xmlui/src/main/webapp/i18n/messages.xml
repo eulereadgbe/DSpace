@@ -2526,7 +2526,7 @@
     <message key="xmlui.Submission.submit.progressbar.lookup">Lookup</message>
 
 	<!-- For news.xmlui.xml -->
-	<message key="bahandian.news.title">BAHÁNDÌAN: the official Institutional Repository of Central Philippine University</message>
+	<message key="bahandian.news.title"><div class="bold">BAHÁNDÌAN<span class="h4 bahandian-subtitle">The official Institutional Repository of Central Philippine University</span></div></message>
 	<message key="bahandian.news.content">
 		<p>
 			<b>BAHÁNDÌAN</b>
