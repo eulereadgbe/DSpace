@@ -375,9 +375,9 @@ it, please enter the types and the actual numbers or codes.</hint>
          <dc-element>subject</dc-element>
          <dc-qualifier>mesh</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>MEdical Subject Headings</label>
+         <label>Medical Subject Headings</label>
          <input-type>twobox</input-type>
-         <hint>Enter the MEdical Subject Headings for this item (If applicable)</hint>
+         <hint>Enter the Medical Subject Headings (MeSH) for this item (If applicable)</hint>
          <vocabulary>MESHAuthority</vocabulary>
        </field>
 
