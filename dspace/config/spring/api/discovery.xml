@@ -197,6 +197,10 @@
                         <value>dc.contributor.author</value>
                         <value>dc.creator</value>
                         <value>dc.subject</value>
+                        <value>dc.subject.lcsh</value>
+                        <value>dc.subjext.mesh</value>
+                        <value>local.subject</value>
+                        <value>local.subject.scientificname</value>
                     </list>
                 </property>
                 <!--The minimum number of matching terms across the metadata fields above before an item is found as related -->
@@ -413,7 +417,12 @@
         <property name="indexFieldName" value="subject"/>
         <property name="metadataFields">
             <list>
-                <value>dc.subject.*</value>
+                <value>dc.subject</value>
+                <value>dc.subject.lcsh</value>
+                <value>dc.subject.mesh</value>
+                <value>local.subject</value>
+                <value>local.subject.scientificname</value>
+                <value>dc.coverage.spatial</value>
             </list>
         </property>
         <property name="facetLimit" value="5"/>

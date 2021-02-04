@@ -118,6 +118,9 @@
                     </div>
                     <xsl:call-template name="itemSummaryView-DIM-date"/>
                     <xsl:call-template name="itemSummaryView-DIM-authors"/>
+                    <xsl:call-template name="itemSummaryView-DIM-advisors"/>
+                    <xsl:call-template name="itemSummaryView-DIM-chair"/>
+                    <xsl:call-template name="itemSummaryView-DIM-member"/>
                     <xsl:if test="$ds_item_view_toggle_url != ''">
                         <xsl:call-template name="itemSummaryView-show-full"/>
                     </xsl:if>
@@ -148,8 +151,13 @@
                     </div>
                     <xsl:call-template name="itemSummaryView-DIM-subject"/>
                     <xsl:call-template name="itemSummaryView-DIM-keyword"/>
+                    <xsl:call-template name="itemSummaryView-DIM-department"/>
+                    <xsl:call-template name="itemSummaryView-DIM-degree"/>
+                    <div class="row">
+                        <xsl:call-template name="itemSummaryView-DIM-DDC"/>
+                        <xsl:call-template name="itemSummaryView-DIM-format"/>
+                    </div>
                     <xsl:call-template name="itemSummaryView-DIM-series"/>
-                    <xsl:call-template name="itemSummaryView-DIM-format"/>
                     <xsl:call-template name="itemSummaryView-collections"/>
                 </div>
             </div>
@@ -341,6 +349,71 @@
         </xsl:if>
     </xsl:template>
 
+    <xsl:template name="itemSummaryView-DIM-advisors">
+        <xsl:if test="dim:field[@element='contributor'][@qualifier='advisor' and descendant::text()]">
+            <div class="simple-item-view-authors item-page-field-wrapper table">
+                <h5>
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-advisor</i18n:text>
+                </h5>
+                <xsl:for-each select="dim:field[@element='contributor'][@qualifier='advisor']">
+                    <xsl:call-template name="itemSummaryView-DIM-authors-entry"/>
+                </xsl:for-each>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-chair">
+        <xsl:if test="dim:field[@element='contributor'][@qualifier='chair' and descendant::text()]">
+            <div class="simple-item-view-authors item-page-field-wrapper table">
+                <h5>
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-chair</i18n:text>
+                </h5>
+                <xsl:for-each select="dim:field[@element='contributor'][@qualifier='chair']">
+                    <xsl:call-template name="itemSummaryView-DIM-authors-entry"/>
+                </xsl:for-each>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-member">
+        <xsl:if test="dim:field[@element='contributor'][@qualifier='committeemember' and descendant::text()]">
+            <div class="simple-item-view-authors item-page-field-wrapper table">
+                <h5>
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-member</i18n:text>
+                </h5>
+                <xsl:for-each select="dim:field[@element='contributor'][@qualifier='committeemember']">
+                    <xsl:call-template name="itemSummaryView-DIM-authors-entry"/>
+                </xsl:for-each>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-department">
+        <xsl:if test="dim:field[@element='contributor'][@qualifier='department' and descendant::text()]">
+                <div class="item-page-field-wrapper table">
+                    <h5>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-department</i18n:text>
+                    </h5>
+                    <xsl:for-each select="dim:field[@element='contributor'][@qualifier='department']">
+                        <xsl:copy-of select="node()"/>
+                    </xsl:for-each>
+                </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-degree">
+        <xsl:if test="dim:field[@element='description'][@qualifier='degree' and descendant::text()]">
+                <div class="item-page-field-wrapper table">
+                    <h5>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-degree</i18n:text>
+                    </h5>
+                    <xsl:for-each select="dim:field[@element='description'][@qualifier='degree']">
+                        <xsl:copy-of select="node()"/>
+                    </xsl:for-each>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
     <xsl:template name="itemSummaryView-DIM-authors-entry">
         <div>
             <xsl:if test="@authority">
@@ -362,7 +435,7 @@
                     <xsl:text>_blank</xsl:text>
                 </xsl:attribute>
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAJNQTFRFAAAAIHm1IHm1IHm1IHm1IHm1IHm1IHm1IHm1IHm1IHm1IHm1IHm1Ppo8Ppo8Ppo8OpZLNpFdPpo8Ppo8Ppo8Ppo8Ppo8IHm1Ppo8e5Iz9YIgg5Ey9YIg9YIg9YIgPpo89YIg9YIg9YIgIHm10oE59YIg9YIg9YIg14E15oQiPpo89YIgoI0t9YIg9YIg9YIg9YIgFSvS3AAAADF0Uk5TABCA3//PYK/vIJ8wQHDf//+vn8+Aj2CP7zBA/+//UECPIJ+/v6/fgN+/EGDvzxAwv/6gdEsAAACoSURBVHicPU5RFoIwDMvGQBBhykARQZkKqIh4/9O5bmo+2jQvTQuAcU8I4Qf4gvnCYcF+c8gjRDwUSytwEcaWxKFYUfdcS1Ip1xtiwqOaSZUXqVQk0OZWJk7OjbAzLC3cRVUCvm+I3FcVrBMIKPRQN019BE5GMBZWNa3W50YjKemzi3ftyN8PSHMbFdxswHDP1MOFtyPV7ll8Z+jpBYy1xh/z9J762dIPwB8J12aqWq4AAAAASUVORK5CYII="
-                     alt="OCLC - FAST (Faceted Application of Subject Terminology)" class="extra-rdf-icon"
+                     alt="OCLC - FAST (Faceted Application of Subject Terminology)" class="vocabulary"
                      title="OCLC - FAST (Faceted Application of Subject Terminology)"/>
             </a>
         </xsl:if>
@@ -635,10 +708,14 @@ or dim:field[@element='coverage'][@qualifier='spatial']">
 
     <xsl:template name="itemSummaryView-DIM-format">
         <xsl:if test="dim:field[@element='format' and @qualifier='extent' and descendant::text()]">
-            <div class="item-page-field-wrapper table">
-                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-format</i18n:text></h5>
-                <div>
-                    <xsl:value-of select="dim:field[@element='format'][@qualifier='extent'][1]/node()"/>
+            <div class="col-sm-6 col-print-4">
+                <div class="item-page-field-wrapper table">
+                    <h5>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-format</i18n:text>
+                    </h5>
+                    <div>
+                        <xsl:value-of select="dim:field[@element='format'][@qualifier='extent'][1]/node()"/>
+                    </div>
                 </div>
             </div>
         </xsl:if>
@@ -656,6 +733,21 @@ or dim:field[@element='coverage'][@qualifier='spatial']">
                         </xsl:if>
                     </xsl:for-each>
                 </span>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-DDC">
+        <xsl:if test="dim:field[@element='subject' and @qualifier='ddc' and descendant::text()]">
+            <div class="col-sm-6 col-print-4">
+                <div class="item-page-field-wrapper table">
+                    <h5>
+                        <i18n:text>xmlui.dri2xhtml.METS-1.0.item-ddc</i18n:text>
+                    </h5>
+                    <div>
+                        <xsl:value-of select="dim:field[@element='subject'][@qualifier='ddc'][1]/node()"/>
+                    </div>
+                </div>
             </div>
         </xsl:if>
     </xsl:template>
