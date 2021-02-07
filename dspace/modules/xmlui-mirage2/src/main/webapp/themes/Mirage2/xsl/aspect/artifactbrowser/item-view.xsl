@@ -420,6 +420,10 @@
                 <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
             </xsl:if>
             <xsl:copy-of select="node()"/>
+            <xsl:if test="@orcid_id">
+                <xsl:text> </xsl:text>
+                <a href="https://orcid.org/{@orcid_id}" target="_blank"><img src="{$theme-path}/images/ORCIDiD.svg" alt="ORCID" /></a>
+            </xsl:if>
         </div>
     </xsl:template>
 
