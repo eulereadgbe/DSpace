@@ -19,8 +19,11 @@
 
 @include selection {
     color: white;
-    background: darken($brand-primary, 13%);
+    background: lighten($brand-primary, 13%);
 }
+
+@import url(../scripts/treeview/jquery.treeview.css);
+
 
 .navbar-brand {
     padding: 5px 15px;
