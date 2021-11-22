@@ -355,7 +355,7 @@
                             </a>
                         </span>
                         <span class="headerInfoName">SEAFDEC/IFRDMD</span>
-                        <span class="headerInfoText">Institutional Repository</span>
+                        <span class="headerInfoText">INSTITUTIONAL REPOSITORY</span>
 
                         <div class="navbar-header pull-right visible-xs hidden-sm hidden-md hidden-lg">
                         <ul class="nav nav-pills pull-left ">
