@@ -2504,5 +2504,11 @@
     <message key="xmlui.Submission.submit.StartSubmissionLookupStep.submit_publication_item">Imported publication Record</message>
     <message key="xmlui.Submission.submit.progressbar.lookup">Lookup</message>
 
+	<!-- For news-xmlui.xml -->
+	<message key="dspace.news.title">DSpace @ SEAFDEC/IFRDMD</message>
+	<message key="dspace.news.content">
+		<p>Southeast Asian Fisheries Development Center, Inland Fishery Resources Development and Management Department Institutional Repository (SIIR) is the official digital repository of scholarly and research information of the department. This is to enable the effective dissemination of SEAFDEC/IFRDMD researchers' in-house and external publications for free and online. Full-text digitized copies of books, handbooks, policy guidebooks, conference proceedings, extension manuals, institutional reports, annual reports can be retrieved and downloaded.</p>
+		<p>The objectives of the repository are (1) to provide reliable means for SEAFDEC/IFRDMD researchers to store, preserve and share their research outputs and (2) to provide easy access and increase the visibility of SEAFDEC/IFRDMD scientific publications.</p>
+	</message>
 
 </catalogue>
