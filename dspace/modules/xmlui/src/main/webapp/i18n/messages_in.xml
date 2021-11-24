@@ -169,12 +169,16 @@
 
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.author.column_heading">Nama Pengarang</message>
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.subject.column_heading">Subjek</message>
+	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.keyword.column_heading">Kata kunci</message>
 
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.title.metadata.author">Mencari {0} oleh Pengarang {1}</message>
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.trail.metadata.author">Mencari {0} oleh Pengarang</message>
 
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.title.metadata.subject">Mencari {0} berdasarkan Subjek {1}</message>
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.trail.metadata.subject">Mencari {0} berdasarkan Subjek</message>
+	
+	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.title.metadata.keyword">Mencari {0} berdasarkan Kata kunci {1}</message>
+	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.trail.metadata.keyword">Mencari {0} berdasarkan Kata kunci</message>	
 
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.title.item.title">Mencari {0} berdasarkan Judul {1}</message>
 	<message key="xmlui.ArtifactBrowser.ConfigurableBrowse.trail.item.title">Mencari {0} berdasarkan Judul</message>
@@ -277,6 +281,7 @@
 	<message key="xmlui.ArtifactBrowser.Navigation.browse_title">Judul</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.browse_author">Pengarang</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.browse_subject">Subjek</message>
+	<message key="xmlui.ArtifactBrowser.Navigation.browse_keyword">Kata kunci</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.browse_dateissued">Tanggal terbit</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.browse_dateaccessioned">Tanggal unggah</message>
 	<message key="xmlui.ArtifactBrowser.Navigation.head_this_collection">Koleksi ini</message>
