@@ -2515,4 +2515,14 @@
 		<p>Tujuan dari repositori ini adalah (1) untuk menyediakan sarana yang dapat diandalkan bagi peneliti SEAFDEC/IFRDMD untuk menyimpan, melestarikan, dan membagikan hasil penelitian mereka dan (2) untuk menyediakan akses yang mudah dan meningkatkan visibilitas publikasi ilmiah SEAFDEC/IFRDMD.</p>
 	</message>
 
+	<!-- For External link disclaimer -->
+	<message key="external-link-modal-title">PENOLAKAN LINK EKSTERNAL</message>
+	<message key="external-link-modal-body">
+		<p>Tautan ini disediakan sebagai kemudahan dan hanya untuk tujuan informasi. SEAFDEC/IFRDMD tidak bertanggung jawab atas keakuratan, legalitas, atau konten situs eksternal atau tautan berikutnya. Hubungi situs eksternal untuk jawaban atas pertanyaan tentang kontennya.</p>
+		<p>Jika Anda menemukan tautan eksternal yang tidak berfungsi, kami akan berterima kasih jika Anda dapat melaporkannya ke <a href="/contact">administrator repositori</a>.</p>
+		<p>Klik <b>UNDUH</b> untuk membuka/melihat file.</p>
+	</message>
+	<message key="external-link-modal-footer-download">Unduh</message>
+	<message key="external-link-modal-footer-close">Tutup</message>
+
 </catalogue>
