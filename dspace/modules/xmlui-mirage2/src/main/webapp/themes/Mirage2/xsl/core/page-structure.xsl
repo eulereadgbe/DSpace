@@ -984,12 +984,10 @@ like: ?filtertype=subject&filter_relational_operator=equals&filter=keyword1 it a
                                 <xsl:text disable-output-escaping="yes">&amp;times;</xsl:text>
                             </span>
                         </button>
-                        <h4 class="modal-title">EXTERNAL LINKS DISCLAIMER</h4>
+                        <h4 class="modal-title"><i18n:text>external-link-modal-title</i18n:text></h4>
                     </div>
                     <div class="modal-body justify">
-                        <p>This link is being provided as a convenience and for informational purposes only. SEAFDEC/IFRDMD bears no responsibility for the accuracy, legality or content of the external site or for that of subsequent links. Contact the external site for answers to questions regarding its content.</p>
-                        <p>If you come across any external links that don't work, we would be grateful if you could report them to the <a href="/contact">repository administrators</a>.</p>
-                        <p>Click <b>DOWNLOAD</b> to open/view the file.</p>
+                        <i18n:text>external-link-modal-body</i18n:text>
                     </div>
                     <div class="modal-footer">
                         <a>
@@ -1002,10 +1000,10 @@ like: ?filtertype=subject&filter_relational_operator=equals&filter=keyword1 it a
                             <xsl:attribute name="href">
                                 <xsl:value-of select="document($otherItemMetadataURL)//dim:field[@element='relation' and @qualifier='uri']/text()"/>
                             </xsl:attribute>
-                            <xsl:text>Download</xsl:text>
+                            <i18n:text>external-link-modal-footer-download</i18n:text>
                         </a>
                         <xsl:comment> location of mets.xml is: <xsl:value-of select="$otherItemMetadataURL"/> </xsl:comment>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i18n:text>external-link-modal-footer-close</i18n:text></button>
                     </div>
                 </div>
             </div>
