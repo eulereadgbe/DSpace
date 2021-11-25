@@ -205,6 +205,9 @@
                                     <xsl:variable name="author">
                                         <xsl:apply-templates select="."/>
                                     </xsl:variable>
+                                    <xsl:variable name="orcid_id">
+                                        <xsl:value-of select="$metsDoc/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='contributor' and @qualifier='author' and . = $author]/@orcid_id"/>
+                                    </xsl:variable>
                                     <span>
                                         <!--Check authority in the mets document-->
                                         <xsl:if test="$metsDoc/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='contributor' and @qualifier='author' and . = $author]/@authority">
@@ -213,6 +216,24 @@
                                             </xsl:attribute>
                                         </xsl:if>
                                         <xsl:apply-templates select="."/>
+                                        <xsl:if test="$metsDoc/mets:METS/mets:dmdSec/mets:mdWrap/mets:xmlData/dim:dim/dim:field[@element='contributor' and @qualifier='author' and . = $author]/@orcid_id">
+                                            <xsl:text> </xsl:text>
+                                            <a>
+                                                <xsl:attribute name="href">
+                                                    <xsl:text>https://orcid.org/</xsl:text>
+                                                    <xsl:value-of select="$orcid_id"/>
+                                                </xsl:attribute>
+                                                <xsl:attribute name="target">
+                                                    <xsl:text>_blank</xsl:text>
+                                                </xsl:attribute>
+                                                <xsl:attribute name="data-toggle"><xsl:text>tooltip</xsl:text></xsl:attribute>
+                                                <xsl:attribute name="data-placement"><xsl:text>top</xsl:text></xsl:attribute>
+                                                <xsl:attribute name="data-original-title">
+                                                    <xsl:value-of select="$orcid_id"/>
+                                                </xsl:attribute>
+                                                <img src="{$theme-path}/images/ORCIDiD.svg" alt="ORCID" />
+                                            </a>
+                                        </xsl:if>
                                     </span>
 
                                     <xsl:if test="count(following-sibling::dri:item) != 0">

@@ -212,12 +212,14 @@
     <xsl:template name="itemSummaryView-DIM-abstract">
         <xsl:if test="dim:field[@element='description' and @qualifier='abstract']">
             <div class="simple-item-view-description item-page-field-wrapper table">
-                <h5 class="visible-xs"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text></h5>
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text></h5>
                 <div>
                     <xsl:for-each select="dim:field[@element='description' and @qualifier='abstract']">
                         <xsl:choose>
                             <xsl:when test="node()">
-                                <xsl:copy-of select="node()"/>
+                                <xsl:call-template name="break">
+                                    <xsl:with-param name="text" select="./node()"/>
+                                </xsl:call-template>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:text>&#160;</xsl:text>
@@ -268,7 +270,36 @@
             <xsl:if test="@authority">
                 <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
             </xsl:if>
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:choose>
+                        <xsl:when test="@qualifier='author'">
+                            <xsl:text>/discover?filtertype=author&amp;filter_relational_operator=equals&amp;sort_by=dc.date.issued_dt&amp;order=desc&amp;filter=</xsl:text>
             <xsl:copy-of select="node()"/>
+                        </xsl:when>
+                    </xsl:choose>
+                </xsl:attribute>
+                <xsl:copy-of select="node()"/>
+            </a>
+            <xsl:if test="@orcid_id">
+                <xsl:text> </xsl:text>
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:text>https://orcid.org/</xsl:text>
+                        <xsl:value-of select="@orcid_id"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="target">
+                        <xsl:text>_blank</xsl:text>
+                    </xsl:attribute>
+                    <xsl:attribute name="data-toggle"><xsl:text>tooltip</xsl:text></xsl:attribute>
+                    <xsl:attribute name="data-placement"><xsl:text>top</xsl:text></xsl:attribute>
+                    <xsl:attribute name="data-original-title">
+                        <xsl:value-of select="@orcid_id"/>
+                    </xsl:attribute>
+                    <img src="{$theme-path}/images/ORCIDiD.svg" alt="ORCID" />
+                </a>
+                <!--<a href="https://orcid.org/{@orcid_id}" target="_blank"><img src="{$theme-path}/images/ORCIDiD.svg" alt="ORCID" /></a>-->
+            </xsl:if>
         </div>
     </xsl:template>
 
@@ -319,6 +350,23 @@
                 <i18n:text>xmlui.ArtifactBrowser.ItemViewer.show_full</i18n:text>
             </a>
         </div>
+    </xsl:template>
+
+    <!-- This is to render line breaks in abstract and description fields in item simple view -->
+    <xsl:template name="break">
+        <xsl:param name="text" select="."/>
+        <xsl:choose>
+            <xsl:when test="contains($text, '&#xa;')">
+                <xsl:value-of select="substring-before($text, '&#xa;')" disable-output-escaping="yes"/>
+                <p/>
+                <xsl:call-template name="break">
+                    <xsl:with-param name="text" select="substring-after($text, '&#xa;')"/>
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$text" disable-output-escaping="yes"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template name="itemSummaryView-collections">
