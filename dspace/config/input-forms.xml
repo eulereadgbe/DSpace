@@ -300,7 +300,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <input-type>twobox</input-type>
          <hint>Enter appropriate subject keywords or phrases. </hint>
          <required></required>
-         <vocabulary>agrovoc</vocabulary>
+         <vocabulary>Agrovoc</vocabulary>
        </field>
 
        <field>
@@ -313,7 +313,7 @@ it, please enter the types and the actual numbers or codes.</hint>
              <input-type>onebox</input-type>
              <hint>Enter appropriate ASFA keywords or phrases below. </hint>
              <required></required>
-             <vocabulary closed="true">asfa</vocabulary>
+             <vocabulary closed="true">ASFA</vocabulary>
          </field>
 
          <field>
@@ -450,6 +450,10 @@ it, please enter the types and the actual numbers or codes.</hint>
        <stored-value>Article</stored-value>
      </pair>
      <pair>
+       <displayed-value>Podcast</displayed-value>
+       <stored-value>podcast</stored-value>
+     </pair>
+     <pair>
        <displayed-value>Book</displayed-value>
        <stored-value>Book</stored-value>
      </pair>
@@ -480,6 +484,10 @@ it, please enter the types and the actual numbers or codes.</hint>
      <pair>
        <displayed-value>Image, 3-D</displayed-value>
        <stored-value>Image, 3-D</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Journal, magazine</displayed-value>
+       <stored-value>Journal, magazine</stored-value>
      </pair>
      <pair>
        <displayed-value>Magazine</displayed-value>
