@@ -22,6 +22,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
 	xmlns:dim="http://www.dspace.org/xmlns/dspace/dim"
 	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	xmlns:util="org.dspace.app.xmlui.utils.XSLUtils"
 	xmlns:mods="http://www.loc.gov/mods/v3"
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
 	xmlns="http://www.w3.org/1999/xhtml"
@@ -66,6 +67,47 @@
                 <xsl:apply-templates select="*[not(name()='head')]" mode="summaryList"/>
             </ul>
         </div>
+    </xsl:template>
+
+    <xsl:template
+            match="dri:list[@id='aspect.discovery.SidebarFacetsTransformer.list.subject' and @n='subject']/dri:item//text()
+                        | dri:list[@id='aspect.discovery.SidebarFacetsTransformer.list.subject']//text()
+                        | dri:div[@id='aspect.discovery.SearchFacetFilter.div.browse-by-subject-results']/dri:table/dri:row/dri:cell//text()">
+        <xsl:apply-templates select="*[not(name()='head')]"/>
+        <xsl:variable name="translate">
+            <xsl:value-of select="substring-before(.,' (')"/>
+        </xsl:variable>
+        <xsl:variable name="subject-sidebar-facet">
+            <xsl:choose>
+                <xsl:when test="$active-locale!='en'">
+                    <xsl:variable name="current-locale">
+                        <xsl:if test="$active-locale='th'">
+                            <xsl:text>th</xsl:text>
+                        </xsl:if>
+                        <xsl:if test="$active-locale='ja'">
+                            <xsl:text>ja</xsl:text>
+                        </xsl:if>
+                    </xsl:variable>
+                    <xsl:variable name="translation">
+                        <xsl:value-of select="util:lookupAgrovoc($translate,$current-locale)"/>
+                    </xsl:variable>
+                    <xsl:choose>
+                        <xsl:when test="$translation=''">
+                            <xsl:value-of select="$translate"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$translation"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$translate"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:for-each select=".">
+            <xsl:value-of select="concat($subject-sidebar-facet,' (', substring-after(.,'('))"/>
+        </xsl:for-each>
     </xsl:template>
 
 </xsl:stylesheet>

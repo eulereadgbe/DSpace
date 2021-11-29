@@ -556,7 +556,32 @@
                                 <xsl:text>subject&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
                                 <xsl:copy-of select="."/>
                             </xsl:attribute>
-                            <xsl:value-of select="text()"/>
+                            <xsl:choose>
+                                <xsl:when test="$active-locale!='en'">
+                                    <xsl:variable name="current-locale">
+                                        <xsl:if test="$active-locale='th'">
+                                            <xsl:text>th</xsl:text>
+                                        </xsl:if>
+                                        <xsl:if test="$active-locale='ja'">
+                                            <xsl:text>ja</xsl:text>
+                                        </xsl:if>
+                                    </xsl:variable>
+                                    <xsl:variable name="translation">
+                                        <xsl:value-of select="util:lookupAgrovoc(node(),$current-locale)"/>
+                                    </xsl:variable>
+                                    <xsl:choose>
+                                        <xsl:when test="$translation=null">
+                                            <xsl:value-of select="text()"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="$translation"/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="text()"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </a>
                         <xsl:if test="count(following-sibling::dim:field[@element='subject'][@qualifier='asfa']) != 0">
                             <xsl:text>; </xsl:text>
@@ -574,7 +599,32 @@
                                     <xsl:text>subject&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
                                     <xsl:copy-of select="."/>
                                 </xsl:attribute>
-                                <xsl:value-of select="text()"/>
+                                <xsl:choose>
+                                    <xsl:when test="$active-locale!='en'">
+                                        <xsl:variable name="current-locale">
+                                            <xsl:if test="$active-locale='th'">
+                                                <xsl:text>th</xsl:text>
+                                            </xsl:if>
+                                            <xsl:if test="$active-locale='ja'">
+                                                <xsl:text>ja</xsl:text>
+                                            </xsl:if>
+                                        </xsl:variable>
+                                        <xsl:variable name="translation">
+                                            <xsl:value-of select="util:lookupAgrovoc(node(),$current-locale)"/>
+                                        </xsl:variable>
+                                        <xsl:choose>
+                                            <xsl:when test="$translation=null">
+                                                <xsl:value-of select="text()"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:value-of select="$translation"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="text()"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </a>
                             <xsl:if test="count(following-sibling::dim:field[@element='subject' and not(@qualifier)]) != 0">
                                 <xsl:text>; </xsl:text>
@@ -796,7 +846,39 @@
                     </xsl:if>
                 </td>
             <td class="word-break">
-              <xsl:copy-of select="./node()"/>
+                <xsl:choose>
+                    <xsl:when test="@element='subject'">
+                        <xsl:choose>
+                            <xsl:when test="$active-locale!='en'">
+                                <xsl:variable name="current-locale">
+                                    <xsl:if test="$active-locale='th'">
+                                        <xsl:text>th</xsl:text>
+                                    </xsl:if>
+                                    <xsl:if test="$active-locale='ja'">
+                                        <xsl:text>ja</xsl:text>
+                                    </xsl:if>
+                                </xsl:variable>
+                                <xsl:variable name="translation">
+                                    <xsl:value-of select="util:lookupAgrovoc(node(),$current-locale)"/>
+                                </xsl:variable>
+                                <xsl:choose>
+                                    <xsl:when test="$translation=null">
+                                        <xsl:value-of select="text()"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="$translation"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="text()"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:copy-of select="./node()"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </td>
                 <td><xsl:value-of select="./@language"/></td>
             </tr>

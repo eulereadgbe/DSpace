@@ -36,6 +36,7 @@
     <xsl:variable name="document" select="/dri:document"/>
     <xsl:variable name="pagemeta" select="/dri:document/dri:meta/dri:pageMeta"/>
     <xsl:variable name="context-path" select="$pagemeta/dri:metadata[@element='contextPath'][not(@qualifier)]"/>
+    <xsl:variable name="active-locale" select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='page'][@qualifier='currentLocale']"/>
 
     <xsl:variable name="theme-path" select="concat($context-path,'/themes/',$pagemeta/dri:metadata[@element='theme'][@qualifier='path'])"/>
 
