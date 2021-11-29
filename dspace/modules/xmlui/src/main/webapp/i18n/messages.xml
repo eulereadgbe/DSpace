@@ -2216,6 +2216,14 @@
 	<message key="xmlui.dri2xhtml.METS-1.0.item-date">Date</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-publisher">Publisher</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-subject">Subject</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-scientificName">Taxonomic term</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-citation">Suggested Citation</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-type">Type</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-format">Physical Description</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-isbn">ISBN</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-issn">ISSN</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-doi">DOI</message>
+	<message key="xmlui.dri2xhtml.METS-1.0.item-url">Associated URL</message>
 
 	<message key="xmlui.dri2xhtml.METS-1.0.item-files-head">Files in this item</message>
 	<message key="xmlui.dri2xhtml.METS-1.0.item-files-file">Files</message>
@@ -2388,6 +2396,14 @@
   <message key="xmlui.ChoiceLookupTransformer.field.dc_contributor_author.title">LC Name Authority author lookup</message>
   <message key="xmlui.ChoiceLookupTransformer.field.dc_contributor_author.nonauthority">Local value "@1@" (not in Naming Authority)</message>
 
+	<!-- Choice Lookup - sample config for dc.subject field -->
+	<message key="xmlui.ChoiceLookupTransformer.field.dc_subject.help">Subjects</message>
+	<message key="xmlui.ChoiceLookupTransformer.field.dc_subject.title">Look up Subjects</message>
+
+	<!-- Choice Lookup - sample config for dc.subject.mesh field -->
+	<message key="xmlui.ChoiceLookupTransformer.field.dc_subject_asfa.help">ASFA Keywords</message>
+	<message key="xmlui.ChoiceLookupTransformer.field.dc_subject_asfa.title">Look up ASFA Keywords</message>
+
   <!-- mobile theme -->
   <message key="xmlui.mobile.home_mobile">DSpace Mobile</message>
   <message key="xmlui.mobile.search_all">Search ALL</message>
@@ -2517,5 +2533,15 @@
 		<p>Southeast Asian Fisheries Development Center, Inland Fishery Resources Development and Management Department Institutional Repository (SIIR) is the official digital repository of scholarly and research information of the department. This is to enable the effective dissemination of SEAFDEC/IFRDMD researchers' in-house and external publications for free and online. Full-text digitized copies of books, handbooks, policy guidebooks, conference proceedings, extension manuals, institutional reports, annual reports can be retrieved and downloaded.</p>
 		<p>The objectives of the repository are (1) to provide reliable means for SEAFDEC/IFRDMD researchers to store, preserve and share their research outputs and (2) to provide easy access and increase the visibility of SEAFDEC/IFRDMD scientific publications.</p>
 	</message>
+
+	<!-- For External link disclaimer -->
+	<message key="external-link-modal-title">EXTERNAL LINKS DISCLAIMER</message>
+	<message key="external-link-modal-body">
+		<p>This link is being provided as a convenience and for informational purposes only. SEAFDEC/IFRDMD bears no responsibility for the accuracy, legality or content of the external site or for that of subsequent links. Contact the external site for answers to questions regarding its content.</p>
+		<p>If you come across any external links that don't work, we would be grateful if you could report them to the <a href="/contact">repository administrators</a>.</p>
+		<p>Click <b>DOWNLOAD</b> to open/view the file.</p>
+	</message>
+	<message key="external-link-modal-footer-download">Download</message>
+	<message key="external-link-modal-footer-close">Close</message>
 
 </catalogue>
