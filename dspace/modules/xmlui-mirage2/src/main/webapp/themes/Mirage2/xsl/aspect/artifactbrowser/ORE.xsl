@@ -180,6 +180,7 @@
                 or not(/atom:entry/oreatom:triples/rdf:Description)">
             <img alt="Thumbnail" class="img-responsive">
                 <xsl:attribute name="src">
+                    <xsl:text>https://images.weserv.nl/?url=</xsl:text>
                     <xsl:value-of select="rdf:Description[boolean(@rdf:about) and
                    .//dcterms:description[. = 'THUMBNAIL']][1]/@rdf:about"/>
                 </xsl:attribute>
