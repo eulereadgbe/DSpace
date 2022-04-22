@@ -51,6 +51,16 @@
 
        <field>
          <dc-schema>dc</dc-schema>
+         <dc-element>contributor</dc-element>
+         <dc-qualifier>corporateauthor</dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Corporate Author</label>
+         <input-type>onebox</input-type>
+         <hint>Enter the names of the corporate authors of this item.</hint>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
          <dc-element>title</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
@@ -101,7 +111,7 @@
          <dc-qualifier>citation</dc-qualifier>
          <repeatable>false</repeatable>
          <label>Citation</label>
-         <input-type>onebox</input-type>
+         <input-type>textarea</input-type>
          <hint>Enter the standard citation for the previously issued instance of this item.</hint>
          <required></required>
        </field>
@@ -155,16 +165,15 @@ it, please enter the types and the actual numbers or codes.</hint>
 
      <page number="2">
        <field>
-         <dc-schema>dc</dc-schema>
-         <dc-element>subject</dc-element>
-         <dc-qualifier></dc-qualifier>
-         <!-- An input-type of twobox MUST be marked as repeatable -->
-         <repeatable>true</repeatable>
-         <label>Subject Keywords</label>
-         <input-type>twobox</input-type>
-         <hint>Enter appropriate subject keywords or phrases. </hint>
-         <required></required>
-         <vocabulary>srsc</vocabulary>
+         <dc-schema>local</dc-schema>
+         <dc-element>seafdecaqd</dc-element>
+         <dc-qualifier>extract</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Extract</label>
+         <type-bind>magazineArticle,newspaperArticle</type-bind>
+         <input-type>textarea</input-type>
+         <hint>Enter an excerpt from this item. </hint>
+         <required> You must provide an excerpt for this item to proceed! </required>
        </field>
 
        <field>
@@ -181,23 +190,150 @@ it, please enter the types and the actual numbers or codes.</hint>
        <field>
          <dc-schema>dc</dc-schema>
          <dc-element>description</dc-element>
-         <dc-qualifier>sponsorship</dc-qualifier>
-         <repeatable>false</repeatable>
-         <label>Sponsors</label>
-         <input-type>textarea</input-type>
-         <hint>Enter the names of any sponsors and/or funding codes in the box. </hint>
-         <required></required>
-       </field>
-
-       <field>
-         <dc-schema>dc</dc-schema>
-         <dc-element>description</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
          <label>Description</label>
          <input-type>textarea</input-type>
          <hint>Enter any other description or comments in this box. </hint>
          <required></required>
+       </field>
+     </page>
+
+     <page number="3">
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>citation</dc-element>
+         <dc-qualifier>journalTitle</dc-qualifier>
+         <label>Periodical Title</label>
+         <type-bind>magazineArticle,newspaperArticle</type-bind>
+         <input-type>onebox</input-type>
+         <hint>Provide the Periodical title for this item.</hint>
+         <required>You must enter the Periodical title of this item.</required>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>citation</dc-element>
+         <dc-qualifier>volume</dc-qualifier>
+         <label>Volume No.</label>
+         <type-bind>magazineArticle</type-bind>
+         <input-type>onebox</input-type>
+         <hint>Provide the volume number for this issue.</hint>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>citation</dc-element>
+         <dc-qualifier>issue</dc-qualifier>
+         <label>Issue No.</label>
+         <type-bind>magazineArticle</type-bind>
+         <input-type>onebox</input-type>
+         <hint>Provide the issue number for this issue.</hint>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>citation</dc-element>
+         <dc-qualifier>spage</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Starting page</label>
+         <type-bind>magazineArticle,newspaperArticle</type-bind>
+         <input-type>onebox</input-type>
+         <hint> Enter the starting page of this article. </hint>
+         <required>You must enter the starting page of this article.</required>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>citation</dc-element>
+         <dc-qualifier>epage</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Last page</label>
+         <type-bind>magazineArticle,newspaperArticle</type-bind>
+         <input-type>onebox</input-type>
+         <hint> Enter the ending page of this article. </hint>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>relation</dc-element>
+         <dc-qualifier>uri</dc-qualifier>
+         <label>Associated content</label>
+         <input-type>onebox</input-type>
+         <hint> Enter the url of the online version of this item. </hint>
+       </field>
+
+       <field>
+         <dc-schema>local</dc-schema>
+         <dc-element>seafdecaqd</dc-element>
+         <dc-qualifier>controlnumber</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Control No.</label>
+         <type-bind>magazineArticle,newspaperArticle</type-bind>
+         <input-type>onebox</input-type>
+         <hint> Enter the Control No. of this item. (e.g. PN20171104_1) </hint>
+         <required> You must provide the Control number for this item. </required>
+       </field>
+
+     </page>
+
+     <page number="4">
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>subject</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <!-- An input-type of twobox MUST be marked as repeatable -->
+         <repeatable>true</repeatable>
+         <label>ASFA Keywords</label>
+         <input-type>twobox</input-type>
+         <hint>Enter appropriate ASFA subject keywords or phrases. </hint>
+         <required></required>
+       </field>
+
+       <field>
+         <dc-schema>local</dc-schema>
+         <dc-element>subject</dc-element>
+         <dc-qualifier>scientificName</dc-qualifier>
+         <!-- An input-type of twobox MUST be marked as repeatable -->
+         <repeatable>true</repeatable>
+         <label>Scientific Name(s)</label>
+         <input-type>twobox</input-type>
+         <hint>Enter appropriate scientific names for this item. </hint>
+         <required></required>
+       </field>
+
+       <field>
+         <dc-schema>local</dc-schema>
+         <dc-element>subject</dc-element>
+         <dc-qualifier>personalName</dc-qualifier>
+         <!-- An input-type of twobox MUST be marked as repeatable -->
+         <repeatable>true</repeatable>
+         <label>Personal Name(s)</label>
+         <input-type>name</input-type>
+         <hint>Enter appropriate personal names for this item. </hint>
+         <required></required>
+       </field>
+
+       <field>
+         <dc-schema>local</dc-schema>
+         <dc-element>subject</dc-element>
+         <dc-qualifier>corporateName</dc-qualifier>
+         <!-- An input-type of twobox MUST be marked as repeatable -->
+         <repeatable>true</repeatable>
+         <label>Corporate Name(s)</label>
+         <input-type>onebox</input-type>
+         <hint>Enter appropriate corporate names for this item. </hint>
+         <required></required>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>coverage</dc-element>
+         <dc-qualifier>spatial</dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Geographic Name</label>
+         <input-type>twobox</input-type>
+         <hint>Enter the appropriate geographic name for this item.</hint>
        </field>
      </page>
    </form>
@@ -294,12 +430,20 @@ it, please enter the types and the actual numbers or codes.</hint>
        <stored-value>Image, 3-D</stored-value>
      </pair>
      <pair>
+       <displayed-value>Magazine Article</displayed-value>
+       <stored-value>magazineArticle</stored-value>
+     </pair>
+     <pair>
        <displayed-value>Map</displayed-value>
        <stored-value>Map</stored-value>
      </pair>
      <pair>
        <displayed-value>Musical Score</displayed-value>
        <stored-value>Musical Score</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Newspaper Article</displayed-value>
+       <stored-value>newspaperArticle</stored-value>
      </pair>
      <pair>
        <displayed-value>Plan or blueprint</displayed-value>
@@ -356,16 +500,28 @@ it, please enter the types and the actual numbers or codes.</hint>
      -->
    <value-pairs value-pairs-name="common_iso_languages" dc-term="language_iso">
      <pair>
-       <displayed-value>N/A</displayed-value>
-       <stored-value></stored-value>
+       <displayed-value>English</displayed-value>
+       <stored-value>en</stored-value>
      </pair>
      <pair>
        <displayed-value>English (United States)</displayed-value>
        <stored-value>en_US</stored-value>
       </pair>
      <pair>
-       <displayed-value>English</displayed-value>
-       <stored-value>en</stored-value>
+       <displayed-value>Tagalog</displayed-value>
+       <stored-value>tgl</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Hiligaynon (Ilonggo)</displayed-value>
+       <stored-value>hil</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Kinaray-a</displayed-value>
+       <stored-value>krj</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Cebuano</displayed-value>
+       <stored-value>ceb</stored-value>
      </pair>
      <pair>
        <displayed-value>Spanish</displayed-value>
@@ -398,6 +554,10 @@ it, please enter the types and the actual numbers or codes.</hint>
      <pair>
        <displayed-value>(Other)</displayed-value>
        <stored-value>other</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>N/A</displayed-value>
+       <stored-value></stored-value>
      </pair>
    </value-pairs>
 
