@@ -33,24 +33,24 @@ If you don't have git installed, go to the [git downloads page](http://git-scm.c
 
 ### Node ###
 
-We recommend using [nvm](https://github.com/creationix/nvm) (Node Version Manager) to install [Node.js](http://nodejs.org/), because it makes it easy to install, use and upgrade node without super user rights.
+We recommend using [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) to install [Node.js](http://nodejs.org/), because it makes it easy to install, use and upgrade node without super user rights.
 
 First download and install nvm:
 
 ```bash
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.7/install.sh | bash 
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 ```
 
-Then, close and reopen your terminal, and install a node version. We’ve been using v6.5.0 during the development of the theme, but it may very well work on other versions
+Then, close and reopen your terminal, and install a node version. We used v6.5.0 during the development of the theme, but it builds successfully with current [long-term support version](https://github.com/nodejs/Release#release-schedule) 12.x as well.
 
 ```bash
-    nvm install 6.5.0 
+    nvm install 12
 ```
 
 Set the node version you installed as the default version.
 
 ```bash
-    nvm alias default 6.5.0
+    nvm alias default 12
 ```
 
 
@@ -77,6 +77,7 @@ Afterwards the command `grunt --version` should show the grunt-cli version numbe
 
 For the same reasons as with Node, we’d advise using ruby via [RVM](http://rvm.io/)  (Ruby Version Manager). Even on OSX, which comes with a version of ruby preinstalled, you can save yourself a lot of hassle by using RVM instead. (In most cases there is no need to uninstall the system ruby first). Note that **you need sudo rights to perform the RVM installation**. You won't need sudo again to use RVM, ruby or gem later on
 
+Ruby 2.2.x (or JRuby 9.1.x.x) or above when pre-installing dependencies locally.
 
 #### OSX Ruby Note ####
 On OSX, you need to have the XCode command line tools installed. To test if they're installed try to type `make` in your terminal, if it says "command not found" follow [these instructions](http://www.computersnyou.com/2025/2013/06/install-command-line-tools-in-osx-10-9-mavericks-how-to/) to install them  
@@ -144,6 +145,8 @@ Afterwards the command `grunt --version` should show the grunt-cli version numbe
 ### Ruby ###
 
 Download and install: [Ruby Installer](http://rubyinstaller.org/)
+
+Ruby 2.2.x (or JRuby 9.1.x.x) or above when pre-installing dependencies locally.
 
 Make sure its environment variables are set in system variables
 
