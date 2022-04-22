@@ -11,6 +11,8 @@
  * It will be included in all color schemes
  */
 
+@import url(../scripts/treeview/jquery.treeview.css);
+
 //example mixin to set the text-selection style
 @mixin selection {
     ::-moz-selection { @content; }
@@ -19,7 +21,7 @@
 
 @include selection {
     color: white;
-    background: hotpink;
+    background: darken($brand-primary, 15%);
 }
 
 .publication-records-modal, .publication-records-modal ul {
@@ -59,3 +61,7 @@
     margin-bottom:5px;
   }
 }
+  a > h4{
+    margin-top:0px;
+    margin-bottom:0px;
+  }
