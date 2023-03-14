@@ -391,7 +391,9 @@
     </xsl:template>
 
     <xsl:template name="itemSummaryView-DIM-subject">
-        <xsl:if test="dim:field[@element='subject' and not(@qualifier)] or dim:field[@element='subject'][@qualifier='scientificName'] or dim:field[@element='subject'][@qualifier='personalName'] or dim:field[@element='subject'][@qualifier='corporateName']">
+        <xsl:if test="dim:field[@element='subject' and not(@qualifier)] or dim:field[@element='subject'][@qualifier='scientificName']
+		or dim:field[@element='subject'][@qualifier='personalName'] or dim:field[@element='subject'][@qualifier='corporateName']
+		or dim:field[@element='coverage'][@qualifier='spatial']">
             <div class="item-page-field-wrapper table">
                 <h5>
                     <i18n:text>xmlui.dri2xhtml.METS-1.0.item-subject</i18n:text>
@@ -465,6 +467,25 @@
                                     <xsl:value-of select="text()"/>
                                 </a>
                                 <xsl:if test="count(following-sibling::dim:field[@element='subject'][@qualifier='personalName']) != 0">
+                                    <xsl:text>; </xsl:text>
+                                </xsl:if>
+                            </xsl:for-each>
+                        </xsl:if>
+                        <xsl:if test="(dim:field[@element='coverage'][@qualifier='spatial'])">
+                            <xsl:if test="count(dim:field[@element='subject'][@qualifier='scientificName']) != 0 or count(dim:field[@element='subject' and not(@qualifier)]) != 0 or count(dim:field[@element='subject'][@qualifier='corporateName']) != 0">
+                                <xsl:text>; </xsl:text>
+                            </xsl:if>
+                            <xsl:for-each select="dim:field[@element='coverage'][@qualifier='spatial']">
+                                <a>
+                                    <xsl:attribute name="href">
+                                        <xsl:value-of
+                                                select="concat($context-path,'/discover?filtertype=')"/>
+                                        <xsl:text>subject&amp;filter_relational_operator=equals&amp;filter=</xsl:text>
+                                        <xsl:copy-of select="."/>
+                                    </xsl:attribute>
+                                    <xsl:value-of select="text()"/>
+                                </a>
+                                <xsl:if test="count(following-sibling::dim:field[@element='coverage'][@qualifier='spatial']) != 0">
                                     <xsl:text>; </xsl:text>
                                 </xsl:if>
                             </xsl:for-each>
@@ -1024,7 +1045,7 @@
                             <!-- <xsl:text>mailto:repository@seafdec.org.ph?bcc=jgeromiano@seafdec.org.ph</xsl:text>
                             <xsl:value-of select="$mail-subject"/>
                             <xsl:value-of select="$mail-body"/>-->
-                            <xsl:text>https://docs.google.com/forms/d/e/1FAIpQLSerY8A6zkTkV2PnryVyuLqNvhlYIbmEELBt_S3ydaDAedv6TQ/viewform?</xsl:text>
+                            <xsl:text>https://docs.google.com/forms/d/e/1FAIpQLSecpoJ-30gK1A1ydWwpiBvfz4C_aAfJ4OxNX4hsjajZnXBIfg/viewform?</xsl:text>
                             <xsl:text>entry.1266811100=</xsl:text>
                             <xsl:value-of select="$item"/>
                             <xsl:text>&amp;entry.1169023018=</xsl:text>
