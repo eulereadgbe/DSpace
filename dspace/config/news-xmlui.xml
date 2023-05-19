@@ -2,8 +2,10 @@
 <document xmlns="http://di.tamu.edu/DRI/1.0/" xmlns:i18n="http://apache.org/cocoon/i18n/2.1" version="1.1">
 <body>
 <div id="file.news.div.news" n="news" rend="primary">
-<head>DSpace Repository</head>
-<p>DSpace is a digital service that collects, preserves, and distributes digital material. Repositories are important tools for preserving an organization&apos;s legacy; they facilitate digital preservation and scholarly communication.</p>
+<head>ANI @ SEAFDEC/AQD Library</head>
+<p>Aquatic News Index (ANI) contains aquatic science-related newspaper articles appearing in various Philippine newspapers available at the Aquaculture Department of the Southeast Asian Fisheries Development Center (SEADEC/AQD) Library. Indexing begins in 1974 to the present. ANI is maintained by SEAFDEC/AQD Library staff.</p>
+<p>Entries are grouped according to the newspaper source. To ensure the accuracy and consistency of the index entries, subject descriptors were assigned using the Aquatic Sciences and Fisheries Abstracts (ASFA) Thesaurus, while the geographic names were assigned using the Getty Thesaurus of Geographic Names (TGN).</p>
+<p>For remote users who wish to get a copy of the article, please send an email request to library@seafdec.org.ph. In your email, please specify the title of the article and the assigned code (e.g., PNYYYYMMDD_P1).</p>
 </div>
 </body>
 <options/>
