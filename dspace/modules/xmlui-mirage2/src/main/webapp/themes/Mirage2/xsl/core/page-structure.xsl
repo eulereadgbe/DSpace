@@ -30,7 +30,8 @@
                 xmlns:mods="http://www.loc.gov/mods/v3"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:confman="org.dspace.core.ConfigurationManager"
-                exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc confman">
+                xmlns:date="http://exslt.org/dates-and-times"
+                exclude-result-prefixes="i18n dri mets xlink xsl dim xhtml mods dc confman date">
 
     <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
@@ -201,6 +202,7 @@
             </xsl:for-each>
 
             <link rel="stylesheet" href="{concat($theme-path, 'styles/main.css')}"/>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet"/>
 
             <!-- Add syndication feeds -->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='feed']">
@@ -268,12 +270,9 @@
             </script>
 
             <xsl:text disable-output-escaping="yes">&lt;!--[if lt IE 9]&gt;
-                &lt;script src="</xsl:text><xsl:value-of select="concat($theme-path, 'vendor/html5shiv/dist/html5shiv.js')"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;/script&gt;
-                &lt;script src="</xsl:text><xsl:value-of select="concat($theme-path, 'vendor/respond/dest/respond.min.js')"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;/script&gt;
+            &lt;script src="</xsl:text><xsl:value-of select="concat($theme-path, 'scripts/html5shiv.js')"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;/script&gt;
+            &lt;script src="</xsl:text><xsl:value-of select="concat($theme-path, 'scripts/respond.min.js')"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;/script&gt;
                 &lt;![endif]--&gt;</xsl:text>
-
-            <!-- Modernizr enables HTML5 elements & feature detects -->
-            <script src="{concat($theme-path, 'vendor/modernizr/modernizr.js')}">&#160;</script>
 
             <!-- Add the title in -->
             <xsl:variable name="page_title" select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='title'][last()]" />
@@ -298,8 +297,14 @@
             </xsl:if>
 
             <!-- Add all Google Scholar Metadata values -->
+            <!-- this is done in text, by design, because disabling output escaping is not allowed on attributes-->
+            <!-- while it is necessary to ensure that author names with special characters pass unescaped-->
             <xsl:for-each select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[substring(@element, 1, 9) = 'citation_']">
-                <meta name="{@element}" content="{.}"></meta>
+                <xsl:text disable-output-escaping="yes">&lt;meta name="</xsl:text>
+                <xsl:value-of select="@element" />
+                <xsl:text disable-output-escaping="yes">" content="</xsl:text>
+                <xsl:value-of select="." disable-output-escaping="yes" />
+                <xsl:text disable-output-escaping="yes">" /&gt;&#xa;</xsl:text>
             </xsl:for-each>
 
             <!-- Add MathJAX JS library to render scientific formulas-->
@@ -307,7 +312,6 @@
                 <script type="text/x-mathjax-config">
                     MathJax.Hub.Config({
                       tex2jax: {
-                        inlineMath: [['$','$'], ['\\(','\\)']],
                         ignoreClass: "detail-field-data|detailtable|exception"
                       },
                       TeX: {
@@ -317,7 +321,7 @@
                       }
                     });
                 </script>
-                <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">&#160;</script>
+                <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">&#160;</script>
             </xsl:if>
 
             <meta name="google-site-verification" content="AmY42FUIlxtiTQqeWvKAKeIHc9QGZCcEbm5DVFMe4rk" />
@@ -544,7 +548,7 @@
         <!--put an arrow between the parts of the trail-->
         <li>
             <xsl:if test="position()=1">
-                <i class="glyphicon glyphicon-home" aria-hidden="true"/>&#160;
+                <i class="fa fa-home" aria-hidden="true"/>&#160;
             </xsl:if>
             <!-- Determine whether we are dealing with a link or plain text trail link -->
             <xsl:choose>
@@ -575,7 +579,7 @@
                             <xsl:value-of select="./@target"/>
                         </xsl:attribute>
                         <xsl:if test="position()=1">
-                            <i class="glyphicon glyphicon-home" aria-hidden="true"/>&#160;
+                            <i class="fa fa-home" aria-hidden="true"/>&#160;
                         </xsl:if>
                         <xsl:apply-templates />
                     </a>
@@ -589,7 +593,7 @@
                 <xsl:otherwise>
                     <xsl:attribute name="class">active</xsl:attribute>
                     <xsl:if test="position()=1">
-                        <i class="glyphicon glyphicon-home" aria-hidden="true"/>&#160;
+                        <i class="fa fa-home" aria-hidden="true"/>&#160;
                     </xsl:if>
                     <xsl:apply-templates />
                 </xsl:otherwise>
@@ -707,8 +711,13 @@
                 <div class="row">
                     <hr/>
                     <div class="col-xs-7 col-sm-8">
-                        <div>
-                            <a href="http://www.seafdec.org.ph/" target="_blank">SEAFDEC Aquaculture Department</a> copyright&#160;&#169;&#160;2017
+                        <div class="hidden-print">
+                            <xsl:text>&#169;&#160;</xsl:text>
+                            <xsl:value-of select="date:year()"/>
+                            <xsl:text>&#160;</xsl:text>
+                            <a target="_blank" href="https://www.seafdec.org.ph">
+                                    <xsl:text>SEAFDEC/AQD</xsl:text>
+                            </a>
                         </div>
                         <div class="hidden-print">
                             <a>
@@ -734,7 +743,8 @@
                         <div class="pull-right">
                             <span class="theme-by">ANI is maintained by&#160;</span>
                             <br/>
-                            <a title="SEAFDEC/AQD Library" target="_blank" href="mailto:library@seafdec.org.ph">SEAFDEC/AQD Library
+                            <a target="_blank" href="https://facebook.com/seafdecaqdlib">
+                                <xsl:text>SEAFDEC/AQD Library</xsl:text>
                             </a>
                         </div>
 
