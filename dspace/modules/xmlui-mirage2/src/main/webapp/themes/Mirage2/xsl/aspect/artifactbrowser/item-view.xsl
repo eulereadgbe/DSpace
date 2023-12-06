@@ -34,7 +34,7 @@
     xmlns:util="org.dspace.app.xmlui.utils.XSLUtils"
     xmlns:jstring="java.lang.String"
     xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/"
-    xmlns:confman="org.dspace.core.ConfigurationManager"
+        xmlns:confman="org.dspace.core.ConfigurationManager" xmlns:xls="http://www.w3.org/1999/XSL/Transform"
     exclude-result-prefixes="xalan encoder i18n dri mets dim xlink xsl util jstring rights confman">
 
     <xsl:output indent="yes"/>
@@ -129,6 +129,10 @@
                     <xsl:call-template name="itemSummaryView-DIM-citation"/>
                     <xsl:call-template name="itemSummaryView-DIM-URI"/>
                     <xsl:call-template name="itemSummaryView-DIM-LINK"/>
+                    <xsl:call-template name="itemSummaryView-DIM-corporateNames"/>
+                    <xsl:call-template name="itemSummaryView-DIM-personalNames"/>
+                    <xsl:call-template name="itemSummaryView-DIM-coverageSpatial"/>
+                    <xsl:call-template name="itemSummaryView-DIM-scientificName"/>
                     <xsl:call-template name="itemSummaryView-DIM-subject"/>
                     <xsl:call-template name="itemSummaryView-collections"/>
                 </div>
@@ -390,18 +394,15 @@
         </xsl:if>
     </xsl:template>
 
-    <xsl:template name="itemSummaryView-DIM-subject">
-        <xsl:if test="dim:field[@element='subject' and not(@qualifier)] or dim:field[@element='subject'][@qualifier='scientificName']
-		or dim:field[@element='subject'][@qualifier='personalName'] or dim:field[@element='subject'][@qualifier='corporateName']
-		or dim:field[@element='coverage'][@qualifier='spatial']">
+    <xsl:template name="itemSummaryView-DIM-corporateNames">
+        <xsl:if test="dim:field[@element='subject'][@qualifier='corporateName']">
             <div class="item-page-field-wrapper table">
                 <h5>
-                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-subject</i18n:text>
+                    <xls:text>Corporate Names</xls:text>
                 </h5>
                 <div>
-                    <xsl:if test="(dim:field[@element='subject' and not(@qualifier)])">
-                        <xsl:for-each select="dim:field[@element='subject' and not(@qualifier)]">
-                            <a>
+                    <xsl:for-each select="dim:field[@element='subject'][@qualifier='corporateName']">
+                        <a class="label label-primary">
                                 <xsl:attribute name="href">
                                     <xsl:value-of
                                             select="concat($context-path,'/discover?filtertype=')"/>
@@ -410,16 +411,24 @@
                                 </xsl:attribute>
                                 <xsl:value-of select="text()"/>
                             </a>
-                            <xsl:if test="count(following-sibling::dim:field[@element='subject' and not(@qualifier)]) != 0">
-                                <xsl:text>; </xsl:text>
+                        <xsl:if test="count(following-sibling::dim:field[@element='subject'][@qualifier='corporateName']) != 0">
+                            <xsl:text> </xsl:text>
                             </xsl:if>
                         </xsl:for-each>
-                        <xsl:if test="(dim:field[@element='subject'][@qualifier='scientificName'])">
-                            <xsl:if test="count(dim:field[@element='subject' and not(@qualifier)]) != 0">
-                                <xsl:text>; </xsl:text>
+                </div>
+            </div>
                             </xsl:if>
-                            <xsl:for-each select="dim:field[@element='subject'][@qualifier='scientificName']">
-                                <a>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-personalNames">
+        <xsl:if test="dim:field[@element='subject'][@qualifier='personalName']">
+            <div class="item-page-field-wrapper table">
+                <h5>
+                    <xls:text>Personal Names</xls:text>
+                </h5>
+                <div>
+                    <xsl:for-each select="dim:field[@element='subject'][@qualifier='personalName']">
+                        <a class="label label-primary">
                                     <xsl:attribute name="href">
                                         <xsl:value-of
                                                 select="concat($context-path,'/discover?filtertype=')"/>
@@ -428,17 +437,24 @@
                                     </xsl:attribute>
                                     <xsl:value-of select="text()"/>
                                 </a>
-                                <xsl:if test="count(following-sibling::dim:field[@element='subject'][@qualifier='scientificName']) != 0">
-                                    <xsl:text>; </xsl:text>
+                        <xsl:if test="count(following-sibling::dim:field[@element='subject'][@qualifier='personalName']) != 0">
+                            <xsl:text> </xsl:text>
                                 </xsl:if>
                             </xsl:for-each>
+                </div>
+            </div>
                         </xsl:if>
-                        <xsl:if test="(dim:field[@element='subject'][@qualifier='corporateName'])">
-                            <xsl:if test="count(dim:field[@element='subject'][@qualifier='scientificName']) != 0 or count(dim:field[@element='subject' and not(@qualifier)]) != 0">
-                                <xsl:text>; </xsl:text>
-                            </xsl:if>
-                            <xsl:for-each select="dim:field[@element='subject'][@qualifier='corporateName']">
-                                <a>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-coverageSpatial">
+        <xsl:if test="dim:field[@element='coverage'][@qualifier='spatial']">
+            <div class="item-page-field-wrapper table">
+                <h5>
+                    <xls:text>Geographic Names</xls:text>
+                </h5>
+                <div>
+                    <xsl:for-each select="dim:field[@element='coverage'][@qualifier='spatial']">
+                        <a class="label label-primary">
                                     <xsl:attribute name="href">
                                         <xsl:value-of
                                                 select="concat($context-path,'/discover?filtertype=')"/>
@@ -447,17 +463,24 @@
                                     </xsl:attribute>
                                     <xsl:value-of select="text()"/>
                                 </a>
-                                <xsl:if test="count(following-sibling::dim:field[@element='subject'][@qualifier='corporateName']) != 0">
-                                    <xsl:text>; </xsl:text>
+                        <xsl:if test="count(following-sibling::dim:field[@element='coverage'][@qualifier='spatial']) != 0">
+                            <xsl:text> </xsl:text>
                                 </xsl:if>
                             </xsl:for-each>
+                </div>
+            </div>
                         </xsl:if>
-                        <xsl:if test="(dim:field[@element='subject'][@qualifier='personalName'])">
-                            <xsl:if test="count(dim:field[@element='subject'][@qualifier='scientificName']) != 0 or count(dim:field[@element='subject' and not(@qualifier)]) != 0 or count(dim:field[@element='subject'][@qualifier='corporateName']) != 0">
-                                <xsl:text>; </xsl:text>
-                            </xsl:if>
-                            <xsl:for-each select="dim:field[@element='subject'][@qualifier='personalName']">
-                                <a>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-scientificName">
+        <xsl:if test="dim:field[@element='subject'][@qualifier='scientificName']">
+            <div class="item-page-field-wrapper table">
+                <h5>
+                    <xsl:text>Scientific Names</xsl:text>
+                </h5>
+                <div>
+                    <xsl:for-each select="dim:field[@element='subject'][@qualifier='scientificName']">
+                        <a class="label label-primary">
                                     <xsl:attribute name="href">
                                         <xsl:value-of
                                                 select="concat($context-path,'/discover?filtertype=')"/>
@@ -466,17 +489,25 @@
                                     </xsl:attribute>
                                     <xsl:value-of select="text()"/>
                                 </a>
-                                <xsl:if test="count(following-sibling::dim:field[@element='subject'][@qualifier='personalName']) != 0">
-                                    <xsl:text>; </xsl:text>
+                        <xsl:if test="count(following-sibling::dim:field[@element='subject'][@qualifier='scientificName']) != 0">
+                            <xsl:text> </xsl:text>
                                 </xsl:if>
                             </xsl:for-each>
+                </div>
+            </div>
                         </xsl:if>
-                        <xsl:if test="(dim:field[@element='coverage'][@qualifier='spatial'])">
-                            <xsl:if test="count(dim:field[@element='subject'][@qualifier='scientificName']) != 0 or count(dim:field[@element='subject' and not(@qualifier)]) != 0 or count(dim:field[@element='subject'][@qualifier='corporateName']) != 0">
-                                <xsl:text>; </xsl:text>
-                            </xsl:if>
-                            <xsl:for-each select="dim:field[@element='coverage'][@qualifier='spatial']">
-                                <a>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-subject">
+        <xsl:if test="dim:field[@element='subject' and not(@qualifier)]">
+            <div class="item-page-field-wrapper table">
+                <h5>
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-subject</i18n:text>
+                </h5>
+                <div>
+                    <xsl:if test="(dim:field[@element='subject' and not(@qualifier)])">
+                        <xsl:for-each select="dim:field[@element='subject' and not(@qualifier)]">
+                            <a class="label label-primary">
                                     <xsl:attribute name="href">
                                         <xsl:value-of
                                                 select="concat($context-path,'/discover?filtertype=')"/>
@@ -485,12 +516,11 @@
                                     </xsl:attribute>
                                     <xsl:value-of select="text()"/>
                                 </a>
-                                <xsl:if test="count(following-sibling::dim:field[@element='coverage'][@qualifier='spatial']) != 0">
-                                    <xsl:text>; </xsl:text>
+                            <xsl:if test="count(following-sibling::dim:field[@element='subject' and not(@qualifier)]) != 0">
+                                <xsl:text> </xsl:text>
                                 </xsl:if>
                             </xsl:for-each>
                         </xsl:if>
-                    </xsl:if>
                 </div>
             </div>
         </xsl:if>
