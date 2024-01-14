@@ -54,6 +54,19 @@
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
+                    <dc-element>type</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>Type</label>
+                    <input-type value-pairs-name="common_types">dropdown</input-type>
+                    <hint>Select the type of content of the item.
+                    </hint>
+                    <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
                     <dc-element>contributor</dc-element>
                     <dc-qualifier>author</dc-qualifier>
                     <repeatable>true</repeatable>
@@ -149,19 +162,6 @@
                     <input-type value-pairs-name="common_identifiers">qualdrop_value</input-type>
                     <hint>If the item has any identification numbers or codes associated with
                         it, please enter the types and the actual numbers or codes.
-                    </hint>
-                    <required></required>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>type</dc-element>
-                    <dc-qualifier></dc-qualifier>
-                    <repeatable>true</repeatable>
-                    <label>Type</label>
-                    <input-type value-pairs-name="common_types">dropdown</input-type>
-                    <hint>Select the type of content of the item.
                     </hint>
                     <required></required>
                 </field>
@@ -300,6 +300,28 @@
                     <input-type>tag</input-type>
                     <hint>Enter appropriate subject keywords or phrases.</hint>
                     <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>lcsh</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>LCSH</label>
+                    <input-type>tag</input-type>
+                    <hint>Enter Library of Congress Subject Headings</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>mesh</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>Medical Subject Headings</label>
+                    <input-type>tag</input-type>
+                    <hint>Enter appropriate Medical Subject Headings</hint>
                 </field>
             </row>
             <row>
