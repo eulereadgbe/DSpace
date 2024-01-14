@@ -21,14 +21,14 @@
 						</list>
 					</property>
 				</bean>
-				<!-- Uncomment this bean if you have SHERPARoMEOJournalTitle enabled
+				<!-- Uncomment this bean if you have SHERPARoMEOJournalTitle enabled -->
 				<bean class="org.dspace.app.sherpa.submit.MetadataAuthorityISSNExtractor">
 					<property name="metadataList">
 						<list>
-							<value>dc.title.alternative</value>
+							<value>dc.citation.journaltitle</value>
 						</list>
 					</property>
-				</bean>  -->
+				</bean>
 			</list>
 		</property>	
 	</bean>
