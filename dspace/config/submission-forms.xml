@@ -1155,16 +1155,31 @@
                     <hint>Enter the email of the person</hint>
                 </field>
             </row>
-            <!--     <row>-->
-            <!--     <field>-->
-            <!--       <dc-schema>person</dc-schema>-->
-            <!--       <dc-element>identifier</dc-element>-->
-            <!--       <dc-qualifier>orcid</dc-qualifier>-->
-            <!--       <label>Orcid</label>-->
-            <!--       <input-type>onebox</input-type>-->
-            <!--       <hint>Enter the orcid of the person</hint>-->
-            <!--     </field>-->
-            <!--     </row>-->
+            <!-- <row>
+            <field>
+              <dc-schema>person</dc-schema>
+              <dc-element>identifier</dc-element>
+              <dc-qualifier>orcid</dc-qualifier>
+              <label>Orcid</label>
+              <input-type>onebox</input-type>
+              <hint>Enter the orcid of the person</hint>
+            </field>
+            </row> -->
+            <row>
+                <field>
+                    <dc-schema>person</dc-schema>
+                    <dc-element>identifier</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
+                    <repeatable>true</repeatable>
+                    <label>Author identifier</label>
+                    <input-type value-pairs-name="openaire_author_identifier_types">qualdrop_value</input-type>
+                    <hint>If the author has any identifiers or codes associated with
+                        it, please enter the types and the actual numbers or codes.
+                    </hint>
+                    <required></required>
+                </field>
+            </row>
             <row>
                 <field>
                     <dc-schema>person</dc-schema>
@@ -1191,6 +1206,41 @@
                     <label>Job title</label>
                     <input-type>onebox</input-type>
                     <hint>Enter the job title of the person</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>person</dc-schema>
+                    <dc-element>designation</dc-element>
+                    <label>Designation</label>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the designation of the person (e.g., Dean, College of Information and Computing Studies).</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <!-- An input-type of tag MUST be marked as repeatable -->
+                    <repeatable>true</repeatable>
+                    <label>Fields of specialization</label>
+                    <input-type>tag</input-type>
+                    <hint>Enter appropriate fields of specialization/discipline/interests.</hint>
+                    <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>description</dc-element>
+                    <dc-qualifier>abstract</dc-qualifier>
+                    <!-- An input-type of tag MUST be marked as repeatable -->
+                    <repeatable>false</repeatable>
+                    <label>Biography</label>
+                    <input-type>textarea</input-type>
+                    <hint>Enter a short biography of the person.</hint>
+                    <required></required>
                 </field>
             </row>
         </form>
