@@ -289,7 +289,7 @@
             <!-- <step id="itemAccessConditions"/> -->
 
             <!-- Uncomment this step to show when appropriate publisher policies retrieved from SHERPA/RoMEO -->
-            <!-- <step id="sherpaPolicies"/> -->
+            <step id="sherpaPolicies"/>
 
             <!-- To include the 'Duplicate Detection' step, uncomment the line below. Make sure
                  that duplicate-detection.cfg is properly configured and items have been reindexed since
