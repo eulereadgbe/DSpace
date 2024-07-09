@@ -67,10 +67,10 @@
         <!-- Example of configuration using a community handle to map an Item Submission Process.
 
             This configuration maps the submission process to the community's descendant
-            collections that do not have a mapping defined by collection-handle or entity-type
+            collections that do not have a mapping defined by collection-handle or entity-type -->
 
-        <name-map community-handle="123456789/1234" submission-name="xxxx"/>
-        -->
+        <name-map community-handle="123456789/3" submission-name="thesis"/>
+
 
     </submission-map>
 
@@ -306,6 +306,31 @@
 
             <!-- Uncomment this step to allow the user to select a Creative Commons License -->
             <!-- <step id="cclicense"/> -->
+
+            <!--Step will be to Sign off on the required DSpace License agreement -->
+            <step id="license"/>
+        </submission-process>
+
+        <!--This "thesis" process defines the DEFAULT item submission process for Thesis types-->
+        <submission-process name="thesis">
+            <step id="collection"/>
+            <!-- To include the 'Show Identifiers' step, uncomment the line below. Make sure
+                 that identifiers.cfg and identifier-service.xml are properly configured. -->
+            <!--<step id="identifiers"/>-->
+            <!--Step will be to Describe the item. -->
+            <step id="thesispageone"/>
+            <step id="thesispagetwo"/>
+
+            <!-- Uncomment this step to allow the user to embargo or access restrict the entire item -->
+            <step id="itemAccessConditions"/>
+
+            <!--Step will be to Upload the item -->
+            <step id="upload"/>
+
+            <!-- <step id="extractionstep"/> -->
+
+            <!-- Uncomment this step to allow the user to select a Creative Commons License -->
+            <step id="cclicense"/>
 
             <!--Step will be to Sign off on the required DSpace License agreement -->
             <step id="license"/>
