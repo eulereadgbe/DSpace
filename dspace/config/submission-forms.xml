@@ -599,7 +599,7 @@
                     <repeatable>false</repeatable>
                     <label>Degree grantor</label>
                     <input-type>onebox</input-type>
-                    <hint>Institution granting the degree associated with the work (e.g. Northern Iloilo State University).</hint>
+                    <hint>Institution granting the degree associated with the work (e.g. Davao del Sur State College).</hint>
                     <required>You must enter the name of the granting institution.</required>
                 </field>
             </row>
