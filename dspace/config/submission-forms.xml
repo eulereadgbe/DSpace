@@ -317,6 +317,19 @@
                 <field>
                     <dc-schema>local</dc-schema>
                     <dc-element>subject</dc-element>
+                    <dc-qualifier>agrovoc</dc-qualifier>
+                    <!-- An input-type of tag MUST be marked as repeatable -->
+                    <repeatable>true</repeatable>
+                    <label>Agrovoc terms</label>
+                    <input-type>tag</input-type>
+                    <hint>Enter appropriate Agrovoc keywords.</hint>
+                    <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>local</dc-schema>
+                    <dc-element>subject</dc-element>
                     <dc-qualifier>scientificname</dc-qualifier>
                     <!-- An input-type of tag MUST be marked as repeatable -->
                     <repeatable>true</repeatable>
@@ -635,6 +648,19 @@
                     <label>LCSH</label>
                     <input-type>tag</input-type>
                     <hint>Enter Library of Congress Subject Headings</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>local</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>agrovoc</dc-qualifier>
+                    <!-- An input-type of tag MUST be marked as repeatable -->
+                    <repeatable>true</repeatable>
+                    <label>Agrovoc terms</label>
+                    <input-type>tag</input-type>
+                    <hint>Enter appropriate Agrovoc keywords.</hint>
+                    <required></required>
                 </field>
             </row>
             <row>
