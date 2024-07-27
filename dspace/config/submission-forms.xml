@@ -305,6 +305,42 @@
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>scientificname</dc-qualifier>
+                    <!-- An input-type of tag MUST be marked as repeatable -->
+                    <repeatable>true</repeatable>
+                    <label>Taxonomic terms</label>
+                    <input-type>tag</input-type>
+                    <hint>Enter appropriate scientific names.</hint>
+                    <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>coverage</dc-element>
+                    <dc-qualifier>spatial</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>Geographic Names</label>
+                    <input-type>tag</input-type>
+                    <hint>Enter geographic locations</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>lcsh</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>LCSH</label>
+                    <type-bind>Book</type-bind>
+                    <input-type>tag</input-type>
+                    <hint>Enter Library of Congress Subject Headings</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
                     <dc-element>description</dc-element>
                     <dc-qualifier>abstract</dc-qualifier>
                     <repeatable>false</repeatable>
