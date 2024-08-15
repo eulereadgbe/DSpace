@@ -81,11 +81,14 @@ public class FASTAuthority implements ChoiceAuthority, AuthorityVariantsSupport 
             	String type = result.getString("type");
             	JSONArray suggestall = (JSONArray) result.get("suggestall");
             	//String label = result.getString("auth");
-            	String authority = result.getString("idroot");
+                JSONArray idroot = (JSONArray) result.get("idroot");
+                final  String authority;
+                authority = idroot.getString(0);
+            	//String authority = result.getString("idroot");
             	final String label;
 				if (type.equals("alt")){
-					//label = suggestall.getString(0) + " USE: " + term;
-                    label = suggestall.getString(0);
+					label = suggestall.getString(0) + " USE: " + term;
+                    //label = suggestall.getString(0);
 				} else {
 					label = result.getString("auth");
 				}
