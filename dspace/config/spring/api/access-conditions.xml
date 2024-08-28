@@ -14,6 +14,7 @@
                 <ref bean="embargoed" />
                 <ref bean="administrator"/>
                 <!-- <ref bean="networkAdministration"/> -->
+                <ref bean="upv"/>
             </list>
         </property>
     </bean>
@@ -50,7 +51,12 @@
         <property name="hasStartDate" value="false"/>
         <property name="hasEndDate" value="false"/>
     </bean> -->
-
+    <bean id="upv" class="org.dspace.submit.model.AccessConditionOption">
+        <property name="groupName" value="UPV"/>
+        <property name="name" value="UPV"/>
+        <property name="hasStartDate" value="false"/>
+        <property name="hasEndDate" value="false"/>
+    </bean>
     <bean id="uploadConfigurationService" class="org.dspace.submit.model.UploadConfigurationService">
         <property name="map">
             <map>
@@ -70,6 +76,7 @@
                 <ref bean="openAccess"/>
                 <ref bean="lease"/>
                 <ref bean="embargoed" />
+                <ref bean="upv" />
                 <ref bean="administrator"/>
             </list>
         </property>
