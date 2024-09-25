@@ -33,7 +33,7 @@
         <entry key-ref="scopus.ispartofseries" value-ref="scopusIspartofseriesContrib"/>
         <entry key-ref="scopus.authname" value-ref="scopusAuthorMetadataContrib"/>
         <!--   <entry key-ref="scopus.source" value-ref="scopusSourceContrib"/>            -->
-        <!--   <entry key-ref="scopus.abstract" value-ref="scopusAbstractContrib"/>        -->
+        <entry key-ref="scopus.abstract" value-ref="scopusAbstractContrib"/>
         <!--   <entry key-ref="scopus.author" value-ref="scopusAuthorsContrib"/>           -->
     </util:map>
     
@@ -196,7 +196,7 @@
     </bean>
 
     <bean id="scopus.ispartof" class="org.dspace.importer.external.metadatamapping.MetadataFieldConfig">
-        <constructor-arg value="dc.relation.ispartof"/>
+        <constructor-arg value="dc.citation.journaltitle"/>
     </bean>
 
     <bean id="scopusIspartofseriesContrib" class="org.dspace.importer.external.metadatamapping.contributor.SimpleXpathMetadatumContributor">
