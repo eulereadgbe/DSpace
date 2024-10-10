@@ -67,10 +67,10 @@
         <!-- Example of configuration using a community handle to map an Item Submission Process.
 
             This configuration maps the submission process to the community's descendant
-            collections that do not have a mapping defined by collection-handle or entity-type
+            collections that do not have a mapping defined by collection-handle or entity-type -->
 
-        <name-map community-handle="123456789/1234" submission-name="xxxx"/>
-        -->
+        <name-map community-handle="123456789/16" submission-name="thesis"/>
+
 
     </submission-map>
 
