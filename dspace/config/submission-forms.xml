@@ -339,6 +339,18 @@
             </row>
             <row>
                 <field>
+                    <dc-schema>local</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>sdg</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>UN Sustainable Development Goals (SDGs)</label>
+                    <input-type value-pairs-name="sdgs">dropdown</input-type>
+                    <hint>Select any UN Sustainable Development Goals associated with this item.</hint>
+                    <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>description</dc-element>
                     <dc-qualifier>abstract</dc-qualifier>
@@ -2489,6 +2501,76 @@
             </pair>
         </value-pairs>
 
+        <value-pairs value-pairs-name="sdgs" dc-term="sdg">
+            <pair>
+                <displayed-value>SDG 1 - No poverty</displayed-value>
+                <stored-value>SDG 1 - No poverty</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 2 - Zero hunger</displayed-value>
+                <stored-value>SDG 2 - Zero hunger</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 3 - Good health and well-being</displayed-value>
+                <stored-value>SDG 3 - Good health and well-being</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 4 - Quality education</displayed-value>
+                <stored-value>SDG 4 - Quality education</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 5 - Gender equality</displayed-value>
+                <stored-value>SDG 5 - Gender equality</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 6 - Clean water and sanitation</displayed-value>
+                <stored-value>SDG 6 - Clean water and sanitation</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 7 - Affordable and clean energy</displayed-value>
+                <stored-value>SDG 7 - Affordable and clean energy</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 8 - Decent work and economic growth</displayed-value>
+                <stored-value>SDG 8 - Decent work and economic growth</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 9 - Industry, innovation and infrastructure</displayed-value>
+                <stored-value>SDG 9 - Industry, innovation and infrastructure</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 10 - Reduced inequalities</displayed-value>
+                <stored-value>SDG 10 - Reduced inequalities</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 11 - Sustainable cities and communities</displayed-value>
+                <stored-value>SDG 11 - Sustainable cities and communities</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 12 - Responsible consumption and production</displayed-value>
+                <stored-value>SDG 12 - Responsible consumption and production</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 13 - Climate action</displayed-value>
+                <stored-value>SDG 13 - Climate action</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 14 - Life below water</displayed-value>
+                <stored-value>SDG 14 - Life below water</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 15 - Life on land</displayed-value>
+                <stored-value>SDG 15 - Life on land</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 16 - Peace, justice and strong institutions</displayed-value>
+                <stored-value>SDG 16 - Peace, justice and strong institutions</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>SDG 17 - Partnerships for the goals</displayed-value>
+                <stored-value>SDG 17 - Partnerships for the goals</stored-value>
+            </pair>
+        </value-pairs>
     </form-value-pairs>
 
 </input-forms>
