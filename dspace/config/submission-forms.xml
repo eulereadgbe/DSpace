@@ -296,7 +296,7 @@
                     <dc-qualifier></dc-qualifier>
                     <!-- An input-type of tag MUST be marked as repeatable -->
                     <repeatable>true</repeatable>
-                    <label>Subject Keywords</label>
+                    <label>Agrovoc Keywords</label>
                     <input-type>tag</input-type>
                     <hint>Enter appropriate subject keywords or phrases.</hint>
                     <required></required>
@@ -311,6 +311,17 @@
                     <label>LCSH</label>
                     <input-type>tag</input-type>
                     <hint>Enter Library of Congress Subject Headings</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>mesh</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>MESH</label>
+                    <input-type>tag</input-type>
+                    <hint>Enter Medical Subject Headings</hint>
                 </field>
             </row>
             <row>
@@ -632,7 +643,7 @@
                     <dc-qualifier></dc-qualifier>
                     <!-- An input-type of tag MUST be marked as repeatable -->
                     <repeatable>true</repeatable>
-                    <label>Subject Keywords</label>
+                    <label>Agrovoc Keywords</label>
                     <input-type>tag</input-type>
                     <hint>Enter appropriate subject keywords or phrases.</hint>
                     <required></required>
@@ -647,6 +658,17 @@
                     <label>LCSH</label>
                     <input-type>tag</input-type>
                     <hint>Enter Library of Congress Subject Headings</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>mesh</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>MESH</label>
+                    <input-type>tag</input-type>
+                    <hint>Enter Medical Subject Headings</hint>
                 </field>
             </row>
             <row>
