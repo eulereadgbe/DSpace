@@ -69,7 +69,7 @@
             This configuration maps the submission process to the community's descendant
             collections that do not have a mapping defined by collection-handle or entity-type -->
 
-        <name-map community-handle="123456789/10" submission-name="thesis"/>
+        <name-map community-handle="20.500.14583/10" submission-name="thesis"/>
 
 
     </submission-map>
