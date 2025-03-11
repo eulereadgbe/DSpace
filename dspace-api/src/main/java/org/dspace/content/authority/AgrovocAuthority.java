@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class AgrovocAuthority implements ChoiceAuthority, AuthorityVariantsSupport {
     Logger log = LogManager.getLogger(AgrovocAuthority.class);
-    String agrovocurl = "https://agrovoc.fao.org/agrovoc/rest/v1/search";
+    String agrovocurl = "https://agrovoc.fao.org/browse/rest/v1/search";
     private String pluginInstanceName;
 
     @Override
