@@ -187,6 +187,7 @@
             <list>
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
+                <ref bean="searchFilterSDG" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterEntityType"/>
@@ -200,6 +201,7 @@
                 <ref bean="searchFilterTitle" />
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
+                <ref bean="searchFilterSDG" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterFileNameInOriginalBundle" />
@@ -2587,7 +2589,7 @@
         <property name="indexFieldName" value="subject"/>
         <property name="metadataFields">
             <list>
-                <value>dc.subject.*</value>
+                <value>dc.subject</value>
             </list>
         </property>
         <property name="facetLimit" value="5"/>
@@ -2595,6 +2597,18 @@
         <property name="sortOrderFilterPage" value="COUNT"/>
         <property name="splitter" value="::"/>
 
+    </bean>
+
+    <bean id="searchFilterSDG" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="sdg"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.subject.sdg</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="sortOrderFilterPage" value="COUNT"/>
     </bean>
 
     <bean id="searchFilterIssued" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
