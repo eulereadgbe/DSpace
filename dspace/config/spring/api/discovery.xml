@@ -187,6 +187,9 @@
             <list>
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
+                <ref bean="searchFilterAgrovoc" />
+                <ref bean="searchFilterScientificname" />
+                <ref bean="searchFilterGeographicname" />
                 <ref bean="searchFilterSDG" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
@@ -201,6 +204,9 @@
                 <ref bean="searchFilterTitle" />
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
+                <ref bean="searchFilterAgrovoc" />
+                <ref bean="searchFilterScientificname" />
+                <ref bean="searchFilterGeographicname" />
                 <ref bean="searchFilterSDG" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
@@ -2599,11 +2605,47 @@
 
     </bean>
 
+    <bean id="searchFilterAgrovoc" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="agrovoc"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.subject.agrovoc</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="sortOrderFilterPage" value="COUNT"/>
+    </bean>
+
     <bean id="searchFilterSDG" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="sdg"/>
         <property name="metadataFields">
             <list>
                 <value>dc.subject.sdg</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="sortOrderFilterPage" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterScientificname" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="scientificname"/>
+        <property name="metadataFields">
+            <list>
+                <value>local.subject.scientificname</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="sortOrderFilterPage" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterGeographicname" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="geographicname"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.coverage.spatial</value>
             </list>
         </property>
         <property name="facetLimit" value="5"/>
