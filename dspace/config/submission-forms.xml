@@ -365,6 +365,18 @@
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>odc</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>UN Ocean Decade Challenges</label>
+                    <input-type value-pairs-name="challenges">dropdown</input-type>
+                    <hint>Select any UN Ocean Decade challenges associated with this item.</hint>
+                    <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
                     <dc-element>description</dc-element>
                     <dc-qualifier>abstract</dc-qualifier>
                     <repeatable>false</repeatable>
@@ -2269,6 +2281,50 @@
                 <stored-value>SDG 17 - Partnerships for the goals</stored-value>
             </pair>
         </value-pairs>
+        
+        <value-pairs value-pairs-name="challenges" dc-term="odc">
+            <pair>
+                <displayed-value>Challenge 1: Understand and beat marine pollution</displayed-value>
+                <stored-value>Challenge 1: Understand and beat marine pollution</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Challenge 2: Protect and restore ecosystems and biodiversity</displayed-value>
+                <stored-value>Challenge 2: Protect and restore ecosystems and biodiversity</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Challenge 3: Sustainably feed the global population</displayed-value>
+                <stored-value>Challenge 3: Sustainably feed the global population</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Challenge 4: Develop a sustainable and equitable ocean economy</displayed-value>
+                <stored-value>Challenge 4: Develop a sustainable and equitable ocean economy</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Challenge 5: Unlock ocean-based solutions to climate change</displayed-value>
+                <stored-value>Challenge 5: Unlock ocean-based solutions to climate change</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Challenge 6: Increase community resilience to ocean hazards</displayed-value>
+                <stored-value>Challenge 6: Increase community resilience to ocean hazards</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Challenge 7: Expand the Global Ocean Observing System</displayed-value>
+                <stored-value>Challenge 7: Expand the Global Ocean Observing System</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Challenge 8: Create a digital representation of the Ocean</displayed-value>
+                <stored-value>Challenge 8: Create a digital representation of the Ocean</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Challenge 9: Skills, knowledge, and technology for all</displayed-value>
+                <stored-value>Challenge 9: Skills, knowledge, and technology for all</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Challenge 10: Change humanity’s relationship with the ocean</displayed-value>
+                <stored-value>Challenge 10: Change humanity’s relationship with the ocean</stored-value>
+            </pair>
+        </value-pairs>
+        
     </form-value-pairs>
 
 </input-forms>
