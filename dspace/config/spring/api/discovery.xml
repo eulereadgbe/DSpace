@@ -191,6 +191,7 @@
                 <ref bean="searchFilterScientificname" />
                 <ref bean="searchFilterGeographicname" />
                 <ref bean="searchFilterSDG" />
+                <ref bean="searchFilterChallenge" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterEntityType"/>
@@ -208,6 +209,7 @@
                 <ref bean="searchFilterScientificname" />
                 <ref bean="searchFilterGeographicname" />
                 <ref bean="searchFilterSDG" />
+                <ref bean="searchFilterChallenge" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterFileNameInOriginalBundle" />
@@ -2622,6 +2624,18 @@
         <property name="metadataFields">
             <list>
                 <value>dc.subject.sdg</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="sortOrderFilterPage" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterChallenge" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="odc"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.subject.odc</value>
             </list>
         </property>
         <property name="facetLimit" value="5"/>
