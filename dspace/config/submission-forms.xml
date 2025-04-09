@@ -341,6 +341,17 @@
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>subject</dc-element>
+                    <dc-qualifier>lcc</dc-qualifier>
+                    <label>LC Classification No.</label>
+                    <type-bind>Book,Thesis,Dissertation,Conference publication,Technical Report</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint>Example: LG 995 1988 F5 A2</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
                     <dc-qualifier>ddc</dc-qualifier>
                     <label>DDC Classification No.</label>
                     <type-bind>Book,Thesis,Dissertation,Conference publication,Technical Report</type-bind>
@@ -657,6 +668,17 @@
                     <label>Geographic Names</label>
                     <input-type>tag</input-type>
                     <hint>Enter geographic locations</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>lcc</dc-qualifier>
+                    <label>LC Classification No.</label>
+                    <type-bind>Book,Thesis,Dissertation,Conference publication,Technical Report</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint>Example: LG 995 1988 F5 A2</hint>
                 </field>
             </row>
             <row>
