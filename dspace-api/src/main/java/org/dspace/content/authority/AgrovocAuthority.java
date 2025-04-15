@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class AgrovocAuthority implements ChoiceAuthority, AuthorityVariantsSupport {
     Logger log = LogManager.getLogger(AgrovocAuthority.class);
-    String agrovocurl = "https://agrovoc.fao.org/agrovoc/rest/v1/search";
+    String agrovocurl = "https://agrovoc.fao.org/browse/rest/v1/search";
     private String pluginInstanceName;
 
     @Override
@@ -97,7 +97,7 @@ public class AgrovocAuthority implements ChoiceAuthority, AuthorityVariantsSuppo
             List<Choice> choiceValues = new ArrayList<Choice>();
 
             choiceValues.add(new Choice(text + "_authoritybest", text
-                + "_valuebest", text + "_labelbest"));
+                + "_valuebest", text));
 
             choices = new Choices(
                 (Choice[]) choiceValues.toArray(new Choice[choiceValues
