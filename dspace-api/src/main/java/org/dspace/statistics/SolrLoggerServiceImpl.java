@@ -24,16 +24,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.Year;
-import java.time.YearMonth;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,6 +47,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -426,7 +423,7 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
             storeParents(doc1, dspaceObject);
         }
         // Save the current time
-        doc1.addField("time", Instant.now().toString());
+        doc1.addField("time", DateFormatUtils.format(new Date(), DATE_FORMAT_8601));
         if (currentUser != null) {
             doc1.addField("epersonid", currentUser.getID().toString());
         }
@@ -518,7 +515,7 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
             storeParents(doc1, dspaceObject);
         }
         // Save the current time
-        doc1.addField("time", Instant.now().toString());
+        doc1.addField("time", DateFormatUtils.format(new Date(), DATE_FORMAT_8601));
         if (currentUser != null) {
             doc1.addField("epersonid", currentUser.getID().toString());
         }
@@ -836,7 +833,7 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
 
         processor.execute(query);
 
-        // Add the new (updated once
+        // Add the new (updated onces
         for (int i = 0; i < docsToUpdate.size(); i++) {
             SolrInputDocument solrDocument = docsToUpdate.get(i);
 
@@ -949,7 +946,7 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
                     RangeFacet.Count dateCount = (RangeFacet.Count) timeFacet.getCounts().get(i);
                     result[i] = new ObjectCount();
                     result[i].setCount(dateCount.getCount());
-                    result[i].setValue(getDateView(dateCount.getValue(), dateType));
+                    result[i].setValue(getDateView(dateCount.getValue(), dateType, context));
                 }
                 if (showTotal) {
                     result[result.length - 1] = new ObjectCount();
@@ -984,30 +981,44 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
         return objCount;
     }
 
-    protected String getDateView(String name, String type) {
+    protected String getDateView(String name, String type, Context context) {
         if (name != null && name.matches("^[0-9]{4}\\-[0-9]{2}.*")) {
+            /*
+             * if ("YEAR".equalsIgnoreCase(type)) return name.substring(0, 4);
+             * else if ("MONTH".equalsIgnoreCase(type)) return name.substring(0,
+             * 7); else if ("DAY".equalsIgnoreCase(type)) return
+             * name.substring(0, 10); else if ("HOUR".equalsIgnoreCase(type))
+             * return name.substring(11, 13);
+             */
             // Get our date
-            LocalDate date = null;
+            Date date = null;
             try {
-                // First parse to an instant
-                Instant instant = Instant.parse(name);
-                // Then extract the LocalDate
-                date = instant.atZone(ZoneOffset.UTC).toLocalDate();
-            } catch (DateTimeParseException e) {
-                e.printStackTrace();
-            }
-            if (date != null) {
-                String dateformatString = "dd-MM-yyyy";
-                if ("DAY".equals(type)) {
-                    DateTimeFormatter simpleFormat = DateTimeFormatter.ofPattern(dateformatString);
-                    name = simpleFormat.format(date);
-                } else if ("MONTH".equals(type)) {
-                    dateformatString = "MMMM yyyy";
-                    DateTimeFormatter simpleFormat = DateTimeFormatter.ofPattern(dateformatString);
-                    name = simpleFormat.format(YearMonth.from(date));
-                } else if ("YEAR".equals(type)) {
-                    name = String.valueOf(date.getYear());
+                SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_8601, context.getCurrentLocale());
+                date = format.parse(name);
+            } catch (ParseException e) {
+                try {
+                    // We should use the dcdate (the dcdate is used when
+                    // generating random data)
+                    SimpleDateFormat format = new SimpleDateFormat(
+                        DATE_FORMAT_DCDATE, context.getCurrentLocale());
+                    date = format.parse(name);
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
                 }
+            }
+            String dateformatString = "dd-MM-yyyy";
+            if ("DAY".equals(type)) {
+                dateformatString = "dd-MM-yyyy";
+            } else if ("MONTH".equals(type)) {
+                dateformatString = "MMMM yyyy";
+
+            } else if ("YEAR".equals(type)) {
+                dateformatString = "yyyy";
+            }
+            SimpleDateFormat simpleFormat = new SimpleDateFormat(
+                dateformatString, context.getCurrentLocale());
+            if (date != null) {
+                name = simpleFormat.format(date);
             }
 
         }
@@ -1076,7 +1087,7 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
         // performance and ensure the search result ordering will
         // not be influenced
 
-        // Choose to filter by isBot field, may be overridden in future
+        // Choose to filter by isBot field, may be overriden in future
         // to allow views on stats based on bots.
         if (defaultFilterQueries && configurationService.getBooleanProperty(
                 "solr-statistics.query.filter.isBot", true)) {
@@ -1142,7 +1153,7 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
         //We go back to 2000 the year 2000, this is a bit overkill but this way we ensure we have everything
         //The alternative would be to sort but that isn't recommended since it would be a very costly query !
         yearRangeQuery.add(FacetParams.FACET_RANGE_START,
-                           "NOW/YEAR-" + (Year.now().getValue() - 2000) + "YEARS");
+                           "NOW/YEAR-" + (Calendar.getInstance().get(Calendar.YEAR) - 2000) + "YEARS");
         //Add the +0year to ensure that we DO NOT include the current year
         yearRangeQuery.add(FacetParams.FACET_RANGE_END, "NOW/YEAR+0YEARS");
         yearRangeQuery.add(FacetParams.FACET_RANGE_GAP, "+1YEAR");
@@ -1163,8 +1174,12 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
             //Create a range query from this !
             //We start with out current year
             DCDate dcStart = new DCDate(count.getValue());
+            Calendar endDate = Calendar.getInstance();
             //Advance one year for the start of the next one !
-            DCDate dcEndDate = new DCDate(dcStart.toDate().plus(1, ChronoUnit.YEARS));
+            endDate.setTime(dcStart.toDate());
+            endDate.add(Calendar.YEAR, 1);
+            DCDate dcEndDate = new DCDate(endDate.getTime());
+
 
             StringBuilder filterQuery = new StringBuilder();
             filterQuery.append("time:([");
@@ -1211,7 +1226,7 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
                 try ( CloseableHttpClient hc = HttpClientBuilder.create().build(); ) {
                     HttpResponse response = hc.execute(get);
                     csvInputstream = response.getEntity().getContent();
-                    //Write the csv output to a file !
+                    //Write the csv ouput to a file !
                     FileUtils.copyInputStreamToFile(csvInputstream, csvFile);
                 }
                 filesToUpload.add(csvFile);
@@ -1493,7 +1508,7 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
     }
 
     protected void addDocumentsToFile(Context context, SolrDocumentList docs, File exportOutput)
-        throws SQLException, DateTimeParseException, IOException {
+        throws SQLException, ParseException, IOException {
         for (SolrDocument doc : docs) {
             String ip = doc.get("ip").toString();
             if (ip.equals("::1")) {
@@ -1514,13 +1529,15 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
             }
 
             //InputFormat: Mon May 19 07:21:27 EDT 2014
-            ZonedDateTime solrDate = ZonedDateTime.parse(time,
-                                                         DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy"));
+            DateFormat inputDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+            Date solrDate = inputDateFormat.parse(time);
 
             //OutputFormat: 2014-05-27T16:24:09
+            DateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
             String out = time + "," + "view_" + contentServiceFactory.getDSpaceObjectService(dso).getTypeText(dso)
-                                                                     .toLowerCase() + "," + id + "," +
-                DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(solrDate) + ",anonymous," + ip + "\n";
+                                                                     .toLowerCase() + "," + id + "," + outputDateFormat
+                .format(solrDate) + ",anonymous," + ip + "\n";
             FileUtils.writeStringToFile(exportOutput, out, StandardCharsets.UTF_8, true);
         }
     }
@@ -1556,7 +1573,7 @@ public class SolrLoggerServiceImpl implements SolrLoggerService, InitializingBea
      * The statistics shards should not be initialized until all tomcat webapps
      * are fully initialized.  DS-3457 uncovered an issue in DSpace 6x in which
      * this code triggered Tomcat to hang when statistics shards are present.
-     * This code is synchronized in the event that 2 threads trigger the
+     * This code is synchonized in the event that 2 threads trigger the
      * initialization at the same time.
      */
     protected synchronized void initSolrYearCores() {

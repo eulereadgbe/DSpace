@@ -7,8 +7,8 @@
  */
 package org.dspace.scripts;
 
-import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -26,6 +26,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.dspace.content.Bitstream;
@@ -53,10 +55,12 @@ public class Process implements ReloadableEntity<Integer> {
     private EPerson ePerson;
 
     @Column(name = "start_time")
-    private Instant startTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date startTime;
 
     @Column(name = "finished_time")
-    private Instant finishedTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date finishedTime;
 
     @Column(name = "script", nullable = false)
     private String name;
@@ -88,7 +92,8 @@ public class Process implements ReloadableEntity<Integer> {
     private List<Group> groups;
 
     @Column(name = "creation_time", nullable = false)
-    private Instant creationTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationTime;
 
     public static final String BITSTREAM_TYPE_METADATAFIELD = "dspace.process.filetype";
     public static final String OUTPUT_TYPE = "script_output";
@@ -125,11 +130,11 @@ public class Process implements ReloadableEntity<Integer> {
      * This method returns the Start time for the Process. This reflects the time when the Process was actually started
      * @return  The start time for the Process
      */
-    public Instant getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Instant startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
@@ -137,11 +142,11 @@ public class Process implements ReloadableEntity<Integer> {
      * This method returns the time that Process was finished
      * @return  The finished time for the Process
      */
-    public Instant getFinishedTime() {
+    public Date getFinishedTime() {
         return finishedTime;
     }
 
-    public void setFinishedTime(Instant finishedTime) {
+    public void setFinishedTime(Date finishedTime) {
         this.finishedTime = finishedTime;
     }
 
@@ -207,7 +212,7 @@ public class Process implements ReloadableEntity<Integer> {
         getBitstreams().add(bitstream);
     }
 
-    public void setCreationTime(Instant creationTime) {
+    public void setCreationTime(Date creationTime) {
         this.creationTime = creationTime;
     }
 
@@ -216,7 +221,7 @@ public class Process implements ReloadableEntity<Integer> {
      * the StartTime (for example if the Process was queued)
      * @return  The creation time of the Process
      */
-    public Instant getCreationTime() {
+    public Date getCreationTime() {
         return creationTime;
     }
 

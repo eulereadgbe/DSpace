@@ -7,10 +7,9 @@
  */
 package org.dspace.matcher;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -23,18 +22,17 @@ import org.hamcrest.Description;
  */
 public class DateMatcher
         extends BaseMatcher<String> {
-    private static final DateTimeFormatter dateFormat = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+    private static final SimpleDateFormat dateFormat
+            = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
 
-    private final ZonedDateTime matchDate;
+    private final Date matchDate;
 
     /**
      * Create a matcher for a given Date.
      * @param matchDate The date that tested values should match.
      */
-    public DateMatcher(ZonedDateTime matchDate) {
-        // Truncate to seconds. We aren't matching with millisecond precision because doing so may result
-        // in random failures if one of the two dates is rounded differently.
-        this.matchDate = (matchDate != null ? matchDate.truncatedTo(ChronoUnit.SECONDS) : null);
+    public DateMatcher(Date matchDate) {
+        this.matchDate = matchDate;
     }
 
     @Override
@@ -54,11 +52,11 @@ public class DateMatcher
             throw new IllegalArgumentException("Argument not a String");
         }
 
-        // Decode the string to a Date, truncated to seconds.
-        ZonedDateTime testDateDecoded;
+        // Decode the string to a Date
+        Date testDateDecoded;
         try {
-            testDateDecoded = ZonedDateTime.parse((String) testDate, dateFormat).truncatedTo(ChronoUnit.SECONDS);
-        } catch (DateTimeParseException ex) {
+            testDateDecoded = dateFormat.parse((String)testDate);
+        } catch (ParseException ex) {
             throw new IllegalArgumentException("Argument '" + testDate
                     + "' is not an ISO 8601 zoned date", ex);
         }
@@ -70,7 +68,7 @@ public class DateMatcher
     @Override
     public void describeTo(Description description) {
         description.appendText("is the same date as ");
-        description.appendText(matchDate != null ? dateFormat.format(matchDate) : "null");
+        description.appendText(dateFormat.format(matchDate));
     }
 
     /**
@@ -78,7 +76,7 @@ public class DateMatcher
      * @param matchDate the date which tested values should match.
      * @return a new Matcher for matchDate.
      */
-    static public DateMatcher dateMatcher(ZonedDateTime matchDate) {
+    static public DateMatcher dateMatcher(Date matchDate) {
         return new DateMatcher(matchDate);
     }
 }

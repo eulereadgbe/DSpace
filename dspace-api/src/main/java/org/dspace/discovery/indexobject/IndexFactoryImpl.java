@@ -10,7 +10,7 @@ package org.dspace.discovery.indexobject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections4.ListUtils;
@@ -54,7 +54,7 @@ public abstract class IndexFactoryImpl<T extends IndexableObject, S> implements 
         SolrInputDocument doc = new SolrInputDocument();
         // want to be able to check when last updated
         // (not tokenized, but it is indexed)
-        doc.addField(SearchUtils.LAST_INDEXED_FIELD, SolrUtils.getDateFormatter().format(Instant.now()));
+        doc.addField(SearchUtils.LAST_INDEXED_FIELD, SolrUtils.getDateFormatter().format(new Date()));
 
         // New fields to weaken the dependence on handles, and allow for faster
         // list display
@@ -118,10 +118,20 @@ public abstract class IndexFactoryImpl<T extends IndexableObject, S> implements 
                 ParseContext tikaContext = new ParseContext();
 
                 // Use Apache Tika to parse the full text stream(s)
-                boolean extractionSucceeded = false;
                 try (InputStream fullTextStreams = streams.getStream()) {
                     tikaParser.parse(fullTextStreams, tikaHandler, tikaMetadata, tikaContext);
-                    extractionSucceeded = true;
+
+                    // Write Tika metadata to "tika_meta_*" fields.
+                    // This metadata is not very useful right now,
+                    // but we'll keep it just in case it becomes more useful.
+                    for (String name : tikaMetadata.names()) {
+                        for (String value : tikaMetadata.getValues(name)) {
+                            doc.addField("tika_meta_" + name, value);
+                        }
+                    }
+
+                    // Save (parsed) full text to "fulltext" field
+                    doc.addField("fulltext", tikaHandler.toString());
                 } catch (SAXException saxe) {
                     // Check if this SAXException is just a notice that this file was longer than the character limit.
                     // Unfortunately there is not a unique, public exception type to catch here. This error is thrown
@@ -131,7 +141,6 @@ public abstract class IndexFactoryImpl<T extends IndexableObject, S> implements 
                         // log that we only indexed up to that configured limit
                         log.info("Full text is larger than the configured limit (discovery.solr.fulltext.charLimit)."
                                 + " Only the first {} characters were indexed.", charLimit);
-                        extractionSucceeded = true;
                     } else {
                         log.error("Tika parsing error. Could not index full text.", saxe);
                         throw new IOException("Tika parsing error. Could not index full text.", saxe);
@@ -139,19 +148,11 @@ public abstract class IndexFactoryImpl<T extends IndexableObject, S> implements 
                 } catch (TikaException | IOException ex) {
                     log.error("Tika parsing error. Could not index full text.", ex);
                     throw new IOException("Tika parsing error. Could not index full text.", ex);
+                } finally {
+                    // Add document to index
+                    solr.add(doc);
                 }
-                if (extractionSucceeded) {
-                    // Write Tika metadata to "tika_meta_*" fields.
-                    // This metadata is not very useful right now,
-                    // but we'll keep it just in case it becomes more useful.
-                    for (String name : tikaMetadata.names()) {
-                        for (String value : tikaMetadata.getValues(name)) {
-                            doc.addField("tika_meta_" + name, value);
-                        }
-                    }
-                    // Save (parsed) full text to "fulltext" field
-                    doc.addField("fulltext", tikaHandler.toString());
-                }
+                return;
             }
             // Add document to index
             solr.add(doc);

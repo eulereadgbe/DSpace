@@ -8,7 +8,7 @@
 package org.dspace.harvest.dao;
 
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import org.dspace.content.Collection;
@@ -37,11 +37,11 @@ public interface HarvestedCollectionDAO extends GenericDAO<HarvestedCollection> 
     public HarvestedCollection findByCollection(Context context, Collection collection) throws SQLException;
 
     List<HarvestedCollection> findByLastHarvestedAndHarvestTypeAndHarvestStatusesAndHarvestTime(Context context,
-                                                                                                Instant startTime,
+                                                                                                Date startTime,
                                                                                                 int minimalType,
                                                                                                 int[] statuses,
                                                                                                 int expirationStatus,
-                                                                                                Instant expirationTime)
+                                                                                                Date expirationTime)
         throws SQLException;
 
     public int count(Context context) throws SQLException;

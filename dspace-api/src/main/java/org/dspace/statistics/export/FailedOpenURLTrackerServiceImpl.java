@@ -48,7 +48,7 @@ public class FailedOpenURLTrackerServiceImpl implements FailedOpenURLTrackerServ
     /**
      * Creates a new OpenURLTracker
      * @param context
-     * @return the created OpenURLTracker
+     * @return the creatred OpenURLTracker
      * @throws SQLException
      */
     @Override

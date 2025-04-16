@@ -58,8 +58,7 @@ public class ItemMatcher {
                 "version",
                 "relationships[]",
                 "templateItemOf",
-                "thumbnail",
-                "submitter"
+                "thumbnail"
         );
     }
 
@@ -77,8 +76,7 @@ public class ItemMatcher {
                 "self",
                 "version",
                 "templateItemOf",
-                "thumbnail",
-                "submitter"
+                "thumbnail"
         );
     }
 

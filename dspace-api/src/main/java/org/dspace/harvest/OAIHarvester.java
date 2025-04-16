@@ -14,12 +14,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.ConnectException;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -38,6 +39,7 @@ import org.dspace.content.Bitstream;
 import org.dspace.content.BitstreamFormat;
 import org.dspace.content.Bundle;
 import org.dspace.content.Collection;
+import org.dspace.content.DCDate;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.content.MetadataValue;
@@ -77,12 +79,16 @@ import org.oclc.oai.harvester2.verb.ListMetadataFormats;
 import org.oclc.oai.harvester2.verb.ListRecords;
 import org.xml.sax.SAXException;
 
+
 /**
  * This class handles OAI harvesting of externally located records into this repository.
  *
  * @author Alexey Maslov
  */
+
+
 public class OAIHarvester {
+
 
     /**
      * log4j category
@@ -257,7 +263,7 @@ public class OAIHarvester {
             oaiSetId = null;
         }
 
-        Instant lastHarvestDate = harvestRow.getHarvestDate();
+        Date lastHarvestDate = harvestRow.getHarvestDate();
         String fromDate = null;
         if (lastHarvestDate != null) {
             fromDate = processDate(harvestRow.getHarvestDate());
@@ -265,7 +271,7 @@ public class OAIHarvester {
 
         long totalListSize = 0;
         long currentRecord = 0;
-        Instant startTime = Instant.now();
+        Date startTime = new Date();
         String toDate = processDate(startTime, 0);
 
         String dateGranularity;
@@ -320,7 +326,10 @@ public class OAIHarvester {
                 expirationInterval = 24;
             }
 
-            Instant expirationTime = startTime.plus(expirationInterval, ChronoUnit.HOURS);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(startTime);
+            calendar.add(Calendar.HOUR, expirationInterval);
+            Date expirationTime = calendar.getTime();
 
             // main loop to keep requesting more objects until we're done
             List<Element> records;
@@ -344,7 +353,7 @@ public class OAIHarvester {
                     }
                     if (errorSet.contains("noRecordsMatch")) {
                         log.info("noRecordsMatch: OAI server did not contain any updates");
-                        harvestRow.setHarvestStartTime(Instant.now());
+                        harvestRow.setHarvestStartTime(new Date());
                         harvestRow.setHarvestMessage("OAI server did not contain any updates");
                         harvestRow.setHarvestStatus(HarvestedCollection.STATUS_READY);
                         harvestedCollectionService.update(ourContext, harvestRow);
@@ -376,7 +385,7 @@ public class OAIHarvester {
                                 .getID() + " interrupted by stopping the scheduler.");
                         }
                         // check for timeout
-                        if (expirationTime.isBefore(Instant.now())) {
+                        if (expirationTime.before(new Date())) {
                             throw new HarvestingException(
                                 "runHarvest method timed out for collection " + targetCollection.getID());
                         }
@@ -442,8 +451,8 @@ public class OAIHarvester {
         }
 
         // If we got to this point, it means the harvest was completely successful
-        Instant finishTime = Instant.now();
-        long timeTaken = finishTime.toEpochMilli() - startTime.toEpochMilli();
+        Date finishTime = new Date();
+        long timeTaken = finishTime.getTime() - startTime.getTime();
         harvestRow.setHarvestStartTime(startTime);
         harvestRow.setHarvestMessage("Harvest from " + oaiSource + " successful");
         harvestRow.setHarvestStatus(HarvestedCollection.STATUS_READY);
@@ -492,7 +501,7 @@ public class OAIHarvester {
         throws SQLException, AuthorizeException, IOException, CrosswalkException, HarvestingException,
         ParserConfigurationException, SAXException, XPathExpressionException {
         WorkspaceItem wi = null;
-        Instant timeStart = Instant.now();
+        Date timeStart = new Date();
 
         // grab the oai identifier
         String itemOaiID = record.getChild("header", OAI_NS).getChild("identifier", OAI_NS).getText();
@@ -540,9 +549,9 @@ public class OAIHarvester {
             // Compare last-harvest on the item versus the last time the item was updated on the OAI provider side
             // If ours is more recent, forgo this item, since it's probably a left-over from a previous harvesting
             // attempt
-            Instant oaiDatestamp = Utils.parseISO8601Date(header.getChildText("datestamp", OAI_NS));
-            Instant itemLastHarvest = hi.getHarvestDate();
-            if (itemLastHarvest != null && oaiDatestamp.isBefore(itemLastHarvest)) {
+            Date OAIDatestamp = Utils.parseISO8601Date(header.getChildText("datestamp", OAI_NS));
+            Date itemLastHarvest = hi.getHarvestDate();
+            if (itemLastHarvest != null && OAIDatestamp.before(itemLastHarvest)) {
                 log.info("Item " + item
                     .getHandle() + " was harvested more recently than the last update time reported by the OAI " +
                              "server; skipping.");
@@ -639,17 +648,18 @@ public class OAIHarvester {
             bundleService.update(ourContext, OREBundle);
         }
 
-        hi.setHarvestDate(Instant.now());
+        //item.setHarvestDate(new Date());
+        hi.setHarvestDate(new Date());
 
         // Add provenance that this item was harvested via OAI
         String provenanceMsg = "Item created via OAI harvest from source: "
-            + this.harvestRow.getOaiSource() + " on " + hi.getHarvestDate()
-            + ".  Item's OAI Record identifier: " + hi.getOaiID();
+            + this.harvestRow.getOaiSource() + " on " + new DCDate(hi.getHarvestDate())
+            + " (GMT).  Item's OAI Record identifier: " + hi.getOaiID();
         itemService.addMetadata(ourContext, item, "dc", "description", "provenance", "en", provenanceMsg);
 
         itemService.update(ourContext, item);
         harvestedItemService.update(ourContext, hi);
-        long timeTaken = Instant.now().toEpochMilli() - timeStart.toEpochMilli();
+        long timeTaken = new Date().getTime() - timeStart.getTime();
         log.info(String.format("Item %s (%s) has been ingested (item %d of %d). The whole process took: %d ms.",
                                item.getHandle(), item.getID(), currentRecord, totalListSize, timeTaken));
 
@@ -709,10 +719,10 @@ public class OAIHarvester {
      * Process a date, converting it to RFC3339 format, setting the timezone to UTC and subtracting time padding
      * from the config file.
      *
-     * @param date source Instant
+     * @param date source Date
      * @return a string in the format 'yyyy-mm-ddThh:mm:ssZ' and converted to UTC timezone
      */
-    private String processDate(Instant date) {
+    private String processDate(Date date) {
         int timePad = configurationService.getIntProperty("oai.harvester.timePadding");
 
         if (timePad == 0) {
@@ -726,13 +736,21 @@ public class OAIHarvester {
      * Process a date, converting it to RFC3339 format, setting the timezone to UTC and subtracting time padding
      * from the config file.
      *
-     * @param date       source Instant
+     * @param date       source Date
      * @param secondsPad number of seconds to subtract from the date
      * @return a string in the format 'yyyy-mm-ddThh:mm:ssZ' and converted to UTC timezone
      */
-    private String processDate(Instant date, int secondsPad) {
-        date = date.minus(secondsPad, ChronoUnit.SECONDS);
-        return DateTimeFormatter.ISO_INSTANT.format(date);
+    private String processDate(Date date, int secondsPad) {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.SECOND, -1 * secondsPad);
+        date = calendar.getTime();
+
+        return formatter.format(date);
     }
 
 
@@ -801,7 +819,7 @@ public class OAIHarvester {
                 Email email = Email.getEmail(I18nUtil.getEmailFilename(Locale.getDefault(), "harvesting_error"));
                 email.addRecipient(recipient);
                 email.addArgument(targetCollection.getID());
-                email.addArgument(Instant.now());
+                email.addArgument(new Date());
                 email.addArgument(status);
 
                 String stackTrace;

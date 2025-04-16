@@ -102,8 +102,7 @@ public class BitstreamMatcher {
         return matchEmbeds(
                 "bundle",
                 "format",
-                "thumbnail",
-                "accessStatus"
+                "thumbnail"
         );
     }
 
@@ -116,8 +115,7 @@ public class BitstreamMatcher {
                 "content",
                 "format",
                 "self",
-                "thumbnail",
-                "accessStatus"
+                "thumbnail"
         );
     }
 

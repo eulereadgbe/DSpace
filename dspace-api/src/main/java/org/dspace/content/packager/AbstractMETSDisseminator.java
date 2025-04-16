@@ -316,7 +316,7 @@ public abstract class AbstractMETSDisseminator
             IllegalArgumentException, InvocationTargetException {
         long lmTime = 0;
         if (dso.getType() == Constants.ITEM) {
-            lmTime = ((Item) dso).getLastModified().toEpochMilli();
+            lmTime = ((Item) dso).getLastModified().getTime();
         }
 
         // map of extra streams to put in Zip (these are located during makeManifest())
@@ -417,7 +417,7 @@ public abstract class AbstractMETSDisseminator
             Item item = (Item) dso;
 
             //get last modified time
-            long lmTime = ((Item) dso).getLastModified().toEpochMilli();
+            long lmTime = ((Item) dso).getLastModified().getTime();
 
             List<Bundle> bundles = item.getBundles();
             for (Bundle bundle : bundles) {

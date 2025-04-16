@@ -7,7 +7,7 @@
  */
 package org.dspace.xoai.services.impl.xoai;
 
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import com.lyncode.xoai.dataprovider.core.ListItemIdentifiersResult;
@@ -37,60 +37,60 @@ public abstract class DSpaceItemRepository implements ItemRepository {
     }
 
     @Override
-    public ListItemIdentifiersResult getItemIdentifiers(List<ScopedFilter> filters, int offset, int length,
-                                                        java.util.Date from) throws OAIException {
-        filters.add(new ScopedFilter(getDateFromCondition(from.toInstant()), Scope.Query));
+    public ListItemIdentifiersResult getItemIdentifiers(
+        List<ScopedFilter> filters, int offset, int length, Date from) throws OAIException {
+        filters.add(new ScopedFilter(getDateFromCondition(from), Scope.Query));
         return this.getItemIdentifiers(filters, offset, length);
     }
 
     @Override
-    public ListItemIdentifiersResult getItemIdentifiers(List<ScopedFilter> filters, int offset, int length,
-                                                        String setSpec) throws OAIException {
+    public ListItemIdentifiersResult getItemIdentifiers(
+        List<ScopedFilter> filters, int offset, int length, String setSpec) throws OAIException {
         filters.add(new ScopedFilter(getDSpaceSetSpecFilter(setSpec), Scope.Query));
         return this.getItemIdentifiers(filters, offset, length);
     }
 
     @Override
-    public ListItemIdentifiersResult getItemIdentifiers(List<ScopedFilter> filters, int offset, int length,
-                                                        java.util.Date from, java.util.Date until)
-        throws OAIException {
-        filters.add(new ScopedFilter(getDateFromCondition(from.toInstant()), Scope.Query));
-        filters.add(new ScopedFilter(getDateUntilFilter(until.toInstant()), Scope.Query));
+    public ListItemIdentifiersResult getItemIdentifiers(
+        List<ScopedFilter> filters, int offset, int length, Date from, Date until) throws OAIException {
+        filters.add(new ScopedFilter(getDateFromCondition(from), Scope.Query));
+        filters.add(new ScopedFilter(getDateUntilFilter(until), Scope.Query));
         return this.getItemIdentifiers(filters, offset, length);
     }
 
     @Override
-    public ListItemIdentifiersResult getItemIdentifiers(List<ScopedFilter> filters, int offset, int length,
-                                                        String setSpec, java.util.Date from) throws OAIException {
-        filters.add(new ScopedFilter(getDateFromCondition(from.toInstant()), Scope.Query));
+    public ListItemIdentifiersResult getItemIdentifiers(
+        List<ScopedFilter> filters, int offset, int length, String setSpec,
+        Date from) throws OAIException {
+        filters.add(new ScopedFilter(getDateFromCondition(from), Scope.Query));
         filters.add(new ScopedFilter(getDSpaceSetSpecFilter(setSpec),
                                      Scope.Query));
         return this.getItemIdentifiers(filters, offset, length);
     }
 
     @Override
-    public ListItemIdentifiersResult getItemIdentifiers(List<ScopedFilter> filters, int offset, int length,
-                                                        String setSpec, java.util.Date from, java.util.Date until)
-        throws OAIException {
-        filters.add(new ScopedFilter(getDateFromCondition(from.toInstant()), Scope.Query));
-        filters.add(new ScopedFilter(getDateUntilFilter(until.toInstant()), Scope.Query));
+    public ListItemIdentifiersResult getItemIdentifiers(
+        List<ScopedFilter> filters, int offset, int length, String setSpec,
+        Date from, Date until) throws OAIException {
+        filters.add(new ScopedFilter(getDateFromCondition(from), Scope.Query));
+        filters.add(new ScopedFilter(getDateUntilFilter(until), Scope.Query));
         filters.add(new ScopedFilter(getDSpaceSetSpecFilter(setSpec),
                                      Scope.Query));
         return this.getItemIdentifiers(filters, offset, length);
     }
 
     @Override
-    public ListItemIdentifiersResult getItemIdentifiersUntil(List<ScopedFilter> filters, int offset, int length,
-                                                             java.util.Date until) throws OAIException {
-        filters.add(new ScopedFilter(getDateUntilFilter(until.toInstant()), Scope.Query));
+    public ListItemIdentifiersResult getItemIdentifiersUntil(
+        List<ScopedFilter> filters, int offset, int length, Date until) throws OAIException {
+        filters.add(new ScopedFilter(getDateUntilFilter(until), Scope.Query));
         return this.getItemIdentifiers(filters, offset, length);
     }
 
     @Override
-    public ListItemIdentifiersResult getItemIdentifiersUntil(List<ScopedFilter> filters, int offset, int length,
-                                                             String setSpec, java.util.Date until)
-        throws OAIException {
-        filters.add(new ScopedFilter(getDateUntilFilter(until.toInstant()), Scope.Query));
+    public ListItemIdentifiersResult getItemIdentifiersUntil(
+        List<ScopedFilter> filters, int offset, int length, String setSpec,
+        Date until) throws OAIException {
+        filters.add(new ScopedFilter(getDateUntilFilter(until), Scope.Query));
         filters.add(new ScopedFilter(getDSpaceSetSpecFilter(setSpec),
                                      Scope.Query));
         return this.getItemIdentifiers(filters, offset, length);
@@ -98,8 +98,8 @@ public abstract class DSpaceItemRepository implements ItemRepository {
 
     @Override
     public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
-                                     int length, java.util.Date from) throws OAIException {
-        filters.add(new ScopedFilter(getDateFromCondition(from.toInstant()), Scope.Query));
+                                     int length, Date from) throws OAIException {
+        filters.add(new ScopedFilter(getDateFromCondition(from), Scope.Query));
         return this.getItems(filters, offset, length);
     }
 
@@ -113,16 +113,16 @@ public abstract class DSpaceItemRepository implements ItemRepository {
 
     @Override
     public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
-                                     int length, java.util.Date from, java.util.Date until) throws OAIException {
-        filters.add(new ScopedFilter(getDateFromCondition(from.toInstant()), Scope.Query));
-        filters.add(new ScopedFilter(getDateUntilFilter(until.toInstant()), Scope.Query));
+                                     int length, Date from, Date until) throws OAIException {
+        filters.add(new ScopedFilter(getDateFromCondition(from), Scope.Query));
+        filters.add(new ScopedFilter(getDateUntilFilter(until), Scope.Query));
         return this.getItems(filters, offset, length);
     }
 
     @Override
     public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
-                                     int length, String setSpec, java.util.Date from) throws OAIException {
-        filters.add(new ScopedFilter(getDateFromCondition(from.toInstant()), Scope.Query));
+                                     int length, String setSpec, Date from) throws OAIException {
+        filters.add(new ScopedFilter(getDateFromCondition(from), Scope.Query));
         filters.add(new ScopedFilter(getDSpaceSetSpecFilter(setSpec),
                                      Scope.Query));
         return this.getItems(filters, offset, length);
@@ -130,10 +130,9 @@ public abstract class DSpaceItemRepository implements ItemRepository {
 
     @Override
     public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
-                                     int length, String setSpec, java.util.Date from, java.util.Date until)
-        throws OAIException {
-        filters.add(new ScopedFilter(getDateFromCondition(from.toInstant()), Scope.Query));
-        filters.add(new ScopedFilter(getDateUntilFilter(until.toInstant()), Scope.Query));
+                                     int length, String setSpec, Date from, Date until) throws OAIException {
+        filters.add(new ScopedFilter(getDateFromCondition(from), Scope.Query));
+        filters.add(new ScopedFilter(getDateUntilFilter(until), Scope.Query));
         filters.add(new ScopedFilter(getDSpaceSetSpecFilter(setSpec),
                                      Scope.Query));
         return this.getItems(filters, offset, length);
@@ -141,21 +140,21 @@ public abstract class DSpaceItemRepository implements ItemRepository {
 
     @Override
     public ListItemsResults getItemsUntil(List<ScopedFilter> filters, int offset,
-                                          int length, java.util.Date until) throws OAIException {
-        filters.add(new ScopedFilter(getDateUntilFilter(until.toInstant()), Scope.Query));
+                                          int length, Date until) throws OAIException {
+        filters.add(new ScopedFilter(getDateUntilFilter(until), Scope.Query));
         return this.getItems(filters, offset, length);
     }
 
     @Override
     public ListItemsResults getItemsUntil(List<ScopedFilter> filters, int offset,
-                                          int length, String setSpec, java.util.Date from) throws OAIException {
-        filters.add(new ScopedFilter(getDateUntilFilter(from.toInstant()), Scope.Query));
+                                          int length, String setSpec, Date from) throws OAIException {
+        filters.add(new ScopedFilter(getDateUntilFilter(from), Scope.Query));
         filters.add(new ScopedFilter(getDSpaceSetSpecFilter(setSpec),
                                      Scope.Query));
         return this.getItems(filters, offset, length);
     }
 
-    private Condition getDateFromCondition(final Instant from) {
+    private Condition getDateFromCondition(final Date from) {
         return new Condition() {
             @Override
             public Filter getFilter() {
@@ -173,7 +172,7 @@ public abstract class DSpaceItemRepository implements ItemRepository {
         };
     }
 
-    private Condition getDateUntilFilter(final Instant until) {
+    private Condition getDateUntilFilter(final Date until) {
         return new Condition() {
             @Override
             public Filter getFilter() {

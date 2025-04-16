@@ -8,7 +8,7 @@
 package org.dspace.checker;
 
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -94,7 +94,7 @@ public class ChecksumHistoryServiceImpl implements ChecksumHistoryService {
      * @throws SQLException if database error occurs.
      */
     @Override
-    public int deleteByDateAndCode(Context context, Instant retentionDate, ChecksumResultCode checksumResultCode)
+    public int deleteByDateAndCode(Context context, Date retentionDate, ChecksumResultCode checksumResultCode)
         throws SQLException {
         return checksumHistoryDAO.deleteByDateAndCode(context, retentionDate, checksumResultCode);
     }
@@ -109,10 +109,10 @@ public class ChecksumHistoryServiceImpl implements ChecksumHistoryService {
 
     @Override
     public int prune(Context context, Map<ChecksumResultCode, Long> interests) throws SQLException {
-        long now = Instant.now().toEpochMilli();
+        long now = System.currentTimeMillis();
         int count = 0;
         for (Map.Entry<ChecksumResultCode, Long> interest : interests.entrySet()) {
-            count += deleteByDateAndCode(context, Instant.ofEpochMilli(now - interest.getValue().longValue()),
+            count += deleteByDateAndCode(context, new Date(now - interest.getValue().longValue()),
                                          interest.getKey());
         }
         return count;

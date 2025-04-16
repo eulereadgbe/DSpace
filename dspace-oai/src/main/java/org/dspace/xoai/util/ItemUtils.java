@@ -11,8 +11,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.lyncode.xoai.dataprovider.xml.xoai.Element;
@@ -185,10 +185,10 @@ public class ItemUtils {
             String groupName = policy.getGroup() != null ? policy.getGroup().getName() : null;
             String user = policy.getEPerson() != null ? policy.getEPerson().getName() : null;
             String action = Constants.actionText[policy.getAction()];
-            LocalDate startDate = policy.getStartDate();
-            LocalDate endDate = policy.getEndDate();
+            Date startDate = policy.getStartDate();
+            Date endDate = policy.getEndDate();
 
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
             Element resourcePolicyEl = create("resourcePolicy");
             resourcePolicyEl.getField().add(createValue("group", groupName));

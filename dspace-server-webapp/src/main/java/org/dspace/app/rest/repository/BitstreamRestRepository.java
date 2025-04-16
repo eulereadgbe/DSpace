@@ -80,9 +80,6 @@ public class BitstreamRestRepository extends DSpaceObjectRestRepository<Bitstrea
     ConfigurationService configurationService;
 
     @Autowired
-    private ObjectMapper mapper;
-
-    @Autowired
     public BitstreamRestRepository(BitstreamService dsoService) {
         super(dsoService);
         this.bs = dsoService;
@@ -269,6 +266,7 @@ public class BitstreamRestRepository extends DSpaceObjectRestRepository<Bitstrea
      */
     public void patchBitstreamsInBulk(Context context, JsonNode jsonNode) throws SQLException {
         int operationsLimit = configurationService.getIntProperty("rest.patch.operations.limit", 1000);
+        ObjectMapper mapper = new ObjectMapper();
         JsonPatchConverter patchConverter = new JsonPatchConverter(mapper);
         Patch patch = patchConverter.convert(jsonNode);
         if (patch.getOperations().size() > operationsLimit) {

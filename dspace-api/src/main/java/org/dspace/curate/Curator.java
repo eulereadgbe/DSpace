@@ -10,7 +10,6 @@ package org.dspace.curate;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.MessageFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -331,7 +330,7 @@ public class Curator {
         }
         if (taskQ != null) {
             taskQ.enqueue(queueId, new TaskQueueEntry(c.getCurrentUser().getName(),
-                                                      Instant.now().toEpochMilli(), perfList, id));
+                                                      System.currentTimeMillis(), perfList, id));
         } else {
             System.out.println("curate - no TaskQueue implemented");
         }

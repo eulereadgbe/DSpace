@@ -7,7 +7,7 @@
  */
 package org.dspace.app.rest.model;
 
-import java.time.Instant;
+import java.util.Date;
 
 import org.dspace.app.rest.RestResourceController;
 
@@ -27,7 +27,7 @@ public class QATopicRest extends BaseObjectRest<String> {
 
     private String id;
     private String name;
-    private Instant lastEvent;
+    private Date lastEvent;
     private long totalEvents;
 
     @Override
@@ -66,11 +66,11 @@ public class QATopicRest extends BaseObjectRest<String> {
         this.name = name;
     }
 
-    public Instant getLastEvent() {
+    public Date getLastEvent() {
         return lastEvent;
     }
 
-    public void setLastEvent(Instant lastEvent) {
+    public void setLastEvent(Date lastEvent) {
         this.lastEvent = lastEvent;
     }
 

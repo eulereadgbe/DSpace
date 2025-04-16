@@ -10,10 +10,9 @@ package org.dspace.eperson;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
@@ -36,6 +35,13 @@ import org.dspace.eperson.service.EPersonService;
  * @author mwood
  */
 public class Groomer {
+    private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
+        @Override
+        protected DateFormat initialValue() {
+            return DateFormat.getDateInstance(DateFormat.SHORT);
+        }
+    };
+
     private static final EPersonService ePersonService = EPersonServiceFactory.getInstance().getEPersonService();
 
     /**
@@ -64,7 +70,7 @@ public class Groomer {
 
         options.addOption("b", "last-used-before", true,
                           "date of last login was before this (for example:  "
-                              + DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.now(ZoneOffset.UTC))
+                              + dateFormat.get().format(Calendar.getInstance().getTime())
                               + ')');
         options.addOption("d", "delete", false, "delete matching epersons");
 
@@ -108,10 +114,10 @@ public class Groomer {
             System.exit(1);
         }
 
-        LocalDate before = null;
+        Date before = null;
         try {
-            before = LocalDate.parse(command.getOptionValue('b'));
-        } catch (DateTimeParseException ex) {
+            before = dateFormat.get().parse(command.getOptionValue('b'));
+        } catch (java.text.ParseException ex) {
             System.err.println(ex.getMessage());
             System.exit(1);
         }
@@ -119,8 +125,7 @@ public class Groomer {
         boolean delete = command.hasOption('d');
 
         Context myContext = new Context();
-        List<EPerson> epeople = ePersonService.findNotActiveSince(myContext,
-                                                                  before.atStartOfDay().toInstant(ZoneOffset.UTC));
+        List<EPerson> epeople = ePersonService.findNotActiveSince(myContext, before);
 
         myContext.turnOffAuthorisationSystem();
         for (EPerson account : epeople) {

@@ -36,12 +36,8 @@ import org.dspace.content.Site;
 import org.dspace.statistics.SolrStatisticsCore;
 import org.dspace.utils.DSpace;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest {
-
-    @Autowired
-    private ObjectMapper mapper;
 
     private final SolrStatisticsCore solrStatisticsCore = new DSpace().getSingletonService(SolrStatisticsCore.class);
 
@@ -88,6 +84,9 @@ public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest
         viewEventRest.setTargetType("item");
         viewEventRest.setTargetId(publicItem1.getID());
 
+
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/viewevents")
                                                 .content(mapper.writeValueAsBytes(viewEventRest))
                                                 .contentType(contentType))
@@ -124,6 +123,9 @@ public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("item");
         viewEventRest.setTargetId(UUID.randomUUID());
+
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient().perform(post("/api/statistics/viewevents")
                                 .content(mapper.writeValueAsBytes(viewEventRest))
@@ -162,6 +164,9 @@ public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest
         viewEventRest.setTargetType("item");
         viewEventRest.setTargetId(null);
 
+
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/viewevents")
                                 .content(mapper.writeValueAsBytes(viewEventRest))
                                 .contentType(contentType))
@@ -199,6 +204,9 @@ public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest
         viewEventRest.setTargetType(null);
         viewEventRest.setTargetId(publicItem1.getID());
 
+
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/viewevents")
                                 .content(mapper.writeValueAsBytes(viewEventRest))
                                 .contentType(contentType))
@@ -235,6 +243,9 @@ public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("aezazeaezea");
         viewEventRest.setTargetId(publicItem1.getID());
+
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient().perform(post("/api/statistics/viewevents")
                                 .content(mapper.writeValueAsBytes(viewEventRest))
@@ -284,6 +295,9 @@ public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest
         viewEventRest.setTargetType("bitstream");
         viewEventRest.setTargetId(bitstream.getID());
 
+
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/viewevents")
                                 .content(mapper.writeValueAsBytes(viewEventRest))
                                 .contentType(contentType))
@@ -330,6 +344,9 @@ public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("collection");
         viewEventRest.setTargetId(col1.getID());
+
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient().perform(post("/api/statistics/viewevents")
                                 .content(mapper.writeValueAsBytes(viewEventRest))
@@ -378,6 +395,9 @@ public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("community");
         viewEventRest.setTargetId(child1.getID());
+
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient().perform(post("/api/statistics/viewevents")
                                 .content(mapper.writeValueAsBytes(viewEventRest))
@@ -429,6 +449,9 @@ public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest
         viewEventRest.setTargetType("site");
         viewEventRest.setTargetId(site.getID());
 
+
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/viewevents")
                                 .content(mapper.writeValueAsBytes(viewEventRest))
                                 .contentType(contentType))
@@ -466,6 +489,9 @@ public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("item");
         viewEventRest.setTargetId(publicItem1.getID());
+
+
+        ObjectMapper mapper = new ObjectMapper();
 
         String token = getAuthToken(eperson.getEmail(), password);
 
@@ -506,6 +532,8 @@ public class ViewEventRestRepositoryIT extends AbstractControllerIntegrationTest
         viewEventRest.setTargetType("item");
         viewEventRest.setTargetId(publicItem1.getID());
         viewEventRest.setReferrer("test-referrer");
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient().perform(post("/api/statistics/viewevents")
                         .content(mapper.writeValueAsBytes(viewEventRest))

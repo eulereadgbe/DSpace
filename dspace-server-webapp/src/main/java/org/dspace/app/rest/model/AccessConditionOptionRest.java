@@ -7,7 +7,7 @@
  */
 package org.dspace.app.rest.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -33,16 +33,16 @@ public class AccessConditionOptionRest {
     private Boolean hasEndDate;
 
     @JsonInclude(Include.NON_NULL)
-    private LocalDate maxStartDate;
+    private Date maxStartDate;
 
     @JsonInclude(Include.NON_NULL)
-    private LocalDate maxEndDate;
+    private Date maxEndDate;
 
-    public LocalDate getMaxEndDate() {
+    public Date getMaxEndDate() {
         return maxEndDate;
     }
 
-    public void setMaxEndDate(LocalDate maxEndDate) {
+    public void setMaxEndDate(Date maxEndDate) {
         this.maxEndDate = maxEndDate;
     }
 
@@ -62,11 +62,11 @@ public class AccessConditionOptionRest {
         this.hasEndDate = hasEndDate;
     }
 
-    public LocalDate getMaxStartDate() {
+    public Date getMaxStartDate() {
         return maxStartDate;
     }
 
-    public void setMaxStartDate(LocalDate maxStartDate) {
+    public void setMaxStartDate(Date maxStartDate) {
         this.maxStartDate = maxStartDate;
     }
 

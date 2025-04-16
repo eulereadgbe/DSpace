@@ -7,9 +7,9 @@
  */
 package org.dspace.content;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +25,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
 import org.dspace.content.comparator.NameAscendingComparator;
 import org.dspace.content.factory.ContentServiceFactory;
@@ -69,7 +71,8 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
     private boolean withdrawn = false;
 
     @Column(name = "last_modified", columnDefinition = "timestamp with time zone")
-    private Instant lastModified = Instant.now();
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModified = new Date();
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "owning_collection")
@@ -175,11 +178,11 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
      * @return the date the item was last modified, or the current date if the
      * column is null.
      */
-    public Instant getLastModified() {
+    public Date getLastModified() {
         return lastModified;
     }
 
-    public void setLastModified(Instant lastModified) {
+    public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
 

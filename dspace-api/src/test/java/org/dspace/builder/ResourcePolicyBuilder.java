@@ -9,7 +9,7 @@ package org.dspace.builder;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -142,12 +142,12 @@ public class ResourcePolicyBuilder extends AbstractBuilder<ResourcePolicy, Resou
         return this;
     }
 
-    public ResourcePolicyBuilder withStartDate(LocalDate data) throws SQLException {
+    public ResourcePolicyBuilder withStartDate(Date data) throws SQLException {
         resourcePolicy.setStartDate(data);
         return this;
     }
 
-    public ResourcePolicyBuilder withEndDate(LocalDate data) throws SQLException {
+    public ResourcePolicyBuilder withEndDate(Date data) throws SQLException {
         resourcePolicy.setEndDate(data);
         return this;
     }

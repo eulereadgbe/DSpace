@@ -10,9 +10,8 @@ package org.dspace.contentreport;
 import static org.dspace.content.Item.ANY;
 
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -346,8 +345,9 @@ public class ItemFilterUtil {
     }
 
     static boolean recentlyModified(Item item, int days) {
-        Instant compareDate = Instant.now().minus(days, ChronoUnit.DAYS);
-        return compareDate.isBefore(item.getLastModified());
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -days);
+        return cal.getTime().before(item.getLastModified());
     }
 
 }

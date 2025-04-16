@@ -19,8 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
 
 import com.lyncode.xoai.dataprovider.core.XOAIManager;
 import com.lyncode.xoai.dataprovider.exceptions.ConfigurationException;
@@ -28,6 +28,7 @@ import com.lyncode.xoai.dataprovider.services.api.ResourceResolver;
 import com.lyncode.xoai.dataprovider.services.impl.BaseDateProvider;
 import com.lyncode.xoai.dataprovider.xml.xoaiconfig.Configuration;
 import com.lyncode.xoai.dataprovider.xml.xoaiconfig.ContextConfiguration;
+import org.apache.commons.lang3.time.DateUtils;
 import org.dspace.app.rest.test.AbstractControllerIntegrationTest;
 import org.dspace.builder.CollectionBuilder;
 import org.dspace.builder.CommunityBuilder;
@@ -143,7 +144,8 @@ public class OAIpmhIT extends AbstractControllerIntegrationTest {
     public void requestForIdentifyShouldReturnTheConfiguredValues() throws Exception {
 
         // Get current date/time and store as "now", then round to nearest second (as OAI-PMH ignores milliseconds)
-        Instant nowToNearestSecond = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+        Date now = new Date();
+        Date nowToNearestSecond = DateUtils.round(now, Calendar.SECOND);
         // Return "nowToNearestSecond" when "getEarliestDate()" is called for currently loaded EarliestDateResolver bean
         doReturn(nowToNearestSecond).when(earliestDateResolver).getEarliestDate(any());
 
@@ -168,7 +170,7 @@ public class OAIpmhIT extends AbstractControllerIntegrationTest {
                                   .string(configurationService.getProperty("oai.url") + "/" + DEFAULT_CONTEXT_PATH))
                    // Expect earliestDatestamp to be "now", i.e. current date, (as mocked above)
                    .andExpect(xpath("OAI-PMH/Identify/earliestDatestamp")
-                                  .string(baseDateProvider.format(java.util.Date.from(nowToNearestSecond))))
+                                  .string(baseDateProvider.format(nowToNearestSecond)))
         ;
     }
 

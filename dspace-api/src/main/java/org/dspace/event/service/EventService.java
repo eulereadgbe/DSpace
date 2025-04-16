@@ -27,7 +27,7 @@ public interface EventService {
      * if one exists.
      *
      * @param name dispatcher name
-     * @return cached instance of dispatcher
+     * @return chached instance of dispatcher
      */
     public Dispatcher getDispatcher(String name);
 

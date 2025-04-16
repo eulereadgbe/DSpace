@@ -7,7 +7,7 @@
  */
 package org.dspace.app.rest.model.step;
 
-import java.time.Instant;
+import java.util.Date;
 
 import org.dspace.app.sherpa.v2.SHERPAResponse;
 
@@ -20,15 +20,15 @@ public class SherpaPolicy implements SectionData {
 
     private static final long serialVersionUID = 2440249335255683173L;
 
-    private Instant retrievalTime;
+    private Date retrievalTime;
 
     private SHERPAResponse sherpaResponse;
 
-    public Instant getRetrievalTime() {
+    public Date getRetrievalTime() {
         return retrievalTime;
     }
 
-    public void setRetrievalTime(Instant retrievalTime) {
+    public void setRetrievalTime(Date retrievalTime) {
         this.retrievalTime = retrievalTime;
     }
 

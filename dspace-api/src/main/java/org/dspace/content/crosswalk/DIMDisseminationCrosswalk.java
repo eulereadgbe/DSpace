@@ -36,7 +36,7 @@ import org.jdom2.Namespace;
  */
 public class DIMDisseminationCrosswalk
     implements DisseminationCrosswalk {
-    // Non-existent XSD schema
+    // Non-existant XSD schema
     public static final String DIM_XSD = "null";
 
     // Namespaces

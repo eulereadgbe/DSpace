@@ -506,8 +506,7 @@ public class DiscoveryScopeBasedRestControllerIT extends AbstractControllerInteg
                                       FacetEntryMatcher.subjectFacet(false),
                                       FacetEntryMatcher.dateIssuedFacet(false),
                                       FacetEntryMatcher.hasContentInOriginalBundleFacet(false),
-                                      FacetEntryMatcher.entityTypeFacet(false),
-                                      FacetEntryMatcher.accessStatusFacet(false)
+                                      FacetEntryMatcher.entityTypeFacet(false)
                               ))
                    );
     }
@@ -619,8 +618,7 @@ public class DiscoveryScopeBasedRestControllerIT extends AbstractControllerInteg
                                       FacetEntryMatcher.subjectFacet(false),
                                       FacetEntryMatcher.dateIssuedFacet(false),
                                       FacetEntryMatcher.hasContentInOriginalBundleFacet(false),
-                                      FacetEntryMatcher.entityTypeFacet(false),
-                                      FacetEntryMatcher.accessStatusFacet(false)
+                                      FacetEntryMatcher.entityTypeFacet(false)
                               ))
                    );
     }
@@ -670,8 +668,7 @@ public class DiscoveryScopeBasedRestControllerIT extends AbstractControllerInteg
                                       FacetEntryMatcher.subjectFacet(false),
                                       FacetEntryMatcher.dateIssuedFacet(false),
                                       FacetEntryMatcher.hasContentInOriginalBundleFacet(false),
-                                      FacetEntryMatcher.entityTypeFacet(false),
-                                      FacetEntryMatcher.accessStatusFacet(false)
+                                      FacetEntryMatcher.entityTypeFacet(false)
                               ))
                    );
     }

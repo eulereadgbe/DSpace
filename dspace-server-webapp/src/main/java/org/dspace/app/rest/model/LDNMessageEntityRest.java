@@ -7,7 +7,7 @@
  */
 package org.dspace.app.rest.model;
 
-import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 import org.dspace.app.rest.RestResourceController;
@@ -45,9 +45,9 @@ public class LDNMessageEntityRest extends BaseObjectRest<String> {
 
     private Integer queueAttempts;
 
-    private Instant queueLastStartTime;
+    private Date queueLastStartTime;
 
-    private Instant queueTimeout;
+    private Date queueTimeout;
 
     private String notificationType;
 
@@ -157,19 +157,19 @@ public class LDNMessageEntityRest extends BaseObjectRest<String> {
         this.queueAttempts = queueAttempts;
     }
 
-    public Instant getQueueLastStartTime() {
+    public Date getQueueLastStartTime() {
         return queueLastStartTime;
     }
 
-    public void setQueueLastStartTime(Instant queueLastStartTime) {
+    public void setQueueLastStartTime(Date queueLastStartTime) {
         this.queueLastStartTime = queueLastStartTime;
     }
 
-    public Instant getQueueTimeout() {
+    public Date getQueueTimeout() {
         return queueTimeout;
     }
 
-    public void setQueueTimeout(Instant queueTimeout) {
+    public void setQueueTimeout(Date queueTimeout) {
         this.queueTimeout = queueTimeout;
     }
 

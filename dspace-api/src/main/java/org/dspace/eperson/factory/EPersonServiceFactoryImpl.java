@@ -10,7 +10,6 @@ package org.dspace.eperson.factory;
 import org.dspace.eperson.service.AccountService;
 import org.dspace.eperson.service.EPersonService;
 import org.dspace.eperson.service.GroupService;
-import org.dspace.eperson.service.RegistrationDataMetadataService;
 import org.dspace.eperson.service.RegistrationDataService;
 import org.dspace.eperson.service.SubscribeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,6 @@ public class EPersonServiceFactoryImpl extends EPersonServiceFactory {
     private EPersonService epersonService;
     @Autowired(required = true)
     private RegistrationDataService registrationDataService;
-    @Autowired(required = true)
-    private RegistrationDataMetadataService registrationDataMetadataService;
     @Autowired(required = true)
     private AccountService accountService;
     @Autowired(required = true)
@@ -61,8 +58,4 @@ public class EPersonServiceFactoryImpl extends EPersonServiceFactory {
         return subscribeService;
     }
 
-    @Override
-    public RegistrationDataMetadataService getRegistrationDAtaDataMetadataService() {
-        return registrationDataMetadataService;
-    }
 }

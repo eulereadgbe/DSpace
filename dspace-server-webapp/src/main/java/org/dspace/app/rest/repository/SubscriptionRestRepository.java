@@ -79,8 +79,6 @@ public class SubscriptionRestRepository extends DSpaceRestRepository<Subscriptio
     private DiscoverableEndpointsService discoverableEndpointsService;
     @Autowired
     private SubscriptionEmailNotificationService subscriptionEmailNotificationService;
-    @Autowired
-    private ObjectMapper mapper;
 
     @Override
     @PreAuthorize("hasPermission(#id, 'subscription', 'READ')")
@@ -156,7 +154,7 @@ public class SubscriptionRestRepository extends DSpaceRestRepository<Subscriptio
         String dsoId = req.getParameter("resource");
 
         if (StringUtils.isBlank(dsoId) || StringUtils.isBlank(epersonId)) {
-            throw new UnprocessableEntityException("Both eperson than DSpaceObject uuids must be provided!");
+            throw new UnprocessableEntityException("Both eperson than DSpaceObject uuids must be provieded!");
         }
 
         try {
@@ -182,7 +180,7 @@ public class SubscriptionRestRepository extends DSpaceRestRepository<Subscriptio
             if (dSpaceObject.getType() == COMMUNITY || dSpaceObject.getType() == COLLECTION) {
                 Subscription subscription = null;
                 ServletInputStream input = req.getInputStream();
-                SubscriptionRest subscriptionRest = mapper.readValue(input, SubscriptionRest.class);
+                SubscriptionRest subscriptionRest = new ObjectMapper().readValue(input, SubscriptionRest.class);
                 List<SubscriptionParameterRest> subscriptionParameterList = subscriptionRest
                         .getSubscriptionParameterList();
                 if (CollectionUtils.isNotEmpty(subscriptionParameterList)) {
@@ -234,7 +232,7 @@ public class SubscriptionRestRepository extends DSpaceRestRepository<Subscriptio
 
         SubscriptionRest subscriptionRest;
         try {
-            subscriptionRest = mapper.readValue(jsonNode.toString(), SubscriptionRest.class);
+            subscriptionRest = new ObjectMapper().readValue(jsonNode.toString(), SubscriptionRest.class);
         } catch (IOException e) {
             throw new UnprocessableEntityException("Error parsing subscription json: " + e.getMessage(), e);
         }

@@ -7,7 +7,7 @@
  */
 package org.dspace.app.statistics;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * This class represents a single log file line and the operations that can be
@@ -22,7 +22,7 @@ public class LogLine {
     /**
      * the date of the log file line
      */
-    private LocalDate date = null;
+    private Date date = null;
 
     /**
      * the level of the log line type
@@ -47,7 +47,7 @@ public class LogLine {
     /**
      * constructor to create new statistic
      */
-    LogLine(LocalDate date, String level, String user, String action, String params) {
+    LogLine(Date date, String level, String user, String action, String params) {
         this.date = date;
         this.level = level;
         this.user = user;
@@ -60,8 +60,8 @@ public class LogLine {
      *
      * @return the date of this log line
      */
-    public LocalDate getDate() {
-        return this.date;
+    public Date getDate() {
+        return this.date == null ? null : new Date(this.date.getTime());
     }
 
 
@@ -108,12 +108,12 @@ public class LogLine {
     /**
      * find out if this log file line is before the given date
      *
-     * @param compareDate the date to be compared to
+     * @param date the date to be compared to
      * @return true if the line is before the given date, false if not
      */
-    public boolean beforeDate(LocalDate compareDate) {
-        if (compareDate != null) {
-            return this.date.isBefore(compareDate);
+    public boolean beforeDate(Date date) {
+        if (date != null) {
+            return (date.compareTo(this.date) >= 0);
         }
         return false;
     }
@@ -122,12 +122,12 @@ public class LogLine {
     /**
      * find out if this log file line is after the given date
      *
-     * @param compareDate the date to be compared to
+     * @param date the date to be compared to
      * @return true if the line is after the given date, false if not
      */
-    public boolean afterDate(LocalDate compareDate) {
-        if (compareDate != null) {
-            return this.date.isAfter(compareDate);
+    public boolean afterDate(Date date) {
+        if (date != null) {
+            return (date.compareTo(this.date) <= 0);
         }
         return false;
     }

@@ -16,11 +16,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -56,6 +58,7 @@ import org.dspace.eperson.EPerson;
 import org.dspace.eperson.factory.EPersonServiceFactory;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
+import org.dspace.statistics.SolrLoggerServiceImpl;
 import org.dspace.statistics.factory.StatisticsServiceFactory;
 import org.dspace.statistics.service.SolrLoggerService;
 
@@ -67,6 +70,16 @@ import org.dspace.statistics.service.SolrLoggerService;
  */
 public class StatisticsImporter {
     private static final Logger log = LogManager.getLogger(StatisticsImporter.class);
+
+    /**
+     * Date format (for solr)
+     */
+    private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
+        @Override
+        protected DateFormat initialValue() {
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        }
+    };
 
     protected final SolrLoggerService solrLoggerService
             = StatisticsServiceFactory.getInstance().getSolrLoggerService();
@@ -209,7 +222,7 @@ public class StatisticsImporter {
 //            String uuid;
             String action;
             String id;
-            Instant date;
+            Date date;
             String user;
             String ip;
 
@@ -237,8 +250,7 @@ public class StatisticsImporter {
 //                uuid = parts[0];
                 action = parts[1];
                 id = parts[2];
-                // Date format (for solr)
-                date = LocalDateTime.parse(parts[3]).toInstant(ZoneOffset.UTC);
+                date = dateFormat.get().parse(parts[3]);
                 user = parts[4];
                 ip = parts[5];
 
@@ -345,8 +357,8 @@ public class StatisticsImporter {
                 SolrInputDocument sid = new SolrInputDocument();
                 sid.addField("ip", ip);
                 sid.addField("type", dso.getType());
-                sid.addField("id", dso.getID().toString());
-                sid.addField("time", date.toString());
+                sid.addField("id", dso.getID());
+                sid.addField("time", DateFormatUtils.format(date, SolrLoggerServiceImpl.DATE_FORMAT_8601));
                 sid.addField("continent", continent);
                 sid.addField("country", country);
                 sid.addField("countryCode", countryCode);
@@ -365,7 +377,7 @@ public class StatisticsImporter {
 
         } catch (RuntimeException re) {
             throw re;
-        } catch (IOException | SQLException | SolrServerException e) {
+        } catch (IOException | SQLException | ParseException | SolrServerException e) {
             System.err.println(e.getMessage());
             log.error(e.getMessage(), e);
         }
@@ -459,13 +471,13 @@ public class StatisticsImporter {
         boolean verbose = line.hasOption('v');
 
         // Find our solr server
-        String sserver = configurationService.getProperty("solr-statistics.server");
+        String sserver = configurationService.getProperty("solr-statistics", "server");
         if (verbose) {
             System.out.println("Writing to solr server at: " + sserver);
         }
         solr = new HttpSolrClient.Builder(sserver).build();
 
-        String dbPath = configurationService.getProperty("usage-statistics.dbfile");
+        String dbPath = configurationService.getProperty("usage-statistics", "dbfile");
         try {
             File dbFile = new File(dbPath);
             geoipLookup = new DatabaseReader.Builder(dbFile).build();
@@ -479,11 +491,6 @@ public class StatisticsImporter {
             log.error(
                 "Unable to load GeoLite Database file (" + dbPath + ")! You may need to reinstall it. See the DSpace " +
                     "installation instructions for more details.",
-                e);
-        } catch (NullPointerException e) {
-            log.error(
-                    "The value of the property usage-statistics.dbfile is null. You may need to install the GeoLite " +
-                    "Database file and/or uncomment the property in the config file!",
                 e);
         }
 

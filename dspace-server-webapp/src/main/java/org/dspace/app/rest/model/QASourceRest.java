@@ -7,7 +7,7 @@
  */
 package org.dspace.app.rest.model;
 
-import java.time.Instant;
+import java.util.Date;
 
 import org.dspace.app.rest.RestResourceController;
 
@@ -25,7 +25,7 @@ public class QASourceRest extends BaseObjectRest<String> {
     public static final String PLURAL_NAME = "qualityassurancesources";
     public static final String CATEGORY = RestAddressableModel.INTEGRATION;
 
-    private Instant lastEvent;
+    private Date lastEvent;
     private long totalEvents;
 
     @Override
@@ -48,11 +48,11 @@ public class QASourceRest extends BaseObjectRest<String> {
         return RestResourceController.class;
     }
 
-    public Instant getLastEvent() {
+    public Date getLastEvent() {
         return lastEvent;
     }
 
-    public void setLastEvent(Instant lastEvent) {
+    public void setLastEvent(Date lastEvent) {
         this.lastEvent = lastEvent;
     }
 

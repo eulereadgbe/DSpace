@@ -9,9 +9,9 @@ package org.dspace.util;
 
 import static org.junit.Assert.assertEquals;
 
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -26,11 +26,9 @@ public class TimeHelpersTest {
     @Test
     public void testToMidnightUTC() {
         System.out.println("toMidnightUTC");
-        LocalDateTime from = ZonedDateTime.of(1957, 01, 27, 04, 05, 06, 007,
-                                              ZoneOffset.UTC).toLocalDateTime();
-        LocalDateTime expResult = ZonedDateTime.of(1957, 01, 27, 00, 00, 00, 000,
-                                                   ZoneOffset.UTC).toLocalDateTime();
-        LocalDateTime result = TimeHelpers.toMidnightUTC(from);
+        Date from = Date.from(ZonedDateTime.of(1957, 01, 27, 04, 05, 06, 007, ZoneOffset.UTC).toInstant());
+        Date expResult = Date.from(ZonedDateTime.of(1957, 01, 27, 00, 00, 00, 000, ZoneOffset.UTC).toInstant());
+        Date result = TimeHelpers.toMidnightUTC(from);
         assertEquals(expResult, result);
     }
 }

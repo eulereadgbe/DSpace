@@ -11,9 +11,9 @@ import static java.lang.String.format;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -47,10 +48,6 @@ import org.dspace.event.Event;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
 import org.dspace.utils.DSpace;
-import org.dspace.versioning.Version;
-import org.dspace.versioning.VersionHistory;
-import org.dspace.versioning.factory.VersionServiceFactory;
-import org.dspace.versioning.service.VersionHistoryService;
 import org.dspace.web.ContextUtil;
 
 /**
@@ -66,9 +63,6 @@ public class LDNMessageConsumer implements Consumer {
     private ConfigurationService configurationService;
     private ItemService itemService;
     private BitstreamService bitstreamService;
-    private final String RESUBMISSION_SUFFIX = "-resubmission";
-    private final String ENDORSEMENT_PATTERN = "request-endorsement";
-    private final String REVIEW_PATTERN = "request-review";
 
     @Override
     public void initialize() throws Exception {
@@ -89,9 +83,6 @@ public class LDNMessageConsumer implements Consumer {
         }
 
         Item item = (Item) event.getSubject(context);
-        if (item == null) {
-            return;
-        }
         createManualLDNMessages(context, item);
         createAutomaticLDNMessages(context, item);
     }
@@ -99,24 +90,10 @@ public class LDNMessageConsumer implements Consumer {
     private void createManualLDNMessages(Context context, Item item) throws SQLException, JsonProcessingException {
         List<NotifyPatternToTrigger> patternsToTrigger =
             notifyPatternToTriggerService.findByItem(context, item);
-        // Note that multiple patterns can be submitted and not all support resubmission
-        // 1. Extract all patterns that accept resubmissions, i.e. endorsement and review
-        List<Integer> patternsSupportingResubmission = patternsToTrigger.stream()
-                .filter(p -> p.getPattern().equals(REVIEW_PATTERN) || p.getPattern().equals(ENDORSEMENT_PATTERN))
-                .map(NotifyPatternToTrigger::getID).toList();
-
-        String resubmissionReplyToID = null;
 
         for (NotifyPatternToTrigger patternToTrigger : patternsToTrigger) {
-            // Only try to fetch resubmission ID if the pattern support resubmission
-            if (patternsSupportingResubmission.contains(patternToTrigger.getID())) {
-                resubmissionReplyToID = findResubmissionReplyToUUID(context, item, patternToTrigger.getNotifyService());
-            }
-
             createLDNMessage(context,patternToTrigger.getItem(),
-                    patternToTrigger.getNotifyService(),
-                    patternToTrigger.getPattern(),
-                    resubmissionReplyToID);
+                patternToTrigger.getNotifyService(), patternToTrigger.getPattern());
         }
     }
 
@@ -127,31 +104,9 @@ public class LDNMessageConsumer implements Consumer {
         for (NotifyServiceInboundPattern inboundPattern : inboundPatterns) {
             if (StringUtils.isEmpty(inboundPattern.getConstraint()) ||
                 evaluateFilter(context, item, inboundPattern.getConstraint())) {
-                createLDNMessage(context, item, inboundPattern.getNotifyService(),
-                        inboundPattern.getPattern(), null);
+                createLDNMessage(context, item, inboundPattern.getNotifyService(), inboundPattern.getPattern());
             }
         }
-    }
-
-    private String findResubmissionReplyToUUID(Context context, Item item, NotifyServiceEntity service)
-            throws SQLException {
-        // 1.1 Check whether this is a new version submission
-        VersionHistoryService versionHistoryService = VersionServiceFactory.getInstance()
-                .getVersionHistoryService();
-        VersionHistory versionHistory = versionHistoryService.findByItem(context, item);
-
-        if (versionHistory != null) {
-            Version currentVersion = versionHistoryService.getVersion(context, versionHistory, item);
-            Version previousVersion = versionHistoryService.getPrevious(context, versionHistory, currentVersion);
-            if (previousVersion != null) {
-                // 1.2 and a TentativeReject notification, matching the current pattern's service, was received for the
-                // previous item version
-                return ldnMessageService.findEndorsementOrReviewResubmissionIdByItem(context,
-                        previousVersion.getItem(), service);
-            }
-        }
-        // New submission (new item, or previous version with a tentativeReject notification not found)
-        return null;
     }
 
     private boolean evaluateFilter(Context context, Item item, String constraint) {
@@ -161,37 +116,19 @@ public class LDNMessageConsumer implements Consumer {
         return filter != null && filter.getResult(context, item);
     }
 
-    private void createLDNMessage(Context context, Item item, NotifyServiceEntity service, String pattern,
-                                  String resubmissionID)
-            throws SQLException, JsonProcessingException {
-        // Amend current pattern name to trigger
-        // Endorsement or Review offer resubmissions: append '-resubmission' to pattern name to choose the correct
-        // LDN message template: e.g. request-endorsement-resubmission or request-review-resubmission
-        LDN ldn = (resubmissionID != null)
-                ? getLDNMessage(pattern + RESUBMISSION_SUFFIX) : getLDNMessage(pattern);
+    private void createLDNMessage(Context context, Item item, NotifyServiceEntity service, String pattern)
+        throws SQLException, JsonMappingException, JsonProcessingException {
+
+        LDN ldn = getLDNMessage(pattern);
         LDNMessageEntity ldnMessage =
-                ldnMessageService.create(context, format("urn:uuid:%s", UUID.randomUUID()));
+            ldnMessageService.create(context, format("urn:uuid:%s", UUID.randomUUID()));
 
         ldnMessage.setObject(item);
         ldnMessage.setTarget(service);
         ldnMessage.setQueueStatus(LDNMessageEntity.QUEUE_STATUS_QUEUED);
-        ldnMessage.setQueueTimeout(Instant.now());
+        ldnMessage.setQueueTimeout(new Date());
 
-        String actorID = null;
-        if (service.isUsesActorEmailId()) {
-            // If the service has been configured to use actorEmailId, we use the submitter's email and name
-            if (item.getSubmitter() != null) {
-                actorID = item.getSubmitter().getEmail();
-            } else {
-                // Use configured fallback email (defaults to mail.admin property)
-                actorID = configurationService.getProperty("ldn.notification.email.submitter.fallback");
-            }
-        }
-        appendGeneratedMessage(ldn,
-                ldnMessage,
-                actorID,
-                (actorID != null && item.getSubmitter() != null) ? item.getSubmitter().getFullName() : null,
-                resubmissionID);
+        appendGeneratedMessage(ldn, ldnMessage, pattern);
 
         ObjectMapper mapper = new ObjectMapper();
         Notification notification = mapper.readValue(ldnMessage.getMessage(), Notification.class);
@@ -202,10 +139,6 @@ public class LDNMessageConsumer implements Consumer {
         Collections.sort(notificationTypeArrayList);
         ldnMessage.setActivityStreamType(notificationTypeArrayList.get(0));
         ldnMessage.setCoarNotifyType(notificationTypeArrayList.get(1));
-        // If a resubmission, set inReplyTo
-        if (resubmissionID != null) {
-            ldnMessage.setInReplyTo(ldnMessageService.find(context, resubmissionID));
-        }
 
         ldnMessageService.update(context, ldnMessage);
     }
@@ -218,16 +151,11 @@ public class LDNMessageConsumer implements Consumer {
         }
     }
 
-    private void appendGeneratedMessage(LDN ldn, LDNMessageEntity ldnMessage, String actorID, String actorName,
-                                        String resubmissionId) {
+    private void appendGeneratedMessage(LDN ldn, LDNMessageEntity ldnMessage, String pattern) {
         Item item = (Item) ldnMessage.getObject();
-        if (actorID != null) {
-            ldn.addArgument("mailto:" + actorID);
-        } else {
-            ldn.addArgument(getUiUrl());
-        }
+        ldn.addArgument(getUiUrl());
         ldn.addArgument(configurationService.getProperty("ldn.notify.inbox"));
-        ldn.addArgument(actorName != null ? actorName : configurationService.getProperty("dspace.name"));
+        ldn.addArgument(configurationService.getProperty("dspace.name"));
         ldn.addArgument(Objects.requireNonNullElse(ldnMessage.getTarget().getUrl(), ""));
         ldn.addArgument(Objects.requireNonNullElse(ldnMessage.getTarget().getLdnUrl(), ""));
         ldn.addArgument(getUiUrl() + "/handle/" + ldnMessage.getObject().getHandle());
@@ -238,17 +166,6 @@ public class LDNMessageConsumer implements Consumer {
         ldn.addArgument(getRelationUri(item));
         ldn.addArgument("http://purl.org/vocab/frbr/core#supplement");
         ldn.addArgument(format("urn:uuid:%s", UUID.randomUUID()));
-        if (actorID != null) {
-            ldn.addArgument("Person");
-        } else {
-            ldn.addArgument("Service");
-        }
-        // Param 14: UI URL, LDN message origin
-        ldn.addArgument(getUiUrl());
-        // Param 15: inReplyTo ID, used in endorsement resubmission notifications
-        if (resubmissionId != null) {
-            ldn.addArgument(String.format("\"inReplyTo\": \"%s\",", resubmissionId));
-        }
 
         ldnMessage.setMessage(ldn.generateLDNMessage());
     }

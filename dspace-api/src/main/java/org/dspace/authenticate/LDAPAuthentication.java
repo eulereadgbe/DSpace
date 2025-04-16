@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -69,8 +68,12 @@ import org.dspace.services.factory.DSpaceServicesFactory;
  * @author Ivan Masár
  * @author Michael Plate
  */
-public class LDAPAuthentication implements AuthenticationMethod {
+public class LDAPAuthentication
+    implements AuthenticationMethod {
 
+    /**
+     * log4j category
+     */
     private static final Logger log
             = org.apache.logging.log4j.LogManager.getLogger(LDAPAuthentication.class);
 
@@ -127,7 +130,7 @@ public class LDAPAuthentication implements AuthenticationMethod {
         return false;
     }
 
-    /**
+    /*
      * This is an explicit method.
      */
     @Override
@@ -135,7 +138,7 @@ public class LDAPAuthentication implements AuthenticationMethod {
         return false;
     }
 
-    /**
+    /*
      * Add authenticated users to the group defined in dspace.cfg by
      * the login.specialgroup key.
      */
@@ -174,7 +177,7 @@ public class LDAPAuthentication implements AuthenticationMethod {
         return Collections.EMPTY_LIST;
     }
 
-    /**
+    /*
      * Authenticate the given credentials.
      * This is the heart of the authentication method: test the
      * credentials for authenticity, and if accepted, attempt to match
@@ -184,7 +187,7 @@ public class LDAPAuthentication implements AuthenticationMethod {
      * @param context
      *  DSpace context, will be modified (ePerson set) upon success.
      *
-     * @param netid
+     * @param username
      *  Username (or email address) when method is explicit. Use null for
      *  implicit method.
      *
@@ -247,7 +250,7 @@ public class LDAPAuthentication implements AuthenticationMethod {
         }
 
         // Check a DN was found
-        if (StringUtils.isBlank(dn)) {
+        if ((dn == null) || (dn.trim().equals(""))) {
             log.info(LogHelper
                          .getHeader(context, "failed_login", "no DN found for user " + netid));
             return BAD_CREDENTIALS;
@@ -265,18 +268,6 @@ public class LDAPAuthentication implements AuthenticationMethod {
             if (ldap.ldapAuthenticate(dn, password, context)) {
                 context.setCurrentUser(eperson);
                 request.setAttribute(LDAP_AUTHENTICATED, true);
-
-                // update eperson's attributes
-                context.turnOffAuthorisationSystem();
-                setEpersonAttributes(context, eperson, ldap, Optional.empty());
-                try {
-                    ePersonService.update(context, eperson);
-                    context.dispatchEvents();
-                } catch (AuthorizeException e) {
-                    log.warn("update of eperson " + eperson.getID()  + " failed", e);
-                } finally {
-                    context.restoreAuthSystemState();
-                }
 
                 // assign user to groups based on ldap dn
                 assignGroups(dn, ldap.ldapGroup, context);
@@ -322,12 +313,13 @@ public class LDAPAuthentication implements AuthenticationMethod {
                             log.info(LogHelper.getHeader(context,
                                                           "type=ldap-login", "type=ldap_but_already_email"));
                             context.turnOffAuthorisationSystem();
-                            setEpersonAttributes(context, eperson, ldap, Optional.of(netid));
+                            eperson.setNetid(netid.toLowerCase());
                             ePersonService.update(context, eperson);
                             context.dispatchEvents();
                             context.restoreAuthSystemState();
                             context.setCurrentUser(eperson);
                             request.setAttribute(LDAP_AUTHENTICATED, true);
+
 
                             // assign user to groups based on ldap dn
                             assignGroups(dn, ldap.ldapGroup, context);
@@ -339,7 +331,20 @@ public class LDAPAuthentication implements AuthenticationMethod {
                                 try {
                                     context.turnOffAuthorisationSystem();
                                     eperson = ePersonService.create(context);
-                                    setEpersonAttributes(context, eperson, ldap, Optional.of(netid));
+                                    if (StringUtils.isNotEmpty(email)) {
+                                        eperson.setEmail(email);
+                                    }
+                                    if (StringUtils.isNotEmpty(ldap.ldapGivenName)) {
+                                        eperson.setFirstName(context, ldap.ldapGivenName);
+                                    }
+                                    if (StringUtils.isNotEmpty(ldap.ldapSurname)) {
+                                        eperson.setLastName(context, ldap.ldapSurname);
+                                    }
+                                    if (StringUtils.isNotEmpty(ldap.ldapPhone)) {
+                                        ePersonService.setMetadataSingleValue(context, eperson,
+                                                MD_PHONE, ldap.ldapPhone, null);
+                                    }
+                                    eperson.setNetid(netid.toLowerCase());
                                     eperson.setCanLogIn(true);
                                     authenticationService.initEPerson(context, request, eperson);
                                     ePersonService.update(context, eperson);
@@ -375,29 +380,6 @@ public class LDAPAuthentication implements AuthenticationMethod {
             }
         }
         return BAD_ARGS;
-    }
-
-    /**
-     * Update eperson's attributes
-     */
-    private void setEpersonAttributes(Context context, EPerson eperson, SpeakerToLDAP ldap, Optional<String> netid)
-        throws SQLException {
-
-        if (StringUtils.isNotEmpty(ldap.ldapEmail)) {
-            eperson.setEmail(ldap.ldapEmail);
-        }
-        if (StringUtils.isNotEmpty(ldap.ldapGivenName)) {
-            eperson.setFirstName(context, ldap.ldapGivenName);
-        }
-        if (StringUtils.isNotEmpty(ldap.ldapSurname)) {
-            eperson.setLastName(context, ldap.ldapSurname);
-        }
-        if (StringUtils.isNotEmpty(ldap.ldapPhone)) {
-            ePersonService.setMetadataSingleValue(context, eperson, MD_PHONE, ldap.ldapPhone, null);
-        }
-        if (netid.isPresent()) {
-            eperson.setNetid(netid.get().toLowerCase());
-        }
     }
 
     /**
@@ -521,7 +503,6 @@ public class LDAPAuthentication implements AuthenticationMethod {
                     } else {
                         searchName = ldap_provider_url + ldap_search_context;
                     }
-                    @SuppressWarnings("BanJNDI")
                     NamingEnumeration<SearchResult> answer = ctx.search(
                         searchName,
                         "(&({0}={1}))", new Object[] {ldap_id_field,
@@ -572,7 +553,7 @@ public class LDAPAuthentication implements AuthenticationMethod {
                             att = atts.get(attlist[4]);
                             if (att != null) {
                                 // loop through all groups returned by LDAP
-                                ldapGroup = new ArrayList<>();
+                                ldapGroup = new ArrayList<String>();
                                 for (NamingEnumeration val = att.getAll(); val.hasMoreElements(); )  {
                                     ldapGroup.add((String) val.next());
                                 }
@@ -652,8 +633,7 @@ public class LDAPAuthentication implements AuthenticationMethod {
                         ctx.addToEnvironment(javax.naming.Context.AUTHORITATIVE, "true");
                         ctx.addToEnvironment(javax.naming.Context.REFERRAL, "follow");
                         // dummy operation to check if authentication has succeeded
-                        @SuppressWarnings("BanJNDI")
-                        Attributes trash = ctx.getAttributes("");
+                        ctx.getAttributes("");
                     } else if (!useTLS) {
                         // Authenticate
                         env.put(javax.naming.Context.SECURITY_AUTHENTICATION, "Simple");
@@ -691,7 +671,7 @@ public class LDAPAuthentication implements AuthenticationMethod {
         }
     }
 
-    /**
+    /*
      * Returns the URL of an external login page which is not applicable for this authn method.
      *
      * Note: Prior to DSpace 7, this method return the page of login servlet.
@@ -719,7 +699,7 @@ public class LDAPAuthentication implements AuthenticationMethod {
         return "ldap";
     }
 
-    /**
+    /*
      * Add authenticated users to the group defined in dspace.cfg by
      * the authentication-ldap.login.groupmap.* key.
      *

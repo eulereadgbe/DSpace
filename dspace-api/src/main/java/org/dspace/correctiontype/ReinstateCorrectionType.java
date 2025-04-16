@@ -11,7 +11,7 @@ import static org.dspace.content.QAEvent.DSPACE_USERS_SOURCE;
 import static org.dspace.correctiontype.WithdrawnCorrectionType.WITHDRAWAL_REINSTATE_GROUP;
 
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -89,7 +89,7 @@ public class ReinstateCorrectionType implements CorrectionType, InitializingBean
                                       this.getTopic(),
                                       1.0,
                                       reasonJson.toString(),
-                                      Instant.now()
+                                      new Date()
                                       );
 
         qaEventService.store(context, qaEvent);

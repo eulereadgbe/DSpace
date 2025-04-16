@@ -16,7 +16,7 @@ package org.dspace.app.rest.model.wrapper;
 public class SubmissionCCLicenseUrl {
 
     /**
-     * The url for this object
+     * The url for ths object
      */
     private String url;
     /**

@@ -943,7 +943,7 @@ public class BulkAccessControlIT extends AbstractIntegrationTestWithDatabase {
         Bitstream bitstreamOne;
         try (InputStream is = IOUtils.toInputStream(bitstreamOneContent, CharEncoding.UTF_8)) {
             bitstreamOne  = BitstreamBuilder.createBitstream(context, bundle, is)
-                                            .withName("bitstream one")
+                                            .withName("bistream one")
                                             .build();
         }
 
@@ -951,7 +951,7 @@ public class BulkAccessControlIT extends AbstractIntegrationTestWithDatabase {
         Bitstream bitstreamTwo;
         try (InputStream is = IOUtils.toInputStream(bitstreamTwoContent, CharEncoding.UTF_8)) {
             bitstreamTwo  = BitstreamBuilder.createBitstream(context, bundle, is)
-                                            .withName("bitstream two")
+                                            .withName("bistream two")
                                             .build();
         }
 
@@ -1188,7 +1188,7 @@ public class BulkAccessControlIT extends AbstractIntegrationTestWithDatabase {
             String bitstreamContent = "Dummy content";
             try (InputStream is = IOUtils.toInputStream(bitstreamContent, CharEncoding.UTF_8)) {
                 BitstreamBuilder.createBitstream(context, bundle, is)
-                                .withName("bitstream")
+                                .withName("bistream")
                                 .build();
             }
         }
@@ -1297,7 +1297,7 @@ public class BulkAccessControlIT extends AbstractIntegrationTestWithDatabase {
             String bitstreamContent = "Dummy content";
             try (InputStream is = IOUtils.toInputStream(bitstreamContent, CharEncoding.UTF_8)) {
                 BitstreamBuilder.createBitstream(context, bundle, is)
-                                .withName("bitstream")
+                                .withName("bistream")
                                 .build();
             }
         }
@@ -1404,7 +1404,7 @@ public class BulkAccessControlIT extends AbstractIntegrationTestWithDatabase {
             String bitstreamContent = "Dummy content";
             try (InputStream is = IOUtils.toInputStream(bitstreamContent, CharEncoding.UTF_8)) {
                 BitstreamBuilder.createBitstream(context, bundle, is)
-                                .withName("bitstream")
+                                .withName("bistream")
                                 .build();
             }
         }
@@ -1753,7 +1753,7 @@ public class BulkAccessControlIT extends AbstractIntegrationTestWithDatabase {
         try (InputStream is = IOUtils.toInputStream(bitstreamContent, CharEncoding.UTF_8)) {
             bitstreamOne =
                 BitstreamBuilder.createBitstream(context, bundleOne, is)
-                                .withName("bitstream of bundle one")
+                                .withName("bistream of bundle one")
                                 .build();
         }
 

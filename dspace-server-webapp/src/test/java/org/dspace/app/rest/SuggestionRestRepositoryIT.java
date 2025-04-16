@@ -39,7 +39,6 @@ import org.dspace.content.Item;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MvcResult;
 
 /**
@@ -47,9 +46,6 @@ import org.springframework.test.web.servlet.MvcResult;
  */
 public class SuggestionRestRepositoryIT extends AbstractControllerIntegrationTest {
     private Collection colPeople;
-
-    @Autowired
-    private ObjectMapper mapper;
 
     @Override
     @Before
@@ -407,6 +403,7 @@ public class SuggestionRestRepositoryIT extends AbstractControllerIntegrationTes
                         Matchers.endsWith("/api/integration/suggestions/" + suggestionId)));
         Integer workspaceItemId = null;
         try {
+            ObjectMapper mapper = new ObjectMapper();
             MvcResult mvcResult = getClient(adminToken).perform(
                     post("/api/submission/workspaceitems?owningCollection=" + colPublications.getID().toString())
                             .param("embed", "item")

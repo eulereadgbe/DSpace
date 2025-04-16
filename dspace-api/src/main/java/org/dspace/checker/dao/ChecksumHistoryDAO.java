@@ -8,7 +8,7 @@
 package org.dspace.checker.dao;
 
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 
 import org.dspace.checker.ChecksumHistory;
 import org.dspace.checker.ChecksumResultCode;
@@ -36,7 +36,7 @@ public interface ChecksumHistoryDAO extends GenericDAO<ChecksumHistory> {
      * @return number of rows deleted.
      * @throws SQLException if database error
      */
-    public int deleteByDateAndCode(Context context, Instant retentionDate, ChecksumResultCode checksumResultCode)
+    public int deleteByDateAndCode(Context context, Date retentionDate, ChecksumResultCode checksumResultCode)
         throws SQLException;
 
     /**

@@ -10,6 +10,7 @@ package org.dspace.app.sitemap;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
@@ -140,7 +141,7 @@ public class GenerateSitemaps {
     public static void deleteSitemaps() throws IOException {
         File outputDir = new File(configurationService.getProperty("sitemap.dir"));
         if (!outputDir.exists() && !outputDir.isDirectory()) {
-            log.error("Unable to delete sitemaps directory, doesn't exist or isn't a directory");
+            log.error("Unable to delete sitemaps directory, doesn't exist or isn't a directort");
         } else {
             FileUtils.deleteDirectory(outputDir);
         }
@@ -255,6 +256,7 @@ public class GenerateSitemaps {
                     } else {
                         url = uiURLStem + "items/" + doc.getID();
                     }
+                    Date lastMod = doc.getLastModified();
                     c.uncacheEntity(doc.getIndexedObject());
 
                     if (makeHTMLMap) {

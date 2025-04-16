@@ -9,7 +9,6 @@ package org.dspace.event;
 
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
@@ -194,7 +193,7 @@ public class Event implements Serializable {
      * Contains all identifiers of the DSpaceObject that was changed (added,
      * modified, deleted, ...).
      *
-     * All events gets fired when a context that contains events gets committed.
+     * All events gets fired when a context that contains events gets commited.
      * When the delete event is fired, a deleted DSpaceObject is already gone.
      * This array contains all identifiers of the object, not only the handle
      * as the detail field does. The field may be an empty array if no
@@ -258,7 +257,7 @@ public class Event implements Serializable {
         this.eventType = eventType;
         this.subjectType = coreTypeToMask(subjectType);
         this.subjectID = subjectID;
-        timeStamp = Instant.now().toEpochMilli();
+        timeStamp = System.currentTimeMillis();
         this.detail = detail;
         this.identifiers = (ArrayList<String>) identifiers.clone();
     }
@@ -300,7 +299,7 @@ public class Event implements Serializable {
         this.subjectID = subjectID;
         this.objectType = coreTypeToMask(objectType);
         this.objectID = objectID;
-        timeStamp = Instant.now().toEpochMilli();
+        timeStamp = System.currentTimeMillis();
         this.detail = detail;
         this.identifiers = (ArrayList<String>) identifiers.clone();
     }

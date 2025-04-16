@@ -13,11 +13,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,7 +106,7 @@ public class LoadLastLogin {
 
         // Scan log files looking for login records
         final Pattern loginCracker = Pattern.compile(loginRE);
-        final DateTimeFormatter dateEncoder = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        final SimpleDateFormat dateEncoder = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         for (String logName : args) {
             BufferedReader logReader = new BufferedReader(new FileReader(logName, StandardCharsets.UTF_8));
@@ -135,15 +133,15 @@ public class LoadLastLogin {
                 String user = loginMatcher.group(3);
 
                 String logDateTime = date + ' ' + time;
-                Instant stamp;
+                Date stamp;
                 try {
-                    stamp = LocalDateTime.parse(logDateTime, dateEncoder).atZone(ZoneOffset.UTC).toInstant();
-                } catch (DateTimeParseException ex) {
+                    stamp = dateEncoder.parse(logDateTime);
+                } catch (ParseException ex) {
                     System.err.println("Skipping log record:  " + ex.getMessage());
                     continue;
                 }
-                Instant previous = ((java.util.Date) stampDb.find(user)).toInstant();
-                if (null == previous || stamp.isAfter(previous)) {
+                Date previous = (Date) stampDb.find(user);
+                if (null == previous || stamp.after(previous)) {
                     stampDb.insert(user, stamp, true); // Record this user's newest login so far
                 }
             }
@@ -161,7 +159,7 @@ public class LoadLastLogin {
         while (walker.getNext(stamp)) {
             // Update an EPerson's last login
             String name = (String) stamp.getKey();
-            Instant date = ((java.util.Date) stamp.getValue()).toInstant();
+            Date date = (Date) stamp.getValue();
             EPerson ePerson;
             ePerson = ePersonService.findByEmail(ctx, name);
             if (null == ePerson) {
@@ -171,8 +169,8 @@ public class LoadLastLogin {
                 System.err.println("Skipping unknown user:  " + name);
                 continue;
             }
-            Instant previous = ePerson.getLastActive();
-            if ((null == previous) || date.isAfter(previous)) {
+            Date previous = ePerson.getLastActive();
+            if ((null == previous) || date.after(previous)) {
                 if (PRETEND) {
                     System.out.printf("%s\t%s\t%s\t%s\t%s\n",
                                       ePerson.getID().toString(),

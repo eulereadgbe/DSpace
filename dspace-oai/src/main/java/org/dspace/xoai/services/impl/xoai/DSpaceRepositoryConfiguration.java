@@ -11,8 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.lyncode.xoai.dataprovider.core.DeleteMethod;
@@ -101,16 +101,16 @@ public class DSpaceRepositoryConfiguration implements RepositoryConfiguration {
     }
 
     @Override
-    public java.util.Date getEarliestDate() {
+    public Date getEarliestDate() {
         // Look at the database!
         try {
-            return java.util.Date.from(dateResolver.getEarliestDate(context));
+            return dateResolver.getEarliestDate(context);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         } catch (InvalidMetadataFieldException e) {
             log.error(e.getMessage(), e);
         }
-        return java.util.Date.from(Instant.now());
+        return new Date();
     }
 
     @Override

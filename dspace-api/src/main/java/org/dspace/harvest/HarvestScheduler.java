@@ -9,8 +9,8 @@ package org.dspace.harvest;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 import java.util.UUID;
@@ -254,11 +254,14 @@ public class HarvestScheduler implements Runnable {
                     harvestInterval = 720;
                 }
 
-                Instant nextTime;
+                Date nextTime;
                 long nextHarvest = 0;
                 if (hc != null) {
-                    nextTime = hc.getHarvestDate().plus(harvestInterval, ChronoUnit.MINUTES);
-                    nextHarvest = nextTime.toEpochMilli() - Instant.now().toEpochMilli();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(hc.getHarvestDate());
+                    calendar.add(Calendar.MINUTE, harvestInterval);
+                    nextTime = calendar.getTime();
+                    nextHarvest = nextTime.getTime() + -new Date().getTime();
                 }
 
                 long upperBound = Math.min(nextHarvest, maxHeartbeat);

@@ -60,7 +60,7 @@ public class LimitedCountDispatcher implements BitstreamDispatcher {
     }
 
     /**
-     * Retrieves the next bitstream to be checked.
+     * Retreives the next bitstream to be checked.
      *
      * @return the bitstream
      * @throws SQLException if database error

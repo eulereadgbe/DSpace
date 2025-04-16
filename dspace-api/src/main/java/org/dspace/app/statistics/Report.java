@@ -7,7 +7,7 @@
  */
 package org.dspace.app.statistics;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * Sn interface to a generic report generating
@@ -120,12 +120,12 @@ public interface Report {
      *
      * @param start the start date for the report
      */
-    public abstract void setStartDate(LocalDate start);
+    public abstract void setStartDate(Date start);
 
     /**
      * set the end date for the report
      *
      * @param end the end date for the report
      */
-    public abstract void setEndDate(LocalDate end);
+    public abstract void setEndDate(Date end);
 }

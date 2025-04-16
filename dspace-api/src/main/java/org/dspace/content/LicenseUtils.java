@@ -10,7 +10,6 @@ package org.dspace.content;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Map;
@@ -83,7 +82,7 @@ public class LicenseUtils {
         args[0] = eperson.getFirstName();
         args[1] = eperson.getLastName();
         args[2] = eperson.getEmail();
-        args[3] = Instant.now();
+        args[3] = new java.util.Date();
         args[4] = new FormattableArgument("collection", collection);
         args[5] = new FormattableArgument("item", item);
         args[6] = new FormattableArgument("eperson", eperson);

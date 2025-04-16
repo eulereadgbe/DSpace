@@ -7,7 +7,6 @@
  */
 package org.dspace.services.events;
 
-import java.time.Instant;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -234,7 +233,7 @@ public final class SystemEventService implements EventService {
      * @return event Id
      */
     private String makeEventId() {
-        return "event-" + random.nextInt(1000) + "-" + Instant.now().toEpochMilli();
+        return "event-" + random.nextInt(1000) + "-" + System.currentTimeMillis();
     }
 
     /**

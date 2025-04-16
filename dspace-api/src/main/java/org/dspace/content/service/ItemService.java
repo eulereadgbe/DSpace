@@ -10,7 +10,7 @@ package org.dspace.content.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -246,7 +246,7 @@ public interface ItemService
      * @return an iterator over the items in the collection.
      * @throws SQLException if database error
      */
-    Iterator<Item> findInArchiveOrWithdrawnDiscoverableModifiedSince(Context context, Instant since)
+    Iterator<Item> findInArchiveOrWithdrawnDiscoverableModifiedSince(Context context, Date since)
         throws SQLException;
 
     /**
@@ -256,7 +256,7 @@ public interface ItemService
      * @return an iterator over the items in the collection.
      * @throws SQLException if database error
      */
-    Iterator<Item> findInArchiveOrWithdrawnNonDiscoverableModifiedSince(Context context, Instant since)
+    Iterator<Item> findInArchiveOrWithdrawnNonDiscoverableModifiedSince(Context context, Date since)
         throws SQLException;
 
     /**
@@ -853,7 +853,7 @@ public interface ItemService
      * @return iterator over items
      * @throws SQLException if database error
      */
-    Iterator<Item> findByLastModifiedSince(Context context, Instant last)
+    Iterator<Item> findByLastModifiedSince(Context context, Date last)
         throws SQLException;
 
     /**
@@ -1009,14 +1009,4 @@ public interface ItemService
      */
     EntityType getEntityType(Context context, Item item) throws SQLException;
 
-
-    /**
-     * Check whether the given item is the latest version. If the latest item cannot
-     * be determined, because either the version history or the latest version is
-     * not present, assume the item is latest.
-     * @param  context the DSpace context.
-     * @param  item    the item that should be checked.
-     * @return         true if the item is the latest version, false otherwise.
-     */
-    public boolean isLatestVersion(Context context, Item item) throws SQLException;
 }

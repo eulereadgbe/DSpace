@@ -7,7 +7,7 @@
  */
 package org.dspace.app.rest.model;
 
-import java.time.Instant;
+import java.util.Date;
 
 import org.dspace.app.rest.RestResourceController;
 
@@ -38,7 +38,7 @@ public class QAEventRest extends BaseObjectRest<String> {
     private String title;
     private String topic;
     private String trust;
-    private Instant eventDate;
+    private Date eventDate;
     private QAEventMessageRest message;
     private String status;
 
@@ -102,11 +102,11 @@ public class QAEventRest extends BaseObjectRest<String> {
         this.trust = trust;
     }
 
-    public Instant getEventDate() {
+    public Date getEventDate() {
         return eventDate;
     }
 
-    public void setEventDate(Instant eventDate) {
+    public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
     }
 

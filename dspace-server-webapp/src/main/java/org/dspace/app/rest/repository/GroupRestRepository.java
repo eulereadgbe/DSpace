@@ -48,9 +48,6 @@ public class GroupRestRepository extends DSpaceObjectRestRepository<Group, Group
     GroupService gs;
 
     @Autowired
-    private ObjectMapper mapper;
-
-    @Autowired
     GroupRestRepository(GroupService dsoService) {
         super(dsoService);
         this.gs = dsoService;
@@ -65,6 +62,7 @@ public class GroupRestRepository extends DSpaceObjectRestRepository<Group, Group
             throws AuthorizeException, RepositoryMethodNotImplementedException {
 
         HttpServletRequest req = getRequestService().getCurrentRequest().getHttpServletRequest();
+        ObjectMapper mapper = new ObjectMapper();
         GroupRest groupRest;
 
         try {

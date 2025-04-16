@@ -9,8 +9,8 @@ package org.dspace.xoai.tests.unit.services.impl;
 
 import static org.mockito.Mockito.mock;
 
-import java.time.Instant;
-import java.time.temporal.ChronoField;
+import java.util.Calendar;
+import java.util.Date;
 
 import com.lyncode.xoai.dataprovider.services.impl.BaseDateProvider;
 import org.apache.solr.client.solrj.util.ClientUtils;
@@ -38,7 +38,7 @@ public abstract class AbstractQueryResolverTest {
 
     @After
     public void tearDown() {
-        //Nullify all resources so that JUnit cleans them up
+        //Nullify all resoruces so that JUnit cleans them up
         applicationContext = null;
         handleResolver = null;
         collectionsService = null;
@@ -57,20 +57,21 @@ public abstract class AbstractQueryResolverTest {
         return (StubbedFieldResolver) applicationContext.getBean(FieldResolver.class);
     }
 
-    protected String escapedFromDate(Instant date) {
+    protected String escapedFromDate(Date date) {
         return ClientUtils.escapeQueryChars(
-            baseDateProvider.format(java.util.Date.from(dateWithMilliseconds(date, 0)))
-                            .replace("Z", ".000Z"));
+            baseDateProvider.format(dateWithMilliseconds(date, 0)).replace("Z", ".000Z"));
     }
 
-    protected String escapedUntilDate(Instant date) {
+    protected String escapedUntilDate(Date date) {
         return ClientUtils.escapeQueryChars(
-            baseDateProvider.format(java.util.Date.from(dateWithMilliseconds(date, 999)))
-                            .replace("Z", ".999Z"));
+            baseDateProvider.format(dateWithMilliseconds(date, 999)).replace("Z", ".999Z"));
     }
 
     // Return date with specified milliseconds value
-    private Instant dateWithMilliseconds(Instant date, int milliseconds) {
-        return date.with(ChronoField.MILLI_OF_SECOND, milliseconds);
+    private Date dateWithMilliseconds(Date date, int milliseconds) {
+        Calendar calendar =  Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.MILLISECOND, milliseconds);
+        return calendar.getTime();
     }
 }

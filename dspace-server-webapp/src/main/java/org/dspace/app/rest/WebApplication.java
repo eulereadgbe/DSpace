@@ -9,11 +9,8 @@ package org.dspace.app.rest;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.ZoneOffset;
 import java.util.List;
-import java.util.TimeZone;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.Filter;
 import org.dspace.app.ldn.LDNQueueExtractor;
 import org.dspace.app.ldn.LDNQueueTimeoutChecker;
@@ -183,7 +180,7 @@ public class WebApplication {
                             // Allow list of request preflight headers allowed to be sent to us from the client
                             .allowedHeaders("Accept", "Authorization", "Content-Type", "Origin", "X-On-Behalf-Of",
                                 "X-Requested-With", "X-XSRF-TOKEN", "X-CORRELATION-ID", "X-REFERRER",
-                                "x-captcha-payload")
+                                "x-recaptcha-token")
                             // Allow list of response headers allowed to be sent by us (the server) to the client
                             .exposedHeaders("Authorization", "DSPACE-XSRF-TOKEN", "Location", "WWW-Authenticate");
                 }
@@ -195,7 +192,7 @@ public class WebApplication {
                             // Allow list of request preflight headers allowed to be sent to us from the client
                             .allowedHeaders("Accept", "Authorization", "Content-Type", "Origin", "X-On-Behalf-Of",
                                 "X-Requested-With", "X-XSRF-TOKEN", "X-CORRELATION-ID", "X-REFERRER",
-                                "x-captcha-payload")
+                                "x-recaptcha-token")
                             // Allow list of response headers allowed to be sent by us (the server) to the client
                             .exposedHeaders("Authorization", "DSPACE-XSRF-TOKEN", "Location", "WWW-Authenticate");
                 }
@@ -207,7 +204,7 @@ public class WebApplication {
                             // Allow list of request preflight headers allowed to be sent to us from the client
                             .allowedHeaders("Accept", "Authorization", "Content-Type", "Origin", "X-On-Behalf-Of",
                                     "X-Requested-With", "X-XSRF-TOKEN", "X-CORRELATION-ID", "X-REFERRER",
-                                    "x-captcha-payload", "access-control-allow-headers")
+                                    "x-recaptcha-token", "access-control-allow-headers")
                             // Allow list of response headers allowed to be sent by us (the server) to the client
                             .exposedHeaders("Authorization", "DSPACE-XSRF-TOKEN", "Location", "WWW-Authenticate");
                 }
@@ -248,13 +245,5 @@ public class WebApplication {
                 argumentResolvers.add(new SearchFilterResolver());
             }
         };
-    }
-
-    @PostConstruct
-    public void setDefaultTimezone() {
-        // Set the default timezone in Spring Boot to UTC.
-        // This ensures that Spring Boot doesn't attempt to change the timezone of dates that are read from the
-        // database (via Hibernate). We store all dates in the database as UTC.
-        TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.UTC));
     }
 }

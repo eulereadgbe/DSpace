@@ -8,7 +8,7 @@
 package org.dspace.checker;
 
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
@@ -65,8 +65,7 @@ public class MostRecentChecksumServiceImpl implements MostRecentChecksumService 
      * @throws SQLException if database error
      */
     @Override
-    public List<MostRecentChecksum> findNotProcessedBitstreamsReport(Context context, Instant startDate,
-                                                                     Instant endDate)
+    public List<MostRecentChecksum> findNotProcessedBitstreamsReport(Context context, Date startDate, Date endDate)
         throws SQLException {
         return mostRecentChecksumDAO.findByNotProcessedInDateRange(context, startDate, endDate);
     }
@@ -83,8 +82,7 @@ public class MostRecentChecksumServiceImpl implements MostRecentChecksumService 
      * @throws SQLException if database error
      */
     @Override
-    public List<MostRecentChecksum> findBitstreamResultTypeReport(Context context, Instant startDate,
-                                                                  Instant endDate,
+    public List<MostRecentChecksum> findBitstreamResultTypeReport(Context context, Date startDate, Date endDate,
                                                                   ChecksumResultCode resultCode) throws SQLException {
         return mostRecentChecksumDAO.findByResultTypeInDateRange(context, startDate, endDate, resultCode);
     }
@@ -129,8 +127,8 @@ public class MostRecentChecksumServiceImpl implements MostRecentChecksumService 
                 mostRecentChecksum.setCurrentChecksum(bitstream.getChecksum());
                 mostRecentChecksum.setExpectedChecksum(bitstream.getChecksum());
             }
-            mostRecentChecksum.setProcessStartDate(Instant.now());
-            mostRecentChecksum.setProcessEndDate(Instant.now());
+            mostRecentChecksum.setProcessStartDate(new Date());
+            mostRecentChecksum.setProcessEndDate(new Date());
             if (bitstream.getChecksumAlgorithm() == null) {
                 mostRecentChecksum.setChecksumAlgorithm("MD5");
             } else {
@@ -177,7 +175,7 @@ public class MostRecentChecksumServiceImpl implements MostRecentChecksumService 
      * @throws SQLException if database error
      */
     @Override
-    public MostRecentChecksum findOldestRecord(Context context, Instant lessThanDate) throws SQLException {
+    public MostRecentChecksum findOldestRecord(Context context, Date lessThanDate) throws SQLException {
         return mostRecentChecksumDAO.getOldestRecord(context, lessThanDate);
     }
 

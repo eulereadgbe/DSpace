@@ -9,7 +9,7 @@
 package org.dspace.builder;
 
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 
 import jakarta.validation.constraints.NotNull;
 import org.apache.logging.log4j.LogManager;
@@ -37,11 +37,8 @@ public class RequestItemBuilder
     private RequestItem requestItem;
     private Item item;
     private Bitstream bitstream;
-    private Instant decisionDate;
+    private Date decisionDate;
     private boolean accepted;
-    private String accessToken = null;
-    private Instant accessExpiry = null;
-    private boolean allFiles;
 
     protected RequestItemBuilder(Context context) {
         super(context);
@@ -73,7 +70,7 @@ public class RequestItemBuilder
      * @param date the date of the decision.
      * @return this builder.
      */
-    public RequestItemBuilder withDecisionDate(Instant date) {
+    public RequestItemBuilder withDecisionDate(Date date) {
         this.decisionDate = date;
         return this;
     }
@@ -90,29 +87,13 @@ public class RequestItemBuilder
         return this;
     }
 
-    public RequestItemBuilder withAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-        return this;
-    }
-
-    public RequestItemBuilder withAccessExpiry(Instant accessExpiry) {
-        this.accessExpiry = accessExpiry;
-        return this;
-    }
-
-    public RequestItemBuilder withAllFiles(boolean allFiles) {
-        this.allFiles = allFiles;
-        return this;
-    }
-
     @Override
     public RequestItem build() {
         LOG.atDebug()
                 .withLocation()
-                .log("Building request with item ID {} and bitstream ID {} and allfiles {}",
+                .log("Building request with item ID {} and bitstream ID {}",
                         () -> item.getID().toString(),
-                        () -> (bitstream == null ? "" : bitstream.getID().toString()),
-                        () -> Boolean.toString(allFiles));
+                        () -> bitstream.getID().toString());
 
         String token;
         try {
@@ -125,11 +106,6 @@ public class RequestItemBuilder
         requestItem = requestItemService.findByToken(context, token);
         requestItem.setAccept_request(accepted);
         requestItem.setDecision_date(decisionDate);
-        if (accessToken != null) {
-            requestItem.setAccess_token(accessToken);
-        }
-        requestItem.setAccess_expiry(accessExpiry);
-        requestItem.setAllfiles(allFiles);
 
         requestItemService.update(context, requestItem);
 

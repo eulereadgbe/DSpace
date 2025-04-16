@@ -18,7 +18,6 @@ public class AccessStatusRest implements RestModel {
     public static final String PLURAL_NAME = NAME;
 
     String status;
-    String embargoDate;
 
     @Override
     @JsonProperty(access = Access.READ_ONLY)
@@ -36,12 +35,10 @@ public class AccessStatusRest implements RestModel {
 
     public AccessStatusRest() {
         setStatus(null);
-        setEmbargoDate(null);
     }
 
     public AccessStatusRest(String status) {
         setStatus(status);
-        setEmbargoDate(null);
     }
 
     public String getStatus() {
@@ -50,13 +47,5 @@ public class AccessStatusRest implements RestModel {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getEmbargoDate() {
-        return embargoDate;
-    }
-
-    public void setEmbargoDate(String embargoDate) {
-        this.embargoDate = embargoDate;
     }
 }

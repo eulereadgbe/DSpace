@@ -7,7 +7,7 @@
  */
 package org.dspace.orcid;
 
-import java.time.Instant;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +20,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import org.dspace.content.Item;
 import org.dspace.core.ReloadableEntity;
 import org.hibernate.Length;
@@ -102,8 +104,9 @@ public class OrcidHistory implements ReloadableEntity<Integer> {
     /**
      * The timestamp of the synchronization attempt.
      */
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "timestamp_last_attempt")
-    private Instant timestamp = Instant.now();
+    private Date timestamp = new Date();
 
     /**
      * The HTTP status incoming from ORCID.
@@ -192,11 +195,11 @@ public class OrcidHistory implements ReloadableEntity<Integer> {
         this.description = description;
     }
 
-    public Instant getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Instant timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 

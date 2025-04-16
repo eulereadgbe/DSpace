@@ -7,7 +7,7 @@
  */
 package org.dspace.search;
 
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +39,7 @@ public class HarvestedItemInfo {
     /**
      * The datestamp
      */
-    public Instant datestamp;
+    public Date datestamp;
 
     /**
      * The item. Only filled out if requested

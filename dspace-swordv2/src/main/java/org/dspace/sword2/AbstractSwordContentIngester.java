@@ -8,8 +8,7 @@
 package org.dspace.sword2;
 
 import java.sql.SQLException;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -129,7 +128,7 @@ public abstract class AbstractSwordContentIngester
         try {
             itemService.clearMetadata(context, item, info.schema, info.element,
                                       info.qualifier, Item.ANY);
-            DCDate date = new DCDate(ZonedDateTime.now(ZoneOffset.UTC));
+            DCDate date = new DCDate(new Date());
             itemService.addMetadata(context, item, info.schema, info.element,
                                     info.qualifier, null, date.toString());
         } catch (SQLException e) {

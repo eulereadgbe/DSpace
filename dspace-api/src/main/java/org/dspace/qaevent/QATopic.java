@@ -7,7 +7,7 @@
  */
 package org.dspace.qaevent;
 
-import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -29,7 +29,7 @@ public class QATopic {
      * The source attributes contains the name of the QA source like: OpenAIRE, DSpaceUsers
      */
     private String source;
-    private Instant lastEvent;
+    private Date lastEvent;
     private long totalEvents;
 
     public String getSource() {
@@ -63,11 +63,11 @@ public class QATopic {
         this.totalEvents = totalEvents;
     }
 
-    public Instant getLastEvent() {
+    public Date getLastEvent() {
         return lastEvent;
     }
 
-    public void setLastEvent(Instant lastEvent) {
+    public void setLastEvent(Date lastEvent) {
         this.lastEvent = lastEvent;
     }
 }

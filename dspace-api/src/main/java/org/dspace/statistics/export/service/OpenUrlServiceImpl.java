@@ -10,8 +10,7 @@ package org.dspace.statistics.export.service;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -52,7 +51,7 @@ public class OpenUrlServiceImpl implements OpenUrlService {
             if (responseCode != HttpURLConnection.HTTP_OK) {
                 logfailed(c, urlStr);
             } else if (log.isDebugEnabled()) {
-                log.debug("Successfully posted " + urlStr + " on " + Instant.now());
+                log.debug("Successfully posted " + urlStr + " on " + new Date());
             }
         } catch (Exception e) {
             log.error("Failed to send url to tracker URL: " + urlStr);
@@ -142,7 +141,7 @@ public class OpenUrlServiceImpl implements OpenUrlService {
      */
     @Override
     public void logfailed(Context context, String url) throws SQLException {
-        LocalDate now = LocalDate.now();
+        Date now = new Date();
         if (StringUtils.isBlank(url)) {
             return;
         }

@@ -41,9 +41,6 @@ public class FeedbackRestRepository extends DSpaceRestRepository<FeedbackRest, I
     @Autowired
     private ConfigurationService configurationService;
 
-    @Autowired
-    private ObjectMapper mapper;
-
     @Override
     @PreAuthorize("hasAuthority('AUTHENTICATED')")
     public Page<FeedbackRest> findAll(Context context, Pageable pageable) {
@@ -60,6 +57,7 @@ public class FeedbackRestRepository extends DSpaceRestRepository<FeedbackRest, I
     @PreAuthorize("permitAll()")
     protected FeedbackRest createAndReturn(Context context) throws AuthorizeException, SQLException {
         HttpServletRequest req = getRequestService().getCurrentRequest().getHttpServletRequest();
+        ObjectMapper mapper = new ObjectMapper();
         FeedbackRest feedbackRest = null;
 
         String recipientEmail = configurationService.getProperty("feedback.recipient");

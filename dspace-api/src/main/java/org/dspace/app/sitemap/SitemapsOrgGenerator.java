@@ -10,8 +10,9 @@ package org.dspace.app.sitemap;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Class for generating <a href="http://sitemaps.org/">Sitemaps</a> to improve
@@ -35,7 +36,8 @@ public class SitemapsOrgGenerator extends AbstractGenerator {
     /**
      * The correct date format
      */
-    protected DateTimeFormatter w3dtfFormat = DateTimeFormatter.ISO_INSTANT;
+    protected DateFormat w3dtfFormat = new SimpleDateFormat(
+        "yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     /**
      * Construct a sitemaps.org protocol sitemap generator, writing files to the
@@ -83,7 +85,7 @@ public class SitemapsOrgGenerator extends AbstractGenerator {
     }
 
     @Override
-    public String getURLText(String url, Instant lastMod) {
+    public String getURLText(String url, Date lastMod) {
         StringBuilder urlText = new StringBuilder();
 
         urlText.append("<url><loc>").append(url).append("</loc>");
@@ -109,7 +111,7 @@ public class SitemapsOrgGenerator extends AbstractGenerator {
     @Override
     public void writeIndex(PrintStream output, int sitemapCount)
         throws IOException {
-        String now = w3dtfFormat.format(Instant.now());
+        String now = w3dtfFormat.format(new Date());
 
         output.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         output

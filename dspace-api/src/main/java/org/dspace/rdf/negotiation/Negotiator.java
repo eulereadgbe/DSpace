@@ -25,7 +25,7 @@ import org.dspace.services.factory.DSpaceServicesFactory;
  */
 public class Negotiator {
 
-    // Serialization codes
+    // Serialiazation codes
     public static final int UNSPECIFIED = -1;
     public static final int WILDCARD = 0;
     public static final int HTML = 1;

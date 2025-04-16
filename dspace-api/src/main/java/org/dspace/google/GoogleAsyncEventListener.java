@@ -8,11 +8,9 @@
 package org.dspace.google;
 
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,8 +23,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dspace.content.Bitstream;
+import org.dspace.content.Bundle;
 import org.dspace.content.factory.ContentServiceFactory;
-import org.dspace.content.service.BitstreamService;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.google.client.GoogleAnalyticsClient;
@@ -39,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Notifies Google Analytics of Bitstream VIEW events. These events are stored in memory and then
- * asynchronously processed by a single separate thread.
+ * asynchronously processed by a single seperate thread.
  *
  * @author April Herron
  * @author Luca Giamminonni
@@ -58,9 +56,6 @@ public class GoogleAsyncEventListener extends AbstractUsageEventListener {
 
     @Autowired
     private ClientInfoService clientInfoService;
-
-    @Autowired
-    private BitstreamService bitstreamService;
 
     @Autowired
     private List<GoogleAnalyticsClient> googleAnalyticsClients;
@@ -147,7 +142,7 @@ public class GoogleAsyncEventListener extends AbstractUsageEventListener {
     /**
      * Client ID, should uniquely identify the user or device. If we have an
      * X-CORRELATION-ID header or a session ID for the user, then lets use it,
-     * otherwise generate a UUID.
+     * othwerwise generate a UUID.
      */
     private String getClientId(UsageEvent usageEvent) {
         if (usageEvent.getRequest().getHeader("X-CORRELATION-ID") != null) {
@@ -186,35 +181,25 @@ public class GoogleAsyncEventListener extends AbstractUsageEventListener {
      */
     private boolean isContentBitstream(UsageEvent usageEvent) {
         // check if event is a VIEW event and object is a Bitstream
-        if (!isBitstreamView(usageEvent)) {
-            return false;
+        if (usageEvent.getAction() == UsageEvent.Action.VIEW
+            && usageEvent.getObject().getType() == Constants.BITSTREAM) {
+            // check if bitstream belongs to a configured bundle
+            List<String> allowedBundles = List.of(configurationService
+                      .getArrayProperty("google-analytics.bundles", new String[]{Constants.CONTENT_BUNDLE_NAME}));
+            if (allowedBundles.contains("none")) {
+                // GA events for bitstream views were turned off in config
+                return false;
+            }
+            List<String> bitstreamBundles;
+            try {
+                bitstreamBundles = ((Bitstream) usageEvent.getObject())
+                    .getBundles().stream().map(Bundle::getName).collect(Collectors.toList());
+            } catch (SQLException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+            return allowedBundles.stream().anyMatch(bitstreamBundles::contains);
         }
-        // check if bitstream belongs to a configured bundle
-        Set<String> allowedBundles =
-            Set.of(
-                configurationService.getArrayProperty(
-                    "google-analytics.bundles",
-                    new String[]{Constants.CONTENT_BUNDLE_NAME}
-                )
-            );
-        if (allowedBundles.contains("none")) {
-            // GA events for bitstream views were turned off in config
-            return false;
-        }
-        return isInBundle((Bitstream) usageEvent.getObject(), allowedBundles);
-    }
-
-    private boolean isInBundle(Bitstream bitstream, Set<String> allowedBundles) {
-        try {
-            return this.bitstreamService.isInBundle(bitstream, allowedBundles);
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
-    private boolean isBitstreamView(UsageEvent usageEvent) {
-        return usageEvent.getAction() == UsageEvent.Action.VIEW
-               && usageEvent.getObject().getType() == Constants.BITSTREAM;
+        return false;
     }
 
     private boolean isGoogleAnalyticsKeyNotConfigured() {
@@ -280,7 +265,7 @@ public class GoogleAsyncEventListener extends AbstractUsageEventListener {
             GoogleAnalyticsEvent event = (GoogleAnalyticsEvent) iterator.next();
             eventsBuffer.remove(event);
 
-            if ((Instant.now().toEpochMilli() - event.getTime()) < MAX_TIME_SINCE_EVENT) {
+            if ((System.currentTimeMillis() - event.getTime()) < MAX_TIME_SINCE_EVENT) {
                 events.add(event);
             }
 

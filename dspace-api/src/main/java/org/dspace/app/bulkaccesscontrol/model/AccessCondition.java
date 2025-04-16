@@ -7,7 +7,7 @@
  */
 package org.dspace.app.bulkaccesscontrol.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.dspace.app.bulkaccesscontrol.BulkAccessControl;
@@ -25,15 +25,15 @@ public class AccessCondition {
     private  String description;
 
     @JsonDeserialize(using = MultiFormatDateDeserializer.class)
-    private LocalDate startDate;
+    private  Date startDate;
 
     @JsonDeserialize(using = MultiFormatDateDeserializer.class)
-    private LocalDate endDate;
+    private  Date endDate;
 
     public AccessCondition() {
     }
 
-    public AccessCondition(String name, String description, LocalDate startDate, LocalDate endDate) {
+    public AccessCondition(String name, String description, Date startDate, Date endDate) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -48,11 +48,11 @@ public class AccessCondition {
         return description;
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public LocalDate getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 

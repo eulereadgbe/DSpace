@@ -105,7 +105,7 @@ public class OrcidBulkPush extends DSpaceRunnable<OrcidBulkPushScriptConfigurati
     }
 
     /**
-     * Find all the Orcid Queue records that need to be synchronized and perform the
+     * Find all the Orcid Queue records that need to be synchronized and perfom the
      * synchronization.
      */
     private void performBulkSynchronization() throws SQLException {
@@ -130,7 +130,7 @@ public class OrcidBulkPush extends DSpaceRunnable<OrcidBulkPushScriptConfigurati
     }
 
     /**
-     * If the current script execution is configured to ignore the max attempts,
+     * If the current script execution is configued to ignore the max attemps,
      * returns all the ORCID Queue records, otherwise returns the ORCID Queue
      * records that has an attempts value less than the configured max attempts
      * value.

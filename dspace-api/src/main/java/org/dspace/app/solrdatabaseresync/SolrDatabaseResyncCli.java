@@ -12,8 +12,7 @@ import static org.dspace.discovery.indexobject.ItemIndexFactoryImpl.STATUS_FIELD
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -167,11 +166,11 @@ public class SolrDatabaseResyncCli extends DSpaceRunnable<SolrDatabaseResyncCliS
     }
 
     private String getMaxTime() {
-        Instant now = Instant.now();
+        Calendar cal = Calendar.getInstance();
         if (timeUntilReindex > 0) {
-            now = now.minus(timeUntilReindex, ChronoUnit.MILLIS);
+            cal.add(Calendar.MILLISECOND, -timeUntilReindex);
         }
-        return SolrUtils.getDateFormatter().format(now);
+        return SolrUtils.getDateFormatter().format(cal.getTime());
     }
 
     private int getTimeUntilReindex() {

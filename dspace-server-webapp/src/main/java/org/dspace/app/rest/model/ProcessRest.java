@@ -7,7 +7,7 @@
  */
 package org.dspace.app.rest.model;
 
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,9 +21,18 @@ import org.dspace.scripts.Process;
  * This class serves as a REST representation for the {@link Process} class
  */
 @LinksRest(links = {
-    @LinkRest(name = ProcessRest.FILES, method = "getFilesFromProcess"),
-    @LinkRest(name = ProcessRest.FILE_TYPES, method = "getFileTypesFromProcess"),
-    @LinkRest(name = ProcessRest.OUTPUT, method = "getOutputFromProcess")
+    @LinkRest(
+        name = ProcessRest.FILES,
+        method = "getFilesFromProcess"
+    ),
+    @LinkRest(
+        name = ProcessRest.FILE_TYPES,
+        method = "getFileTypesFromProcess"
+    ),
+    @LinkRest(
+        name = ProcessRest.OUTPUT,
+        method = "getOutputFromProcess"
+    )
 })
 public class ProcessRest extends BaseObjectRest<Integer> {
     public static final String NAME = "process";
@@ -54,9 +63,9 @@ public class ProcessRest extends BaseObjectRest<Integer> {
     private String scriptName;
     private UUID userId;
     private Integer processId;
-    private Instant startTime;
-    private Instant endTime;
-    private Instant creationTime;
+    private Date startTime;
+    private Date endTime;
+    private Date creationTime;
     private ProcessStatus processStatus;
     @JsonProperty(value = "parameters")
     private List<ParameterValueRest> parameterRestList;
@@ -93,19 +102,19 @@ public class ProcessRest extends BaseObjectRest<Integer> {
         this.parameterRestList = parameterRestList;
     }
 
-    public Instant getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Instant startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public Instant getCreationTime() {
+    public Date getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Instant creationTime) {
+    public void setCreationTime(Date creationTime) {
         this.creationTime = creationTime;
     }
 
@@ -117,11 +126,11 @@ public class ProcessRest extends BaseObjectRest<Integer> {
         this.scriptName = scriptName;
     }
 
-    public Instant getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Instant endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 

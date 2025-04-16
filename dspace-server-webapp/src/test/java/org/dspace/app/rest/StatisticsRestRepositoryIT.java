@@ -21,9 +21,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -77,9 +76,6 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
     ConfigurationService configurationService;
     @Autowired
     protected AuthorizeService authorizeService;
-
-    @Autowired
-    private ObjectMapper mapper;
 
     private Community communityNotVisited;
     private Community communityVisited;
@@ -197,7 +193,7 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
     public void usagereport_onlyAdminReadRights_unvalidToken() throws Exception {
         // ** WHEN **
         authorizeService.removeAllPolicies(context, itemNotVisitedWithBitstreams);
-        // We request a dso's TotalVisits usage stat report with invalid token
+        // We request a dso's TotalVisits usage stat report with unvalid token
         getClient("unvalidToken").perform(
             get("/api/statistics/usagereports/" + itemNotVisitedWithBitstreams.getID() + "_" + TOTAL_VISITS_REPORT_ID))
                                  // ** THEN **
@@ -277,6 +273,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         viewEventRest.setTargetType("community");
         viewEventRest.setTargetId(communityVisited.getID());
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
             .contentType(contentType))
@@ -325,6 +323,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("collection");
         viewEventRest.setTargetId(collectionVisited.getID());
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
@@ -379,6 +379,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("item");
         viewEventRest.setTargetId(itemVisited.getID());
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
@@ -466,6 +468,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("bitstream");
         viewEventRest.setTargetId(bitstreamVisited.getID());
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
@@ -590,6 +594,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         viewEventRest.setTargetType("item");
         viewEventRest.setTargetId(itemVisited.getID());
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
             .contentType(contentType))
@@ -672,6 +678,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         viewEventRest.setTargetType("collection");
         viewEventRest.setTargetId(collectionVisited.getID());
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
             .contentType(contentType))
@@ -703,6 +711,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("bitstream");
         viewEventRest.setTargetId(bitstreamVisited.getID());
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
@@ -769,6 +779,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         viewEventRest.setTargetType("bitstream");
         viewEventRest.setTargetId(bitstreamVisited.getID());
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
             .contentType(contentType))
@@ -827,6 +839,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("collection");
         viewEventRest.setTargetId(collectionVisited.getID());
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
@@ -896,6 +910,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         viewEventRest.setTargetType("community");
         viewEventRest.setTargetId(communityVisited.getID());
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
             .contentType(contentType))
@@ -953,6 +969,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("item");
         viewEventRest.setTargetId(itemVisited.getID());
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
@@ -1021,6 +1039,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("community");
         viewEventRest.setTargetId(communityVisited.getID());
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient(loggedInToken).perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
@@ -1115,7 +1135,7 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
     public void usagereportSearch_onlyAdminReadRights_unvalidToken() throws Exception {
         // ** WHEN **
         authorizeService.removeAllPolicies(context, itemNotVisitedWithBitstreams);
-        // We request a dso's TotalVisits usage stat report with invalid token
+        // We request a dso's TotalVisits usage stat report with unvalid token
         getClient("unvalidToken")
             .perform(get("/api/statistics/usagereports/search/object?uri=http://localhost:8080/server/api/core" +
                          "/items/" + itemNotVisitedWithBitstreams.getID()))
@@ -1172,6 +1192,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         viewEventRest.setTargetType("item");
         viewEventRest.setTargetId(itemVisited.getID());
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
             .contentType(contentType))
@@ -1181,13 +1203,15 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         viewEventRest2.setTargetType("item");
         viewEventRest2.setTargetId(itemVisited2.getID());
 
+        ObjectMapper mapper2 = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/viewevents")
-            .content(mapper.writeValueAsBytes(viewEventRest2))
+            .content(mapper2.writeValueAsBytes(viewEventRest2))
             .contentType(contentType))
                    .andExpect(status().isCreated());
 
         getClient().perform(post("/api/statistics/viewevents")
-            .content(mapper.writeValueAsBytes(viewEventRest2))
+            .content(mapper2.writeValueAsBytes(viewEventRest2))
             .contentType(contentType))
                    .andExpect(status().isCreated());
 
@@ -1217,6 +1241,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("community");
         viewEventRest.setTargetId(communityVisited.getID());
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient().perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
@@ -1305,6 +1331,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         viewEventRest.setTargetType("item");
         viewEventRest.setTargetId(itemVisited.getID());
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
             .contentType(contentType))
@@ -1368,6 +1396,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         ViewEventRest viewEventRest = new ViewEventRest();
         viewEventRest.setTargetType("item");
         viewEventRest.setTargetId(itemVisited.getID());
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient().perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
@@ -1448,6 +1478,8 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
         viewEventRest.setTargetType("bitstream");
         viewEventRest.setTargetId(bitstreamVisited.getID());
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/viewevents")
             .content(mapper.writeValueAsBytes(viewEventRest))
             .contentType(contentType))
@@ -1501,7 +1533,7 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
     private List<UsageReportPointRest> getListOfVisitsPerMonthsPoints(int viewsLastMonth) {
         List<UsageReportPointRest> expectedPoints = new ArrayList<>();
         int nrOfMonthsBack = 6;
-        YearMonth month = YearMonth.now();
+        Calendar cal = Calendar.getInstance();
         for (int i = 0; i <= nrOfMonthsBack; i++) {
             UsageReportPointDateRest expectedPoint = new UsageReportPointDateRest();
             if (i > 0) {
@@ -1509,12 +1541,11 @@ public class StatisticsRestRepositoryIT extends AbstractControllerIntegrationTes
             } else {
                 expectedPoint.addValue("views", viewsLastMonth);
             }
-            // Get month+year in long format (e.g. "February 2025") using English language
-            String monthYear = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH).format(month);
-            expectedPoint.setId(monthYear);
+            String month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, new Locale("en"));
+            expectedPoint.setId(month + " " + cal.get(Calendar.YEAR));
 
             expectedPoints.add(expectedPoint);
-            month = month.minusMonths(1);
+            cal.add(Calendar.MONTH, -1);
         }
         return expectedPoints;
     }

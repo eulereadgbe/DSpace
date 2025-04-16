@@ -11,9 +11,9 @@ import static org.dspace.app.util.AuthorizeUtil.canCollectionAdminManageAccounts
 import static org.dspace.app.util.AuthorizeUtil.canCommunityAdminManageAccounts;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -662,8 +662,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
     @Override
     public ResourcePolicy createResourcePolicy(Context context, DSpaceObject dso, Group group, EPerson eperson,
                                                int type, String rpType, String rpName, String rpDescription,
-                                               LocalDate startDate, LocalDate endDate)
-        throws SQLException, AuthorizeException {
+                                               Date startDate, Date endDate) throws SQLException, AuthorizeException {
         if (group == null && eperson == null) {
             throw new IllegalArgumentException(
                 "We need at least an eperson or a group in order to create a resource policy.");
@@ -685,7 +684,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
     @Override
     public ResourcePolicy createOrModifyPolicy(ResourcePolicy policy, Context context, String name, Group group,
                                                EPerson ePerson,
-                                               LocalDate embargoDate, int action, String reason, DSpaceObject dso)
+                                               Date embargoDate, int action, String reason, DSpaceObject dso)
         throws AuthorizeException, SQLException {
         ResourcePolicy policyTemp = null;
         if (policy != null) {

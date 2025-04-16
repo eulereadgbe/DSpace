@@ -121,7 +121,7 @@ public interface ItemImportService {
 
     /**
      * If a batch import is done in a new thread we are unable to communicate
-     * with calling method about success or failure. We accomplish this
+     * with calling method about success or failure. We accomplis this
      * communication with email instead. Send an error email if the batch
      * import fails
      *

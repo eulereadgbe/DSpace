@@ -8,7 +8,7 @@
 package org.dspace.versioning.service;
 
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import org.dspace.content.Item;
@@ -76,7 +76,7 @@ public interface VersioningService {
 
     Version getVersion(Context c, Item item) throws SQLException;
 
-    Version createNewVersion(Context context, VersionHistory history, Item item, String summary, Instant date,
+    Version createNewVersion(Context context, VersionHistory history, Item item, String summary, Date date,
                              int versionNumber);
 
     /**

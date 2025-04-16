@@ -9,20 +9,19 @@ package org.dspace.app.statistics;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
 
@@ -36,7 +35,7 @@ public class StatisticsLoader {
     private static StatsFile generalAnalysis = null;
     private static StatsFile generalReport = null;
 
-    private static Instant lastLoaded = null;
+    private static Date lastLoaded = null;
     private static int fileCount = 0;
 
     private static Pattern analysisMonthlyPattern;
@@ -44,8 +43,8 @@ public class StatisticsLoader {
     private static Pattern reportMonthlyPattern;
     private static Pattern reportGeneralPattern;
 
-    private static ThreadLocal<DateTimeFormatter> monthlySDF;
-    private static ThreadLocal<DateTimeFormatter> generalSDF;
+    private static ThreadLocal<DateFormat> monthlySDF;
+    private static ThreadLocal<DateFormat> generalSDF;
 
     // one time initialisation of the regex patterns and formatters we will use
     static {
@@ -54,17 +53,17 @@ public class StatisticsLoader {
         reportMonthlyPattern = Pattern.compile("report-([0-9][0-9][0-9][0-9]-[0-9]+)\\.html");
         reportGeneralPattern = Pattern.compile("report-general-([0-9]+-[0-9]+-[0-9]+)\\.html");
 
-        monthlySDF = new ThreadLocal<DateTimeFormatter>() {
+        monthlySDF = new ThreadLocal<DateFormat>() {
             @Override
-            protected DateTimeFormatter initialValue() {
-                return DateTimeFormatter.ofPattern("yyyy'-'M");
+            protected DateFormat initialValue() {
+                return new SimpleDateFormat("yyyy'-'M");
             }
         };
 
-        generalSDF = new ThreadLocal<DateTimeFormatter>() {
+        generalSDF = new ThreadLocal<DateFormat>() {
             @Override
-            protected DateTimeFormatter initialValue() {
-                return DateTimeFormatter.ofPattern("yyyy'-'M'-'dd");
+            protected DateFormat initialValue() {
+                return new SimpleDateFormat("yyyy'-'M'-'dd");
             }
         };
     }
@@ -79,7 +78,7 @@ public class StatisticsLoader {
      *
      * @return array of dates
      */
-    public static LocalDate[] getMonthlyReportDates() {
+    public static Date[] getMonthlyReportDates() {
         return sortDatesDescending(getDatesFromMap(monthlyReports));
     }
 
@@ -88,7 +87,7 @@ public class StatisticsLoader {
      *
      * @return array of dates
      */
-    public static LocalDate[] getMonthlyAnalysisDates() {
+    public static Date[] getMonthlyAnalysisDates() {
         return sortDatesDescending(getDatesFromMap(monthlyAnalysis));
     }
 
@@ -98,15 +97,15 @@ public class StatisticsLoader {
      * @param monthlyMap map
      * @return array of dates
      */
-    protected static LocalDate[] getDatesFromMap(Map<String, StatsFile> monthlyMap) {
+    protected static Date[] getDatesFromMap(Map<String, StatsFile> monthlyMap) {
         Set<String> keys = monthlyMap.keySet();
-        LocalDate[] dates = new LocalDate[keys.size()];
+        Date[] dates = new Date[keys.size()];
         int i = 0;
         for (String date : keys) {
             try {
-                dates[i] = YearMonth.parse(date, monthlySDF.get()).atDay(1);
-            } catch (DateTimeParseException pe) {
-                //ignore
+                dates[i] = monthlySDF.get().parse(date);
+            } catch (ParseException pe) {
+                // ignore
             }
 
             i++;
@@ -121,19 +120,19 @@ public class StatisticsLoader {
      * @param dates array of dates
      * @return sorted dates.
      */
-    protected static LocalDate[] sortDatesDescending(LocalDate[] dates) {
-        Arrays.sort(dates, new Comparator<LocalDate>() {
+    protected static Date[] sortDatesDescending(Date[] dates) {
+        Arrays.sort(dates, new Comparator<Date>() {
             @Override
-            public int compare(LocalDate d1, LocalDate d2) {
+            public int compare(Date d1, Date d2) {
                 if (d1 == null && d2 == null) {
                     return 0;
                 } else if (d1 == null) {
                     return -1;
                 } else if (d2 == null) {
                     return 1;
-                } else if (d1.isBefore(d2)) {
+                } else if (d1.before(d2)) {
                     return 1;
-                } else if (d2.isBefore(d1)) {
+                } else if (d2.before(d1)) {
                     return -1;
                 }
 
@@ -204,7 +203,7 @@ public class StatisticsLoader {
             StatisticsLoader.loadFileList(fileList);
         } else if (lastLoaded == null) {
             StatisticsLoader.loadFileList(fileList);
-        } else if (Instant.now().isAfter(lastLoaded.plus(1, ChronoUnit.HOURS))) {
+        } else if (DateUtils.addHours(lastLoaded, 1).before(new Date())) {
             StatisticsLoader.loadFileList(fileList);
         }
     }
@@ -257,7 +256,7 @@ public class StatisticsLoader {
                     statsFile = makeStatsFile(thisFile, analysisGeneralPattern, generalSDF.get());
                     if (statsFile != null) {
                         // If it is, ensure that we are pointing to the most recent file
-                        if (newGeneralAnalysis == null || statsFile.date.isAfter(newGeneralAnalysis.date)) {
+                        if (newGeneralAnalysis == null || statsFile.date.after(newGeneralAnalysis.date)) {
                             newGeneralAnalysis = statsFile;
                         }
                     }
@@ -269,7 +268,7 @@ public class StatisticsLoader {
                     statsFile = makeStatsFile(thisFile, reportGeneralPattern, generalSDF.get());
                     if (statsFile != null) {
                         // If it is, ensure that we are pointing to the most recent file
-                        if (newGeneralReport == null || statsFile.date.isAfter(newGeneralReport.date)) {
+                        if (newGeneralReport == null || statsFile.date.after(newGeneralReport.date)) {
                             newGeneralReport = statsFile;
                         }
                     }
@@ -282,7 +281,7 @@ public class StatisticsLoader {
         monthlyReports = newMonthlyReports;
         generalAnalysis = newGeneralAnalysis;
         generalReport = newGeneralReport;
-        lastLoaded = Instant.now();
+        lastLoaded = new Date();
     }
 
     /**
@@ -292,11 +291,11 @@ public class StatisticsLoader {
      * by the formatter provided, then we return null.
      *
      * @param thisFile    file
-     * @param thisPattern pattern
-     * @param formatter   date formatter
+     * @param thisPattern patter
+     * @param sdf         date format
      * @return StatsFile
      */
-    private static StatsFile makeStatsFile(File thisFile, Pattern thisPattern, DateTimeFormatter formatter) {
+    private static StatsFile makeStatsFile(File thisFile, Pattern thisPattern, DateFormat sdf) {
         Matcher matcher = thisPattern.matcher(thisFile.getName());
         if (matcher.matches()) {
             StatsFile sf = new StatsFile();
@@ -305,8 +304,8 @@ public class StatisticsLoader {
             sf.dateStr = matcher.group(1).trim();
 
             try {
-                sf.date = LocalDate.parse(sf.dateStr, formatter);
-            } catch (DateTimeParseException e) {
+                sf.date = sdf.parse(sf.dateStr);
+            } catch (ParseException e) {
                 // ignore
             }
 
@@ -334,7 +333,7 @@ public class StatisticsLoader {
     private static class StatsFile {
         File file;
         String path;
-        LocalDate date;
+        Date date;
         String dateStr;
     }
 

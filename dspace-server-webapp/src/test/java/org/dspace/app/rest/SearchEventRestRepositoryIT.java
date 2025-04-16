@@ -27,12 +27,8 @@ import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.content.Item;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class SearchEventRestRepositoryIT extends AbstractControllerIntegrationTest {
-
-    @Autowired
-    private ObjectMapper mapper;
 
     @Test
     public void findAllTestThrowNotImplementedException() throws Exception {
@@ -92,6 +88,8 @@ public class SearchEventRestRepositoryIT extends AbstractControllerIntegrationTe
         appliedFilterList.add(appliedFilter);
         searchEventRest.setAppliedFilters(appliedFilterList);
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/searchevents")
                                 .content(mapper.writeValueAsBytes(searchEventRest))
                                 .contentType(contentType))
@@ -143,6 +141,8 @@ public class SearchEventRestRepositoryIT extends AbstractControllerIntegrationTe
         appliedFilterList.add(appliedFilter);
         searchEventRest.setAppliedFilters(appliedFilterList);
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/searchevents")
                                 .content(mapper.writeValueAsBytes(searchEventRest))
                                 .contentType(contentType))
@@ -193,6 +193,8 @@ public class SearchEventRestRepositoryIT extends AbstractControllerIntegrationTe
         List<SearchResultsRest.AppliedFilter> appliedFilterList = new LinkedList<>();
         appliedFilterList.add(appliedFilter);
         searchEventRest.setAppliedFilters(appliedFilterList);
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient().perform(post("/api/statistics/searchevents")
                                 .content(mapper.writeValueAsBytes(searchEventRest))
@@ -246,6 +248,8 @@ public class SearchEventRestRepositoryIT extends AbstractControllerIntegrationTe
         appliedFilterList.add(appliedFilter);
         searchEventRest.setAppliedFilters(appliedFilterList);
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/searchevents")
                                 .content(mapper.writeValueAsBytes(searchEventRest))
                                 .contentType(contentType))
@@ -298,6 +302,8 @@ public class SearchEventRestRepositoryIT extends AbstractControllerIntegrationTe
         appliedFilterList.add(appliedFilter);
         searchEventRest.setAppliedFilters(appliedFilterList);
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/searchevents")
                                 .content(mapper.writeValueAsBytes(searchEventRest))
                                 .contentType(contentType))
@@ -343,6 +349,8 @@ public class SearchEventRestRepositoryIT extends AbstractControllerIntegrationTe
 
         PageRest pageRest = new PageRest(5, 20, 4, 1);
         searchEventRest.setPage(pageRest);
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient().perform(post("/api/statistics/searchevents")
                                 .content(mapper.writeValueAsBytes(searchEventRest))
@@ -394,6 +402,8 @@ public class SearchEventRestRepositoryIT extends AbstractControllerIntegrationTe
         List<SearchResultsRest.AppliedFilter> appliedFilterList = new LinkedList<>();
         appliedFilterList.add(appliedFilter);
         searchEventRest.setAppliedFilters(appliedFilterList);
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient().perform(post("/api/statistics/searchevents")
                                 .content(mapper.writeValueAsBytes(searchEventRest))
@@ -448,6 +458,8 @@ public class SearchEventRestRepositoryIT extends AbstractControllerIntegrationTe
         appliedFilterList.add(appliedFilter);
         searchEventRest.setAppliedFilters(appliedFilterList);
 
+        ObjectMapper mapper = new ObjectMapper();
+
         getClient().perform(post("/api/statistics/searchevents")
                         .content(mapper.writeValueAsBytes(searchEventRest))
                         .contentType(contentType))
@@ -500,6 +512,8 @@ public class SearchEventRestRepositoryIT extends AbstractControllerIntegrationTe
         List<SearchResultsRest.AppliedFilter> appliedFilterList = new LinkedList<>();
         appliedFilterList.add(appliedFilter);
         searchEventRest.setAppliedFilters(appliedFilterList);
+
+        ObjectMapper mapper = new ObjectMapper();
 
         getClient().perform(post("/api/statistics/searchevents")
                         .content(mapper.writeValueAsBytes(searchEventRest))

@@ -7,8 +7,6 @@
  */
 package org.dspace.health;
 
-import java.time.Instant;
-
 import org.apache.logging.log4j.Logger;
 
 /**
@@ -28,12 +26,12 @@ public abstract class Check {
     protected abstract String run(ReportInfo ri);
 
     public void report(ReportInfo ri) {
-        took_ = Instant.now().toEpochMilli();
+        took_ = System.currentTimeMillis();
         try {
             String run_report = run(ri);
             report_ = errors_ + run_report;
         } finally {
-            took_ = Instant.now().toEpochMilli() - took_;
+            took_ = System.currentTimeMillis() - took_;
         }
     }
 

@@ -30,15 +30,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.ResourcePolicy;
@@ -256,7 +255,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         it.setDiscoverable(true);
          // Test 0: Using a future 'modified since' date, we should get non-null list, with no items
         Iterator<Item> all = itemService.findInArchiveOrWithdrawnDiscoverableModifiedSince(context,
-                it.getLastModified().plus(1, ChronoUnit.DAYS));
+                DateUtils.addDays(it.getLastModified(),1));
         assertThat("Returned list should not be null", all, notNullValue());
         boolean added = false;
         while (all.hasNext()) {
@@ -269,7 +268,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         assertFalse("List should not contain item when passing a date newer than item last-modified date", added);
          // Test 2: Using a past 'modified since' date, we should get a non-null list containing our item
         all = itemService.findInArchiveOrWithdrawnDiscoverableModifiedSince(context,
-                it.getLastModified().minus(1, ChronoUnit.DAYS));
+                DateUtils.addDays(it.getLastModified(),-1));
         assertThat("Returned list should not be null", all, notNullValue());
         added = false;
         while (all.hasNext()) {
@@ -285,7 +284,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         it.setArchived(true);
          // Test 4: Using a past 'modified since' date, we should get a non-null list containing our item
         all = itemService.findInArchiveOrWithdrawnDiscoverableModifiedSince(context,
-                it.getLastModified().minus(1, ChronoUnit.DAYS));
+                DateUtils.addDays(it.getLastModified(),-1));
         assertThat("Returned list should not be null", all, notNullValue());
         added = false;
         while (all.hasNext()) {
@@ -299,7 +298,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
          // Test 6: Make sure non-discoverable items are not returned, regardless of archived/withdrawn state
         it.setDiscoverable(false);
         all = itemService.findInArchiveOrWithdrawnDiscoverableModifiedSince(context,
-                it.getLastModified().minus(1, ChronoUnit.DAYS));
+                DateUtils.addDays(it.getLastModified(),-1));
         assertThat("Returned list should not be null", all, notNullValue());
         added = false;
         while (all.hasNext()) {
@@ -323,7 +322,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         it.setDiscoverable(false);
          // Test 0: Using a future 'modified since' date, we should get non-null list, with no items
         Iterator<Item> all = itemService.findInArchiveOrWithdrawnNonDiscoverableModifiedSince(context,
-                it.getLastModified().plus(1, ChronoUnit.DAYS));
+                DateUtils.addDays(it.getLastModified(),1));
         assertThat("Returned list should not be null", all, notNullValue());
         boolean added = false;
         while (all.hasNext()) {
@@ -336,7 +335,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         assertFalse("List should not contain item when passing a date newer than item last-modified date", added);
          // Test 2: Using a past 'modified since' date, we should get a non-null list containing our item
         all = itemService.findInArchiveOrWithdrawnNonDiscoverableModifiedSince(context,
-                it.getLastModified().minus(1, ChronoUnit.DAYS));
+                DateUtils.addDays(it.getLastModified(),-1));
         assertThat("Returned list should not be null", all, notNullValue());
         added = false;
         while (all.hasNext()) {
@@ -351,7 +350,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         it.setDiscoverable(true);
          // Test 4: Now we should still get a non-null list with NO items since item is discoverable
         all = itemService.findInArchiveOrWithdrawnNonDiscoverableModifiedSince(context,
-                it.getLastModified().minus(1, ChronoUnit.DAYS));
+                DateUtils.addDays(it.getLastModified(),-1));
         assertThat("Returned list should not be null", all, notNullValue());
         added = false;
         while (all.hasNext()) {
@@ -412,8 +411,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
     @Test
     public void testGetLastModified() {
         assertThat("testGetLastModified 0", it.getLastModified(), notNullValue());
-        assertEquals("testGetLastModified is same day", it.getLastModified().atZone(ZoneOffset.UTC).toLocalDate(),
-                     LocalDate.now(ZoneOffset.UTC));
+        assertTrue("testGetLastModified 1", DateUtils.isSameDay(it.getLastModified(), new Date()));
     }
 
     /**
@@ -520,11 +518,11 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         String schema = "dc";
         String element = "contributor";
         String qualifier = "author";
-        String lang = null;
+        String lang = Item.ANY;
         String[] values = {"value0", "value1"};
         itemService.addMetadata(context, it, schema, element, qualifier, lang, Arrays.asList(values));
 
-        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, Item.ANY);
+        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, lang);
         assertThat("testAddMetadata_5args_1 0", dc, notNullValue());
         assertTrue("testAddMetadata_5args_1 1", dc.size() == 2);
         assertThat("testAddMetadata_5args_1 2", dc.get(0).getMetadataField().getMetadataSchema().getName(),
@@ -546,7 +544,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         String schema = "dc";
         String element = "contributor";
         String qualifier = "author";
-        String lang = null;
+        String lang = Item.ANY;
         String[] values = {};
         itemService.addMetadata(context, it, schema, element, qualifier, lang, Arrays.asList(values));
         fail("IllegalArgumentException expected");
@@ -565,13 +563,13 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         String schema = "dc";
         String element = "language";
         String qualifier = "iso";
-        String lang = null;
+        String lang = Item.ANY;
         List<String> values = Arrays.asList("en_US", "en");
         List<String> authorities = Arrays.asList("accepted", "uncertain");
         List<Integer> confidences = Arrays.asList(0, 0);
         itemService.addMetadata(context, it, schema, element, qualifier, lang, values, authorities, confidences);
 
-        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, Item.ANY);
+        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, lang);
         assertThat("testAddMetadata_7args_1 0", dc, notNullValue());
         assertTrue("testAddMetadata_7args_1 1", dc.size() == 2);
         assertThat("testAddMetadata_7args_1 2", dc.get(0).getMetadataField().getMetadataSchema().getName(),
@@ -602,13 +600,13 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         String schema = "dc";
         String element = "contributor";
         String qualifier = "author";
-        String lang = null;
+        String lang = Item.ANY;
         List<String> values = Arrays.asList("value0", "value1");
         List<String> authorities = Arrays.asList("auth0", "auth2");
         List<Integer> confidences = Arrays.asList(0, 0);
         itemService.addMetadata(context, it, schema, element, qualifier, lang, values, authorities, confidences);
 
-        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, Item.ANY);
+        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, lang);
         assertThat("testAddMetadata_7args_1 0", dc, notNullValue());
         assertTrue("testAddMetadata_7args_1 1", dc.size() == 2);
         assertThat("testAddMetadata_7args_1 2", dc.get(0).getMetadataField().getMetadataSchema().getName(),
@@ -634,7 +632,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         String schema = "dc";
         String element = "contributor";
         String qualifier = "author";
-        String lang = null;
+        String lang = Item.ANY;
         List<String> values = new ArrayList();
         List<String> authorities = new ArrayList();
         List<Integer> confidences = new ArrayList();
@@ -647,7 +645,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         String schema = "dc";
         String element = "contributor";
         String qualifier = "author";
-        String lang = null;
+        String lang = Item.ANY;
         // Create two fake virtual metadata ("virtual::[relationship-id]") values
         List<String> values = new ArrayList<>(Arrays.asList("uuid-1", "uuid-2"));
         List<String> authorities = new ArrayList<>(Arrays.asList(Constants.VIRTUAL_AUTHORITY_PREFIX + "relationship-1",
@@ -676,7 +674,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         assertEquals(1, valuesAdded.size());
 
         // Get metadata and ensure new value is the ONLY ONE for this metadata field
-        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, Item.ANY);
+        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, lang);
         assertNotNull(dc);
         assertEquals(1, dc.size());
         assertEquals(schema, dc.get(0).getMetadataField().getMetadataSchema().getName());
@@ -695,11 +693,11 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         String schema = "dc";
         String element = "contributor";
         String qualifier = "author";
-        String lang = null;
+        String lang = Item.ANY;
         String value = "value0";
         itemService.addMetadata(context, it, schema, element, qualifier, lang, value);
 
-        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, Item.ANY);
+        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, lang);
         assertThat("testAddMetadata_5args_2 0", dc, notNullValue());
         assertTrue("testAddMetadata_5args_2 1", dc.size() == 1);
         assertThat("testAddMetadata_5args_2 2", dc.get(0).getMetadataField().getMetadataSchema().getName(),
@@ -721,13 +719,13 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         String schema = "dc";
         String element = "language";
         String qualifier = "iso";
-        String lang = null;
+        String lang = Item.ANY;
         String values = "en";
         String authorities = "accepted";
         int confidences = 0;
         itemService.addMetadata(context, it, schema, element, qualifier, lang, values, authorities, confidences);
 
-        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, Item.ANY);
+        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, lang);
         assertThat("testAddMetadata_7args_2 0", dc, notNullValue());
         assertTrue("testAddMetadata_7args_2 1", dc.size() == 1);
         assertThat("testAddMetadata_7args_2 2", dc.get(0).getMetadataField().getMetadataSchema().getName(),
@@ -750,13 +748,13 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         String schema = "dc";
         String element = "contributor";
         String qualifier = "editor";
-        String lang = null;
+        String lang = Item.ANY;
         String values = "value0";
         String authorities = "auth0";
         int confidences = 0;
         itemService.addMetadata(context, it, schema, element, qualifier, lang, values, authorities, confidences);
 
-        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, Item.ANY);
+        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, lang);
         assertThat("testAddMetadata_7args_2 0", dc, notNullValue());
         assertTrue("testAddMetadata_7args_2 1", dc.size() == 1);
         assertThat("testAddMetadata_7args_2 2", dc.get(0).getMetadataField().getMetadataSchema().getName(),
@@ -774,7 +772,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         String schema = "dc";
         String element = "contributor";
         String qualifier = "author";
-        String lang = null;
+        String lang = Item.ANY;
         // Create a single fake virtual metadata ("virtual::[relationship-id]") value
         String value = "uuid-1";
         String authority = Constants.VIRTUAL_AUTHORITY_PREFIX + "relationship-1";
@@ -788,7 +786,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         assertNull(valuesAdded);
 
         // Verify this metadata field does NOT exist on the item
-        List<MetadataValue> mv = itemService.getMetadata(it, schema, element, qualifier, Item.ANY);
+        List<MetadataValue> mv = itemService.getMetadata(it, schema, element, qualifier, lang);
         assertNotNull(mv);
         assertTrue(mv.isEmpty());
 
@@ -799,7 +797,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         assertNull(valuesAdded);
 
         // Verify this metadata field does NOT exist on the item
-        mv = itemService.getMetadata(it, schema, element, qualifier, Item.ANY);
+        mv = itemService.getMetadata(it, schema, element, qualifier, lang);
         assertNotNull(mv);
         assertTrue(mv.isEmpty());
     }
@@ -813,13 +811,13 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         String schema = "dc";
         String element = "contributor";
         String qualifier = "author";
-        String lang = null;
+        String lang = Item.ANY;
         String values = "value0";
         itemService.addMetadata(context, it, schema, element, qualifier, lang, values);
 
-        itemService.clearMetadata(context, it, schema, element, qualifier, Item.ANY);
+        itemService.clearMetadata(context, it, schema, element, qualifier, lang);
 
-        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, Item.ANY);
+        List<MetadataValue> dc = itemService.getMetadata(it, schema, element, qualifier, lang);
         assertThat("testClearMetadata 0", dc, notNullValue());
         assertTrue("testClearMetadata 1", dc.size() == 0);
     }
@@ -861,11 +859,11 @@ public class ItemTest extends AbstractDSpaceObjectTest {
         context.turnOffAuthorisationSystem();
         Collection collection = collectionService.create(context, owningCommunity);
         collectionService.setMetadataSingleValue(context, collection, MetadataSchemaEnum.DC.getName(),
-                                                 "title", null, null, "collection B");
+                                                 "title", null, Item.ANY, "collection B");
         it.addCollection(collection);
         collection = collectionService.create(context, owningCommunity);
         collectionService.setMetadataSingleValue(context, collection, MetadataSchemaEnum.DC.getName(),
-                                                 "title", null, null, "collection A");
+                                                 "title", null, Item.ANY, "collection A");
         it.addCollection(collection);
         context.restoreAuthSystemState();
         assertThat("testGetCollections 0", it.getCollections(), notNullValue());
@@ -1774,7 +1772,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
 
         // add new metadata to item
         context.turnOffAuthorisationSystem();
-        itemService.addMetadata(context, it, schema, element, qualifier, null, value);
+        itemService.addMetadata(context, it, schema, element, qualifier, Item.ANY, value);
         itemService.update(context, it);
         context.restoreAuthSystemState();
 
@@ -1839,7 +1837,7 @@ public class ItemTest extends AbstractDSpaceObjectTest {
 
         // add new metadata (with authority) to item
         context.turnOffAuthorisationSystem();
-        itemService.addMetadata(context, it, schema, element, qualifier, null, value, authority, confidence);
+        itemService.addMetadata(context, it, schema, element, qualifier, Item.ANY, value, authority, confidence);
         itemService.update(context, it);
         context.restoreAuthSystemState();
 

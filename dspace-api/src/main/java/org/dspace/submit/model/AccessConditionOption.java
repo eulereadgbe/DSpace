@@ -8,7 +8,7 @@
 package org.dspace.submit.model;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
@@ -23,6 +23,7 @@ import org.dspace.core.Context;
 import org.dspace.eperson.Group;
 import org.dspace.eperson.service.GroupService;
 import org.dspace.util.DateMathParser;
+import org.dspace.util.TimeHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -153,7 +154,7 @@ public class AccessConditionOption {
      * @throws ParseException passed through (indicates problem with a date).
      */
     public void createResourcePolicy(Context context, DSpaceObject obj, String name, String description,
-                                     LocalDate startDate, LocalDate endDate)
+                                     Date startDate, Date endDate)
             throws SQLException, AuthorizeException, ParseException {
         validateResourcePolicy(context, name, startDate, endDate);
         Group group = groupService.findByName(context, getGroupName());
@@ -194,7 +195,7 @@ public class AccessConditionOption {
      *              configured maximum.
      * @throws ParseException passed through.
      */
-    public void validateResourcePolicy(Context context, String name, LocalDate startDate, LocalDate endDate)
+    public void validateResourcePolicy(Context context, String name, Date startDate, Date endDate)
            throws IllegalStateException, ParseException {
         LOG.debug("Validate policy dates:  name '{}', startDate {}, endDate {}",
                 name, startDate, endDate);
@@ -213,20 +214,20 @@ public class AccessConditionOption {
 
         DateMathParser dateMathParser = new DateMathParser();
 
-        LocalDate latestStartDate = null;
+        Date latestStartDate = null;
         if (Objects.nonNull(getStartDateLimit())) {
-            latestStartDate = LocalDate.from(dateMathParser.parseMath(getStartDateLimit()));
+            latestStartDate = TimeHelpers.toMidnightUTC(dateMathParser.parseMath(getStartDateLimit()));
         }
 
-        LocalDate latestEndDate = null;
+        Date latestEndDate = null;
         if (Objects.nonNull(getEndDateLimit())) {
-            latestEndDate = LocalDate.from(dateMathParser.parseMath(getEndDateLimit()));
+            latestEndDate = TimeHelpers.toMidnightUTC(dateMathParser.parseMath(getEndDateLimit()));
         }
 
         LOG.debug("  latestStartDate {}, latestEndDate {}",
                 latestStartDate, latestEndDate);
         // throw if startDate after latestStartDate
-        if (Objects.nonNull(startDate) && Objects.nonNull(latestStartDate) && startDate.isAfter(latestStartDate)) {
+        if (Objects.nonNull(startDate) && Objects.nonNull(latestStartDate) && startDate.after(latestStartDate)) {
             throw new IllegalStateException(String.format(
                 "The start date of access condition %s should be earlier than %s from now (%s).",
                 getName(), getStartDateLimit(), dateMathParser.getNow()
@@ -234,7 +235,7 @@ public class AccessConditionOption {
         }
 
         // throw if endDate after latestEndDate
-        if (Objects.nonNull(endDate) && Objects.nonNull(latestEndDate)  && endDate.isAfter(latestEndDate)) {
+        if (Objects.nonNull(endDate) && Objects.nonNull(latestEndDate)  && endDate.after(latestEndDate)) {
             throw new IllegalStateException(String.format(
                 "The end date of access condition %s should be earlier than %s from now (%s).",
                 getName(), getEndDateLimit(), dateMathParser.getNow()

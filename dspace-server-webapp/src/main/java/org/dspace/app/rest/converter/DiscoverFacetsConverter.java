@@ -83,7 +83,6 @@ public class DiscoverFacetsConverter {
             if (field.exposeMinAndMaxValue()) {
                 handleExposeMinMaxValues(context, field, facetEntry);
             }
-            facetEntry.setOpenByDefault(field.isOpenByDefault());
             facetEntry.setExposeMinMax(field.exposeMinAndMaxValue());
             facetEntry.setFacetType(field.getType());
             for (DiscoverResult.FacetResult value : CollectionUtils.emptyIfNull(facetValues)) {

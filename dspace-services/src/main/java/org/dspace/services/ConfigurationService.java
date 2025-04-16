@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.HierarchicalConfiguration;
-import org.apache.commons.configuration2.tree.ImmutableNode;
 
 
 /**
@@ -230,22 +228,6 @@ public interface ConfigurationService {
      * @return Configuration object representing the system configuration
      */
     public Configuration getConfiguration();
-
-    /**
-     * Convenience method - get entire configuration (settings)
-     * from the system, as a hierarchy.
-     *
-     * @return HierarchicalConfiguration object representing the hierarchical system configuration
-     */
-    public HierarchicalConfiguration<ImmutableNode> getHierarchicalConfiguration();
-
-    /**
-     * Returns all child configurations of a property.
-     *
-     * @param name the property name
-     * @return a list of configurations that are children of the named property
-     */
-    public List<HierarchicalConfiguration<ImmutableNode>> getChildren(String name);
 
     /**
      * Return whether a property exists within the configuration

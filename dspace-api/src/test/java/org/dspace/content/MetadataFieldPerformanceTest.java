@@ -8,7 +8,6 @@
 package org.dspace.content;
 
 import java.sql.SQLException;
-import java.time.Instant;
 
 import org.dspace.AbstractUnitTest;
 import org.dspace.authorize.AuthorizeException;
@@ -34,13 +33,13 @@ public class MetadataFieldPerformanceTest extends AbstractUnitTest {
     @Test
     public void testManyQueries() throws SQLException {
 
-        long startTime = Instant.now().toEpochMilli();
+        long startTime = System.currentTimeMillis();
 
         int amount = 50000;
         for (int i = 0; i < amount; i++) {
             metadataFieldService.findByElement(context, "dc", "description", null);
         }
-        long endTime = Instant.now().toEpochMilli();
+        long endTime = System.currentTimeMillis();
 
         long duration = (endTime - startTime);
 
@@ -62,7 +61,7 @@ public class MetadataFieldPerformanceTest extends AbstractUnitTest {
         //we need to commit the changes so we don't block the table for testing
         context.restoreAuthSystemState();
 
-        long startTime = Instant.now().toEpochMilli();
+        long startTime = System.currentTimeMillis();
 
         int amount = 5000;
         for (int i = 0; i < amount; i++) {
@@ -71,7 +70,7 @@ public class MetadataFieldPerformanceTest extends AbstractUnitTest {
             collectionService.clearMetadata(context, collection,
                     "dc", "description", null, null);
         }
-        long endTime = Instant.now().toEpochMilli();
+        long endTime = System.currentTimeMillis();
 
         long duration = (endTime - startTime);
 

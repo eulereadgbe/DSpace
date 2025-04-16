@@ -74,9 +74,6 @@ public class BundleRestRepositoryIT extends AbstractControllerIntegrationTest {
     @Autowired
     BundleService bundleService;
 
-    @Autowired
-    private ObjectMapper mapper;
-
     private Collection collection;
     private Item item;
     private Bundle bundle1;
@@ -227,6 +224,7 @@ public class BundleRestRepositoryIT extends AbstractControllerIntegrationTest {
 
     @Test
     public void createBundleWithoutMetadata() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
         BundleRest bundleRest = new BundleRest();
         bundleRest.setName("Create Bundle Without Metadata");
         UUID bundleUuid = null;
@@ -257,6 +255,7 @@ public class BundleRestRepositoryIT extends AbstractControllerIntegrationTest {
 
     @Test
     public void createBundleWithMetadata() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
         UUID bundleUuid = null;
         try {
         BundleRest bundleRest = new BundleRest();
@@ -301,6 +300,8 @@ public class BundleRestRepositoryIT extends AbstractControllerIntegrationTest {
 
     @Test
     public void createBundleAsAnonymous() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
         BundleRest bundleRest = new BundleRest();
         bundleRest.setName("Create Bundle Without Metadata");
 
@@ -317,6 +318,8 @@ public class BundleRestRepositoryIT extends AbstractControllerIntegrationTest {
 
     @Test
     public void createBundleWithInsufficientPermissions() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
         BundleRest bundleRest = new BundleRest();
         bundleRest.setName("Create Bundle Without Metadata");
 
@@ -336,6 +339,8 @@ public class BundleRestRepositoryIT extends AbstractControllerIntegrationTest {
 
     @Test
     public void createBundleWithSufficientPermissions() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
         context.turnOffAuthorisationSystem();
 
         EPerson createBundleEperson = EPersonBuilder.createEPerson(context).withEmail("createm@bundle.org")
@@ -380,6 +385,8 @@ public class BundleRestRepositoryIT extends AbstractControllerIntegrationTest {
 
     @Test
     public void createBundleOnNonExistingItem() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
         BundleRest bundleRest = new BundleRest();
         bundleRest.setName("Create Bundle Without Metadata");
 

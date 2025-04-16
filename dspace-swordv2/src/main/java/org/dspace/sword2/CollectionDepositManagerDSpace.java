@@ -8,7 +8,7 @@
 package org.dspace.sword2;
 
 import java.io.IOException;
-import java.time.Instant;
+import java.util.Date;
 
 import org.apache.logging.log4j.Logger;
 import org.dspace.content.Collection;
@@ -42,7 +42,7 @@ public class CollectionDepositManagerDSpace extends DSpaceSwordAPI
                                     AuthCredentials authCredentials, SwordConfiguration swordConfig)
         throws SwordError, SwordServerException, SwordAuthException {
         // start the timer
-        Instant start = Instant.now();
+        Date start = new Date();
 
         // store up the verbose description, which we can then give back at the end if necessary
         this.verboseDescription.append("Initialising verbose deposit");
@@ -139,8 +139,8 @@ public class CollectionDepositManagerDSpace extends DSpaceSwordAPI
             DepositReceipt receipt = genny
                 .createReceipt(context, result, config);
 
-            Instant finish = Instant.now();
-            long delta = finish.toEpochMilli() - start.toEpochMilli();
+            Date finish = new Date();
+            long delta = finish.getTime() - start.getTime();
 
             this.verboseDescription
                 .append("Total time for deposit processing: " + delta +

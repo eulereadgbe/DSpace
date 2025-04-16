@@ -9,7 +9,7 @@ package org.dspace.alerts.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.dspace.alerts.AllowSessionsEnum;
@@ -35,7 +35,7 @@ public interface SystemWideAlertService {
      * @throws SQLException If something goes wrong
      */
     SystemWideAlert create(Context context, String message, AllowSessionsEnum allowSessionsType,
-                           ZonedDateTime countdownTo, boolean active
+                           Date countdownTo, boolean active
     ) throws SQLException, AuthorizeException;
 
     /**

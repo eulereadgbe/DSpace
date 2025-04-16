@@ -11,7 +11,7 @@ import static org.dspace.content.QAEvent.DSPACE_USERS_SOURCE;
 import static org.dspace.core.Constants.READ;
 
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Implementation class for {@link CorrectionType}
- * that will withdrawn target item if it archived and wasn't withdrawn already.
+ * that will withdrawn target item if it archived and wasn't withdrawn alredy.
  *
  * @author Mykhaylo Boychuk (mykhaylo.boychuk at 4science.com)
  */
@@ -91,7 +91,7 @@ public class WithdrawnCorrectionType implements CorrectionType, InitializingBean
                                       this.getTopic(),
                                       1.0,
                                       reasonJson.toString(),
-                                      Instant.now()
+                                      new Date()
                                       );
 
         qaEventService.store(context, qaEvent);

@@ -7,7 +7,7 @@
  */
 package org.dspace.authorize;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
@@ -21,6 +21,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import org.apache.solr.common.StringUtils;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.Context;
@@ -82,10 +84,12 @@ public class ResourcePolicy implements ReloadableEntity<Integer> {
     private Group epersonGroup;
 
     @Column(name = "start_date")
-    private LocalDate startDate;
+    @Temporal(TemporalType.DATE)
+    private Date startDate;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
 
     @Column(name = "rpname", length = 30)
     private String rpname;
@@ -243,7 +247,7 @@ public class ResourcePolicy implements ReloadableEntity<Integer> {
      * @return start date, or null if there is no start date set (probably most
      * common case)
      */
-    public LocalDate getStartDate() {
+    public java.util.Date getStartDate() {
         return startDate;
     }
 
@@ -252,7 +256,7 @@ public class ResourcePolicy implements ReloadableEntity<Integer> {
      *
      * @param d date, or null for no start date
      */
-    public void setStartDate(LocalDate d) {
+    public void setStartDate(java.util.Date d) {
         startDate = d;
     }
 
@@ -261,7 +265,7 @@ public class ResourcePolicy implements ReloadableEntity<Integer> {
      *
      * @return end date or null for no end date
      */
-    public LocalDate getEndDate() {
+    public java.util.Date getEndDate() {
         return endDate;
     }
 
@@ -270,7 +274,7 @@ public class ResourcePolicy implements ReloadableEntity<Integer> {
      *
      * @param d end date, or null
      */
-    public void setEndDate(LocalDate d) {
+    public void setEndDate(java.util.Date d) {
         this.endDate = d;
     }
 
@@ -296,24 +300,5 @@ public class ResourcePolicy implements ReloadableEntity<Integer> {
 
     public void setRpDescription(String description) {
         this.rpdescription = description;
-    }
-
-    /**
-     * Describe the ResourcePolicy in String form. Useful for debugging ResourcePolicy issues in tests or similar.
-     * @return String representation of ResourcePolicy object
-     */
-    @Override
-    public String toString() {
-        return "ResourcePolicy{" +
-            "id='" + id + '\'' +
-            ", action_id='" + actionId + '\'' +
-            ", eperson='" + eperson + '\'' +
-            ", group='" + epersonGroup + '\'' +
-            ", type='" + rptype + '\'' +
-            ", name='" + rpname + '\'' +
-            ", description='" + rpdescription + '\'' +
-            ", start_date='" + startDate + '\'' +
-            ", end_date='" + endDate + '\'' +
-            '}';
     }
 }

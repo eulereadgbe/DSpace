@@ -57,9 +57,6 @@ public class LDNMessageRestRepositoryIT extends AbstractControllerIntegrationTes
     @Autowired
     private LDNMessageService ldnMessageService;
 
-    @Autowired
-    private ObjectMapper mapper;
-
     @Test
     public void findOneUnAuthorizedTest() throws Exception {
         getClient()
@@ -112,6 +109,7 @@ public class LDNMessageRestRepositoryIT extends AbstractControllerIntegrationTes
         String message = announceEndorsement.replaceAll("<<object>>", object);
         message = message.replaceAll("<<object_handle>>", object);
 
+        ObjectMapper mapper = new ObjectMapper();
         Notification notification = mapper.readValue(message, Notification.class);
         getClient()
             .perform(post("/ldn/inbox")
@@ -180,6 +178,7 @@ public class LDNMessageRestRepositoryIT extends AbstractControllerIntegrationTes
         String message = announceEndorsement.replaceAll("<<object>>", object);
         message = message.replaceAll("<<object_handle>>", object);
 
+        ObjectMapper mapper = new ObjectMapper();
         Notification notification = mapper.readValue(message, Notification.class);
         getClient()
             .perform(post("/ldn/inbox")
@@ -208,6 +207,7 @@ public class LDNMessageRestRepositoryIT extends AbstractControllerIntegrationTes
 
     @Test
     public void createLDNMessageTest() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
         LDNMessageEntityRest data = new LDNMessageEntityRest();
         String authToken = getAuthToken(admin.getEmail(), password);
 

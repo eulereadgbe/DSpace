@@ -47,9 +47,7 @@ public class ItemTemplateRestControllerIT extends AbstractControllerIntegrationT
     @Autowired
     ResourcePolicyService  resourcePolicyService;
 
-    @Autowired
     private ObjectMapper mapper;
-
     private String adminAuthToken;
     private Collection childCollection;
     private TemplateItemRest testTemplateItem;
@@ -64,6 +62,8 @@ public class ItemTemplateRestControllerIT extends AbstractControllerIntegrationT
         childCollection = CollectionBuilder.createCollection(context, parentCommunity)
                                            .withName("Collection 1").build();
         adminAuthToken = getAuthToken(admin.getEmail(), password);
+
+        mapper = new ObjectMapper();
     }
 
     private void setupTestTemplate() {

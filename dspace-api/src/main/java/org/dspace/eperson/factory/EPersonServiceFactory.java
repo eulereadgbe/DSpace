@@ -10,7 +10,6 @@ package org.dspace.eperson.factory;
 import org.dspace.eperson.service.AccountService;
 import org.dspace.eperson.service.EPersonService;
 import org.dspace.eperson.service.GroupService;
-import org.dspace.eperson.service.RegistrationDataMetadataService;
 import org.dspace.eperson.service.RegistrationDataService;
 import org.dspace.eperson.service.SubscribeService;
 import org.dspace.services.factory.DSpaceServicesFactory;
@@ -28,8 +27,6 @@ public abstract class EPersonServiceFactory {
     public abstract GroupService getGroupService();
 
     public abstract RegistrationDataService getRegistrationDataService();
-
-    public abstract RegistrationDataMetadataService getRegistrationDAtaDataMetadataService();
 
     public abstract AccountService getAccountService();
 

@@ -10,7 +10,7 @@ package org.dspace.app.itemupdate;
 import java.util.Properties;
 
 /**
- * Bitstream filter targeting the THUMBNAIL bundle
+ * Bitstream filter targetting the THUMBNAIL bundle
  */
 public class ThumbnailBitstreamFilter extends BitstreamFilterByBundleName {
 

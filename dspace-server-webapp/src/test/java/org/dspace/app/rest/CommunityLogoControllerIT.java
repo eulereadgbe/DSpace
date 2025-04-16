@@ -21,7 +21,6 @@ import org.dspace.content.Community;
 import org.dspace.eperson.EPerson;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MvcResult;
@@ -29,9 +28,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class CommunityLogoControllerIT extends AbstractControllerIntegrationTest {
 
-    @Autowired
     private ObjectMapper mapper;
-
     private String adminAuthToken;
     private String bitstreamContent;
     private MockMultipartFile bitstreamFile;
@@ -47,6 +44,7 @@ public class CommunityLogoControllerIT extends AbstractControllerIntegrationTest
         bitstreamFile = new MockMultipartFile("file",
                 "hello.txt", MediaType.TEXT_PLAIN_VALUE,
                 bitstreamContent.getBytes());
+        mapper = new ObjectMapper();
     }
 
     private String createLogoInternal() throws Exception {

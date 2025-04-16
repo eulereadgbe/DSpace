@@ -88,7 +88,7 @@ public class SearchUtils {
     /**
      * Retrieves the Discovery Configuration with a null prefix for a DSpace object.
      * @param context
-     *              the database context
+     *              the dabase context
      * @param dso
      *              the DSpace object
      * @return the Discovery Configuration for the specified DSpace object

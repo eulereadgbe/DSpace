@@ -47,12 +47,9 @@ public class MetadataSchemaRestRepositoryIT extends AbstractControllerIntegratio
     private static final String TEST_NAME_UPDATED = "testSchemaNameUpdated";
     private static final String TEST_NAMESPACE_UPDATED = "testSchemaNameSpaceUpdated";
 
+
     @Autowired
     private MetadataSchemaConverter metadataSchemaConverter;
-
-    @Autowired
-    private ObjectMapper mapper;
-
     @Test
     public void findAll() throws Exception {
 
@@ -105,7 +102,7 @@ public class MetadataSchemaRestRepositoryIT extends AbstractControllerIntegratio
         try {
             getClient(authToken)
                     .perform(post("/api/core/metadataschemas")
-                            .content(mapper.writeValueAsBytes(metadataSchemaRest))
+                            .content(new ObjectMapper().writeValueAsBytes(metadataSchemaRest))
                             .contentType(contentType))
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$", HalMatcher.matchNoEmbeds()))
@@ -135,21 +132,21 @@ public class MetadataSchemaRestRepositoryIT extends AbstractControllerIntegratio
 
         getClient(authToken)
             .perform(post("/api/core/metadataschemas")
-                         .content(mapper.writeValueAsBytes(metadataSchemaRest))
+                         .content(new ObjectMapper().writeValueAsBytes(metadataSchemaRest))
                          .contentType(contentType))
             .andExpect(status().isUnprocessableEntity());
 
         metadataSchemaRest.setPrefix("test,SchemaName");
         getClient(authToken)
             .perform(post("/api/core/metadataschemas")
-                         .content(mapper.writeValueAsBytes(metadataSchemaRest))
+                         .content(new ObjectMapper().writeValueAsBytes(metadataSchemaRest))
                          .contentType(contentType))
             .andExpect(status().isUnprocessableEntity());
 
         metadataSchemaRest.setPrefix("test SchemaName");
         getClient(authToken)
             .perform(post("/api/core/metadataschemas")
-                         .content(mapper.writeValueAsBytes(metadataSchemaRest))
+                         .content(new ObjectMapper().writeValueAsBytes(metadataSchemaRest))
                          .contentType(contentType))
             .andExpect(status().isUnprocessableEntity());
     }
@@ -163,7 +160,7 @@ public class MetadataSchemaRestRepositoryIT extends AbstractControllerIntegratio
 
         getClient()
                 .perform(post("/api/core/metadataschemas")
-                        .content(mapper.writeValueAsBytes(metadataSchemaRest))
+                        .content(new ObjectMapper().writeValueAsBytes(metadataSchemaRest))
                         .contentType(contentType))
                 .andExpect(status().isUnauthorized());
     }
@@ -245,7 +242,7 @@ public class MetadataSchemaRestRepositoryIT extends AbstractControllerIntegratio
 
         getClient(getAuthToken(admin.getEmail(), password))
                 .perform(put("/api/core/metadataschemas/" + metadataSchema.getID())
-                        .content(mapper.writeValueAsBytes(metadataSchemaRest))
+                        .content(new ObjectMapper().writeValueAsBytes(metadataSchemaRest))
                         .contentType(contentType))
                 .andExpect(status().isOk());
 
@@ -271,7 +268,7 @@ public class MetadataSchemaRestRepositoryIT extends AbstractControllerIntegratio
 
         getClient(getAuthToken(admin.getEmail(), password))
             .perform(put("/api/core/metadataschemas/" + metadataSchema.getID())
-                         .content(mapper.writeValueAsBytes(metadataSchemaRest))
+                         .content(new ObjectMapper().writeValueAsBytes(metadataSchemaRest))
                          .contentType(contentType))
             .andExpect(status().isUnprocessableEntity());
 
@@ -297,7 +294,7 @@ public class MetadataSchemaRestRepositoryIT extends AbstractControllerIntegratio
 
         getClient()
                 .perform(put("/api/core/metadataschemas/" + metadataSchema.getID())
-                        .content(mapper.writeValueAsBytes(metadataSchemaRest))
+                        .content(new ObjectMapper().writeValueAsBytes(metadataSchemaRest))
                         .contentType(contentType))
                 .andExpect(status().isUnauthorized());
 
@@ -323,7 +320,7 @@ public class MetadataSchemaRestRepositoryIT extends AbstractControllerIntegratio
 
         getClient(getAuthToken(eperson.getEmail(), password))
             .perform(put("/api/core/metadataschemas/" + metadataSchema.getID())
-                         .content(mapper.writeValueAsBytes(metadataSchemaRest))
+                         .content(new ObjectMapper().writeValueAsBytes(metadataSchemaRest))
                          .contentType(contentType))
             .andExpect(status().isForbidden());
 

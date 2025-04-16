@@ -11,14 +11,14 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
-import java.time.Instant;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -53,7 +53,36 @@ import org.dspace.services.factory.DSpaceServicesFactory;
  * @author Andrea Schweer schweer@waikato.ac.nz for the LCoNZ Institutional Research Repositories
  */
 public class SolrImportExport {
+
+    private static final ThreadLocal<DateFormat> SOLR_DATE_FORMAT;
+    private static final ThreadLocal<DateFormat> SOLR_DATE_FORMAT_NO_MS;
+    private static final ThreadLocal<DateFormat> EXPORT_DATE_FORMAT;
     private static final String EXPORT_SEP = "_export_";
+
+    static {
+        SOLR_DATE_FORMAT = new ThreadLocal<DateFormat>() {
+            @Override
+            protected DateFormat initialValue() {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                return simpleDateFormat;
+            }
+        };
+        SOLR_DATE_FORMAT_NO_MS = new ThreadLocal<DateFormat>() {
+            @Override
+            protected DateFormat initialValue() {
+                return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            }
+        };
+        EXPORT_DATE_FORMAT = new ThreadLocal<DateFormat>() {
+            @Override
+            protected DateFormat initialValue() {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+                simpleDateFormat.setTimeZone(TimeZone.getDefault());
+                return simpleDateFormat;
+            }
+        };
+    }
 
     private static final String ACTION_OPTION = "a";
     private static final String CLEAR_OPTION = "c";
@@ -264,7 +293,7 @@ public class SolrImportExport {
                                        + ") but usable space in export directory is only "
                                        + FileUtils.byteCountToDisplaySize(usableExportSpace)
                                        + ". Not continuing with reindex, please use the " + DIRECTORY_OPTION
-                                       + " option to specify an alternative export directly with sufficient space.");
+                                       + " option to specify an alternative export directy with sufficient space.");
                 return;
             }
 
@@ -538,14 +567,14 @@ public class SolrImportExport {
                 solrUrl, indexName, timeField, fromWhen));
             return;
         }
-        Instant earliestTimestamp = ((java.util.Date) timeFieldInfo.getMin()).toInstant();
+        Date earliestTimestamp = (Date) timeFieldInfo.getMin();
 
         query.setGetFieldStatistics(false);
         query.clearSorts();
         query.setRows(0);
         query.setFacet(true);
         query.add(FacetParams.FACET_RANGE, timeField);
-        query.add(FacetParams.FACET_RANGE_START, earliestTimestamp + "/MONTH");
+        query.add(FacetParams.FACET_RANGE_START, SOLR_DATE_FORMAT.get().format(earliestTimestamp) + "/MONTH");
         query.add(FacetParams.FACET_RANGE_END, "NOW/MONTH+1MONTH");
         query.add(FacetParams.FACET_RANGE_GAP, "+1MONTH");
         query.setFacetMinCount(1);
@@ -553,11 +582,11 @@ public class SolrImportExport {
         List<RangeFacet.Count> monthFacets = solr.query(query).getFacetRanges().get(0).getCounts();
 
         for (RangeFacet.Count monthFacet : monthFacets) {
-            YearMonth monthStartDate;
+            Date monthStartDate;
             String monthStart = monthFacet.getValue();
             try {
-                monthStartDate = YearMonth.parse(monthStart);
-            } catch (DateTimeParseException e) {
+                monthStartDate = SOLR_DATE_FORMAT_NO_MS.get().parse(monthStart);
+            } catch (java.text.ParseException e) {
                 throw new SolrImportExportException("Could not read start of month batch as date: " + monthStart, e);
             }
             int docsThisMonth = monthFacet.getCount();
@@ -620,7 +649,7 @@ public class SolrImportExport {
             // other acceptable value: a number, specifying how many days back to export
             days = Integer.valueOf(lastValue); // TODO check value?
         }
-        return timeField + ":[NOW/DAY-" + days + "DAYS TO " + Instant.now() + "]";
+        return timeField + ":[NOW/DAY-" + days + "DAYS TO " + SOLR_DATE_FORMAT.get().format(new Date()) + "]";
     }
 
     /**
@@ -646,7 +675,7 @@ public class SolrImportExport {
      * @param index        The index of the current batch.
      * @return A file name that is appropriate to use for exporting the batch of data described by the parameters.
      */
-    private static String makeExportFilename(String indexName, YearMonth exportStart, long totalRecords, int index) {
+    private static String makeExportFilename(String indexName, Date exportStart, long totalRecords, int index) {
         String exportFileNumber = "";
         if (totalRecords > ROWS_PER_FILE) {
             exportFileNumber = StringUtils
@@ -654,7 +683,7 @@ public class SolrImportExport {
         }
         return indexName
             + EXPORT_SEP
-            + DateTimeFormatter.ofPattern("yyyy-MM").format(exportStart)
+            + EXPORT_DATE_FORMAT.get().format(exportStart)
             + (StringUtils.isNotBlank(exportFileNumber) ? "_" + exportFileNumber : "")
             + ".csv";
     }

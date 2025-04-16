@@ -98,7 +98,6 @@
     <bean class='org.dspace.curate.XmlWorkflowCuratorServiceImpl'/>
 
     <bean class="org.dspace.disseminate.CitationDocumentServiceImpl"/>
-    <bean class="org.dspace.disseminate.CoverPageService"/>
 
     <!-- Ensure EmbargoService and AccessStatusService are initialized properly via init() method -->
     <bean class="org.dspace.embargo.EmbargoServiceImpl" init-method="init"/>
@@ -108,12 +107,8 @@
     <bean class="org.dspace.eperson.EPersonServiceImpl"/>
     <bean class="org.dspace.eperson.GroupServiceImpl"/>
     <bean class="org.dspace.eperson.RegistrationDataServiceImpl"/>
-    <bean class="org.dspace.eperson.RegistrationDataMetadataServiceImpl"/>
     <bean class="org.dspace.eperson.SubscribeServiceImpl"/>
-    <!-- Use CaptchaServiceImpl for Google ReCaptcha -->
-    <bean class="org.dspace.eperson.CaptchaServiceImpl" id="googleCaptchaService"/>
-    <!-- Use AltchaCaptchaServiceImpl for ALTCHA captcha -->
-    <bean class="org.dspace.eperson.AltchaCaptchaServiceImpl" id="altchaCaptchaService"/>
+    <bean class="org.dspace.eperson.CaptchaServiceImpl"/>
     <bean class="org.dspace.event.EventServiceImpl"/>
 
     <bean class="org.dspace.handle.HandleServiceImpl"/>

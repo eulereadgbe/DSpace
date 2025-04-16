@@ -10,7 +10,6 @@ package org.dspace.app.rest.converter;
 import java.sql.SQLException;
 
 import org.apache.logging.log4j.Logger;
-import org.dspace.app.rest.model.ScopeEnum;
 import org.dspace.app.rest.model.SubmissionSectionRest;
 import org.dspace.app.rest.model.SubmissionVisibilityRest;
 import org.dspace.app.rest.model.VisibilityEnum;
@@ -42,7 +41,6 @@ public class SubmissionSectionConverter implements DSpaceConverter<SubmissionSte
         sp.setHeader(step.getHeading());
         sp.setSectionType(step.getType());
         sp.setId(step.getId());
-        sp.setScope(ScopeEnum.fromString(step.getScope()));
         sp.setVisibility(new SubmissionVisibilityRest(VisibilityEnum.fromString(step.getVisibility()),
                                                       VisibilityEnum.fromString(step.getVisibilityOutside())));
         return sp;

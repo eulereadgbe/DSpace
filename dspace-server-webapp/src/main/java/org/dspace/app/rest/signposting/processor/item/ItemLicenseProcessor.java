@@ -11,8 +11,7 @@ import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.dspace.app.rest.signposting.model.LinksetNode;
 import org.dspace.app.rest.signposting.model.LinksetRelationType;
 import org.dspace.content.Item;
@@ -26,7 +25,7 @@ import org.dspace.util.FrontendUrlService;
  */
 public class ItemLicenseProcessor extends ItemSignpostingProcessor {
 
-    private static final Logger log = LogManager.getLogger(ItemLicenseProcessor.class);
+    private static final Logger log = Logger.getLogger(ItemLicenseProcessor.class);
 
     private final CreativeCommonsService creativeCommonsService =
             LicenseServiceFactory.getInstance().getCreativeCommonsService();

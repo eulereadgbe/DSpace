@@ -31,8 +31,7 @@ import org.springframework.stereotype.Component;
 @Component
 public final class DSpaceObjectMetadataPatchUtils {
 
-    @Autowired
-    private ObjectMapper mapper;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MetadataFieldService metadataFieldService;
@@ -57,9 +56,9 @@ public final class DSpaceObjectMetadataPatchUtils {
                 if (operation.getValue() instanceof JsonValueEvaluator) {
                     JsonNode valueNode = ((JsonValueEvaluator) operation.getValue()).getValueNode();
                     if (valueNode.isArray()) {
-                        metadataValue = mapper.treeToValue(valueNode.get(0), MetadataValueRest.class);
+                        metadataValue = objectMapper.treeToValue(valueNode.get(0), MetadataValueRest.class);
                     } else {
-                        metadataValue = mapper.treeToValue(valueNode, MetadataValueRest.class);
+                        metadataValue = objectMapper.treeToValue(valueNode, MetadataValueRest.class);
                     }
                 }
                 if (operation.getValue() instanceof String) {

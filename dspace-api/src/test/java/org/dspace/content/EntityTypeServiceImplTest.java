@@ -122,7 +122,7 @@ public class EntityTypeServiceImplTest   {
     }
 
     /**
-     * Helper method that returns new EntityType
+     * Helper method that reutrns new EntityType
      * @return new EntityType
      */
     public EntityType makeEntityType() {

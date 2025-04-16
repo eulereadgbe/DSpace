@@ -8,8 +8,9 @@
 package org.dspace.health;
 
 import java.io.IOException;
-import java.time.Instant;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -60,7 +61,8 @@ public class Report {
             Check check = check_entry.getValue();
 
             log.info(String.format("#%d. Processing [%s] at [%s]",
-                                   pos, check_name, Instant.now().toString()));
+                                   pos, check_name, new SimpleDateFormat(
+                    "yyyy-MM-dd HH:mm:ss.SSS").format(new Date())));
 
             try {
                 // do the stuff

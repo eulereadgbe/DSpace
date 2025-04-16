@@ -9,17 +9,14 @@
 package org.dspace.app.rest.repository;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
-import org.dspace.access.status.DefaultAccessStatusHelper;
 import org.dspace.access.status.service.AccessStatusService;
 import org.dspace.app.rest.model.AccessStatusRest;
 import org.dspace.app.rest.model.ItemRest;
 import org.dspace.app.rest.projection.Projection;
-import org.dspace.content.AccessStatus;
 import org.dspace.content.Item;
 import org.dspace.content.service.ItemService;
 import org.dspace.core.Context;
@@ -54,14 +51,8 @@ public class ItemAccessStatusLinkRepository extends AbstractDSpaceRestRepository
                 throw new ResourceNotFoundException("No such item: " + itemId);
             }
             AccessStatusRest accessStatusRest = new AccessStatusRest();
-            AccessStatus accessStatus = accessStatusService.getAccessStatus(context, item);
-            String status = accessStatus.getStatus();
-            if (status == DefaultAccessStatusHelper.EMBARGO) {
-                LocalDate availabilityDate = accessStatus.getAvailabilityDate();
-                String embargoDate = availabilityDate.toString();
-                accessStatusRest.setEmbargoDate(embargoDate);
-            }
-            accessStatusRest.setStatus(status);
+            String accessStatus = accessStatusService.getAccessStatus(context, item);
+            accessStatusRest.setStatus(accessStatus);
             return accessStatusRest;
         } catch (SQLException e) {
             throw new RuntimeException(e);

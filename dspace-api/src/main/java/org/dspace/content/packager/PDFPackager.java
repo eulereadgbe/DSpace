@@ -13,8 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -361,7 +360,7 @@ public class PDFPackager
              *   CreationDate -> date.created
              *   ModDate -> date.created
              *   Creator -> description.provenance (application that created orig)
-             *   Producer -> description.provenance (converter to pdf)
+             *   Producer -> description.provenance (convertor to pdf)
              *   Subject -> description.abstract
              *   Keywords -> subject.other
              *    date is java.util.Calendar
@@ -417,16 +416,14 @@ public class PDFPackager
 
             // Take either CreationDate or ModDate as "date.created",
             // Too bad there's no place to put "last modified" in the DC.
-            java.util.Calendar calValue = docinfo.getCreationDate();
+            Calendar calValue = docinfo.getCreationDate();
             if (calValue == null) {
                 calValue = docinfo.getModificationDate();
             }
 
             if (calValue != null) {
                 itemService.addMetadata(context, item, MetadataSchemaEnum.DC.getName(), "date", "created", null,
-                                        new DCDate(
-                                            ZonedDateTime.ofInstant(calValue.toInstant(), ZoneOffset.UTC)
-                                        ).toString());
+                                        (new DCDate(calValue.getTime())).toString());
             }
             itemService.update(context, item);
         } finally {

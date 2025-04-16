@@ -7,9 +7,11 @@
  */
 package org.dspace.xoai.util;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,16 +32,20 @@ public class DateUtils {
      * Format a Date object as a valid UTC Date String, per OAI-PMH guidelines
      * http://www.openarchives.org/OAI/openarchivesprotocol.html#DatestampsResponses
      *
-     * @param date Instant object
+     * @param date Date object
      * @return UTC date string
      */
-    public static String format(Instant date) {
+    public static String format(Date date) {
         // NOTE: OAI-PMH REQUIRES that all dates be expressed in UTC format
         // as YYYY-MM-DDThh:mm:ssZ  For more details, see
         // http://www.openarchives.org/OAI/openarchivesprotocol.html#DatestampsResponses
-
-        // toString returns the correct format
-        return date.toString();
+        SimpleDateFormat sdf = new SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss'Z'");
+        // We indicate that the returned date is in UTC so we have
+        // to set the time zone of sdf correctly
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String ret = sdf.format(date);
+        return ret;
     }
 
     /**
@@ -48,49 +54,58 @@ public class DateUtils {
      * @param date string to parse
      * @return Date
      */
-    public static Instant parse(String date) {
+    public static Date parse(String date) {
         // First try to parse as a full UTC date/time, e.g. 2008-01-01T00:00:00Z
-        DateTimeFormatter format = DateTimeFormatter.ISO_INSTANT;
-        Instant ret;
+        SimpleDateFormat format = new SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss'Z'");
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date ret;
         try {
-            ret = format.parse(date, Instant::from);
+            ret = format.parse(date);
             return ret;
-        } catch (DateTimeParseException ex) {
+        } catch (ParseException ex) {
             // If a parse exception, try other logical date/time formats
             // based on the local timezone
-            format = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+                                          Locale.getDefault());
             try {
-                return format.parse(date, Instant::from);
-            } catch (DateTimeParseException e1) {
-                format = DateTimeFormatter.ISO_LOCAL_DATE;
+                return format.parse(date);
+            } catch (ParseException e1) {
+                format = new SimpleDateFormat("yyyy-MM-dd",
+                                              Locale.getDefault());
                 try {
-                    return format.parse(date, Instant::from);
-                } catch (DateTimeParseException e2) {
-                    format = DateTimeFormatter.ofPattern("yyyy-MM");
+                    return format.parse(date);
+                } catch (ParseException e2) {
+                    format = new SimpleDateFormat("yyyy-MM",
+                                                  Locale.getDefault());
                     try {
-                        return format.parse(date, Instant::from);
-                    } catch (DateTimeParseException e3) {
-                        format = DateTimeFormatter.ofPattern("yyyy");
+                        return format.parse(date);
+                    } catch (ParseException e3) {
+                        format = new SimpleDateFormat("yyyy",
+                                                      Locale.getDefault());
                         try {
-                            return format.parse(date, Instant::from);
-                        } catch (DateTimeParseException e4) {
+                            return format.parse(date);
+                        } catch (ParseException e4) {
                             log.error(e4.getMessage(), e4);
                         }
                     }
                 }
             }
         }
-        return Instant.now();
+        return new Date();
     }
 
-    public static Instant parseFromSolrDate(String date) {
-        Instant ret;
+    public static Date parseFromSolrDate(String date) {
+        SimpleDateFormat format = new SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss'Z'");
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date ret;
         try {
-            ret = Instant.parse(date);
+            ret = format.parse(date);
             return ret;
-        } catch (DateTimeParseException e) {
+        } catch (ParseException e) {
             log.error(e.getMessage(), e);
         }
-        return Instant.now();
+        return new Date();
     }
 }

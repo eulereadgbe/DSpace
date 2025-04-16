@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test the AccessStatusRest class
+ * Test the AccessStatusRestTest class
  */
 public class AccessStatusRestTest {
 
@@ -35,16 +35,5 @@ public class AccessStatusRestTest {
     public void testAccessStatusIsNotNullAfterStatusSet() throws Exception {
         accessStatusRest.setStatus(DefaultAccessStatusHelper.UNKNOWN);
         assertNotNull(accessStatusRest.getStatus());
-    }
-
-    @Test
-    public void testEmbargoDateIsNullBeforeEmbargoDateSet() throws Exception {
-        assertNull(accessStatusRest.getEmbargoDate());
-    }
-
-    @Test
-    public void testEmbargoDateIsNotNullAfterEmbargoDateSet() throws Exception {
-        accessStatusRest.setEmbargoDate("2050-01-01");
-        assertNotNull(accessStatusRest.getEmbargoDate());
     }
 }

@@ -61,11 +61,11 @@ public class ConcatenateTest {
     @Test
     public void testGetSeperator() {
         // Setup objects utilized in unit test
-        String separator = ",";
+        String seperator = ",";
         concatenate.setSeparator(",");
 
-        // The reported separator should match our defined separator
-        assertEquals("TestGetSeperator 0", separator, concatenate.getSeparator());
+        // The reported seperator should match our defined seperator
+        assertEquals("TestGetSeperator 0", seperator, concatenate.getSeparator());
     }
 
     @Test
@@ -73,7 +73,7 @@ public class ConcatenateTest {
         // Setup objects utilized in unit test
         concatenate.setSeparator(",");
 
-        // The reported separator should match our defined separator
+        // The reported seperator should match our defined seperator
         assertEquals("TestSetSeperator 0", ",", concatenate.getSeparator());
     }
 
@@ -82,7 +82,7 @@ public class ConcatenateTest {
         // Setup objects utilized in unit test
         concatenate.setUseForPlace(true);
 
-        // The reported separator should match our defined separator
+        // The reported seperator should match our defined seperator
         assertEquals("TestSetUseForPlace 0", true, concatenate.getUseForPlace());
 
     }

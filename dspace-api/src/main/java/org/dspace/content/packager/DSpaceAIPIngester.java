@@ -139,7 +139,7 @@ public class DSpaceAIPIngester
             }
         }
 
-        // MODS is acceptable otherwise..
+        // MODS is acceptable otehrwise..
         if (found == -1) {
             for (int i = 0; i < dmds.length; ++i) {
                 //NOTE: METS standard actually says this should be MODS (all uppercase). But,

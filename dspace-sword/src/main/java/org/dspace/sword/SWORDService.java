@@ -8,11 +8,8 @@
 package org.dspace.sword;
 
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
@@ -69,7 +66,7 @@ public class SWORDService {
     /**
      * date formatter
      */
-    private DateTimeFormatter dateFormat;
+    private SimpleDateFormat dateFormat;
 
     /**
      * Construct a new service instance around the given authenticated
@@ -82,7 +79,7 @@ public class SWORDService {
         this.swordConfig = new SWORDConfiguration();
         this.urlManager = new SWORDUrlManager(this.swordConfig,
                                               this.swordContext.getContext());
-        dateFormat = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss.S]");
+        dateFormat = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss.S]");
     }
 
     public SWORDUrlManager getUrlManager() {
@@ -135,7 +132,7 @@ public class SWORDService {
      */
     public void message(String message) {
         // build the processing message
-        String msg = dateFormat.format(LocalDateTime.now(ZoneOffset.UTC)) + " " + message + "; \n\n";
+        String msg = dateFormat.format(new Date()) + " " + message + "; \n\n";
 
         // if this is a verbose deposit, then log it
         if (this.verbose) {
@@ -168,8 +165,8 @@ public class SWORDService {
 
             String fn = deposit.getFilename();
             if (fn == null || "".equals(fn)) {
-                // use date in YYYY-MM-DD format
-                fn = "sword-" + DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.now(ZoneOffset.UTC));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                fn = "sword-" + sdf.format(new Date());
                 if (original) {
                     fn = fn + ".original";
                 }
@@ -190,6 +187,6 @@ public class SWORDService {
      * @return the name of the temp file that should be used
      */
     public String getTempFilename() {
-        return "sword-" + Instant.now().toEpochMilli();
+        return "sword-" + (new Date()).getTime();
     }
 }

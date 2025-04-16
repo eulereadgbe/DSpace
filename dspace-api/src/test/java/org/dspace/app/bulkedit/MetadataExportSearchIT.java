@@ -23,8 +23,7 @@ import java.util.List;
 import com.google.common.io.Files;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.dspace.AbstractIntegrationTestWithDatabase;
 import org.dspace.app.launcher.ScriptLauncher;
 import org.dspace.app.scripts.handler.impl.TestDSpaceRunnableHandler;
@@ -52,7 +51,7 @@ public class MetadataExportSearchIT extends AbstractIntegrationTestWithDatabase 
     private Item[] itemsSubject2 = new Item[numberItemsSubject2];
     private String filename;
     private Collection collection;
-    private Logger logger = LogManager.getLogger(MetadataExportSearchIT.class);
+    private Logger logger = Logger.getLogger(MetadataExportSearchIT.class);
     private ConfigurationService configurationService = DSpaceServicesFactory.getInstance().getConfigurationService();
     private SearchService searchService;
 
@@ -74,27 +73,20 @@ public class MetadataExportSearchIT extends AbstractIntegrationTestWithDatabase 
         filename = configurationService.getProperty("dspace.dir")
             + testProps.get("test.exportcsv").toString();
 
+
         for (int i = 0; i < numberItemsSubject1; i++) {
-            // Create different issue dates for each Item, all in month of Sept 2020
-            String issueDate = "2020-09-";
-            int dayOfMonth = i + 1;
-            issueDate += (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth);
             itemsSubject1[i] = ItemBuilder.createItem(context, collection)
                 .withTitle(String.format("%s item %d", subject1, i))
                 .withSubject(subject1)
-                .withIssueDate(issueDate)
+                .withIssueDate("2020-09-" + i)
                 .build();
         }
 
         for (int i = 0; i < numberItemsSubject2; i++) {
-            // Create different issue dates for each Item, all in month of Sept 2021
-            String issueDate = "2021-09-";
-            int dayOfMonth = i + 1;
-            issueDate += (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth);
             itemsSubject2[i] = ItemBuilder.createItem(context, collection)
                 .withTitle(String.format("%s item %d", subject2, i))
                 .withSubject(subject2)
-                .withIssueDate(issueDate)
+                .withIssueDate("2021-09-" + i)
                 .build();
         }
         context.restoreAuthSystemState();

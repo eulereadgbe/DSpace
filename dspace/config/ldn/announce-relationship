@@ -17,7 +17,7 @@
 {
   "@context": [
     "https://www.w3.org/ns/activitystreams",
-    "https://coar-notify.net/"
+    "https://purl.org/coar/notify"
   ],
   "actor": {
     "id": "${params[0]}",

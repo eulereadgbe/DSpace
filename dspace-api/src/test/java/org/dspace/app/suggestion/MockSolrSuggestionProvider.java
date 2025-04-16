@@ -8,7 +8,6 @@
 package org.dspace.app.suggestion;
 
 import org.apache.commons.lang3.StringUtils;
-import org.dspace.content.Item;
 import org.dspace.core.Context;
 import org.dspace.external.model.ExternalDataObject;
 
@@ -18,10 +17,4 @@ public class MockSolrSuggestionProvider extends SolrSuggestionProvider {
     protected boolean isExternalDataObjectPotentiallySuggested(Context context, ExternalDataObject externalDataObject) {
         return StringUtils.equals(MockSuggestionExternalDataSource.NAME, externalDataObject.getSource());
     }
-
-    @Override
-    public void importRecords(Context context, Item item) throws Exception {
-        throw new UnsupportedOperationException();
-    }
-
 }

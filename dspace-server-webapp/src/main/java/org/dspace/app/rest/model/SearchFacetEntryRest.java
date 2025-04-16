@@ -13,7 +13,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.dspace.app.rest.DiscoveryRestController;
-import org.dspace.discovery.configuration.DiscoverySearchFilter;
 import org.dspace.discovery.configuration.DiscoverySearchFilterFacet;
 
 /**
@@ -31,9 +30,6 @@ public class SearchFacetEntryRest extends RestAddressableModel {
     @JsonIgnore
     private Boolean hasMore = null;
     private int facetLimit;
-
-    @JsonIgnore
-    private Boolean isOpenByDefault;
 
     @JsonIgnore
     private boolean exposeMinMax = false;
@@ -109,16 +105,6 @@ public class SearchFacetEntryRest extends RestAddressableModel {
 
     public void setFacetLimit(final int facetLimit) {
         this.facetLimit = facetLimit;
-    }
-
-    public void setOpenByDefault(boolean isOpenByDefault) {
-        this.isOpenByDefault = Boolean.valueOf(isOpenByDefault);
-    }
-    /**
-     * See documentation at {@link DiscoverySearchFilter#isOpenByDefault()}
-     */
-    public Boolean isOpenByDefault() {
-        return this.isOpenByDefault;
     }
 
     /**

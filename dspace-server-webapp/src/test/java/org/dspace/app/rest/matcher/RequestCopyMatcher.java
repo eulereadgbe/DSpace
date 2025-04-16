@@ -5,14 +5,13 @@
  *
  * http://www.dspace.org/license/
  */
+
 package org.dspace.app.rest.matcher;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
 import static org.dspace.matcher.DateMatcher.dateMatcher;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
-
-import java.time.ZoneOffset;
 
 import org.dspace.app.requestitem.RequestItem;
 import org.dspace.app.rest.RequestItemRepositoryIT;
@@ -34,13 +33,10 @@ public class RequestCopyMatcher {
                 hasJsonPath("$.requestEmail", is(request.getReqEmail())),
                 hasJsonPath("$.requestName", is(request.getReqName())),
                 hasJsonPath("$.requestMessage", is(request.getReqMessage())),
-                hasJsonPath("$.requestDate", dateMatcher(
-                    request.getRequest_date() != null ? request.getRequest_date().atZone(ZoneOffset.UTC) : null)),
+                hasJsonPath("$.requestDate", dateMatcher(request.getRequest_date())),
                 hasJsonPath("$.acceptRequest", is(request.isAccept_request())),
-                hasJsonPath("$.decisionDate", dateMatcher(
-                    request.getDecision_date() != null ? request.getDecision_date().atZone(ZoneOffset.UTC) : null)),
-                hasJsonPath("$.expires", dateMatcher(
-                    request.getExpires() != null ? request.getExpires().atZone(ZoneOffset.UTC) : null)),
+                hasJsonPath("$.decisionDate", dateMatcher(request.getDecision_date())),
+                hasJsonPath("$.expires", dateMatcher(request.getExpires())),
                 hasJsonPath("$.type", is(RequestItemRest.NAME)),
                 hasJsonPath("$._links.self.href",
                         Matchers.containsString(RequestItemRepositoryIT.URI_ROOT))

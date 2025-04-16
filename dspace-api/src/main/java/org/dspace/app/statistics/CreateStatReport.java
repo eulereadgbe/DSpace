@@ -7,13 +7,11 @@
  */
 package org.dspace.app.statistics;
 
-import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
@@ -37,14 +35,14 @@ import org.dspace.services.factory.DSpaceServicesFactory;
 public class CreateStatReport {
 
     /**
-     * Current date
+     * Current date and time
      */
-    private static LocalDate calendar = null;
+    private static Calendar calendar = null;
 
     /**
-     * Reporting start date
+     * Reporting start date and time
      */
-    private static LocalDate reportStartDate = null;
+    private static Calendar reportStartDate = null;
 
     /**
      * Path of log directory
@@ -86,22 +84,22 @@ public class CreateStatReport {
         FileInputStream fis = new java.io.FileInputStream(new File(configFile));
         Properties config = new Properties();
         config.load(fis);
-        int startMonth = 1;
+        int startMonth = 0;
         int startYear = 2005;
         try {
-            startYear = Integer.parseInt(config.getProperty("start.year", "2005").trim());
+            startYear = Integer.parseInt(config.getProperty("start.year", "1").trim());
         } catch (NumberFormatException nfe) {
             System.err.println("start.year is incorrectly set in dstat.cfg. Must be a number (e.g. 2005).");
             System.exit(0);
         }
         try {
-            startMonth = Integer.parseInt(config.getProperty("start.month", "1").trim());
+            startMonth = Integer.parseInt(config.getProperty("start.month", "2005").trim());
         } catch (NumberFormatException nfe) {
             System.err.println("start.month is incorrectly set in dstat.cfg. Must be a number between 1 and 12.");
             System.exit(0);
         }
-        reportStartDate = LocalDate.of(startYear, startMonth, 1);
-        calendar = LocalDate.now();
+        reportStartDate = new GregorianCalendar(startYear, startMonth - 1, 1);
+        calendar = new GregorianCalendar();
 
         // create context as super user
         context = new Context();
@@ -170,18 +168,25 @@ public class CreateStatReport {
         String myConfigFile = null;
         boolean myLookUp = false;
 
-        LocalDate start = calendar.with(firstDayOfMonth());
-        LocalDate end = calendar.with(lastDayOfMonth());
+        Calendar start = new GregorianCalendar(calendar.get(Calendar.YEAR),
+                                               calendar.get(Calendar.MONTH),
+                                               calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        Date myStartDate = start.getTime();
+
+        Calendar end = new GregorianCalendar(calendar.get(Calendar.YEAR),
+                                             calendar.get(Calendar.MONTH),
+                                             calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date myEndDate = end.getTime();
 
         StringBuilder myOutFile = new StringBuilder(outputLogDirectory);
         myOutFile.append(outputPrefix);
-        myOutFile.append(calendar.getYear());
+        myOutFile.append(calendar.get(Calendar.YEAR));
         myOutFile.append("-");
-        myOutFile.append(calendar.getMonth());
+        myOutFile.append(calendar.get(Calendar.MONTH) + 1);
         myOutFile.append(outputSuffix);
 
         LogAnalyser
-            .processLogs(context, myLogDir, myFileTemplate, myConfigFile, myOutFile.toString(), start, end,
+            .processLogs(context, myLogDir, myFileTemplate, myConfigFile, myOutFile.toString(), myStartDate, myEndDate,
                          myLookUp);
     }
 
@@ -199,19 +204,21 @@ public class CreateStatReport {
         String myLogDir = null;
         String myFileTemplate = null;
         String myConfigFile = null;
+        Date myStartDate = null;
+        Date myEndDate = null;
         boolean myLookUp = false;
 
         StringBuilder myOutFile = new StringBuilder(outputLogDirectory);
         myOutFile.append(outputPrefix);
-        myOutFile.append(calendar.getYear());
+        myOutFile.append(calendar.get(Calendar.YEAR));
         myOutFile.append("-");
-        myOutFile.append(calendar.getMonth());
+        myOutFile.append(calendar.get(Calendar.MONTH) + 1);
         myOutFile.append("-");
-        myOutFile.append(calendar.getDayOfMonth());
+        myOutFile.append(calendar.get(Calendar.DAY_OF_MONTH));
         myOutFile.append(outputSuffix);
 
         LogAnalyser
-            .processLogs(context, myLogDir, myFileTemplate, myConfigFile, myOutFile.toString(), null, null,
+            .processLogs(context, myLogDir, myFileTemplate, myConfigFile, myOutFile.toString(), myStartDate, myEndDate,
                          myLookUp);
     }
 
@@ -232,25 +239,34 @@ public class CreateStatReport {
         String myConfigFile = null;
         boolean myLookUp = false;
 
-        LocalDate reportEndDate = calendar.with(lastDayOfMonth());
+        Calendar reportEndDate = new GregorianCalendar(calendar.get(Calendar.YEAR),
+                                                       calendar.get(Calendar.MONTH),
+                                                       calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        LocalDate currentMonth = reportStartDate;
-        while (currentMonth.isBefore(reportEndDate)) {
+        Calendar currentMonth = (Calendar) reportStartDate.clone();
+        while (currentMonth.before(reportEndDate)) {
 
-            LocalDate start = currentMonth.with(firstDayOfMonth());
-            LocalDate end = currentMonth.with(lastDayOfMonth());
+            Calendar start = new GregorianCalendar(currentMonth.get(Calendar.YEAR),
+                                                   currentMonth.get(Calendar.MONTH),
+                                                   currentMonth.getActualMinimum(Calendar.DAY_OF_MONTH));
+            Date myStartDate = start.getTime();
+
+            Calendar end = new GregorianCalendar(currentMonth.get(Calendar.YEAR),
+                                                 currentMonth.get(Calendar.MONTH),
+                                                 currentMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
+            Date myEndDate = end.getTime();
 
             StringBuilder myOutFile = new StringBuilder(outputLogDirectory);
             myOutFile.append(outputPrefix);
-            myOutFile.append(currentMonth.getYear());
+            myOutFile.append(currentMonth.get(Calendar.YEAR));
             myOutFile.append("-");
-            myOutFile.append(currentMonth.getMonth());
+            myOutFile.append(currentMonth.get(Calendar.MONTH) + 1);
             myOutFile.append(outputSuffix);
 
-            LogAnalyser.processLogs(context, myLogDir, myFileTemplate, myConfigFile, myOutFile.toString(), start,
-                                    end, myLookUp);
+            LogAnalyser.processLogs(context, myLogDir, myFileTemplate, myConfigFile, myOutFile.toString(), myStartDate,
+                                    myEndDate, myLookUp);
 
-            currentMonth = currentMonth.plus(1, ChronoUnit.MONTHS);
+            currentMonth.add(Calendar.MONTH, 1);
         }
     }
 
@@ -270,20 +286,20 @@ public class CreateStatReport {
 
         StringBuilder myInput = new StringBuilder(outputLogDirectory);
         myInput.append(inputPrefix);
-        myInput.append(calendar.getYear());
+        myInput.append(calendar.get(Calendar.YEAR));
         myInput.append("-");
-        myInput.append(calendar.getMonth());
+        myInput.append(calendar.get(Calendar.MONTH) + 1);
         myInput.append("-");
-        myInput.append(calendar.getDayOfMonth());
+        myInput.append(calendar.get(Calendar.DAY_OF_MONTH));
         myInput.append(outputSuffix);
 
         StringBuilder myOutput = new StringBuilder(outputReportDirectory);
         myOutput.append(outputPrefix);
-        myOutput.append(calendar.getYear());
+        myOutput.append(calendar.get(Calendar.YEAR));
         myOutput.append("-");
-        myOutput.append(calendar.getMonth());
+        myOutput.append(calendar.get(Calendar.MONTH) + 1);
         myOutput.append("-");
-        myOutput.append(calendar.getDayOfMonth());
+        myOutput.append(calendar.get(Calendar.DAY_OF_MONTH));
         myOutput.append(".");
         myOutput.append(myFormat);
 
@@ -305,30 +321,32 @@ public class CreateStatReport {
         String myFormat = "html";
         String myMap = null;
 
-        LocalDate reportEndDate = calendar.with(lastDayOfMonth());
+        Calendar reportEndDate = new GregorianCalendar(calendar.get(Calendar.YEAR),
+                                                       calendar.get(Calendar.MONTH),
+                                                       calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        LocalDate currentMonth = reportStartDate;
+        Calendar currentMonth = (Calendar) reportStartDate.clone();
 
-        while (currentMonth.isBefore(reportEndDate)) {
+        while (currentMonth.before(reportEndDate)) {
 
             StringBuilder myInput = new StringBuilder(outputLogDirectory);
             myInput.append(inputPrefix);
-            myInput.append(currentMonth.getYear());
+            myInput.append(currentMonth.get(Calendar.YEAR));
             myInput.append("-");
-            myInput.append(currentMonth.getMonth());
+            myInput.append(currentMonth.get(Calendar.MONTH) + 1);
             myInput.append(outputSuffix);
 
             StringBuilder myOutput = new StringBuilder(outputReportDirectory);
             myOutput.append(outputPrefix);
-            myOutput.append(currentMonth.getYear());
+            myOutput.append(currentMonth.get(Calendar.YEAR));
             myOutput.append("-");
-            myOutput.append(currentMonth.getMonth());
+            myOutput.append(currentMonth.get(Calendar.MONTH) + 1);
             myOutput.append(".");
             myOutput.append(myFormat);
 
             ReportGenerator.processReport(context, myFormat, myInput.toString(), myOutput.toString(), myMap);
 
-            currentMonth = currentMonth.plus(1, ChronoUnit.MONTHS);
+            currentMonth.add(Calendar.MONTH, 1);
         }
     }
 
@@ -347,16 +365,16 @@ public class CreateStatReport {
 
         StringBuilder myInput = new StringBuilder(outputLogDirectory);
         myInput.append(inputPrefix);
-        myInput.append(calendar.getYear());
+        myInput.append(calendar.get(Calendar.YEAR));
         myInput.append("-");
-        myInput.append(calendar.getMonth());
+        myInput.append(calendar.get(Calendar.MONTH) + 1);
         myInput.append(outputSuffix);
 
         StringBuilder myOutput = new StringBuilder(outputReportDirectory);
         myOutput.append(outputPrefix);
-        myOutput.append(calendar.getYear());
+        myOutput.append(calendar.get(Calendar.YEAR));
         myOutput.append("-");
-        myOutput.append(calendar.getMonth());
+        myOutput.append(calendar.get(Calendar.MONTH) + 1);
         myOutput.append(".");
         myOutput.append(myFormat);
 

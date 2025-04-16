@@ -7,7 +7,7 @@
  */
 package org.dspace.app.rest.repository.patch.operation.resourcePolicy;
 
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 import org.dspace.app.rest.exception.DSpaceBadRequestException;
 import org.dspace.app.rest.model.patch.Operation;
@@ -58,8 +58,8 @@ public class ResourcePolicyEndDateAddOperation<R> extends PatchOperation<R> {
      */
     private void add(ResourcePolicy resourcePolicy, Operation operation) {
         String dateS = (String) operation.getValue();
-        ZonedDateTime date = MultiFormatDateParser.parse(dateS);
-        resourcePolicy.setEndDate(date.toLocalDate());
+        Date date = MultiFormatDateParser.parse(dateS);
+        resourcePolicy.setEndDate(date);
         if (date == null) {
             throw new DSpaceBadRequestException("Invalid endDate value " + dateS);
         }

@@ -14,9 +14,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -157,7 +156,7 @@ public class ItemImport extends DSpaceRunnable<ItemImportScriptConfiguration> {
             return;
         }
 
-        Instant startTime = Instant.now();
+        Date startTime = new Date();
         Context context = new Context(Context.Mode.BATCH_EDIT);
 
         setMapFile();
@@ -255,12 +254,12 @@ public class ItemImport extends DSpaceRunnable<ItemImportScriptConfiguration> {
                 }
             }
 
-            Instant endTime = Instant.now();
-            handler.logInfo("Started: " + DateTimeFormatter.ISO_INSTANT.format(startTime));
-            handler.logInfo("Ended: " + DateTimeFormatter.ISO_INSTANT.format(endTime));
+            Date endTime = new Date();
+            handler.logInfo("Started: " + startTime.getTime());
+            handler.logInfo("Ended: " + endTime.getTime());
             handler.logInfo(
-                "Elapsed time: " + ((endTime.toEpochMilli() - startTime.toEpochMilli()) / 1000) + " secs (" +
-                    (endTime.toEpochMilli() - startTime.toEpochMilli()) + " msecs)");
+                "Elapsed time: " + ((endTime.getTime() - startTime.getTime()) / 1000) + " secs (" + (endTime
+                    .getTime() - startTime.getTime()) + " msecs)");
         }
     }
 

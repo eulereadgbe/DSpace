@@ -10,9 +10,9 @@ package org.dspace.content;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,7 +67,6 @@ import org.dspace.event.Event;
 import org.dspace.harvest.HarvestedItem;
 import org.dspace.harvest.service.HarvestedItemService;
 import org.dspace.identifier.DOI;
-import org.dspace.identifier.DOIIdentifierProvider;
 import org.dspace.identifier.IdentifierException;
 import org.dspace.identifier.service.DOIService;
 import org.dspace.identifier.service.IdentifierService;
@@ -82,9 +81,6 @@ import org.dspace.orcid.service.OrcidTokenService;
 import org.dspace.profile.service.ResearcherProfileService;
 import org.dspace.qaevent.dao.QAEventsDAO;
 import org.dspace.services.ConfigurationService;
-import org.dspace.versioning.Version;
-import org.dspace.versioning.VersionHistory;
-import org.dspace.versioning.service.VersionHistoryService;
 import org.dspace.versioning.service.VersioningService;
 import org.dspace.workflow.WorkflowItemService;
 import org.dspace.workflow.factory.WorkflowServiceFactory;
@@ -179,9 +175,6 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
 
     @Autowired
     private QAEventsDAO qaEventsDao;
-
-    @Autowired
-    private VersionHistoryService versionHistoryService;
 
     protected ItemServiceImpl() {
     }
@@ -415,20 +408,20 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
     }
 
     @Override
-    public Iterator<Item> findInArchiveOrWithdrawnDiscoverableModifiedSince(Context context, Instant since)
+    public Iterator<Item> findInArchiveOrWithdrawnDiscoverableModifiedSince(Context context, Date since)
         throws SQLException {
         return itemDAO.findAll(context, true, true, true, since);
     }
 
     @Override
-    public Iterator<Item> findInArchiveOrWithdrawnNonDiscoverableModifiedSince(Context context, Instant since)
+    public Iterator<Item> findInArchiveOrWithdrawnNonDiscoverableModifiedSince(Context context, Date since)
         throws SQLException {
         return itemDAO.findAll(context, true, true, false, since);
     }
 
     @Override
     public void updateLastModified(Context context, Item item) throws SQLException, AuthorizeException {
-        item.setLastModified(Instant.now());
+        item.setLastModified(new Date());
         update(context, item);
         //Also fire a modified event since the item HAS been modified
         context.addEvent(new Event(Event.MODIFY, Constants.ITEM, item.getID(), null, getIdentifiers(context, item)));
@@ -681,7 +674,7 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
 
         if (item.isMetadataModified() || item.isModified()) {
             // Set the last modified date
-            item.setLastModified(Instant.now());
+            item.setLastModified(new Date());
 
             itemDAO.save(context, item);
 
@@ -858,7 +851,6 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
         DOI doi = doiService.findDOIByDSpaceObject(context, item);
         if (doi != null) {
             doi.setDSpaceObject(null);
-            doi.setStatus(DOIIdentifierProvider.TO_BE_DELETED);
         }
 
         // remove version attached to the item
@@ -1013,7 +1005,7 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
         throws SQLException, AuthorizeException {
         // Bundles should inherit from DEFAULT_ITEM_READ so that if the item is readable, the files
         // can be listed (even if they are themselves not readable as per DEFAULT_BITSTREAM_READ or other
-        // policies or embargoes applied
+        // policies or embargos applied
         List<ResourcePolicy> defaultCollectionBundlePolicies = authorizeService
                 .getPoliciesActionFilter(context, collection, Constants.DEFAULT_ITEM_READ);
         // Bitstreams should inherit from DEFAULT_BITSTREAM_READ
@@ -1694,7 +1686,7 @@ prevent the generation of resource policy entry values with null dspace_object a
     }
 
     @Override
-    public Iterator<Item> findByLastModifiedSince(Context context, Instant last)
+    public Iterator<Item> findByLastModifiedSince(Context context, Date last)
         throws SQLException {
         return itemDAO.findByLastModifiedSince(context, last);
     }
@@ -1807,7 +1799,7 @@ prevent the generation of resource policy entry values with null dspace_object a
                 //Retrieve the applicable relationship
                 Relationship rs = relationshipService.find(context,
                         ((RelationshipMetadataValue) rr).getRelationshipId());
-                if (rs.getLeftItem().equals(dso)) {
+                if (rs.getLeftItem() == dso) {
                     rs.setLeftPlace(place);
                 } else {
                     rs.setRightPlace(place);
@@ -1937,42 +1929,6 @@ prevent the generation of resource policy entry values with null dspace_object a
         for (OrcidQueue orcidQueueRecord : orcidQueueRecords) {
             orcidQueueService.delete(context, orcidQueueRecord);
         }
-    }
-
-    @Override
-    public boolean isLatestVersion(Context context, Item item) throws SQLException {
-
-        VersionHistory history = versionHistoryService.findByItem(context, item);
-        if (history == null) {
-            // not all items have a version history
-            // if an item does not have a version history, it is by definition the latest
-            // version
-            return true;
-        }
-
-        // start with the very latest version of the given item (may still be in
-        // workspace)
-        Version latestVersion = versionHistoryService.getLatestVersion(context, history);
-
-        // find the latest version of the given item that is archived
-        while (latestVersion != null && !latestVersion.getItem().isArchived()) {
-            latestVersion = versionHistoryService.getPrevious(context, history, latestVersion);
-        }
-
-        // could not find an archived version of the given item
-        if (latestVersion == null) {
-            // this scenario should never happen, but let's err on the side of showing too
-            // many items vs. to little
-            // (see discovery.xml, a lot of discovery configs filter out all items that are
-            // not the latest version)
-            return true;
-        }
-
-        // sanity check
-        assert latestVersion.getItem().isArchived();
-
-        return item.equals(latestVersion.getItem());
-
     }
 
 }

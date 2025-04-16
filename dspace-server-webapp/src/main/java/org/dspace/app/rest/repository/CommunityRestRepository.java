@@ -82,9 +82,6 @@ public class CommunityRestRepository extends DSpaceObjectRestRepository<Communit
     @Autowired
     AuthorizeService authorizeService;
 
-    @Autowired
-    private ObjectMapper mapper;
-
     private CommunityService cs;
 
     public CommunityRestRepository(CommunityService dsoService) {
@@ -130,6 +127,7 @@ public class CommunityRestRepository extends DSpaceObjectRestRepository<Communit
 
     private Community createCommunity(Context context, Community parent) throws AuthorizeException {
         HttpServletRequest req = getRequestService().getCurrentRequest().getHttpServletRequest();
+        ObjectMapper mapper = new ObjectMapper();
         CommunityRest communityRest;
         try {
             ServletInputStream input = req.getInputStream();
@@ -253,7 +251,7 @@ public class CommunityRestRepository extends DSpaceObjectRestRepository<Communit
         throws RepositoryMethodNotImplementedException, SQLException, AuthorizeException {
         CommunityRest communityRest;
         try {
-            communityRest = mapper.readValue(jsonNode.toString(), CommunityRest.class);
+            communityRest = new ObjectMapper().readValue(jsonNode.toString(), CommunityRest.class);
         } catch (IOException e) {
             throw new UnprocessableEntityException("Error parsing community json: " + e.getMessage());
         }
@@ -329,6 +327,7 @@ public class CommunityRestRepository extends DSpaceObjectRestRepository<Communit
         throws SQLException, AuthorizeException {
 
         Group group = cs.createAdministrators(context, community);
+        ObjectMapper mapper = new ObjectMapper();
         GroupRest groupRest = new GroupRest();
         try {
             ServletInputStream input = request.getInputStream();

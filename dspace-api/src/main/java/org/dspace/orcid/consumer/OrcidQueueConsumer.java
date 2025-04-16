@@ -14,10 +14,9 @@ import static java.util.Comparator.nullsFirst;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
 import java.sql.SQLException;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -83,7 +82,7 @@ public class OrcidQueueConsumer implements Consumer {
 
     private RelationshipService relationshipService;
 
-    private final Set<UUID> itemsToConsume = new HashSet<>();
+    private final List<UUID> alreadyConsumedItems = new ArrayList<>();
 
     @Override
     public void initialize() throws Exception {
@@ -118,26 +117,17 @@ public class OrcidQueueConsumer implements Consumer {
             return;
         }
 
-        itemsToConsume.add(item.getID());
-    }
-
-    @Override
-    public void end(Context context) throws Exception {
-
-        for (UUID itemId : itemsToConsume) {
-
-            Item item = itemService.find(context, itemId);
-
-            context.turnOffAuthorisationSystem();
-            try {
-                consumeItem(context, item);
-            } finally {
-                context.restoreAuthSystemState();
-            }
-
+        if (alreadyConsumedItems.contains(item.getID())) {
+            return;
         }
 
-        itemsToConsume.clear();
+        context.turnOffAuthorisationSystem();
+        try {
+            consumeItem(context, item);
+        } finally {
+            context.restoreAuthSystemState();
+        }
+
     }
 
     /**
@@ -156,7 +146,7 @@ public class OrcidQueueConsumer implements Consumer {
             consumeProfile(context, item);
         }
 
-        itemsToConsume.add(item.getID());
+        alreadyConsumedItems.add(item.getID());
 
     }
 
@@ -176,10 +166,6 @@ public class OrcidQueueConsumer implements Consumer {
             }
 
             if (shouldNotBeSynchronized(relatedItem, entity) || isAlreadyQueued(context, relatedItem, entity)) {
-                continue;
-            }
-
-            if (isNotLatestVersion(context, entity)) {
                 continue;
             }
 
@@ -305,7 +291,7 @@ public class OrcidQueueConsumer implements Consumer {
         }
 
         return findDeletedHistoryRecordsBySignature(records, historyRecord.getMetadata())
-            .anyMatch(record -> record.getTimestamp().isAfter(historyRecord.getTimestamp()));
+            .anyMatch(record -> record.getTimestamp().after(historyRecord.getTimestamp()));
     }
 
     private Stream<OrcidHistory> findDeletedHistoryRecordsBySignature(List<OrcidHistory> records, String signature) {
@@ -343,14 +329,6 @@ public class OrcidQueueConsumer implements Consumer {
         return !getProfileType().equals(itemService.getEntityTypeLabel(profileItemItem));
     }
 
-    private boolean isNotLatestVersion(Context context, Item entity) {
-        try {
-            return !itemService.isLatestVersion(context, entity);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private String getMetadataValue(Item item, String metadataField) {
         return itemService.getMetadataFirstValue(item, new MetadataFieldName(metadataField), Item.ANY);
     }
@@ -365,6 +343,11 @@ public class OrcidQueueConsumer implements Consumer {
 
     private boolean isOrcidSynchronizationDisabled() {
         return !configurationService.getBooleanProperty("orcid.synchronization-enabled", true);
+    }
+
+    @Override
+    public void end(Context context) throws Exception {
+        alreadyConsumedItems.clear();
     }
 
     @Override

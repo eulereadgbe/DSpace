@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.time.Instant;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
@@ -106,7 +106,7 @@ public class DepositManager {
         throws DSpaceSWORDException, SWORDErrorException,
         SWORDAuthenticationException {
         // start the timer, and initialise the verboseness of the request
-        Instant start = Instant.now();
+        Date start = new Date();
         swordService.message("Initialising verbose deposit");
 
         // get the things out of the service that we need
@@ -215,8 +215,8 @@ public class DepositManager {
 
         entry.setNoOp(deposit.isNoOp());
 
-        Instant finish = Instant.now();
-        long delta = finish.toEpochMilli() - start.toEpochMilli();
+        Date finish = new Date();
+        long delta = finish.getTime() - start.getTime();
         swordService.message(
             "Total time for deposit processing: " + delta + " ms");
         entry.setVerboseDescription(
@@ -244,7 +244,7 @@ public class DepositManager {
         }
 
         String filenameBase =
-            "sword-" + deposit.getUsername() + "-" + Instant.now().toEpochMilli();
+            "sword-" + deposit.getUsername() + "-" + (new Date()).getTime();
         // No dots or slashes allowed in filename
         filenameBase = filenameBase.replaceAll("\\.", "").replaceAll("/", ""). replaceAll("\\\\", "");
 

@@ -8,7 +8,7 @@
 package org.dspace.eperson;
 
 import java.io.IOException;
-import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 import jakarta.mail.MessagingException;
@@ -47,7 +47,7 @@ public class EPersonConsumer implements Consumer {
             = DSpaceServicesFactory.getInstance().getConfigurationService();
 
     /**
-     * Initialise the consumer
+     * Initalise the consumer
      *
      * @throws Exception if error
      */
@@ -93,7 +93,7 @@ public class EPersonConsumer implements Consumer {
                             adminEmail.addArgument(configurationService.getProperty("dspace.ui.url"));
                             adminEmail.addArgument(eperson.getFirstName() + " " + eperson.getLastName()); // Name
                             adminEmail.addArgument(eperson.getEmail());
-                            adminEmail.addArgument(Instant.now());
+                            adminEmail.addArgument(new Date());
 
                             adminEmail.setReplyTo(eperson.getEmail());
 

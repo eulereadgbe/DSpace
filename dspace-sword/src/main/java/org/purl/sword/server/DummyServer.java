@@ -10,7 +10,9 @@ package org.purl.sword.server;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.Instant;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -267,7 +269,11 @@ public class DummyServer implements SWORDServer {
             se.setId("ID: " + counter);
         }
 
-        se.setUpdated(Instant.now().toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        TimeZone utc = TimeZone.getTimeZone("UTC");
+        sdf.setTimeZone(utc);
+        String milliFormat = sdf.format(new Date());
+        se.setUpdated(milliFormat);
 
         Summary s = new Summary();
         s.setContent(filenames.toString());

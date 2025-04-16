@@ -10,7 +10,7 @@ package org.dspace.checker.service;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 
 import org.dspace.core.Context;
 
@@ -35,7 +35,7 @@ public interface SimpleReporterService {
      *                      if io error occurs
      * @throws SQLException if database error
      */
-    public int getDeletedBitstreamReport(Context context, Instant startDate, Instant endDate,
+    public int getDeletedBitstreamReport(Context context, Date startDate, Date endDate,
                                          OutputStreamWriter osw) throws IOException, SQLException;
 
     /**
@@ -51,7 +51,7 @@ public interface SimpleReporterService {
      *                      if io error occurs
      * @throws SQLException if database error
      */
-    public int getChangedChecksumReport(Context context, Instant startDate, Instant endDate,
+    public int getChangedChecksumReport(Context context, Date startDate, Date endDate,
                                         OutputStreamWriter osw) throws IOException, SQLException;
 
     /**
@@ -67,7 +67,7 @@ public interface SimpleReporterService {
      *                      if io error occurs
      * @throws SQLException if database error
      */
-    public int getBitstreamNotFoundReport(Context context, Instant startDate, Instant endDate,
+    public int getBitstreamNotFoundReport(Context context, Date startDate, Date endDate,
                                           OutputStreamWriter osw) throws IOException, SQLException;
 
     /**
@@ -83,7 +83,7 @@ public interface SimpleReporterService {
      *                      if io error occurs
      * @throws SQLException if database error
      */
-    public int getNotToBeProcessedReport(Context context, Instant startDate, Instant endDate,
+    public int getNotToBeProcessedReport(Context context, Date startDate, Date endDate,
                                          OutputStreamWriter osw) throws IOException, SQLException;
 
     /**

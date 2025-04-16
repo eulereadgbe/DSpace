@@ -44,9 +44,6 @@ public class HarvestedCollectionRestRepository extends AbstractDSpaceRestReposit
     @Autowired
     HarvestedCollectionConverter harvestedCollectionConverter;
 
-    @Autowired
-    private ObjectMapper mapper;
-
     public HarvestedCollectionRest findOne(Collection collection) throws SQLException {
         Context context = obtainContext();
 
@@ -113,6 +110,7 @@ public class HarvestedCollectionRestRepository extends AbstractDSpaceRestReposit
     private HarvestedCollectionRest parseHarvestedCollectionRest(Context context,
                                                                  HttpServletRequest request,
                                                                  Collection collection) throws SQLException {
+        ObjectMapper mapper = new ObjectMapper();
         HarvestedCollectionRest harvestedCollectionRest;
 
         try {
@@ -150,7 +148,7 @@ public class HarvestedCollectionRestRepository extends AbstractDSpaceRestReposit
 
     /**
      * Function used to verify that the harvest settings work
-     * @param harvestedCollectionRest    A object containing the harvest settings to be tested
+     * @param harvestedCollectionRest    A object containg the harvest settings to be tested
      * @return
      */
     private List<String> testHarvestSettings(HarvestedCollectionRest harvestedCollectionRest) {

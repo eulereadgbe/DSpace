@@ -34,6 +34,8 @@ import org.dspace.builder.EPersonBuilder;
 import org.dspace.builder.GroupBuilder;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
+import org.dspace.content.service.CollectionService;
+import org.dspace.content.service.CommunityService;
 import org.dspace.core.Constants;
 import org.dspace.eperson.EPerson;
 import org.dspace.eperson.Group;
@@ -47,6 +49,10 @@ import org.springframework.http.MediaType;
 
 public class CommunityAdminGroupRestControllerIT extends AbstractControllerIntegrationTest {
 
+
+    @Autowired
+    private CommunityService communityService;
+
     @Autowired
     private GroupService groupService;
 
@@ -54,10 +60,10 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     private AuthorizeService authorizeService;
 
     @Autowired
-    private ConfigurationService configurationService;
+    private CollectionService collectionService;
 
     @Autowired
-    private ObjectMapper mapper;
+    private ConfigurationService configurationService;
 
     Collection collection;
 
@@ -72,7 +78,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     @Test
     public void getCommunityAdminGroupTest() throws Exception {
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
+        Group adminGroup = communityService.createAdministrators(context, parentCommunity);
         context.restoreAuthSystemState();
 
         String token = getAuthToken(admin.getEmail(), password);
@@ -85,8 +91,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     @Test
     public void getCommunityAdminGroupTestCommunityAdmin() throws Exception {
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
-        // TODO: this should actually be "add member", not directly setting a policy, right?
+        Group adminGroup = communityService.createAdministrators(context, parentCommunity);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         context.restoreAuthSystemState();
 
@@ -101,7 +106,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     @Test
     public void getCommunityAdminGroupUnAuthorizedTest() throws Exception {
         context.turnOffAuthorisationSystem();
-        GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
+        communityService.createAdministrators(context, parentCommunity);
         context.restoreAuthSystemState();
 
         getClient().perform(get("/api/core/communities/" + parentCommunity.getID() + "/adminGroup"))
@@ -111,7 +116,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     @Test
     public void getCommunityAdminGroupForbiddenTest() throws Exception {
         context.turnOffAuthorisationSystem();
-        GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
+        communityService.createAdministrators(context, parentCommunity);
         context.restoreAuthSystemState();
         String token = getAuthToken(eperson.getEmail(), password);
         getClient(token).perform(get("/api/core/communities/" + parentCommunity.getID() + "/adminGroup"))
@@ -136,6 +141,8 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
 
     @Test
     public void postCommunityAdminGroupCreateAdminGroupSuccess() throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
         GroupRest groupRest = new GroupRest();
         MetadataRest metadataRest = new MetadataRest();
 
@@ -163,6 +170,8 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
 
     @Test
     public void postCommunityAdminGroupCreateAdminGroupExtraMetadataSuccess() throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
         GroupRest groupRest = new GroupRest();
         MetadataRest metadataRest = new MetadataRest();
         metadataRest.put("dc.description", new MetadataValueRest("testingDescription"));
@@ -195,6 +204,8 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
 
     @Test
     public void postCommunityAdminGroupCreateAdminGroupDcTitleUnprocessable() throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
         GroupRest groupRest = new GroupRest();
         MetadataRest metadataRest = new MetadataRest();
         metadataRest.put("dc.description", new MetadataValueRest("testingDescription"));
@@ -218,6 +229,8 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
 
     @Test
     public void postCommunityAdminGroupCreateAdminGroupSuccessCommunityAdmin() throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
         GroupRest groupRest = new GroupRest();
         MetadataRest metadataRest = new MetadataRest();
         metadataRest.put("dc.description", new MetadataValueRest("testingDescription"));
@@ -249,6 +262,8 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
 
     @Test
     public void postCommunityAdminGroupCreateAdminGroupUnAuthorized() throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
         GroupRest groupRest = new GroupRest();
         MetadataRest metadataRest = new MetadataRest();
         metadataRest.put("dc.description", new MetadataValueRest("testingDescription"));
@@ -269,6 +284,8 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
 
     @Test
     public void postCommunityAdminGroupCreateAdminGroupForbidden() throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
         GroupRest groupRest = new GroupRest();
         MetadataRest metadataRest = new MetadataRest();
         metadataRest.put("dc.description", new MetadataValueRest("testingDescription"));
@@ -292,6 +309,8 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
 
     @Test
     public void postCommunityAdminGroupCreateAdminGroupNotFound() throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
         GroupRest groupRest = new GroupRest();
         MetadataRest metadataRest = new MetadataRest();
         metadataRest.put("dc.description", new MetadataValueRest("testingDescription"));
@@ -310,6 +329,8 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
 
     @Test
     public void postCommunityAdminGroupCreateAdminGroupUnProcessableName() throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
         GroupRest groupRest = new GroupRest();
         groupRest.setName("Fail");
         MetadataRest metadataRest = new MetadataRest();
@@ -333,6 +354,8 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
 
     @Test
     public void postCommunityAdminGroupCreateAdminGroupUnProcessablePermanent() throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
         GroupRest groupRest = new GroupRest();
         groupRest.setPermanent(true);
         MetadataRest metadataRest = new MetadataRest();
@@ -356,7 +379,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     @Test
     public void deleteCommunityAdminGroupTest() throws Exception {
         context.turnOffAuthorisationSystem();
-        GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
+        Group adminGroup = communityService.createAdministrators(context, parentCommunity);
         context.restoreAuthSystemState();
 
         String token = getAuthToken(admin.getEmail(), password);
@@ -374,7 +397,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
                                            .withName("Sub Community")
                                            .build();
-        GroupBuilder.createCommunityAdminGroup(context, child1).build();
+        Group adminGroup = communityService.createAdministrators(context, child1);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         context.restoreAuthSystemState();
 
@@ -389,7 +412,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     @Test
     public void deleteCommunityAdminGroupUnAuthorizedTest() throws Exception {
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
+        Group adminGroup = communityService.createAdministrators(context, parentCommunity);
         context.restoreAuthSystemState();
 
         getClient().perform(delete("/api/core/communities/" + parentCommunity.getID() + "/adminGroup"))
@@ -406,7 +429,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     @Test
     public void deleteCommunityAdminGroupForbiddenTest() throws Exception {
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
+        Group adminGroup = communityService.createAdministrators(context, parentCommunity);
         context.restoreAuthSystemState();
 
         String token = getAuthToken(eperson.getEmail(), password);
@@ -426,7 +449,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     @Test
     public void deleteCommunityAdminGroupNotFoundTest() throws Exception {
         context.turnOffAuthorisationSystem();
-        GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
+        Group adminGroup = communityService.createAdministrators(context, parentCommunity);
         context.restoreAuthSystemState();
 
         String token = getAuthToken(eperson.getEmail(), password);
@@ -439,7 +462,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     public void communityAdminAddMembersToCommunityAdminGroupPropertySetToFalse() throws Exception {
 
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
+        Group adminGroup = communityService.createAdministrators(context, parentCommunity);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         EPerson ePerson = EPersonBuilder.createEPerson(context).withEmail("testToAdd@test.com").build();
         configurationService.setProperty("core.authorization.community-admin.admin-group", false);
@@ -466,7 +489,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     public void communityAdminRemoveMembersFromCommunityAdminGroupPropertySetToFalse() throws Exception {
 
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
+        Group adminGroup = communityService.createAdministrators(context, parentCommunity);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         EPerson ePerson = EPersonBuilder.createEPerson(context).withEmail("testToAdd@test.com").build();
         context.restoreAuthSystemState();
@@ -503,7 +526,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     public void communityAdminAddChildGroupToCommunityAdminGroupPropertySetToFalse() throws Exception {
 
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
+        Group adminGroup = communityService.createAdministrators(context, parentCommunity);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         Group group = GroupBuilder.createGroup(context).withName("testGroup").build();
         configurationService.setProperty("core.authorization.community-admin.admin-group", false);
@@ -531,7 +554,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     public void communityAdminRemoveChildGroupFromCommunityAdminGroupPropertySetToFalse() throws Exception {
 
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCommunityAdminGroup(context, parentCommunity).build();
+        Group adminGroup = communityService.createAdministrators(context, parentCommunity);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         Group group = GroupBuilder.createGroup(context).withName("testGroup").build();
         context.restoreAuthSystemState();
@@ -568,9 +591,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     public void communityAdminAddChildGroupToCollectionAdminGroupSuccess() throws Exception {
 
         context.turnOffAuthorisationSystem();
-        // TODO: Why is this test in CommunityAdmin? it seems to purely be a collection group test?
-        //       copy paste gone wrong and we should actually be testing for community admin group sub?
-        Group adminGroup = GroupBuilder.createCollectionAdminGroup(context, collection).build();
+        Group adminGroup = collectionService.createAdministrators(context, collection);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         Group group = GroupBuilder.createGroup(context).withName("testGroup").build();
         context.restoreAuthSystemState();
@@ -596,9 +617,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     public void communityAdminRemoveChildGroupFromCollectionAdminGroupSuccess() throws Exception {
 
         context.turnOffAuthorisationSystem();
-        // TODO: Why is this test in CommunityAdmin? it seems to purely be a collection group test?
-        //       copy paste gone wrong and we should actually be testing for community admin group sub?
-        Group adminGroup = GroupBuilder.createCollectionAdminGroup(context, collection).build();
+        Group adminGroup = collectionService.createAdministrators(context, collection);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         Group group = GroupBuilder.createGroup(context).withName("testGroup").build();
         context.restoreAuthSystemState();
@@ -634,7 +653,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     public void communityAdminAddMembersToCollectionAdminGroupPropertySetToFalse() throws Exception {
 
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCollectionAdminGroup(context, collection).build();
+        Group adminGroup = collectionService.createAdministrators(context, collection);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         EPerson ePerson = EPersonBuilder.createEPerson(context).withEmail("testToAdd@test.com").build();
         configurationService.setProperty("core.authorization.community-admin.collection.admin-group", false);
@@ -662,7 +681,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     public void communityAdminRemoveMembersFromCollectionAdminGroupPropertySetToFalse() throws Exception {
 
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCollectionAdminGroup(context, collection).build();
+        Group adminGroup = collectionService.createAdministrators(context, collection);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         EPerson ePerson = EPersonBuilder.createEPerson(context).withEmail("testToAdd@test.com").build();
         context.restoreAuthSystemState();
@@ -700,7 +719,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     public void communityAdminAddChildGroupToCollectionAdminGroupPropertySetToFalse() throws Exception {
 
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCollectionAdminGroup(context, collection).build();
+        Group adminGroup = collectionService.createAdministrators(context, collection);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         Group group = GroupBuilder.createGroup(context).withName("testGroup").build();
         configurationService.setProperty("core.authorization.community-admin.collection.admin-group", false);
@@ -729,7 +748,7 @@ public class CommunityAdminGroupRestControllerIT extends AbstractControllerInteg
     public void communityAdminRemoveChildGroupFromCollectionAdminGroupPropertySetToFalse() throws Exception {
 
         context.turnOffAuthorisationSystem();
-        Group adminGroup = GroupBuilder.createCollectionAdminGroup(context, collection).build();
+        Group adminGroup = collectionService.createAdministrators(context, collection);
         authorizeService.addPolicy(context, parentCommunity, Constants.ADMIN, eperson);
         Group group = GroupBuilder.createGroup(context).withName("testGroup").build();
         context.restoreAuthSystemState();

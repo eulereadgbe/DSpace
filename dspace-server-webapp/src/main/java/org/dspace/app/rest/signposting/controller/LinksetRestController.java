@@ -144,7 +144,7 @@ public class LinksetRestController {
         DSpaceObject dso = findObject(context, uuid);
         List<LinksetNode> linksetNodes = linksetService.createLinksetNodesForSingleLinkset(request, context, dso);
         return linksetNodes.stream()
-                .map(node -> new TypedLinkRest(node.getLink(), node.getRelation(), node.getType(), node.getProfile()))
+                .map(node -> new TypedLinkRest(node.getLink(), node.getRelation(), node.getType()))
                 .collect(Collectors.toList());
     }
 
@@ -163,8 +163,7 @@ public class LinksetRestController {
         DSpaceObject object = findObject(context, uuid);
         DisseminationCrosswalk xwalk = (DisseminationCrosswalk)
                 pluginService.getNamedPlugin(DisseminationCrosswalk.class, xwalkName);
-        // Output valid XML: disseminate using root element as opposed to list
-        Element elements = xwalk.disseminateElement(context, object);
+        List<Element> elements = xwalk.disseminateList(context, object);
         XMLOutputter outputter = new XMLOutputter(Format.getCompactFormat());
         return outputter.outputString(elements);
     }

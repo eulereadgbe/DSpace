@@ -137,9 +137,8 @@ public class VersionedDOIIdentifierProvider extends DOIIdentifierProvider implem
                     loadOrCreateDOI(context, dso, versionedDOI, filter);
                 } catch (SQLException ex) {
                     log.error(
-                        "A problem with the database connection occurred while processing DOI " + versionedDOI + ".",
-                        ex);
-                    throw new RuntimeException("A problem with the database connection occurred.", ex);
+                        "A problem with the database connection occurd while processing DOI " + versionedDOI + ".", ex);
+                    throw new RuntimeException("A problem with the database connection occured.", ex);
                 }
                 return versionedDOI;
             }
@@ -351,17 +350,14 @@ public class VersionedDOIIdentifierProvider extends DOIIdentifierProvider implem
                 changed = true;
             }
         }
-        // reset the metadata if necessary.
+        // reset the metadata if neccessary.
         if (changed) {
             try {
                 itemService.clearMetadata(c, item, MD_SCHEMA, DOI_ELEMENT, DOI_QUALIFIER, Item.ANY);
-                // Checks if Array newIdentifiers is empty to avoid adding null values to the metadata field.
-                if (!newIdentifiers.isEmpty()) {
-                    itemService.addMetadata(c, item, MD_SCHEMA, DOI_ELEMENT, DOI_QUALIFIER, null, newIdentifiers);
-                }
+                itemService.addMetadata(c, item, MD_SCHEMA, DOI_ELEMENT, DOI_QUALIFIER, null, newIdentifiers);
                 itemService.update(c, item);
             } catch (SQLException ex) {
-                throw new RuntimeException("A problem with the database connection occurred.", ex);
+                throw new RuntimeException("A problem with the database connection occured.", ex);
             }
         }
     }

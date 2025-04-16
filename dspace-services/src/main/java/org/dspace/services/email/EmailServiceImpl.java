@@ -62,7 +62,6 @@ public class EmailServiceImpl
     }
 
     @PostConstruct
-    @SuppressWarnings("BanJNDI")
     public void init() {
         // See if there is already a Session in our environment
         String sessionName = cfg.getProperty("mail.session.name");

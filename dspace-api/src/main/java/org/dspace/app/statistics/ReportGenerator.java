@@ -13,11 +13,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -131,12 +132,12 @@ public class ReportGenerator {
     /**
      * start date of this report
      */
-    private static LocalDate startDate = null;
+    private static Date startDate = null;
 
     /**
      * end date of this report
      */
-    private static LocalDate endDate = null;
+    private static Date endDate = null;
 
     /**
      * the time taken to build the aggregation file from the log
@@ -174,7 +175,7 @@ public class ReportGenerator {
     /**
      * process timing clock
      */
-    private static Instant startTime = null;
+    private static Calendar startTime = null;
 
     /**
      * a map from log file action to human readable action
@@ -325,7 +326,7 @@ public class ReportGenerator {
     public static void processReport(Context context, Report report,
                                      String myInput)
         throws Exception, SQLException {
-        startTime = Instant.now();
+        startTime = new GregorianCalendar();
 
         /** instantiate aggregators */
         actionAggregator = new HashMap<>();
@@ -351,7 +352,7 @@ public class ReportGenerator {
         report.setEndDate(endDate);
         report.setMainTitle(name, serverName);
 
-        // define our standard variables for reuse
+        // define our standard variables for re-use
         // FIXME: we probably don't need these once we've finished re-factoring
         Iterator<String> keys = null;
         int i = 0;
@@ -491,7 +492,8 @@ public class ReportGenerator {
         report.addBlock(levels);
 
         // get the display processing time information
-        long timeInMillis = Instant.now().toEpochMilli() - startTime.toEpochMilli();
+        Calendar endTime = new GregorianCalendar();
+        long timeInMillis = (endTime.getTimeInMillis() - startTime.getTimeInMillis());
         int outputProcessTime = (int) (timeInMillis / 1000);
 
         // prepare the processing information statistics
@@ -516,7 +518,7 @@ public class ReportGenerator {
 
     /**
      * a standard stats block preparation method for use when an aggregator
-     * has to be put out in its entirety.  This method will not be able to
+     * has to be put out in its entirity.  This method will not be able to
      * deal with complex cases, although it will perform sorting by value and
      * translations as per the map file if requested
      *
@@ -664,7 +666,7 @@ public class ReportGenerator {
 
         // first initialise a date format object to do our date processing
         // if necessary
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd'/'MM'/'yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd'/'MM'/'yyyy");
 
         // FIXME: although this works, it is not very elegant
         // loop through the aggregator file and read in the values
@@ -736,9 +738,9 @@ public class ReportGenerator {
             } else if ("service_name".equals(section)) {
                 name = value;
             } else if ("start_date".equals(section)) {
-                startDate = LocalDate.parse(value, formatter);
+                startDate = sdf.parse(value);
             } else if ("end_date".equals(section)) {
-                endDate = LocalDate.parse(value, formatter);
+                endDate = sdf.parse(value);
             } else if ("analysis_process_time".equals(section)) {
                 processTime = Integer.parseInt(value);
             } else if ("general_summary".equals(section)) {
@@ -781,7 +783,7 @@ public class ReportGenerator {
             return null;
         }
 
-        // build the reference
+        // build the referece
         // FIXME: here we have blurred the line between content and presentation
         // and it should probably be un-blurred
         List<MetadataValue> title = itemService.getMetadata(item, MetadataSchemaEnum.DC.getName(),

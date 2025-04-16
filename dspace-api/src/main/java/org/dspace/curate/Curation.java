@@ -17,7 +17,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -70,7 +69,7 @@ public class Curation extends DSpaceRunnable<CurationScriptConfiguration> {
 
         // load curation tasks
         if (curationClientOptions == CurationClientOptions.TASK) {
-            long start = Instant.now().toEpochMilli();
+            long start = System.currentTimeMillis();
             handleCurationTask(curator);
             this.endScript(start);
         }
@@ -145,7 +144,7 @@ public class Curation extends DSpaceRunnable<CurationScriptConfiguration> {
      */
     private long runQueue(TaskQueue queue, Curator curator) throws SQLException, AuthorizeException, IOException {
         // use current time as our reader 'ticket'
-        long ticket = Instant.now().toEpochMilli();
+        long ticket = System.currentTimeMillis();
         Iterator<TaskQueueEntry> entryIter = queue.dequeue(this.queue, ticket).iterator();
         while (entryIter.hasNext()) {
             TaskQueueEntry entry = entryIter.next();
@@ -166,12 +165,12 @@ public class Curation extends DSpaceRunnable<CurationScriptConfiguration> {
      * End of curation script; logs script time if -v verbose is set
      *
      * @param timeRun Time script was started
-     * @throws SQLException If DSpace context can't complete
+     * @throws SQLException If DSpace contextx can't complete
      */
     private void endScript(long timeRun) throws SQLException {
         context.complete();
         if (verbose) {
-            long elapsed = Instant.now().toEpochMilli() - timeRun;
+            long elapsed = System.currentTimeMillis() - timeRun;
             this.handler.logInfo("Ending curation. Elapsed time: " + elapsed);
         }
     }
@@ -186,7 +185,7 @@ public class Curation extends DSpaceRunnable<CurationScriptConfiguration> {
         Curator curator = new Curator(handler);
         OutputStream reporterStream;
         if (null == this.reporter) {
-            reporterStream = NullOutputStream.NULL_OUTPUT_STREAM;
+            reporterStream = new NullOutputStream();
         } else if ("-".equals(this.reporter)) {
             reporterStream = System.out;
         } else {
@@ -301,17 +300,9 @@ public class Curation extends DSpaceRunnable<CurationScriptConfiguration> {
         // scope
         if (this.commandLine.getOptionValue('s') != null) {
             this.scope = this.commandLine.getOptionValue('s');
-            boolean knownScope;
-            try {
-                Curator.TxScope.valueOf(this.scope.toUpperCase());
-                knownScope = true;
-            } catch (IllegalArgumentException | NullPointerException e) {
-                knownScope = false;
-            }
-            if (!knownScope) {
-                this.handler.logError("Bad transaction scope '"
-                        + this.scope
-                        + "': only 'object', 'curation' or 'open' recognized");
+            if (this.scope != null && Curator.TxScope.valueOf(this.scope.toUpperCase()) == null) {
+                this.handler.logError("Bad transaction scope '" + this.scope + "': only 'object', 'curation' or " +
+                                      "'open' recognized");
                 throw new IllegalArgumentException(
                     "Bad transaction scope '" + this.scope + "': only 'object', 'curation' or " +
                     "'open' recognized");

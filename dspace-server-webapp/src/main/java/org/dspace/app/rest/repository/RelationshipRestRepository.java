@@ -80,9 +80,6 @@ public class RelationshipRestRepository extends DSpaceRestRepository<Relationshi
     @Autowired
     private RequestService requestService;
 
-    @Autowired
-    private ObjectMapper mapper;
-
     @Override
     @PreAuthorize("permitAll()")
     public RelationshipRest findOne(Context context, Integer integer) {
@@ -241,7 +238,7 @@ public class RelationshipRestRepository extends DSpaceRestRepository<Relationshi
             RelationshipRest relationshipRest;
 
             try {
-                relationshipRest = mapper.readValue(jsonNode.toString(), RelationshipRest.class);
+                relationshipRest = new ObjectMapper().readValue(jsonNode.toString(), RelationshipRest.class);
             } catch (IOException e) {
                 throw new UnprocessableEntityException("Error parsing request body: " + e.toString());
             }

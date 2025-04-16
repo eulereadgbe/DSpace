@@ -8,8 +8,8 @@
 package org.dspace.eperson;
 
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -17,6 +17,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +46,8 @@ public class EPerson extends CacheableDSpaceObject implements DSpaceObjectLegacy
     private String netid;
 
     @Column(name = "last_active")
-    private Instant lastActive;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastActive;
 
     @Column(name = "can_log_in", nullable = true)
     private Boolean canLogIn;
@@ -102,7 +105,7 @@ public class EPerson extends CacheableDSpaceObject implements DSpaceObjectLegacy
     protected transient EPersonService ePersonService;
 
     @Transient
-    private Instant previousActive;
+    private Date previousActive;
 
     /**
      * Protected constructor, create object using:
@@ -171,7 +174,7 @@ public class EPerson extends CacheableDSpaceObject implements DSpaceObjectLegacy
     /**
      * Set the EPerson's language.  Value is expected to be a Unix/POSIX
      * Locale specification of the form {language} or {language}_{territory},
-     * e.g. "en", "en_US", "pt_BR" (the latter is Brazilian Portuguese).
+     * e.g. "en", "en_US", "pt_BR" (the latter is Brazilian Portugese).
      *
      * @param context  The relevant DSpace Context.
      * @param language language code
@@ -342,7 +345,7 @@ public class EPerson extends CacheableDSpaceObject implements DSpaceObjectLegacy
      *
      * @param when latest activity timestamp, or null to clear.
      */
-    public void setLastActive(Instant when) {
+    public void setLastActive(Date when) {
         this.previousActive = lastActive;
         this.lastActive = when;
     }
@@ -352,7 +355,7 @@ public class EPerson extends CacheableDSpaceObject implements DSpaceObjectLegacy
      *
      * @return date when last logged on, or null.
      */
-    public Instant getLastActive() {
+    public Date getLastActive() {
         return lastActive;
     }
 
@@ -432,9 +435,9 @@ public class EPerson extends CacheableDSpaceObject implements DSpaceObjectLegacy
         this.sessionSalt = sessionSalt;
     }
 
-    public Instant getPreviousActive() {
+    public Date getPreviousActive() {
         if (previousActive == null) {
-            return Instant.now();
+            return new Date(0);
         }
         return previousActive;
     }

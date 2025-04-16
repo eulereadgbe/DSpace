@@ -7,7 +7,7 @@
  */
 package org.dspace.app.rest.model;
 
-import java.time.Instant;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,10 +43,10 @@ public class HarvestedCollectionRest extends BaseObjectRest<Integer> {
     private HarvestStatusEnum harvestStatus;
 
     @JsonProperty("harvest_start_time")
-    private Instant harvestStartTime;
+    private Date harvestStartTime;
 
     @JsonProperty("last_harvested")
-    private Instant lastHarvested;
+    private Date lastHarvested;
 
     private HarvesterMetadataRest metadata_configs;
 
@@ -146,19 +146,19 @@ public class HarvestedCollectionRest extends BaseObjectRest<Integer> {
         this.harvestStatus = harvestStatus;
     }
 
-    public Instant getHarvestStartTime() {
+    public Date getHarvestStartTime() {
         return harvestStartTime;
     }
 
-    public void setHarvestStartTime(Instant harvestStartTime) {
+    public void setHarvestStartTime(Date harvestStartTime) {
         this.harvestStartTime = harvestStartTime;
     }
 
-    public Instant getLastHarvested() {
+    public Date getLastHarvested() {
         return lastHarvested;
     }
 
-    public void setLastHarvested(Instant lastHarvested) {
+    public void setLastHarvested(Date lastHarvested) {
         this.lastHarvested = lastHarvested;
     }
 

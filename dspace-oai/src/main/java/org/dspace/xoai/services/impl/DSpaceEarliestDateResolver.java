@@ -8,7 +8,7 @@
 package org.dspace.xoai.services.impl;
 
 import java.sql.SQLException;
-import java.time.Instant;
+import java.util.Date;
 
 import jakarta.persistence.NoResultException;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +20,7 @@ import org.dspace.core.Context;
 import org.dspace.xoai.exceptions.InvalidMetadataFieldException;
 import org.dspace.xoai.services.api.EarliestDateResolver;
 import org.dspace.xoai.services.api.FieldResolver;
+import org.dspace.xoai.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DSpaceEarliestDateResolver implements EarliestDateResolver {
@@ -29,7 +30,7 @@ public class DSpaceEarliestDateResolver implements EarliestDateResolver {
     private FieldResolver fieldResolver;
 
     @Override
-    public Instant getEarliestDate(Context context) throws InvalidMetadataFieldException, SQLException {
+    public Date getEarliestDate(Context context) throws InvalidMetadataFieldException, SQLException {
         MetadataValueService metadataValueService = ContentServiceFactory.getInstance().getMetadataValueService();
         MetadataValue minimum = null;
         try {
@@ -43,7 +44,7 @@ public class DSpaceEarliestDateResolver implements EarliestDateResolver {
         if (null != minimum) {
             String str = minimum.getValue();
             try {
-                Instant d = Instant.parse(str);
+                Date d = DateUtils.parse(str);
                 if (d != null) {
                     return d;
                 }
@@ -52,6 +53,6 @@ public class DSpaceEarliestDateResolver implements EarliestDateResolver {
             }
         }
 
-        return Instant.now();
+        return new Date();
     }
 }

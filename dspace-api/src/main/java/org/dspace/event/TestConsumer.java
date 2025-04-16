@@ -8,8 +8,8 @@
 package org.dspace.event;
 
 import java.io.PrintStream;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -71,7 +71,7 @@ public class TestConsumer implements Consumer {
             + ", Identifiers="
             + ArrayUtils.toString(event.getIdentifiers())
             + ", TimeStamp="
-            + DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochMilli(event.getTimeStamp()))
+            + applyDateFormat(new Date(event.getTimeStamp()))
             + ", user=\""
             + user
             + "\""
@@ -109,4 +109,10 @@ public class TestConsumer implements Consumer {
         }
 
     }
+
+    private String applyDateFormat(Date thisDate) {
+        return new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS Z").format(thisDate);
+    }
+
+
 }

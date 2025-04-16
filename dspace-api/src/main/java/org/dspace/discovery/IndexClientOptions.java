@@ -94,7 +94,7 @@ public enum IndexClientOptions {
         options.addOption("b", "build", false, "(re)build index, wiping out current one if it exists");
         options.addOption("s", "spellchecker", false, "Rebuild the spellchecker, can be combined with -b and -f.");
         options.addOption("f", "force", false,
-                          "if updating existing index, force each handle to be reindexed even if up-to-date");
+                          "if updating existing index, force each handle to be reindexed even if uptodate");
         options.addOption("h", "help", false, "print this help message");
         return options;
     }

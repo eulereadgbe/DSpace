@@ -10,10 +10,8 @@ package org.dspace.checker;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.dspace.checker.service.MostRecentChecksumService;
@@ -63,7 +61,7 @@ public class SimpleReporterServiceImpl implements SimpleReporterService {
      * @throws SQLException if database error
      */
     @Override
-    public int getDeletedBitstreamReport(Context context, Instant startDate, Instant endDate,
+    public int getDeletedBitstreamReport(Context context, Date startDate, Date endDate,
                                          OutputStreamWriter osw) throws IOException, SQLException {
         // get all the bitstreams marked deleted for today
         List<MostRecentChecksum> recentChecksums = mostRecentChecksumService
@@ -103,7 +101,7 @@ public class SimpleReporterServiceImpl implements SimpleReporterService {
      * @throws SQLException if database error
      */
     @Override
-    public int getChangedChecksumReport(Context context, Instant startDate, Instant endDate,
+    public int getChangedChecksumReport(Context context, Date startDate, Date endDate,
                                         OutputStreamWriter osw) throws IOException, SQLException {
         // get all the bitstreams marked deleted for today
         List<MostRecentChecksum> history =
@@ -145,7 +143,7 @@ public class SimpleReporterServiceImpl implements SimpleReporterService {
      * @throws SQLException if database error
      */
     @Override
-    public int getBitstreamNotFoundReport(Context context, Instant startDate, Instant endDate,
+    public int getBitstreamNotFoundReport(Context context, Date startDate, Date endDate,
                                           OutputStreamWriter osw) throws IOException, SQLException {
         // get all the bitstreams marked deleted for today
         List<MostRecentChecksum> history =
@@ -187,7 +185,7 @@ public class SimpleReporterServiceImpl implements SimpleReporterService {
      * @throws SQLException if database error
      */
     @Override
-    public int getNotToBeProcessedReport(Context context, Instant startDate, Instant endDate,
+    public int getNotToBeProcessedReport(Context context, Date startDate, Date endDate,
                                          OutputStreamWriter osw) throws IOException, SQLException {
         // get all the bitstreams marked deleted for today
         List<MostRecentChecksum> mostRecentChecksums = mostRecentChecksumService
@@ -234,7 +232,7 @@ public class SimpleReporterServiceImpl implements SimpleReporterService {
         osw.write("\n");
         osw.write(msg("unchecked-bitstream-report"));
         osw.write(" ");
-        osw.write(applyDateFormatShort(Instant.now()));
+        osw.write(applyDateFormatShort(new Date()));
         osw.write("\n\n\n");
 
         if (bitstreams.isEmpty()) {
@@ -325,11 +323,11 @@ public class SimpleReporterServiceImpl implements SimpleReporterService {
         }
     }
 
-    protected String applyDateFormatLong(Instant thisDate) {
-        return DateTimeFormatter.ISO_INSTANT.format(thisDate);
+    protected String applyDateFormatLong(Date thisDate) {
+        return DateFormat.getDateInstance(DateFormat.MEDIUM).format(thisDate);
     }
 
-    protected String applyDateFormatShort(Instant thisDate) {
-        return DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.ofInstant(thisDate, ZoneOffset.UTC));
+    protected String applyDateFormatShort(Date thisDate) {
+        return DateFormat.getDateInstance(DateFormat.SHORT).format(thisDate);
     }
 }

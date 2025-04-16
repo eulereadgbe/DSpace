@@ -15,12 +15,13 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections4.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Bitstream;
 import org.dspace.content.Bundle;
 import org.dspace.content.DSpaceObject;
@@ -98,13 +99,8 @@ public class ClamScan extends AbstractCurationTask {
             }
 
             try {
-                List<Bundle> bundles = itemService.getBundles(item, "ORIGINAL");
-                if (ListUtils.emptyIfNull(bundles).isEmpty()) {
-                    setResult("No ORIGINAL bundle found for item: " + getItemHandle(item));
-                    return Curator.CURATE_SKIP;
-                }
-                Bundle bundle = bundles.get(0);
-                results = new ArrayList<String>();
+                Bundle bundle = itemService.getBundles(item, "ORIGINAL").get(0);
+                results = new ArrayList<>();
                 for (Bitstream bitstream : bundle.getBitstreams()) {
                     InputStream inputstream = bitstreamService.retrieve(Curator.curationContext(), bitstream);
                     logDebugMessage("Scanning " + bitstream.getName() + " . . . ");
@@ -125,11 +121,10 @@ public class ClamScan extends AbstractCurationTask {
                     }
 
                 }
-            } catch (Exception e) {
-                // Any exception which may occur during the performance of the task should be caught here
-                // And end the process gracefully
-                log.error("Error scanning item: " + getItemHandle(item), e);
-                status = Curator.CURATE_ERROR;
+            } catch (AuthorizeException authE) {
+                throw new IOException(authE.getMessage(), authE);
+            } catch (SQLException sqlE) {
+                throw new IOException(sqlE.getMessage(), sqlE);
             } finally {
                 closeSession();
             }

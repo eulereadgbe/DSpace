@@ -7,7 +7,7 @@
  */
 package org.dspace.app.rest.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * The AccessConditionDTO is a partial representation of the DSpace
@@ -31,9 +31,9 @@ public class AccessConditionDTO  {
 
     private String description;
 
-    private LocalDate startDate;
+    private Date startDate;
 
-    private LocalDate endDate;
+    private Date endDate;
 
     public Integer getId() {
         return id;
@@ -59,19 +59,19 @@ public class AccessConditionDTO  {
         this.description = description;
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 

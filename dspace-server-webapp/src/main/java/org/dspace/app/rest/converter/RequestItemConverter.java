@@ -8,8 +8,6 @@
 
 package org.dspace.app.rest.converter;
 
-import java.time.Instant;
-
 import jakarta.inject.Named;
 import org.dspace.app.requestitem.RequestItem;
 import org.dspace.app.rest.model.RequestItemRest;
@@ -17,8 +15,8 @@ import org.dspace.app.rest.projection.Projection;
 import org.dspace.content.Bitstream;
 
 /**
- * Convert between {@link RequestItem} and
- * {@link RequestItemRest}.
+ * Convert between {@link org.dspace.app.requestitem.RequestItem} and
+ * {@link org.dspace.app.rest.model.RequestItemRest}.
  *
  * @author Mark H. Wood <mwood@iupui.edu>
  */
@@ -47,14 +45,6 @@ public class RequestItemConverter
         requestItemRest.setRequestName(requestItem.getReqName());
         requestItemRest.setRequestDate(requestItem.getRequest_date());
         requestItemRest.setToken(requestItem.getToken());
-        requestItemRest.setAccessToken(requestItem.getAccess_token());
-        requestItemRest.setAccessExpiry(requestItem.getAccess_expiry());
-        if ( requestItem.getAccess_expiry() == null ||
-                requestItem.getAccess_expiry().isBefore(Instant.now())) {
-            requestItemRest.setAccessExpired(true);
-        } else {
-            requestItemRest.setAccessExpired(false);
-        }
         return requestItemRest;
     }
 

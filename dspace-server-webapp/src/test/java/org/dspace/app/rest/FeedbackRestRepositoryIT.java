@@ -38,9 +38,6 @@ public class FeedbackRestRepositoryIT extends AbstractControllerIntegrationTest 
     @Autowired
     private FeedbackRestRepository feedbackRestRepository;
 
-    @Autowired
-    private ObjectMapper mapper;
-
     @Test
     public void findAllTest() throws Exception {
         String authToken = getAuthToken(admin.getEmail(), password);
@@ -63,6 +60,7 @@ public class FeedbackRestRepositoryIT extends AbstractControllerIntegrationTest 
             FeedbackService feedbackServiceMock = mock (FeedbackServiceImpl.class);
             feedbackRestRepository.setFeedbackService(feedbackServiceMock);
 
+            ObjectMapper mapper = new ObjectMapper();
             FeedbackRest feedbackRest = new FeedbackRest();
 
             feedbackRest.setEmail("misha.boychuk@test.com");
@@ -91,6 +89,7 @@ public class FeedbackRestRepositoryIT extends AbstractControllerIntegrationTest 
         try {
             FeedbackService feedbackServiceMock = mock (FeedbackServiceImpl.class);
             feedbackRestRepository.setFeedbackService(feedbackServiceMock);
+            ObjectMapper mapper = new ObjectMapper();
             FeedbackRest feedbackRest = new FeedbackRest();
 
             feedbackRest.setEmail("misha.boychuk@test.com");
@@ -114,6 +113,7 @@ public class FeedbackRestRepositoryIT extends AbstractControllerIntegrationTest 
         try {
             FeedbackService feedbackServiceMock = mock (FeedbackServiceImpl.class);
             feedbackRestRepository.setFeedbackService(feedbackServiceMock);
+            ObjectMapper mapper = new ObjectMapper();
             FeedbackRest feedbackRest = new FeedbackRest();
 
             feedbackRest.setMessage("My feedback!");

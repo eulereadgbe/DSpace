@@ -26,7 +26,7 @@ public final class TaskQueueEntry {
      * TaskQueueEntry constructor with enumerated field values.
      *
      * @param epersonId  task owner
-     * @param submitTime time the task was submitted (Instant.now().toEpochMilli())
+     * @param submitTime time the task was submitted (System.currentTimeMillis())
      * @param taskNames  list of task names
      * @param objId      usually a handle or workflow id
      */

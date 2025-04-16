@@ -8,9 +8,11 @@
 
 package org.dspace.identifier.ezid;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Convert a date-time string to the year thereof.
@@ -19,13 +21,15 @@ import java.time.format.DateTimeParseException;
  */
 public class DateToYear
     implements Transform {
+    private static final SimpleDateFormat parser
+        = new SimpleDateFormat("yyyy'-'MM'-'dd");
 
     @Override
     public synchronized String transform(String from)
-        throws DateTimeParseException {
-
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-        LocalDate parsedDate = LocalDate.parse(from, formatter);
-        return String.valueOf(parsedDate.getYear());
+        throws ParseException {
+        Date when = parser.parse(from);
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(when);
+        return String.valueOf(calendar.get(Calendar.YEAR));
     }
 }

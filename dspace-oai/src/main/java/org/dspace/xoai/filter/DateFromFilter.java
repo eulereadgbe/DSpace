@@ -7,8 +7,8 @@
  */
 package org.dspace.xoai.filter;
 
-import java.time.Instant;
-import java.time.temporal.ChronoField;
+import java.util.Calendar;
+import java.util.Date;
 
 import com.lyncode.xoai.dataprovider.services.api.DateProvider;
 import com.lyncode.xoai.dataprovider.services.impl.BaseDateProvider;
@@ -21,16 +21,19 @@ import org.dspace.xoai.filter.results.SolrFilterResult;
  */
 public class DateFromFilter extends DSpaceFilter {
     private static final DateProvider dateProvider = new BaseDateProvider();
-    private final Instant date;
+    private final Date date;
 
-    public DateFromFilter(Instant date) {
+    public DateFromFilter(Date date) {
+        Calendar calendar =  Calendar.getInstance();
+        calendar.setTime(date);
         // As this is a 'from' filter, ensure milliseconds are set to zero (minimum value)
-        this.date = date.with(ChronoField.MILLI_OF_SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        this.date = calendar.getTime();
     }
 
     @Override
     public boolean isShown(DSpaceItem item) {
-        if (!item.getDatestamp().toInstant().isBefore(date)) {
+        if (item.getDatestamp().compareTo(date) >= 0) {
             return true;
         }
         return false;
@@ -38,8 +41,7 @@ public class DateFromFilter extends DSpaceFilter {
 
     @Override
     public SolrFilterResult buildSolrQuery() {
-        // Tweak to set the milliseconds
-        String format = dateProvider.format(java.util.Date.from(date)).replace("Z", ".000Z");
+        String format = dateProvider.format(date).replace("Z", ".000Z"); // Tweak to set the milliseconds
         return new SolrFilterResult("item.lastmodified:["
                                         + ClientUtils.escapeQueryChars(format)
                                         + " TO *]");

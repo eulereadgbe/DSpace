@@ -51,7 +51,7 @@ public class CiniiImportMetadataSourceServiceIT extends AbstractLiveImportIntegr
         InputStream ciniiRefResp2 = null;
         InputStream ciniiRefResp3 = null;
         try {
-            ciniiRefResp = getClass().getResourceAsStream("cinii-response-ids.xml");
+            ciniiRefResp = getClass().getResourceAsStream("cinii-responce-ids.xml");
             ciniiRefResp2 = getClass().getResourceAsStream("cinii-first.xml");
             ciniiRefResp3 = getClass().getResourceAsStream("cinii-second.xml");
 
@@ -89,7 +89,7 @@ public class CiniiImportMetadataSourceServiceIT extends AbstractLiveImportIntegr
         context.turnOffAuthorisationSystem();
         CloseableHttpClient originalHttpClient = liveImportClientImpl.getHttpClient();
         CloseableHttpClient httpClient = Mockito.mock(CloseableHttpClient.class);
-        try (InputStream file = getClass().getResourceAsStream("cinii-response-ids.xml")) {
+        try (InputStream file = getClass().getResourceAsStream("cinii-responce-ids.xml")) {
             String ciniiXmlResp = IOUtils.toString(file, Charset.defaultCharset());
 
             liveImportClientImpl.setHttpClient(httpClient);
@@ -107,31 +107,31 @@ public class CiniiImportMetadataSourceServiceIT extends AbstractLiveImportIntegr
     private ArrayList<ImportRecord> getRecords() {
         ArrayList<ImportRecord> records = new ArrayList<>();
         //define first record
-        List<MetadatumDTO> metadata  = new ArrayList<MetadatumDTO>();
+        List<MetadatumDTO> metadatums  = new ArrayList<MetadatumDTO>();
         MetadatumDTO title = createMetadatumDTO("dc", "title", null,
                 "Understanding the impact of mandatory accrual accounting on management practices:"
                 + " Interpretation of Japanese local governments’ behavior");
         MetadatumDTO identifier = createMetadatumDTO("dc", "identifier", "other", "1010572092222310146");
 
-        metadata.add(title);
-        metadata.add(identifier);
+        metadatums.add(title);
+        metadatums.add(identifier);
 
-        ImportRecord firstRecord = new ImportRecord(metadata);
+        ImportRecord firstrRecord = new ImportRecord(metadatums);
 
         //define second record
-        List<MetadatumDTO> metadata2  = new ArrayList<MetadatumDTO>();
+        List<MetadatumDTO> metadatums2  = new ArrayList<MetadatumDTO>();
         MetadatumDTO title2 = createMetadatumDTO("dc", "title", null,
                 "Band structures of passive films on titanium in simulated bioliquids determined"
                 + " by photoelectrochemical response: principle governing the biocompatibility");
         MetadatumDTO language = createMetadatumDTO("dc", "language", "iso", "en");
         MetadatumDTO identifier2 = createMetadatumDTO("dc", "identifier", "other", "1050010687833449984");
 
-        metadata2.add(title2);
-        metadata2.add(language);
-        metadata2.add(identifier2);
+        metadatums2.add(title2);
+        metadatums2.add(language);
+        metadatums2.add(identifier2);
 
-        ImportRecord secondRecord = new ImportRecord(metadata2);
-        records.add(firstRecord);
+        ImportRecord secondRecord = new ImportRecord(metadatums2);
+        records.add(firstrRecord);
         records.add(secondRecord);
         return records;
     }
