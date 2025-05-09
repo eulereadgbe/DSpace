@@ -362,6 +362,18 @@
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>sdg</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>UN Sustainable Development Goals (SDGs)</label>
+                    <input-type value-pairs-name="sdgs">dropdown</input-type>
+                    <hint>Select any UN Sustainable Development Goals associated with this item.</hint>
+                    <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
                     <dc-element>description</dc-element>
                     <dc-qualifier>abstract</dc-qualifier>
                     <repeatable>false</repeatable>
