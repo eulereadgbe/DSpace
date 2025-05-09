@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node id="" label="Dublin Core™ Collection Description Frequency Vocabulary">
+    <isComposedBy>
+        <node id="triennial" label="Triennial">
+            <hasNote type="comment">The event occurs every three years.</hasNote>
+        </node>
+        <node id="biennial" label="Biennial">
+            <hasNote type="comment">The event occurs every two years.</hasNote>
+        </node>
+        <node id="annual" label="Annual">
+            <hasNote type="comment">The event occurs once a year.</hasNote>
+        </node>
+        <node id="semiannual" label="Semiannual">
+            <hasNote type="comment">The event occurs twice a year.</hasNote>
+        </node>
+        <node id="threeTimesAYear" label="Three times a year">
+            <hasNote type="comment">The event occurs three times a year.</hasNote>
+        </node>
+        <node id="quarterly" label="Quarterly">
+            <hasNote type="comment">The event occurs every three months.</hasNote>
+        </node>
+        <node id="bimonthly" label="Bimonthly">
+            <hasNote type="comment">The event occurs every two months.</hasNote>
+        </node>
+        <node id="monthly" label="Monthly">
+            <hasNote type="comment">The event occurs once a month.</hasNote>
+        </node>
+        <node id="semimonthly" label="Semimonthly">
+            <hasNote type="comment">The event occurs twice a month.</hasNote>
+        </node>
+        <node id="biweekly" label="Biweekly">
+            <hasNote type="comment">The event occurs every two weeks.</hasNote>
+        </node>
+        <node id="threeTimesAMonth" label="Three times a month">
+            <hasNote type="comment">The event occurs three times a month.</hasNote>
+        </node>
+        <node id="weekly" label="Weekly">
+            <hasNote type="comment">The event occurs once a week.</hasNote>
+        </node>
+        <node id="semiweekly" label="Semiweekly">
+            <hasNote type="comment">The event occurs twice a week.</hasNote>
+        </node>
+        <node id="threeTimesAWeek" label="Three times a week">
+            <hasNote type="comment">The event occurs three times a week.</hasNote>
+        </node>
+        <node id="daily" label="Daily">
+            <hasNote type="comment">The event occurs once a day.</hasNote>
+        </node>
+        <node id="continuous" label="Continuous">
+            <hasNote type="comment">The event repeats without interruption.</hasNote>
+        </node>
+        <node id="irregular" label="Irregular">
+            <hasNote type="comment">The event occurs at uneven intervals.</hasNote>
+        </node>
+    </isComposedBy>
+</node>

@@ -832,9 +832,10 @@
                     <dc-element>accrualPeriodicity</dc-element>
                     <repeatable>false</repeatable>
                     <label>Frequency</label>
-                    <input-type value-pairs-name="frequency_values">dropdown</input-type>
+                    <input-type>onebox</input-type>
                     <hint>Select how often this item or collection is updated or published.</hint>
                     <required>You must choose a frequency</required>
+                    <vocabulary>frequency</vocabulary>
                 </field>
             </row>
             <row>
@@ -2863,76 +2864,6 @@
             <pair>
                 <displayed-value>SDG 17 - Partnerships for the goals</displayed-value>
                 <stored-value>SDG 17 - Partnerships for the goals</stored-value>
-            </pair>
-        </value-pairs>
-        <value-pairs value-pairs-name="frequency_values" dc-term="dcterms.accrualPeriodicity">
-            <pair>
-                <displayed-value>Continuous</displayed-value>
-                <stored-value>http://purl.org/cld/freq/continuous</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Daily</displayed-value>
-                <stored-value>http://purl.org/cld/freq/daily</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Weekly</displayed-value>
-                <stored-value>http://purl.org/cld/freq/weekly</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Semiweekly</displayed-value>
-                <stored-value>http://purl.org/cld/freq/semiweekly</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Biweekly</displayed-value>
-                <stored-value>http://purl.org/cld/freq/biweekly</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Monthly</displayed-value>
-                <stored-value>http://purl.org/cld/freq/monthly</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Semimonthly</displayed-value>
-                <stored-value>http://purl.org/cld/freq/semimonthly</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Bimonthly</displayed-value>
-                <stored-value>http://purl.org/cld/freq/bimonthly</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Quarterly</displayed-value>
-                <stored-value>http://purl.org/cld/freq/quarterly</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Semiannual</displayed-value>
-                <stored-value>http://purl.org/cld/freq/semiannual</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Annual</displayed-value>
-                <stored-value>http://purl.org/cld/freq/annual</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Biennial</displayed-value>
-                <stored-value>http://purl.org/cld/freq/biennial</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Triennial</displayed-value>
-                <stored-value>http://purl.org/cld/freq/triennial</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Three times a month</displayed-value>
-                <stored-value>http://purl.org/cld/freq/threemonthly</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Three times a week</displayed-value>
-                <stored-value>http://purl.org/cld/freq/threeperweek</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Three times a year</displayed-value>
-                <stored-value>http://purl.org/cld/freq/threeyearly</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Irregular</displayed-value>
-                <stored-value>http://purl.org/cld/freq/irregular</stored-value>
             </pair>
         </value-pairs>
     </form-value-pairs>
