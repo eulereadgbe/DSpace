@@ -317,6 +317,17 @@
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>subject</dc-element>
+                    <dc-qualifier>mesh</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>MESH</label>
+                    <input-type>tag</input-type>
+                    <hint>Enter Medical Subject Headings</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
                     <dc-qualifier>scientificname</dc-qualifier>
                     <!-- An input-type of tag MUST be marked as repeatable -->
                     <repeatable>true</repeatable>
@@ -669,6 +680,17 @@
                     <label>LCSH</label>
                     <input-type>tag</input-type>
                     <hint>Enter Library of Congress Subject Headings</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>mesh</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>MESH</label>
+                    <input-type>tag</input-type>
+                    <hint>Enter Medical Subject Headings</hint>
                 </field>
             </row>
             <row>
