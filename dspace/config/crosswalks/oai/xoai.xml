@@ -7,6 +7,7 @@
             <!-- Restrict access to hidden items by default -->
             <Filter ref="defaultFilter"/>
 
+            <Set ref="NCMS"/>
             <Format ref="oaidc"/>
             <Format ref="mets"/>
             <Format ref="xoai"/>
@@ -494,7 +495,18 @@
                 </And>
             </Definition>
         </Filter>
-
+        <Filter id="NCMSFilter">
+            <Definition>
+                <And>
+                    <LeftCondition>
+                        <Custom ref="NCMSMemberCondition"/>
+                    </LeftCondition>
+                    <RightCondition>
+                        <Custom ref="relatedLinkExistsCondition"/>
+                    </RightCondition>
+                </And>
+            </Definition>
+        </Filter>
         <!-- This condition determines if an Item has a "dc.type" field
              which contains "Thesis". -->
         <CustomCondition id="thesisDocumentTypeCondition">
@@ -636,6 +648,36 @@
             </Configuration>
         </CustomCondition>
 
+        <!-- This condition determines if an Item mentioned is a member of National Committee on marine Sciences (NCMS). -->
+        <CustomCondition id="NCMSMemberCondition">
+            <Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
+            <Configuration>
+                <string name="field">local.subject.corporatename</string>
+                <string name="operator">contains</string>
+                <list name="values">
+                    <string>BFAR</string>
+                    <string>MOAO</string>
+                    <string>UPMSI</string>
+                    <string>NAMRIA</string>
+                    <string>National Museum of the Philippines</string>
+                    <string>PAGASA</string>
+                    <string>PCG</string>
+                    <string>PCAARRD</string>
+                    <string>Philippine Institute of Volcanology and Seismology</string>
+                    <string>PHIVOLCS</string>
+                    <string>Philippine Navy</string>
+                    <string>UNESCO</string>
+                    <string>BMB</string>
+                    <string>Biodiversity Management Bureau</string>
+                </list>
+            </Configuration>
+        </CustomCondition>
+        <CustomCondition id="relatedLinkExistsCondition">
+            <Class>org.dspace.xoai.filter.DSpaceMetadataExistsFilter</Class>
+            <Configuration>
+                <string name="field">dc.relation.uri</string>
+            </Configuration>
+        </CustomCondition>
     </Filters>
 
     <Sets>
@@ -653,6 +695,11 @@
             <Spec>rioxx</Spec>
             <Name>Rioxx set</Name>
             <!-- Just an alias -->
+        </Set>
+        <Set id="NCMS">
+            <Spec>NCMSSpec</Spec>
+            <Name>NCMS Members Newspaper Articles</Name>
+            <Filter ref="NCMSFilter"/>
         </Set>
     </Sets>
 </Configuration>
