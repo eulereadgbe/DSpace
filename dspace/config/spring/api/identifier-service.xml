@@ -7,6 +7,10 @@
     <!-- Identifier Service Application Interface. Will be autowired with
          any Identifier Providers present in Spring context.
     -->
+    <bean id="foreignHandleIdentifierProvider"
+          class="org.dspace.identifier.ForeignHandleIdentifierProvider"
+          scope="singleton" />
+
     <bean id="org.dspace.identifier.service.IdentifierService"
           class="org.dspace.identifier.IdentifierServiceImpl"
           autowire="byType"
