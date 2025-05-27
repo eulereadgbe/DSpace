@@ -190,6 +190,8 @@
                 <ref bean="searchFilterAgrovoc" />
                 <ref bean="searchFilterScientificname" />
                 <ref bean="searchFilterGeographicname" />
+                <ref bean="searchFilterPerson" />
+                <ref bean="searchFilterCorporate" />
                 <ref bean="searchFilterSDG" />
                 <ref bean="searchFilterChallenge" />
                 <ref bean="searchFilterIssued" />
@@ -208,6 +210,8 @@
                 <ref bean="searchFilterAgrovoc" />
                 <ref bean="searchFilterScientificname" />
                 <ref bean="searchFilterGeographicname" />
+                <ref bean="searchFilterPerson" />
+                <ref bean="searchFilterCorporate" />
                 <ref bean="searchFilterSDG" />
                 <ref bean="searchFilterChallenge" />
                 <ref bean="searchFilterIssued" />
@@ -2660,6 +2664,30 @@
         <property name="metadataFields">
             <list>
                 <value>dc.coverage.spatial</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="sortOrderFilterPage" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterPerson" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="person_as_subject"/>
+        <property name="metadataFields">
+            <list>
+                <value>local.subject.personalname</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="sortOrderFilterPage" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterCorporate" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="corporate_as_subject"/>
+        <property name="metadataFields">
+            <list>
+                <value>local.subject.corporatename</value>
             </list>
         </property>
         <property name="facetLimit" value="5"/>
