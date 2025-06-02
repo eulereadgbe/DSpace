@@ -67,8 +67,9 @@ public class ForeignHandleIdentifierProvider extends IdentifierProvider {
                 }
             }
 
-            log.warn("No matching foreign handle found; throwing IdentifierNotFoundException");
-            throw new IdentifierNotFoundException("No valid foreign handle found to register");
+            // No foreign handle found — just skip so another provider can handle it
+            log.info("No matching foreign handle found; deferring to other providers.");
+            return null;
 
         } catch (Exception e) {
             log.error("Exception in register()", e);
