@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import java.util.List;
  */
 public class FASTAuthority implements ChoiceAuthority, AuthorityVariantsSupport {
     Logger log = LogManager.getLogger(FASTAuthority.class);
-	String fasturl = "https://fast.oclc.org/searchfast/fastsuggest";
+	String fasturl = "https://fast.oclc.org/fastsuggest";
     private String pluginInstanceName;
 
     @Override
@@ -49,60 +50,63 @@ public class FASTAuthority implements ChoiceAuthority, AuthorityVariantsSupport 
         return null;
     }
 	
-	@Override
+    @Override
     public Choices getMatches(String text, int start, int limit, String locale) {
-		List<BasicNameValuePair> args = new ArrayList<BasicNameValuePair>();
-		args.add(new BasicNameValuePair("query", text));
-        String sUrl = fasturl + "?" + URLEncodedUtils.format(args, "UTF8") + "&suggest=autoSubject&queryReturn=auth,idroot,suggestall,type&rows=20";
-        try {
-			URL url = new URL(sUrl);
-        	InputStream is = url.openStream();
-        	StringBuffer sb = new StringBuffer();
-        	BufferedReader in = new BufferedReader(
-            new InputStreamReader(url.openStream()));
+        List<BasicNameValuePair> args = new ArrayList<>();
+        args.add(new BasicNameValuePair("query", text));
+        String sUrl = fasturl + "?" + URLEncodedUtils.format(args, "UTF-8")
+                + "&suggest=autoSubject&queryReturn=auth,idroot,suggestall,type&rows=20";
 
+        try {
+            URL url = new URL(sUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("User-Agent", "DSpace/8.0");
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode != 200) {
+                log.error("FASTAuthority HTTP error code: " + responseCode);
+                return null;
+            }
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            StringBuilder sb = new StringBuilder();
             String inputLine;
-            while ((inputLine = in.readLine()) != null){
+            while ((inputLine = in.readLine()) != null) {
                 sb.append(inputLine);
             }
             in.close();
-            
-            //VIAF responds a json with duplicate keys? must remove them as they are unused
-            String str= sb.toString().replaceAll("\"bav\":\"adv\\d+\",", "").replaceAll("\"dnb\":\"\\d+\",", "");
-            JSONObject ob = new JSONObject(str.substring(str.indexOf('{')));
+            conn.disconnect();
+
+            JSONObject ob = new JSONObject(sb.toString());
             JSONObject response = ob.getJSONObject("response");
-            //JSONArray results = ob.getJSONArray("docs");
-			JSONArray results = (JSONArray) response.get("docs");
+            JSONArray results = response.getJSONArray("docs");
 
             Choice[] choices = new Choice[results.length()];
-            for(int i=0;i< results.length();i++){
-            	JSONObject result = results.getJSONObject(i);
-            	String term = result.getString("auth");
-            	String type = result.getString("type");
-            	JSONArray suggestall = (JSONArray) result.get("suggestall");
-            	//String label = result.getString("auth");
-				JSONArray idroot = (JSONArray) result.get("idroot");
-				final  String authority;
-				authority = idroot.getString(0);
-				//String authority = result.getString("idroot");
-            	final String label;
-				if (type.equals("alt")){
-					label = suggestall.getString(0) + " USE: " + term;
-				} else {
-					label = result.getString("auth");
-				}
-            	choices[i] = new Choice(authority, term, label);
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject result = results.getJSONObject(i);
+                String term = result.optString("auth");
+                String type = result.optString("type");
+                JSONArray suggestall = result.optJSONArray("suggestall");
+                JSONArray idroot = result.optJSONArray("idroot");
+
+                String authority = idroot != null && idroot.length() > 0 ? idroot.getString(0) : term;
+                String label = (type.equals("alt") && suggestall != null && suggestall.length() > 0)
+                        ? suggestall.getString(0) + " USE: " + term
+                        : term;
+
+                choices[i] = new Choice(authority, term, label);
             }
-            
+
             return new Choices(choices, 0, choices.length, Choices.CF_ACCEPTED, false);
-		} catch (MalformedURLException e) {
-			log.error(e.getMessage(),e);
-		} catch (IOException e) {
-			log.error(e.getMessage(),e);
-		} 
-        
-		return null;
-	}
+
+        } catch (Exception e) {
+            log.error("Error querying FAST API: " + e.getMessage(), e);
+        }
+
+        return null;
+    }
 
 	@Override
     public Choices getBestMatch(String text, String locale) {
