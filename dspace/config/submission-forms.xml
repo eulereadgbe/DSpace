@@ -243,7 +243,7 @@
                     <dc-qualifier>journaltitle</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>Journal Title</label>
-                    <type-bind>Article,magazineArticle,newspaperArticle</type-bind>
+                    <type-bind>journal-article,Article,magazineArticle,newspaperArticle</type-bind>
                     <input-type>onebox</input-type>
                     <hint>Enter the name of the journal or Periodical for this item.</hint>
                     <required>You must enter the Journal title of this article.</required>
@@ -281,7 +281,7 @@
                     <dc-element>citation</dc-element>
                     <dc-qualifier>volume</dc-qualifier>
                     <label>Volume</label>
-                    <type-bind>Article,magazineArticle</type-bind>
+                    <type-bind>journal-article,Article,magazineArticle</type-bind>
                     <input-type>onebox</input-type>
                     <hint> Enter the volume number. </hint>
                 </field>
@@ -290,7 +290,7 @@
                     <dc-element>citation</dc-element>
                     <dc-qualifier>issue</dc-qualifier>
                     <label>Issue</label>
-                    <type-bind>Article,magazineArticle</type-bind>
+                    <type-bind>journal-article,Article,magazineArticle</type-bind>
                     <input-type>onebox</input-type>
                     <hint> Enter the issue number. </hint>
                 </field>
@@ -300,7 +300,7 @@
                     <dc-qualifier>startPage</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>Starting page</label>
-                    <type-bind>Article,Conference paper,Book chapter,magazineArticle,newspaperArticle</type-bind>
+                    <type-bind>journal-article,Article,Conference paper,Book chapter,magazineArticle,newspaperArticle</type-bind>
                     <input-type>onebox</input-type>
                     <hint> Enter the page number on the first page of this article. </hint>
                     <required>You must enter the first page of this article.</required>
@@ -311,7 +311,7 @@
                     <dc-qualifier>endPage</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>Ending page</label>
-                    <type-bind>Article,Conference paper,Book chapter,magazineArticle,newspaperArticle</type-bind>
+                    <type-bind>journal-article,Article,Conference paper,Book chapter,magazineArticle,newspaperArticle</type-bind>
                     <input-type>onebox</input-type>
                     <hint> Enter the page number on the last page of this article. </hint>
                 </field>
@@ -1998,6 +1998,10 @@
             <pair>
                 <displayed-value>ISSN</displayed-value>
                 <stored-value>issn</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>DOI</displayed-value>
+                <stored-value>doi</stored-value>
             </pair>
             <pair>
                 <displayed-value>Other</displayed-value>
