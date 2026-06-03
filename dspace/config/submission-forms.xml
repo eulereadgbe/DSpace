@@ -503,7 +503,7 @@
                     <label>Thesis Advisor</label>
                     <input-type>onebox</input-type>
                     <hint>Enter the advisor's name (Family name, Given names).</hint>
-                    <required>You must enter the name of the thesis advisor</required>
+                    <required></required>
                 </field>
             </row>
             <row>
@@ -515,7 +515,7 @@
                     <label>Committee Chair or Major professor</label>
                     <input-type>onebox</input-type>
                     <hint>Enter the name of the committee chair (Family name, Given names).</hint>
-                    <required>You must enter the name of the committee chair</required>
+                    <required></required>
                 </field>
             </row>
             <row>
@@ -573,7 +573,7 @@
                     <label>Degree department</label>
                     <input-type>onebox</input-type>
                     <hint>Enter the Name of the department or school awarding Degree (e.g. College of Theology).</hint>
-                    <required>You must enter name of the department or school awarding the degree.</required>
+                    <required></required>
                 </field>
             </row>
             <row>
@@ -629,6 +629,17 @@
                     <type-bind>Book,Thesis,Dissertation,Conference publication,Technical Report</type-bind>
                     <input-type>onebox</input-type>
                     <hint>Example: GSL 378.2 D371</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>subject</dc-element>
+                    <dc-qualifier>lcc</dc-qualifier>
+                    <label>Library of Congress Classification No.</label>
+                    <type-bind>Book,Thesis,Dissertation,Conference publication,Technical Report</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint>Example: BT1009.5 .S64 2026</hint>
                 </field>
             </row>
             <row>
