@@ -572,7 +572,7 @@
                     <repeatable>false</repeatable>
                     <label>Degree department</label>
                     <input-type>onebox</input-type>
-                    <hint>Enter the Name of the department or school awarding Degree (e.g. College of Education).</hint>
+                    <hint>Enter the Name of the department or school awarding Degree (e.g. College of Theology).</hint>
                     <required>You must enter name of the department or school awarding the degree.</required>
                 </field>
             </row>
@@ -584,7 +584,7 @@
                     <repeatable>false</repeatable>
                     <label>Degree grantor</label>
                     <input-type>onebox</input-type>
-                    <hint>Institution granting the degree associated with the work (e.g. University of the Philippines Visayas).</hint>
+                    <hint>Institution granting the degree associated with the work (e.g. Central Philippine University).</hint>
                     <required>You must enter the name of the granting institution.</required>
                 </field>
             </row>
