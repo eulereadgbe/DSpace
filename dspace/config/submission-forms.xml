@@ -158,7 +158,7 @@
                     <dc-qualifier>citation</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>Citation</label>
-                    <input-type>onebox</input-type>
+                    <input-type>textarea</input-type>
                     <hint>Enter the standard citation for the previously issued instance of this item.</hint>
                     <required></required>
                 </field>
@@ -173,6 +173,18 @@
                     <input-type>series</input-type>
                     <hint>Enter the series and number assigned to this item by your community.</hint>
                     <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>relation</dc-element>
+                    <dc-qualifier>hasversion</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>DOI</label>
+                    <type-bind>journal-article,Article,Conference paper,Book chapter,magazineArticle,newspaperArticle</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the url of the full text if provided by the Publisher.</hint>
                 </field>
             </row>
             <row>
@@ -223,6 +235,99 @@
         <!-- Form which defines the second page/section of the "traditional" DSpace submission process,
              often used when depositing normal Items. -->
         <form name="traditionalpagetwo">
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>contributor</dc-element>
+                    <dc-qualifier>editor</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>Editors</label>
+                    <type-bind>Book,Book chapter,Conference paper,Conference publication,Magazine,Newsletter</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the names of the editors of this item below.</hint>
+                    <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>citation</dc-element>
+                    <dc-qualifier>journaltitle</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Journal Title</label>
+                    <type-bind>Article,magazineArticle,newspaperArticle</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the name of the journal or Periodical for this item.</hint>
+                    <required>You must enter the Journal title of this article.</required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>citation</dc-element>
+                    <dc-qualifier>booktitle</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Book Title</label>
+                    <type-bind>Book chapter</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint> Enter the title of the Book for which this item is part of. </hint>
+                    <required>You must enter the Book title of this article.</required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>citation</dc-element>
+                    <dc-qualifier>conferencetitle</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Proceedings Title</label>
+                    <type-bind>Conference paper</type-bind>
+                    <input-type>textarea</input-type>
+                    <hint> Enter the Proceedings title for which this item is part of. </hint>
+                    <required>You must enter the Proceedings title of this paper to proceed.</required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>oaire</dc-schema>
+                    <dc-element>citation</dc-element>
+                    <dc-qualifier>volume</dc-qualifier>
+                    <label>Volume</label>
+                    <type-bind>Article,magazineArticle</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint> Enter the volume number. </hint>
+                </field>
+                <field>
+                    <dc-schema>oaire</dc-schema>
+                    <dc-element>citation</dc-element>
+                    <dc-qualifier>issue</dc-qualifier>
+                    <label>Issue</label>
+                    <type-bind>Article,magazineArticle</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint> Enter the issue number. </hint>
+                </field>
+                <field>
+                    <dc-schema>oaire</dc-schema>
+                    <dc-element>citation</dc-element>
+                    <dc-qualifier>startPage</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Starting page</label>
+                    <type-bind>Article,Conference paper,Book chapter,magazineArticle,newspaperArticle</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint> Enter the page number on the first page of this article. </hint>
+                    <required>You must enter the first page of this article.</required>
+                </field>
+                <field>
+                    <dc-schema>oaire</dc-schema>
+                    <dc-element>citation</dc-element>
+                    <dc-qualifier>endPage</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Ending page</label>
+                    <type-bind>Article,Conference paper,Book chapter,magazineArticle,newspaperArticle</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint> Enter the page number on the last page of this article. </hint>
+                </field>
+            </row>
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
@@ -362,6 +467,30 @@
                     <input-type>textarea</input-type>
                     <hint>Enter any other description or comments in this box.</hint>
                     <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>relation</dc-element>
+                    <dc-qualifier>uri</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Related link (For external publications)</label>
+                    <type-bind>Article,Conference paper,Book chapter,magazineArticle,newspaperArticle</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the url of the full text if provided by the Publisher.</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>format</dc-element>
+                    <dc-qualifier>extent</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Physical Description</label>
+                    <type-bind>Book,Conference publication,Technical Report</type-bind>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the physical details (eg. x, 109 pages : color illustrations, color maps.)</hint>
                 </field>
             </row>
         </form>
@@ -2034,6 +2163,10 @@
                 <stored-value>Book chapter</stored-value>
             </pair>
             <pair>
+                <displayed-value>Conference paper</displayed-value>
+                <stored-value>Conference paper</stored-value>
+            </pair>
+            <pair>
                 <displayed-value>Dataset</displayed-value>
                 <stored-value>Dataset</stored-value>
             </pair>
@@ -2050,12 +2183,24 @@
                 <stored-value>Image, 3-D</stored-value>
             </pair>
             <pair>
+                <displayed-value>Magazine</displayed-value>
+                <stored-value>Magazine</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Magazine article</displayed-value>
+                <stored-value>Magazine article</stored-value>
+            </pair>
+            <pair>
                 <displayed-value>Map</displayed-value>
                 <stored-value>Map</stored-value>
             </pair>
             <pair>
                 <displayed-value>Musical Score</displayed-value>
                 <stored-value>Musical Score</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Newspaper article</displayed-value>
+                <stored-value>Newspaper Article</stored-value>
             </pair>
             <pair>
                 <displayed-value>Plan or blueprint</displayed-value>
