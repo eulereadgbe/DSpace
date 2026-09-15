@@ -25,13 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is a *very* stupid test fixture for authority control with AuthorityVariantsSupport.
+ * Authority control plugin for querying the UNESCO Thesaurus via Skosmos REST API.
  *
  * @author Andrea Bollini (CILEA)
  */
 public class UNESCOAuthority implements ChoiceAuthority, AuthorityVariantsSupport {
     Logger log = LogManager.getLogger(UNESCOAuthority.class);
-    String UNESCOurl = "https://vocabularies.unesco.org/browser/rest/v1/search";
+
+    // Updated base API URL for the UNESCO Thesaurus Skosmos REST service
+    String UNESCOurl = "https://vocabularies.unesco.org/rest/v1/search";
     private String pluginInstanceName;
 
     @Override
@@ -64,13 +66,12 @@ public class UNESCOAuthority implements ChoiceAuthority, AuthorityVariantsSuppor
             }
             in.close();
 
-            //VIAF responds a json with duplicate keys? must remove them as they are unused
-            String str= sb.toString().replaceAll("\"bav\":\"adv\\d+\",", "").replaceAll("\"dnb\":\"\\d+\",", "");
+            String str = sb.toString();
             JSONObject ob = new JSONObject(str);
             JSONArray results = ob.getJSONArray("results");
 
             Choice[] choices = new Choice[results.length()];
-            for(int i=0;i< results.length();i++){
+            for(int i = 0; i < results.length(); i++){
                 JSONObject result = results.getJSONObject(i);
                 String term = result.getString("prefLabel");
                 String label = result.getString("prefLabel");
@@ -81,9 +82,9 @@ public class UNESCOAuthority implements ChoiceAuthority, AuthorityVariantsSuppor
 
             return new Choices(choices, 0, choices.length, Choices.CF_ACCEPTED, false);
         } catch (MalformedURLException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
 
         return null;
@@ -97,11 +98,11 @@ public class UNESCOAuthority implements ChoiceAuthority, AuthorityVariantsSuppor
             List<Choice> choiceValues = new ArrayList<Choice>();
 
             choiceValues.add(new Choice(text + "_authoritybest", text
-                + "_valuebest", text + "_labelbest"));
+                    + "_valuebest", text + "_labelbest"));
 
             choices = new Choices(
-                (Choice[]) choiceValues.toArray(new Choice[choiceValues
-                    .size()]), 0, 3, Choices.CF_UNCERTAIN, false);
+                    (Choice[]) choiceValues.toArray(new Choice[choiceValues
+                            .size()]), 0, 3, Choices.CF_UNCERTAIN, false);
         }
         return choices;
     }
