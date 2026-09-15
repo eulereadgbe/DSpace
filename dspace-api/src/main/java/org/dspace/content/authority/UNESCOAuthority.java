@@ -52,7 +52,7 @@ public class UNESCOAuthority implements ChoiceAuthority, AuthorityVariantsSuppor
     public Choices getMatches(String text, int start, int limit, String locale) {
         List<BasicNameValuePair> args = new ArrayList<BasicNameValuePair>();
         args.add(new BasicNameValuePair("query", text));
-        String sUrl = UNESCOurl + "?" + URLEncodedUtils.format(args, "UTF8") + "*&vocab=thesaurus&lang=en&labellang=en";
+        String sUrl = UNESCOurl + "?" + URLEncodedUtils.format(args, "UTF8") + "*&vocab=unesco&lang=en&labellang=en";
         try {
             URL url = new URL(sUrl);
             InputStream is = url.openStream();
