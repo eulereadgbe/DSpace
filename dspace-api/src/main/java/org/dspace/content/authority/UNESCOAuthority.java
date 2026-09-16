@@ -33,7 +33,7 @@ public class UNESCOAuthority implements ChoiceAuthority, AuthorityVariantsSuppor
     Logger log = LogManager.getLogger(UNESCOAuthority.class);
 
     // Updated base API URL for the UNESCO Thesaurus Skosmos REST service
-    String UNESCOurl = "https://vocabularies.unesco.org/rest/v1/search";
+    String UNESCOurl = "https://vocabularies.unesco.org/rest/v1/unesco/search";
     private String pluginInstanceName;
 
     @Override
@@ -52,7 +52,7 @@ public class UNESCOAuthority implements ChoiceAuthority, AuthorityVariantsSuppor
     public Choices getMatches(String text, int start, int limit, String locale) {
         List<BasicNameValuePair> args = new ArrayList<BasicNameValuePair>();
         args.add(new BasicNameValuePair("query", text));
-        String sUrl = UNESCOurl + "?" + URLEncodedUtils.format(args, "UTF8") + "*&vocab=unesco&lang=en&labellang=en";
+        String sUrl = UNESCOurl + "?" + URLEncodedUtils.format(args, "UTF8") + "*&unique=true&lang=en&labellang=en&fields=altLabel";
         try {
             URL url = new URL(sUrl);
             InputStream is = url.openStream();
