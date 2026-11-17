@@ -352,11 +352,12 @@
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>subject</dc-element>
-                    <dc-qualifier>ddc</dc-qualifier>
-                    <label>DDC Classification No.</label>
-                    <type-bind>Book,Thesis,Dissertation,Conference publication,Technical Report</type-bind>
-                    <input-type>onebox</input-type>
-                    <hint>Example: GSL 378.2 D371</hint>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>Call Number / Classification No.</label>
+                    <type-bind>Book,Thesis,Conference publication,Technical Report</type-bind>
+                    <input-type value-pairs-name="callnumber_types">qualdrop_value</input-type>
+                    <hint>Select the classification scheme used by your home institution and enter the call number in the text box (e.g., QA76.73.P98 for LCC, 005.133 for DDC, or FIL-378.1 for Local). Enter only one classification type per submission.</hint>
                 </field>
             </row>
             <row>
@@ -661,22 +662,11 @@
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>subject</dc-element>
-                    <dc-qualifier>ddc</dc-qualifier>
-                    <label>DDC Classification No.</label>
-                    <type-bind>Book,Thesis,Dissertation,Conference publication,Technical Report</type-bind>
-                    <input-type>onebox</input-type>
-                    <hint>Example: GSL 378.2 D371</hint>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>subject</dc-element>
-                    <dc-qualifier>lcc</dc-qualifier>
-                    <label>Library of Congress Classification No.</label>
-                    <type-bind>Book,Thesis,Dissertation,Conference publication,Technical Report</type-bind>
-                    <input-type>onebox</input-type>
-                    <hint>Example: BT1009.5 .S64 2026</hint>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>Call Number / Classification No.</label>
+                    <input-type value-pairs-name="callnumber_types">qualdrop_value</input-type>
+                    <hint>Select the classification scheme used by your home institution and enter the call number in the text box (e.g., QA76.73.P98 for LCC, 005.133 for DDC, or FIL-378.1 for Local). Enter only one classification type per submission.</hint>
                 </field>
             </row>
             <row>
@@ -2047,6 +2037,10 @@
                 <stored-value>Conference paper</stored-value>
             </pair>
             <pair>
+                <displayed-value>Conference publication</displayed-value>
+                <stored-value>Conference publication</stored-value>
+            </pair>
+            <pair>
                 <displayed-value>Dataset</displayed-value>
                 <stored-value>Dataset</stored-value>
             </pair>
@@ -2145,6 +2139,66 @@
                 <stored-value>en</stored-value>
             </pair>
             <pair>
+                <displayed-value>Burmese</displayed-value>
+                <stored-value>my</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Chinese</displayed-value>
+                <stored-value>zh</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Chinese (China, Simplified)</displayed-value>
+                <stored-value>zh-CN</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Chinese (Hong Kong, Traditional)</displayed-value>
+                <stored-value>zh-HK</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Chinese (Singapore, Simplified)</displayed-value>
+                <stored-value>zh-SG</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Chinese (Taiwan, Traditional)</displayed-value>
+                <stored-value>zh-TW</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Filipino</displayed-value>
+                <stored-value>fil</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Indonesian</displayed-value>
+                <stored-value>id</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Khmer</displayed-value>
+                <stored-value>km</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Lao</displayed-value>
+                <stored-value>lo</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Malay</displayed-value>
+                <stored-value>ms</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Tamil</displayed-value>
+                <stored-value>ta</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Tetum</displayed-value>
+                <stored-value>tet</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Thai</displayed-value>
+                <stored-value>th</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Vietnamese</displayed-value>
+                <stored-value>vi</stored-value>
+            </pair>
+            <pair>
                 <displayed-value>Spanish</displayed-value>
                 <stored-value>es</stored-value>
             </pair>
@@ -2163,10 +2217,6 @@
             <pair>
                 <displayed-value>Japanese</displayed-value>
                 <stored-value>ja</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Chinese</displayed-value>
-                <stored-value>zh</stored-value>
             </pair>
             <pair>
                 <displayed-value>Portuguese</displayed-value>
@@ -2647,6 +2697,21 @@
             <pair>
                 <displayed-value>Neither</displayed-value>
                 <stored-value>neither</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="callnumber_types" dc-term="subject">
+            <pair>
+                <displayed-value>Library of Congress (LCC)</displayed-value>
+                <stored-value>lcc</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Dewey Decimal (DDC)</displayed-value>
+                <stored-value>ddc</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Local / Institutional Call Number</displayed-value>
+                <stored-value>callnumber</stored-value>
             </pair>
         </value-pairs>
 

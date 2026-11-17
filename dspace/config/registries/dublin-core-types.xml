@@ -632,6 +632,13 @@
   <dc-type>
 	<schema>dc</schema>
     <element>subject</element>
+    <qualifier>callnumber</qualifier>
+    <scope_note>Local or institutional call number</scope_note>
+  </dc-type>
+
+  <dc-type>
+	<schema>dc</schema>
+    <element>subject</element>
     <qualifier>lcsh</qualifier>
     <scope_note>Library of Congress Subject Headings</scope_note>
   </dc-type>
